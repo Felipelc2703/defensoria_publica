@@ -16,5 +16,11 @@
         </nav>
 
         <router-view></router-view>
+
+        <footer>
+            <div class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+            </div>
+        </footer>
     <!-- </div> -->
 </template>
