@@ -3,6 +3,7 @@ import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
 import Register from './pages/Register.vue'
 import Dashboard from './pages/Dashboard.vue'
+import CrearCita from './pages/CrearCita.vue'
 import store from './store'
 
 const routes = [
@@ -35,6 +36,14 @@ const routes = [
             requiresAuth: true
         }
     },
+    {
+        path: '/crearcita',
+        name: 'CrearCita',
+        component: CrearCita,
+        meta: {
+            requiresAuth: false
+        }
+    }
 ]
 
 const router = createRouter({
