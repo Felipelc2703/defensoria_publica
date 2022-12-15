@@ -430,7 +430,7 @@
             },
             agendar(tipo_cita) {
                 console.log(tipo_cita)
-                this.$router.push('/prueba')
+                this.$router.push('/crear-cita')
             }
         }
     })

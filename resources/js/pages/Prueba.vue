@@ -111,6 +111,7 @@
                     <v-btn
                         variant="flat"
                         color="error"
+                        @click="agendar()"
                     >
                         Aceptar
                     </v-btn>
@@ -132,6 +133,9 @@
             cancelar() {
                 this.dialogRequisitos = false
                 this.$router.push('/')
+            },
+            agendar() {
+                this.dialogRequisitos = false
             }
         }
     }

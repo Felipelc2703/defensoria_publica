@@ -4,6 +4,7 @@ import Login from './pages/Login.vue'
 import Register from './pages/Register.vue'
 import Dashboard from './pages/Dashboard.vue'
 import Prueba from './pages/Prueba.vue'
+import CrearCita from './pages/CrearCita.vue'
 import store from './store'
 
 const routes = [
@@ -40,6 +41,11 @@ const routes = [
         path: '/prueba',
         name: Prueba,
         component: Prueba,
+    },
+    {
+        path: '/crear-cita',
+        name: 'CrearCita',
+        component: CrearCita,
     }
 ]
 
