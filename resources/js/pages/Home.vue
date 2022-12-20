@@ -4,6 +4,41 @@
             <h2 class="text-left">Defensoría Pública</h2>
             <h3 class="text-left">Citas en Linea</h3>
         </div>
+        <div>
+            <v-card>
+                <p for="">Si usted ya cuenta con una cita y desea imprimir su confirmación o cancelarla, ingrese a continuación su número de folio, serie o placa:</p>
+                <v-row
+                    justify="space-between"
+                    >
+                    <v-col
+                        cols="12"
+                        md="6"
+                    >
+                    <v-form>                        
+                        <v-text-field
+                        variant="solo"
+                        v-model="datos.clave"
+                        label=""
+                        ></v-text-field>
+                    </v-form>
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        md="6"
+                    >
+                        <v-btn
+                            variant="flat"
+                            color="error"
+                            @click="buscar()"
+                            >
+                            Buscar
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-card>
+            
+        </div>
         <div class="text-center mt-4 mb-4">
             <div class="row justify-content-around" v-if="showFirstOptions">
                 <div class="col-sm-12 col-md-6 col-lg-3 mt-4">
@@ -87,6 +122,9 @@
             return {
                 showFirstOptions: true,
                 showSecondOptions: false,
+                datos: {
+                    clave: ''
+                },
                 tipos_citas: [],
                 tipos_citas_1: [
                     {
@@ -431,6 +469,11 @@
             agendar(tipo_cita) {
                 console.log(tipo_cita)
                 this.$router.push('/crear-cita')
+            },
+            buscar() {
+                console.log(this.datos)
+                this.$store.commit('setClave', this.datos);
+                this.$router.push('/buscar-folio')
             }
         }
     })

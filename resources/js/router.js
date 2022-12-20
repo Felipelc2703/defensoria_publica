@@ -5,6 +5,8 @@ import Register from './pages/Register.vue'
 import Dashboard from './pages/Dashboard.vue'
 import Prueba from './pages/Prueba.vue'
 import CrearCita from './pages/CrearCita.vue'
+import BuscarFolio from './pages/BuscarFolio.vue'
+import CentrosAtencion from './pages/CentrosAtencion.vue'
 import store from './store'
 
 const routes = [
@@ -46,6 +48,16 @@ const routes = [
         path: '/crear-cita',
         name: 'CrearCita',
         component: CrearCita,
+    },
+    {
+        path: '/buscar-folio',
+        name: 'BuscarFolio',
+        component: BuscarFolio,
+    },
+    {
+        path: '/centros-atencion',
+        name: 'CentrosAtencion',
+        component: CentrosAtencion,
     }
 ]
 

@@ -51,12 +51,12 @@
 
             let errors = ref([])
 
-            const register = async() => {
+            const register = async() => {  
                 await axios.post('/api/register', form).then(res => {
                     if (res.data.success) {
                         store.dispatch('setToken', res.data.data.token)
                         router.push({name: 'Dashboard'})
-                    }
+                    }  
                 }).catch(e => {
                     errors.value = e.response.data.message
                 })
