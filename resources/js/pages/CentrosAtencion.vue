@@ -34,8 +34,6 @@
             </template>
         </EasyDataTable>
 
-
-
         <v-dialog
             v-model="dialogAgregarCentro"
             max-width="700px"
@@ -204,6 +202,9 @@
             agregarCentro() {
                 console.log('agregar centro')
                 this.dialogAgregarCentro = true
+            },
+            aceptar() {
+                    
             }
         },
     }
