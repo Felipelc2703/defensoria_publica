@@ -42,35 +42,39 @@
         <div class="text-center mt-4 mb-4">
             <div class="row justify-content-around" v-if="showFirstOptions">
                 <div class="col-sm-12 col-md-6 col-lg-3 mt-4">
-                    <v-card variant="tonal" height="120" @click="mostrarTipoCitas(1)">
-                        <div class="m-2">
+                    <v-card variant="tonal" @click="mostrarTipoCitas(1)">
+                        <!-- <div class="m-2">
                             <p><span>Asuntos Civiles y Familiares</span></p>
                             <v-icon icon="mdi-account-child"></v-icon>
-                        </div>
+                        </div> -->
+                        <img width="200" height="200" src="./../../../public/images/boton_1.png" alt="">
                     </v-card>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mt-4">
-                    <v-card variant="tonal" height="120" @click="mostrarTipoCitas(2)">
-                        <div class="m-2">
+                    <v-card variant="tonal" @click="mostrarTipoCitas(2)">
+                        <!-- <div class="m-2">
                             <p><span>Asuntos Administrativos</span></p>
                             <v-icon icon="mdi-folder"></v-icon>
-                        </div>
+                        </div> -->
+                        <img width="200" height="200" src="./../../../public/images/boton_2.png" alt="">
                     </v-card>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mt-4">
-                    <v-card variant="tonal" height="120" @click="mostrarTipoCitas(3)">
-                        <div class="m-2">
+                    <v-card variant="tonal" @click="mostrarTipoCitas(3)">
+                        <!-- <div class="m-2">
                             <p><span>Asuntos Laborales</span></p>
                             <v-icon icon="mdi-account-hard-hat"></v-icon>
-                        </div>
+                        </div> -->
+                        <img width="200" height="200" src="./../../../public/images/boton_3.png" alt="">
                     </v-card>
                 </div>
                 <div class="col-sm-12 col-md-6 col-lg-3 mt-4">
-                    <v-card variant="tonal" height="120" @click="mostrarTipoCitas(4)">
-                        <div class="m-2">
+                    <v-card variant="tonal" @click="mostrarTipoCitas(4)">
+                        <!-- <div class="m-2">
                             <p><span>Ejecución de Sentencias</span></p>
                             <v-icon icon="mdi-account-tie"></v-icon>
-                        </div>
+                        </div> -->
+                        <img width="200" height="200" src="./../../../public/images/boton_4.png" alt="">
                     </v-card>
                 </div>
             </div>
