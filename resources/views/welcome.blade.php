@@ -20,6 +20,10 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+
+            .swal2-container {
+                z-index: 10000!important;
+            }
         </style>
     </head>
     <body class="antialiased">
