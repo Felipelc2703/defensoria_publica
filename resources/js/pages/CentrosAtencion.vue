@@ -12,40 +12,29 @@
             :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
         >
         </v-select>
-        <v-table>
-            <thead>
-            <tr>
-                <th class="text-left">
-                    Requisito
-                </th>
-                <th class="text-left">
-                    Requisito Padre
-                </th>
-                <th class="text-left">
-                    Acciones
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-                <tr
-                    v-for="item in tramites"
-                    :key="item.id"
-                >
-                    <td>{{ item.nombre }}</td>
-                    <td>{{ item.requi_padre }}</td>
-                    <td>
-                        <v-btn class="mb-4"
-                            @click="editarCentro" >
-                            <v-icon icon="mdi-text-box-edit-outline"></v-icon>
-                        </v-btn>
-                        <v-btn class="mb-4"
-                            @click="eliminarCentro" >
-                            <v-icon icon="mdi-text-box-edit-outline"></v-icon>
-                        </v-btn>
-                    </td>
-                </tr>
-                </tbody>
-        </v-table>
+        <EasyDataTable 
+            :headers="headers" 
+            :items="items"
+            alternating
+        >
+            <template #item-actions="item">
+                <div class="operation-wrapper">
+                    
+                    <v-btn class="mb-4"
+                        icon
+                        @click="agregarCentro" >
+                        <v-icon icon="mdi-text-box-edit-outline"></v-icon>
+                    </v-btn>
+                    <v-btn class="mb-4"
+                        icon    
+                        @click="agregarCentro" >
+                        <v-icon icon="mdi-text-box-edit-outline"></v-icon>
+                    </v-btn>
+                </div>
+            </template>
+        </EasyDataTable>
+
+
 
         <v-dialog
             v-model="dialogAgregarCentro"
@@ -102,8 +91,18 @@
                         <v-divider>
                         </v-divider>
                         <p>Seleccione los tramites disponibles para esta oficina</p>
+                        <!-- <template>
+                            <EasyDataTable
+                                :ref="centro.tramites"
+                                v-model:items-selected="itemsSelected"
+                                :headers="headers"
+                                :items="items"
+                            />
+                            <br />
+                           
+                        </template> -->
                         
-                        <div v-for="(tramite,index) in tramites" :key="index">
+                        <div v-for="(tramite,index) in items" :key="index">
                             <v-checkbox 
                                 :label = "tramite.nombre"
                                 :value = "tramite.id"
@@ -138,33 +137,36 @@
 </template>
 
 <script>
+    import { ref } from "vue";
+    // import { Header, Item } from "vue3-easy-data-table";
+    // import type { Vue3EasyDataTable } from "vue3-easy-data-table";
     export default {
         data() {
             return {
+                dialogAgregarCentro: false,
+                // itemsSelected = ref<Item[]>([]),
+               // itemsSelected:[],
                 centro: {
                     nombre: '',
                     direccion: '',
                     telefono: '',
                     num_cajas: '',
-                    // tramites: [],
-                },
-                page: 1,
-                pageCount: 0,
-                itemsPerPage: 10,
+                    // tramites:ref<centro.tramites>([])
+                },  
+                // itemsSelected: item[] = ref([item]),
                 headers: [
-                    {
-                        text:'REQUISITO',
-                        value:'REQUISITO'
-                    },
-                    {
-                        text:'REQUISITO PADRE',
-                    },
-                    {
-                        text:'ACCIONES'
-                    }
+                { 
+                    text: "REQUISITO", value: "nombre" 
+                },
+                { 
+                    text: "REQUISITO PADRE", value: "requi_padre"
+                },
+                { 
+                    text: 'ACCIONES', value: 'actions'
+                }
                 ],
                 dialogAgregarCentro: false,
-                tramites: [
+                items:[
                     {
                         id:1,
                         nombre: 'ALIMENTOS',
@@ -202,7 +204,7 @@
             agregarCentro() {
                 console.log('agregar centro')
                 this.dialogAgregarCentro = true
-            }  
+            }
         },
     }
 </script>

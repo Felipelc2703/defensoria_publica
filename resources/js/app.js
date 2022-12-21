@@ -11,6 +11,8 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import swal from 'sweetalert2';
 import App from './layouts/App.vue'
+import Vue3EasyDataTable from 'vue3-easy-data-table';
+import 'vue3-easy-data-table/dist/style.css';
 
 const vuetify = createVuetify({
     components,
@@ -26,4 +28,5 @@ createApp(App)
     .use(router)
     .use(store)
     .use(vuetify)
+    .component('EasyDataTable', Vue3EasyDataTable)
     .mount("#app")
