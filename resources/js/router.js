@@ -10,6 +10,8 @@ import confwhats from './pages/confwhats.vue'
 import edituser from './pages/edituser.vue'
 import createuser from './pages/createuser.vue'
 import store from './store'
+import CatalogoRequisitos from './pages/CatalogoRequisitos.vue'
+import CatalogoUsuarios from './pages/CatalogoUsuarios.vue'
 
 const routes = [
     {
@@ -82,7 +84,23 @@ const routes = [
         meta: {
             requiresAuth: false
         }
-    }
+    },
+    {
+        path: '/catalogo-requisitos',
+        name: 'CatalogoRequisitos',
+        component: CatalogoRequisitos,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/catalogo-usuarios',
+        name: 'CatalogoUsuarios',
+        component: CatalogoUsuarios,
+        meta: {
+            requiresAuth: true
+        }
+    },
 ]
 
 const router = createRouter({

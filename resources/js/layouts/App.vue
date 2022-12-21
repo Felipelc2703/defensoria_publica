@@ -115,7 +115,7 @@
                     </v-menu>
                 </v-tabs>
                 <v-spacer></v-spacer>
-                <v-btn variant="text" color="white" @click="irLogin()" v-if="$store.getters.getToken == 0">
+                <v-btn variant="text" color="white" @click="this.$router.push('/catalogo-usuarios')">
                     Usuarios
                 </v-btn>
                 <v-btn variant="text" color="white" @click="logout()" v-if="$store.getters.getToken != 0">
@@ -182,6 +182,9 @@
             },
             algo() {
 
+            },
+            irCatalogoUSuarios() {
+                this.$router.push('/catalogo-usuarios')
             }
         }
     })
