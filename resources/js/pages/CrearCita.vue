@@ -159,7 +159,6 @@
                               <v-select
                               v-model="trip.location"
                               :items="locations"
-                              chips
                               flat
                               variant="solo"
                               ></v-select>
@@ -211,13 +210,13 @@
                             label="date"
                             type="date" 
                             ></v-text-field>
+                            
                         </v-col>
                         <v-col cols="2">
                             Hora:
                               <v-select
                               v-model="trip.Hour"
                               :items="Hour"
-                              chips
                               flat
                               variant="solo"
                               ></v-select>
@@ -299,7 +298,6 @@
                 <v-select v-if="disc == 'si'" label="¿Cual?"
                               v-model="trip.disca"
                               :items="disca"
-                              chips
                               flat
                               variant="solo"
                               :rules="[rules.required]"
@@ -391,5 +389,6 @@
         },
         
     }
+   
 
 </script>
