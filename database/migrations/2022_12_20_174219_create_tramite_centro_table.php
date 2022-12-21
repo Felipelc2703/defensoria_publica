@@ -13,20 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('tramite_centro', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('clave');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->foreignId('tramite_id')->constrained();
             $table->unsignedBigInteger('centro_atencion_id');
-            $table->unsignedBigInteger('rol_id');
             $table->timestamps();
 
             $table->foreign('centro_atencion_id')->references('id')->on('centros_atencion');
-            $table->foreign('rol_id')->references('id')->on('roles');
         });
     }
 
@@ -37,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('tramite_centro');
     }
 };
