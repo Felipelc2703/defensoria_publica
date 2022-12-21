@@ -58,6 +58,9 @@ const routes = [
         path: '/centros-atencion',
         name: 'CentrosAtencion',
         component: CentrosAtencion,
+        meta: {
+            requiresAuth: true
+        }
     }
 ]
 
