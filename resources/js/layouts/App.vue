@@ -77,7 +77,7 @@
                             <v-list-item @click="this.$router.push('/dashboard')">
                                 Notas
                             </v-list-item>
-                            <v-list-item @click="this.$router.push('/dashboard')">
+                            <v-list-item @click="this.$router.push('/conf-whats')">
                                 Configuración WhatsApp
                             </v-list-item>
                         </v-list>

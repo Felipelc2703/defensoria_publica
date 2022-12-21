@@ -3,10 +3,12 @@ import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
 import Register from './pages/Register.vue'
 import Dashboard from './pages/Dashboard.vue'
-import Prueba from './pages/Prueba.vue'
 import CrearCita from './pages/CrearCita.vue'
 import BuscarFolio from './pages/BuscarFolio.vue'
 import CentrosAtencion from './pages/CentrosAtencion.vue'
+import confwhats from './pages/confwhats.vue'
+import edituser from './pages/edituser.vue'
+import createuser from './pages/createuser.vue'
 import store from './store'
 
 const routes = [
@@ -40,11 +42,6 @@ const routes = [
         }
     },
     {
-        path: '/prueba',
-        name: Prueba,
-        component: Prueba,
-    },
-    {
         path: '/crear-cita',
         name: 'CrearCita',
         component: CrearCita,
@@ -60,6 +57,30 @@ const routes = [
         component: CentrosAtencion,
         meta: {
             requiresAuth: true
+        }
+    },
+    {
+        path: '/conf-whats',
+        name: 'confwhats',
+        component: confwhats,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/edit-user',
+        name: 'edituser',
+        component: edituser,
+        meta: {
+            requiresAuth: false
+        }
+    },
+    {
+        path: '/create-user',
+        name: 'createuser',
+        component: createuser,
+        meta: {
+            requiresAuth: false
         }
     }
 ]
