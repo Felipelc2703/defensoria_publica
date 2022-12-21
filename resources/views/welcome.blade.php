@@ -23,8 +23,8 @@
         </style>
     </head>
     <body class="antialiased">
-        <div id="app"></div>
-        {{-- <v-app id="app"></v-app> --}}
+        {{-- <div id="app"></div> --}}
+        <v-app id="app"></v-app>
 
         @vite('resources/js/app.js')
         {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
