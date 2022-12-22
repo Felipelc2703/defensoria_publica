@@ -1,8 +1,8 @@
 <template>
-    <div class="container">
-    <v-dialog
+    <div>
+        <v-dialog
             v-model="dialogRequisitos"
-            max-width="600px"
+            max-width="800px"
         >
             <v-card>
                 <v-card-title>
@@ -118,6 +118,257 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+        <div class="row justify-content-between">
+            <div class="col-sm-9 col-12 border-uno">
+                <div class="text-center border-dos py-2">
+                    <img class="scale-logo-defensoria" width="200" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
+                </div>
+                <div class="text-center mt-4 mb-4 ml-10 mr-10">
+                    <div class="container">
+                        <div class="row justify-content-around">
+                            <div class="col-sm-12 col-md-6 text-left">
+                                <p class="titulo_tipo_tramite">{{tramiteSeleccionado.nombre}}</p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 text-right">
+                                <v-btn variant="text" prepend-icon="mdi-arrow-left" @click="volverInicio()">Regresar</v-btn>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <v-expansion-panels>
+                                <v-expansion-panel>
+                                    <v-expansion-panel-title v-slot="{ open }">
+                                        <v-row no-gutters>
+                                            <v-col cols="8" class="d-flex justify-start">
+                                                PASO 1: Seleccione el centro de atención
+                                            </v-col>
+                                            <v-col cols="8" class="text--secondary">
+                                                <v-fade-transition leave-absolute>
+                                                    <span v-if="open" key="0"></span>
+                                                    <span v-else key="1"></span>
+                                                </v-fade-transition>
+                                            </v-col>
+                                        </v-row>
+                                    </v-expansion-panel-title>
+                                    <v-expansion-panel-text>
+                                        <v-row no-gutters>
+                                            <v-col cols="6">
+                                                <v-select
+                                                    v-model="trip.location"
+                                                    :items="locations"
+                                                    flat
+                                                    variant="underlined"
+                                                >
+                                                </v-select>
+                                            </v-col>
+
+                                            <v-divider vertical class="mx-4"></v-divider>
+
+                                            <v-col cols="4">
+                                                Si requiere conocer la ubicación de cada uno de los lugares donde puede realizar el trámite, 
+                                                <br>
+                                                <a href="#"> de click aqui</a>
+                                            </v-col>
+                                        </v-row>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
+                                <v-expansion-panel>
+                                    <v-expansion-panel-title v-slot="{ open }">
+                                        <v-row no-gutters>
+                                            <v-col cols="8" class="d-flex justify-start">
+                                                PASO 2: Seleccione la fecha y hora de la cita 
+                                            </v-col>
+                                            <v-col cols="8" class="text--secondary">
+                                                <v-fade-transition leave-absolute>
+                                                    <span v-if="open"></span>
+                                                    <v-row v-else no-gutters style="width: 100%"></v-row>
+                                                </v-fade-transition>
+                                            </v-col>
+                                        </v-row>
+                                    </v-expansion-panel-title>
+                                    <v-expansion-panel-text>
+                                        <v-row justify="space-around" no-gutters>
+                                            <v-col cols="3">
+                                                Fecha:
+                                                <div id="cal"> 
+                                                    <div class="header"> 
+                                                        <span class="left button" id="prev"> &lang; </span> 
+                                                        <span class="left hook"></span> 
+                                                        <span class="month-year" id="label"> June 20&0 </span> 
+                                                        <span class="right hook"></span> 
+                                                        <span class="right button" id="next"> &rang; </span>
+                                            
+                                                    </div> 
+                                                    <table id="days"> 
+                                                        <tr>
+                                                            <td>Dom</td> 
+                                                            <td>Lun</td> 
+                                                            <td>Mar</td> 
+                                                            <td>Mier</td> 
+                                                            <td>Jue</td> 
+                                                            <td>Vie</td> 
+                                                            <td>Sab</td>
+                                                        </tr>                        
+                                                    </table> 
+                                                    <div id="cal-frame"> 
+                                                        <table class="curr"> 
+                                                            <tbody> 
+                                                                <tr><td class="nil"></td><td class="nil"></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr> 
+                                                                <tr><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td class="today">11</td><td>12</td></tr> 
+                                                                <tr><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr> 
+                                                                <tr><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr> 
+                                                                <tr><td>27</td><td>28</td><td>29</td><td>30</td><td class="nil"></td><td class="nil"></td><td class="nil"></td></tr> 
+                                                            </tbody> 
+                                                        </table>
+                                                    </div> 
+                                                </div>
+                                            </v-col>
+                                            <v-col cols="2">
+                                                Hora:
+                                                <v-select
+                                                v-model="trip.Hour"
+                                                :items="Hour"
+                                                flat
+                                                variant="underlined"
+                                                ></v-select>
+                                            </v-col>
+                                        </v-row>
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
+                                <v-expansion-panel>
+                                    <v-expansion-panel-title>
+                                        <template v-slot:default="{ expanded }">
+                                            <v-row no-gutters>
+                                                <v-col cols="8" class="d-flex justify-start">
+                                                PASO 3: Ingrese los datos del solicitante 
+                                                </v-col>
+                                                <v-col
+                                                cols="8"
+                                                class="text-grey"
+                                                >
+                                                <v-fade-transition leave-absolute>
+                                                    <span
+                                                    v-if="expanded"
+                                                    key="0"
+                                                    >
+                                                    </span>
+                                                    <span
+                                                    v-else
+                                                    key="1"
+                                                    >
+                                                    </span>
+                                                </v-fade-transition>
+                                                </v-col>
+                                            </v-row>
+                                        </template>
+                                    </v-expansion-panel-title>
+                                    <v-expansion-panel-text>
+                                        <v-form ref="form">
+                                            Nombre:*
+                                            <v-text-field
+                                                ref="name"
+                                                v-model="name"
+                                                :rules="[rules.required]"
+                                                variant="underlined"
+                                            ></v-text-field>
+                                            Correo Electrónico:*
+                                            <v-text-field
+                                                ref="email"
+                                                v-model="email"
+                                                :rules="[rules.required, rules.email]"
+                                                variant="underlined"
+                                            ></v-text-field>
+                                            Teléfono:*
+                                            <v-text-field
+                                                counter="10"
+                                                maxlength="10"
+                                                ref="tel"
+                                                v-model="tel"
+                                                :rules="[rules.required]"
+                                                variant="underlined"
+                                            ></v-text-field>
+                                            Seleccione sexo:*
+                                            <v-radio-group ref="sexo" v-model="sexo" inline :rules="[rules.required]">
+                                                <v-radio
+                                                    label="Masculino"
+                                                    value="M"
+                                                ></v-radio>
+                                                <v-radio
+                                                    label="Femenino"
+                                                    value="F"
+                                                ></v-radio>
+                                            </v-radio-group>
+                                            ¿Presenta alguna discapacidad?*
+                                            <v-radio-group ref="disc" v-model="disc" inline :rules="[rules.required]">
+                                                <v-radio label="Si" v-model="disc" value="si"></v-radio>
+                                                <v-radio label="No" v-model="disc" value="no"></v-radio>
+                                            </v-radio-group>
+                                            <!--si la respuesta es si-->
+                                            <v-select v-if="disc == 'si'" label="¿Cual?"
+                                                v-model="trip.disca"
+                                                :items="disca"
+                                                flat
+                                                variant="underlined"
+                                                :rules="[rules.required]"
+                                            ></v-select>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn
+                                                    color="primary"
+                                                    variant="text"
+                                                    @click="login"
+                                                >
+                                                    Enviar
+                                                </v-btn>
+                                            </v-card-actions>
+                                        </v-form> 
+                                    </v-expansion-panel-text>
+                                </v-expansion-panel>
+                            </v-expansion-panels>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 col-12">
+                <div class="text-center py-2 espacio-blanco"></div>
+                <div class="text-center mt-4 mb-4 ml-4 mr-4">
+                    <div>
+                        <fieldset class="text-left">
+                            <legend><h2 class="titulo-resumen-cita">Resumen de Cita:</h2></legend>
+                        </fieldset>
+                        <div>
+                            <div class="row">
+                                <div class="col-md-12 text-left">
+                                    <span class="texto-estatico-resumen-cita">Centro de Atención:</span>
+                                    <br>
+                                    <span class="texto-dinamico-resumen-cita"></span>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-left">
+                                    <span class="texto-estatico-resumen-cita">Día de la Cita:</span>
+                                    <br>
+                                    <span class="texto-dinamico-resumen-cita"></span>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-left">
+                                    <span class="texto-estatico-resumen-cita">Hora de la Cita:</span>
+                                    <br>
+                                    <span class="texto-dinamico-resumen-cita"></span>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <div class="text-center mt-4">
             <h2 class="text-left">Tipo de Juicio</h2>
@@ -392,8 +643,8 @@
 </div>
 </template>
 
-<style>
-body { 
+<style scoped>
+    body { 
 	    background: #e0e0e0; 
 	} 
  
@@ -531,14 +782,57 @@ body {
 	#cal #cal-frame table.temp { 
 	    position:absolute; 
 	}
+
+    .border-uno {
+        border-style: none solid none none;
+        border-color: #adadad;
+        border-width: 2px;
+        padding: 0!important;
+    }
+
+    .border-dos {
+        border-style: none none solid none;
+        border-color: #adadad;
+        border-width: 2px;
+    }
+
+    .scale-logo-defensoria {
+        transform: scale(1.8);
+    }
+
+    .titulo_tipo_tramite {
+        font-size: 20px;
+        font-weight: bold;
+        font-family: 'Lato', sans-serif;
+    }
+
+    .espacio-blanco {
+        height: 93px;
+    }
+
+    .titulo-resumen-cita {
+        font-size: 40;
+        font-weight: bold;
+    }
+
+    .texto-estatico-resumen-cita {
+        font-weight: bold;
+    }
+
+    .texto-dinamico-resumen-cita {
+        color: #827e7d;
+        font-weight: bold;
+    }
 </style>
 
 <script>
     import { defineComponent } from 'vue'
     import { errorSweetAlert } from './../helpers/sweetAlertGlobals'
 
-    export default {
-        data: () => ({
+    export default defineComponent({
+        name: 'crear-cita',
+        data() {
+            return {
                 name: '',
                 email: '',
                 tel: '',
@@ -547,22 +841,19 @@ body {
                    
                 trip: {
                     disca: null,
-                    },
-                    disca: ['Motriz', 'Auditiva', 'Visual', 'Intelectual', 'Psicosocial'],
-                    dialogRequisitos: true,
-                
-                    trip: {
+                },
+                disca: ['Motriz', 'Auditiva', 'Visual', 'Intelectual', 'Psicosocial'],
+                dialogRequisitos: true,
+                trip: {
                     location: null,
-                    },
-                    locations: ['Dirección asuntos civiles, familiares y administrativos(Puebla Capital)', 'DISTRITO JUDICIAL ACATLÁN', 'DISTRITO JUDICIAL ALATRISTE', 'DISTRITO JUDICIAL ATLIXCO', 'DISTRITO JUDICIAL CHALCHICOMULA', 'DISTRITO JUDICIAL CHIAUTLA', 'DISTRITO JUDICIAL CHOLULA'],
-                    dialogRequisitos: true,
-                    
-                    trip: {
+                },
+                locations: ['Dirección asuntos civiles, familiares y administrativos(Puebla Capital)', 'DISTRITO JUDICIAL ACATLÁN', 'DISTRITO JUDICIAL ALATRISTE', 'DISTRITO JUDICIAL ATLIXCO', 'DISTRITO JUDICIAL CHALCHICOMULA', 'DISTRITO JUDICIAL CHIAUTLA', 'DISTRITO JUDICIAL CHOLULA'],
+                dialogRequisitos: true,    
+                trip: {
                     Hour: null,
-                    },
-                    Hour: ['8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30'],
-                    dialogRequisitos: true,
-       
+                },
+                Hour: ['8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30'],
+                dialogRequisitos: true,
                 rules: {
                     required: value => !!value || 'Campo requerido',
                     email: value => {
@@ -570,8 +861,16 @@ body {
                         return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
                     },
                 },
-        }),
-        
+            }
+        },
+        created() {
+            console.log("tramite: ", this.tramiteSeleccionado)
+        },
+        computed: {
+            tramiteSeleccionado() {
+                return this.$store.getters.getTramiteSeleccionado
+            }
+        },
         methods: {
             cancelar() {
                 this.dialogRequisitos = false
@@ -603,8 +902,8 @@ body {
                 this.loading = false
             }
         },
-        
-    }
+    })
+
     var CALENDAR = function () { 
 	    var wrap, label,  
 	            months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; 

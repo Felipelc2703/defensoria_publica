@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import catalogos from './../modules/catalogos'
+import agendarCita from './../modules/agendarCita.js'
 
 const store = createStore({
     state: {
@@ -39,6 +40,7 @@ const store = createStore({
     },
     modules: {
         catalogos,
+        agendarCita,
     }
 })
 

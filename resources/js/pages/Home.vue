@@ -136,7 +136,7 @@
                 this.showFirstOptions = true
             },
             agendar(tipo_cita) {
-                console.log(tipo_cita)
+                this.$store.commit('setTramiteSeleccionado', tipo_cita)
                 this.$router.push('/crear-cita')
             },
         }
