@@ -37,7 +37,6 @@
                                 <label class="label-buscar-cita" for="buscar-cita">Si usted ya cuenta con una cita y desea imprimir su confirmación o cancelarla, ingrese a continuación su número de folio.</label>
                                 <div class="row justify-content-between">
                                     <div class="col-sm-9 col-12">
-                                        <!-- <input id="buscar-cita" type="text" class="py-2 input-buscar-cita icon"> -->
                                         <div id="input_container">
                                             <input id="buscar-cita" type="text" class="input-buscar-cita">
                                             <img width="100" height="100" src="../../../public/images/lupa.png" id="input_img">
@@ -249,6 +248,7 @@
 
 <script>
     import { defineComponent } from "vue"
+import { errorSweetAlert } from "../helpers/sweetAlertGlobals"
 
     export default defineComponent({
         name: 'app',
@@ -257,10 +257,32 @@
                 
             }
         },
+        created() {
+            this.getTramites()
+        },
         methods: {
             irLogin() {
                 this.$router.push('/login')
             },
+            async getTramites() {
+                try {
+                    let response = await axios.get('/api/tramites-citas')
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.$store.commit('setCatalogoTramitesTipo1', response.data.tramites_tipo_1)
+                            this.$store.commit('setCatalogoTramitesTipo2', response.data.tramites_tipo_2)
+                            this.$store.commit('setCatalogoTramitesTipo3', response.data.tramites_tipo_3)
+                            this.$store.commit('setCatalogoTramitesTipo4', response.data.tramites_tipo_4)
+                        } else {
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites para agendar citas.')
+                    }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites para agendar citas.')
+                }
+            }
         }
     })
 </script>

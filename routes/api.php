@@ -31,3 +31,4 @@ Route::get('/catalogos/centros-de-atencion', [CentroAtencionController::class, '
 Route::post('/centro-atencion/guardar-nuevo', [CentroAtencionController::class, 'guardarNuevoCentro']);
 Route::post('/centro-atencion/actualizar-centro', [CentroAtencionController::class, 'actualizarCentroAtencion']);
 Route::post('/centro-atencion/eliminar-centro', [CentroAtencionController::class, 'eliminarCentroAtencion']);
+Route::get('/tramites-citas', [TramiteController::class, 'getTramitesCitas']);
