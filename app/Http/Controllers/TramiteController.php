@@ -45,6 +45,7 @@ class TramiteController extends Controller
                     $object2->id = $requisito->id;
                     $object2->nombre = $requisito->nombre;
                     $object2->obligatorio = $requisito->pivot->obligatorio;
+                    $object2->checked = '0';
                     array_push($requisitos, $object2);
                 }
 
@@ -67,6 +68,7 @@ class TramiteController extends Controller
                     $object2->id = $requisito->id;
                     $object2->nombre = $requisito->nombre;
                     $object2->obligatorio = $requisito->pivot->obligatorio;
+                    $object2->checked = '0';
                     array_push($requisitos, $object2);
                 }
 
@@ -89,6 +91,7 @@ class TramiteController extends Controller
                     $object2->id = $requisito->id;
                     $object2->nombre = $requisito->nombre;
                     $object2->obligatorio = $requisito->pivot->obligatorio;
+                    $object2->checked = '0';
                     array_push($requisitos, $object2);
                 }
 
@@ -111,6 +114,7 @@ class TramiteController extends Controller
                     $object2->id = $requisito->id;
                     $object2->nombre = $requisito->nombre;
                     $object2->obligatorio = $requisito->pivot->obligatorio;
+                    $object2->checked = '0';
                     array_push($requisitos, $object2);
                 }
 

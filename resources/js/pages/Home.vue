@@ -94,6 +94,11 @@
                 tipo_asunto: '',
             }
         },
+        created() {
+            if (this.asunto_store) {
+                this.mostrarTipoCitas(this.asunto_store)
+            }
+        },
         computed: {
             tramites_tipo_1() {
                 return this.$store.getters.getCatalogoTramitesTipo1
@@ -107,6 +112,9 @@
             tramites_tipo_4() {
                 return this.$store.getters.getCatalogoTramitesTipo4
             },
+            asunto_store() {
+                return this.$store.getters.getAsuntoStore
+            }
         },
         methods: {
             mostrarTipoCitas(asunto) {
@@ -114,18 +122,22 @@
                     case 1:
                         this.tipo_asunto = 'Asuntos Civiles y Familiares'
                         this.tipos_citas = this.tramites_tipo_1
+                        this.$store.commit('setAsuntoStore', 1)
                         break
                     case 2:
                         this.tipo_asunto = 'Asuntos Laborales'
                         this.tipos_citas = this.tramites_tipo_2
+                        this.$store.commit('setAsuntoStore', 2)
                         break
                     case 3:
                         this.tipo_asunto = 'Asuntos Administrativos'
                         this.tipos_citas = this.tramites_tipo_3
+                        this.$store.commit('setAsuntoStore', 3)
                         break
                     case 4:
                         this.tipo_asunto = 'Ejecución de Sentencias'
                         this.tipos_citas = this.tramites_tipo_4
+                        this.$store.commit('setAsuntoStore', 4)
                         break
                 }
                 this.showFirstOptions = false
@@ -167,7 +179,7 @@
 
     .transition-button {
         background-color: #e7e7e7;
-        border-radius: 50px;
+        border-radius: 35px;
         cursor: pointer;
         transition: all 0.5s ease-out;
     }

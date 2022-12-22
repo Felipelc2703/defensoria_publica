@@ -28,7 +28,7 @@
                 <div class="row justify-content-between">
                     <div class="col-sm-6 col-12">
                         <div class="ml-16">
-                            <img width="200" height="75" src="../../../public/images/logo_citas_en_linea.svg" alt="">
+                            <img class="boton_inicio" @click="irInicio()" width="200" height="75" src="../../../public/images/logo_citas_en_linea.svg" alt="">
                         </div>
                     </div>
                     <div class="col-sm-6 col-12">
@@ -282,6 +282,10 @@ import { errorSweetAlert } from "../helpers/sweetAlertGlobals"
                 } catch (error) {
                     errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites para agendar citas.')
                 }
+            },
+            irInicio() {
+                this.$store.commit('setAsuntoStore', null)
+                this.$router.push('/')
             }
         }
     })
@@ -435,5 +439,9 @@ import { errorSweetAlert } from "../helpers/sweetAlertGlobals"
         right:10px;
         width:20px;
         height:20px;
+    }
+
+    .boton_inicio {
+        cursor: pointer;
     }
 </style>

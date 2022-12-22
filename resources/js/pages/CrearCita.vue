@@ -2,7 +2,7 @@
     <div>
         <v-dialog
             v-model="dialogRequisitos"
-            max-width="800px"
+            max-width="600px"
         >
             <v-card>
                 <v-card-title>
@@ -15,87 +15,28 @@
                         <v-divider></v-divider>
                         <p>A continuación se muestran los requisitos que deberá presentar ante el Centro de Atención para realizar el trámite; favor de seleccionar aquéllos con los que cuenta:</p>
                         <v-card class="mb-14">
-                            <v-toolbar color="#691C32">
-                                <v-toolbar-title class="text-white">Requisitos</v-toolbar-title>
-                            </v-toolbar>
-                            <v-list lines="three" select-strategy="multiple">
-                                <v-list-item value="notifications">
-                                    <v-list-item-title>Acta de matrimonio (en su caso de existir).</v-list-item-title>
-
-                                    <!-- <v-list-item-subtitle>
-                                    Notify me about updates to apps or games that I downloaded
-                                    </v-list-item-subtitle> -->
-
-                                    <template v-slot:prepend="{ isActive }">
-                                        <v-list-item-action end>
-                                            <v-checkbox-btn :model-value="isActive"></v-checkbox-btn>
-                                        </v-list-item-action>
-                                    </template>
-                                </v-list-item>
-
-                                <v-list-item value="sound">
-                                    
-
-                                    <v-list-item-title>Acta de nacimiento de sus hijos.</v-list-item-title>
-
-                                    <!-- <v-list-item-subtitle>
-                                    Auto-update apps at any time. Data charges may apply
-                                    </v-list-item-subtitle> -->
-
-                                    <template v-slot:prepend="{ isActive }">
-                                        <v-list-item-action end>
-                                            <v-checkbox-btn :model-value="isActive"></v-checkbox-btn>
-                                        </v-list-item-action>
-                                    </template>
-                                </v-list-item>
-
-                                <v-list-item value="domicilio">
-
-                                    <v-list-item-title>Domicilio de la persona que se va a demandar (calle, número, colonia).</v-list-item-title>
-
-                                    <!-- <v-list-item-subtitle>
-                                    Automatically add home screen widgets when downloads complete
-                                    </v-list-item-subtitle> -->
-
-                                    <template v-slot:prepend="{ isActive }">
-                                        <v-list-item-action end>
-                                            <v-checkbox-btn :model-value="isActive"></v-checkbox-btn>
-                                        </v-list-item-action>
-                                    </template>
-                                </v-list-item>
-
-                                <v-list-item value="testigos">
-
-                                    <v-list-item-title>Nombre y domicilio de 2 testigos con copia de credencial de elector, (pueden ser familiares y una vez propuestos no los puede cambiar) traerlos a los testigos hasta que se les indique</v-list-item-title>
-
-                                    <!-- <v-list-item-subtitle>
-                                    Automatically add home screen widgets when downloads complete
-                                    </v-list-item-subtitle> -->
-
-                                    <template v-slot:prepend="{ isActive }">
-                                        <v-list-item-action end>
-                                            <v-checkbox-btn :model-value="isActive"></v-checkbox-btn>
-                                        </v-list-item-action>
-                                    </template>
-                                </v-list-item>
-
-                                <v-list-item value="hechos">
-
-                                    <v-list-item-title>Descripción detallada de los hechos (por escritos señalando circunstancia de tiempo, modo y lugar)</v-list-item-title>
-
-                                    <!-- <v-list-item-subtitle>
-                                    Automatically add home screen widgets when downloads complete
-                                    </v-list-item-subtitle> -->
-
-                                    <template v-slot:prepend="{ isActive }">
-                                        <v-list-item-action end>
-                                            <v-checkbox-btn :model-value="isActive"></v-checkbox-btn>
-                                        </v-list-item-action>
-                                    </template>
-                                </v-list-item>
-                            </v-list>
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">Requisitos</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(requisito, index) in tramiteSeleccionado.requisitos" :key="index">
+                                        <td>{{requisito.nombre}}</td>
+                                        <td><input type="checkbox" @change="checkRequisito(requisito)"></td>
+                                        <td><p class="campo-obligatorio" v-if="requisito.obligatorio">*</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </v-card>
                         <p>Si usted ya cuenta con una cita agendada y desea consultarla, dé click aquí. Todos los trámites son personales. Para verificar las especificaciones de los requisitos dé click <span class="text-red">aquí</span>.</p>
+                        <p class="texto-requisitos-obligatorios">(*) Requisitos obligatorios</p>
+                        <div class="text-center">
+                            <p v-if="bandera_requisitos_obligatorios" class="texto-faltan-requisitos-obligatorios">Atención: Debe seleccionar al menos una opción para continuar.</p>
+                        </div>
                     </div>
                 </v-card-text>
                 <v-divider></v-divider>
@@ -104,14 +45,14 @@
                     <v-btn
                         variant="flat"
                         color="error"
-                        @click="cancelar()"
+                        @click="cancelarSolicitud()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
                         color="error"
-                        @click="aceptar()"
+                        @click="aceptarRequisitos()"
                     >
                         Aceptar
                     </v-btn>
@@ -369,278 +310,7 @@
                 </div>
             </div>
         </div>
-        
-        <div class="text-center mt-4">
-            <h2 class="text-left">Tipo de Juicio</h2>
-        </div>
-
-    <v-card class="mt-4 mb-4">
-        <v-row class="pa-4" justify="space-between">
-            <v-col cols="8" sm="8">
-                <v-expansion-panels>
-                    <v-expansion-panel>
-                    <v-expansion-panel-title v-slot="{ open }">
-                        <v-row no-gutters>
-                            <v-col cols="8" class="d-flex justify-start">
-                                PASO 1: Seleccione el centro de atención
-                            </v-col>
-                            <v-col
-                                cols="8"
-                                class="text--secondary"
-                            >
-                                <v-fade-transition leave-absolute>
-                                <span
-                                    v-if="open"
-                                    key="0"
-                                >
-                                </span>
-                                <span
-                                    v-else
-                                    key="1"
-                                >
-                                    
-                                </span>
-                                </v-fade-transition>
-                            </v-col>
-                        </v-row>
-                    </v-expansion-panel-title>
-                    <v-expansion-panel-text>
-                        <v-row no-gutters>
-                          <v-col cols="6">
-                              <v-select
-                              v-model="trip.location"
-                              :items="locations"
-                              flat
-                              variant="underlined"
-                              ></v-select>
-                          </v-col>
-
-                          <v-divider
-                              vertical
-                              class="mx-4"
-                          ></v-divider>
-
-                          <v-col cols="4">
-                          Si requiere conocer la ubicación de cada uno de los lugares donde puede realizar el trámite, 
-                              <br>
-                              <a href="#"> de click aqui</a>
-                          </v-col>
-                        </v-row>
-                    </v-expansion-panel-text>
-                    </v-expansion-panel>
-                    <v-expansion-panel>
-                    <v-expansion-panel-title v-slot="{ open }">
-                        <v-row no-gutters>
-                        <v-col cols="8" class="d-flex justify-start">
-                            PASO 2: Seleccione la fecha y hora de la cita 
-                        </v-col>
-                        <v-col
-                            cols="8"
-                            class="text--secondary"
-                        >
-                            <v-fade-transition leave-absolute>
-                            <span v-if="open"></span>
-                            <v-row
-                                v-else
-                                no-gutters
-                                style="width: 100%"
-                            >
-                            </v-row>
-                            </v-fade-transition>
-                        </v-col>
-                        </v-row>
-                    </v-expansion-panel-title>
-                    <v-expansion-panel-text>
-                        <v-row
-                        justify="space-around"
-                        no-gutters
-                        >
-                        <v-col cols="3">
-                            Fecha:
-                            <!-- <v-text-field
-                            v-model="trip.fecha"
-                            type="date"
-                            variant="underlined"
-                            ></v-text-field> -->
-                            <!-- <div class="calendar">
-                                <div class="calendar__info">
-                                    <div class="calendar__prev" id="prev-month">&#9664;</div>
-                                    <div class="calendar__month" id="month"></div>
-                                    <div class="calendar__year" id="year"></div>
-                                    <div class="calendar__next" id="next-month">&#9654;</div>
-                                </div>
-
-                                <div class="calendar__week">
-                                    <div class="calendar__day calendar__item">Lunes</div>
-                                    <div class="calendar__day calendar__item">Martes</div>
-                                    <div class="calendar__day calendar__item">Miercoles</div>
-                                    <div class="calendar__day calendar__item">Jueves</div>
-                                    <div class="calendar__day calendar__item">Viernes</div>
-                                    <div class="calendar__day calendar__item">Sabado</div>
-                                    <div class="calendar__day calendar__item">Domingo</div>
-                                </div>
-
-                                <div class="calendar__dates" id="dates"></div>
-                            </div> -->
-                            <div id="cal"> 
-                                <div class="header"> 
-                                    <span class="left button" id="prev"> &lang; </span> 
-                                    <span class="left hook"></span> 
-                                    <span class="month-year" id="label"> June 20&0 </span> 
-                                    <span class="right hook"></span> 
-                                    <span class="right button" id="next"> &rang; </span>
-                        
-                                </div> 
-                                <table id="days"> 
-                                    <tr>
-                                        <td>Dom</td> 
-                                        <td>Lun</td> 
-                                        <td>Mar</td> 
-                                        <td>Mier</td> 
-                                        <td>Jue</td> 
-                                        <td>Vie</td> 
-                                        <td>Sab</td>
-                                    </tr>                        
-                                </table> 
-                                <div id="cal-frame"> 
-                                    <table class="curr"> 
-                                        <tbody> 
-                                            <tr><td class="nil"></td><td class="nil"></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr> 
-                                            <tr><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td class="today">11</td><td>12</td></tr> 
-                                            <tr><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr> 
-                                            <tr><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr> 
-                                            <tr><td>27</td><td>28</td><td>29</td><td>30</td><td class="nil"></td><td class="nil"></td><td class="nil"></td></tr> 
-                                        </tbody> 
-                                    </table>
-                                </div> 
-                            </div>
-                        </v-col>
-                        <v-col cols="2">
-                            Hora:
-                              <v-select
-                              v-model="trip.Hour"
-                              :items="Hour"
-                              flat
-                              variant="underlined"
-                              ></v-select>
-                          </v-col>
-
-                        </v-row>
-                    </v-expansion-panel-text>
-                    </v-expansion-panel>
-                    <v-expansion-panel>
-          <v-expansion-panel-title>
-            <template v-slot:default="{ expanded }">
-              <v-row no-gutters>
-                <v-col cols="8" class="d-flex justify-start">
-                  PASO 3: Ingrese los datos del solicitante 
-                </v-col>
-                <v-col
-                  cols="8"
-                  class="text-grey"
-                >
-                  <v-fade-transition leave-absolute>
-                    <span
-                      v-if="expanded"
-                      key="0"
-                    >
-                    </span>
-                    <span
-                      v-else
-                      key="1"
-                    >
-                    </span>
-                  </v-fade-transition>
-                </v-col>
-              </v-row>
-            </template>
-          </v-expansion-panel-title>
-            <v-expansion-panel-text>
-                    <v-form ref="form">
-                Nombre:*
-                <v-text-field
-                    ref="name"
-                    v-model="name"
-                    :rules="[rules.required]"
-                    variant="underlined"
-                ></v-text-field>
-                Correo Electrónico:*
-                <v-text-field
-                    ref="email"
-                    v-model="email"
-                    :rules="[rules.required, rules.email]"
-                    variant="underlined"
-                ></v-text-field>
-                Teléfono:*
-                <v-text-field
-                    counter="10"
-                    maxlength="10"
-                    ref="tel"
-                    v-model="tel"
-                    :rules="[rules.required]"
-                    variant="underlined"
-                ></v-text-field>
-                Seleccione sexo:*
-                <v-radio-group ref="sexo" v-model="sexo" inline :rules="[rules.required]">
-                    <v-radio
-                        label="Masculino"
-                        value="M"
-                    ></v-radio>
-                    <v-radio
-                        label="Femenino"
-                        value="F"
-                    ></v-radio>
-                </v-radio-group>
-            ¿Presenta alguna discapacidad?*
-                <v-radio-group ref="disc" v-model="disc" inline :rules="[rules.required]">
-                    <v-radio label="Si" v-model="disc" value="si"></v-radio>
-                    <v-radio label="No" v-model="disc" value="no"></v-radio>
-                </v-radio-group>
-
-            <!--si la respuesta es si-->
-                <v-select v-if="disc == 'si'" label="¿Cual?"
-                              v-model="trip.disca"
-                              :items="disca"
-                              flat
-                              variant="underlined"
-                              :rules="[rules.required]"
-                              ></v-select>
-                      
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="primary"
-                        variant="text"
-                        @click="login"
-                    >
-                        Enviar
-                    </v-btn>
-                </v-card-actions>
-            </v-form> 
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-                </v-expansion-panels>
-            </v-col> 
-
-            <v-divider vertical></v-divider>
-            <v-col class="d-flex">
-                <div>
-                    <v-col>     
-                        <div>
-                            <p class="font-weight-bold"><span>Centro de Atención:</span></p>
-                            <p>{{trip.location}}</p>
-                            <p class="font-weight-bold"><span>Día de la cita:</span></p>
-                            <p>{{trip.fecha}}</p>
-                            <p class="font-weight-bold"><span>Hora de la cita:</span></p>
-                            <p>{{trip.Hour}}</p>
-                        </div>
-                    </v-col>           
-                </div>
-            </v-col>
-        </v-row>
-    </v-card>
-  
-</div>
+    </div>
 </template>
 
 <style scoped>
@@ -823,6 +493,22 @@
         color: #827e7d;
         font-weight: bold;
     }
+
+    .campo-obligatorio {
+        color: red;
+    }
+
+    .texto-requisitos-obligatorios {
+        color: red;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .texto-faltan-requisitos-obligatorios {
+        color: red;
+        font-size: 14px;
+        font-weight: bold;
+    }
 </style>
 
 <script>
@@ -834,6 +520,10 @@
         name: 'crear-cita',
         data() {
             return {
+                cita: {
+                    requisitos: []
+                },
+                bandera_requisitos_obligatorios: false,
                 name: '',
                 email: '',
                 tel: '',
@@ -865,7 +555,7 @@
             }
         },
         created() {
-            console.log("tramite: ", this.tramiteSeleccionado)
+            this.cita.requisitos = this.tramiteSeleccionado.requisitos
         },
         computed: {
             tramiteSeleccionado() {
@@ -873,12 +563,36 @@
             }
         },
         methods: {
-            cancelar() {
+            cancelarSolicitud() {
                 this.dialogRequisitos = false
                 this.$router.push('/')
             },
-            aceptar() {
-              this.dialogRequisitos = false
+            aceptarRequisitos() {
+                let faltan_requisitos_obligatorios = false
+                this.cita.requisitos.forEach(element => {
+                    if (element.obligatorio == 1 && element.checked == '0') {
+                        faltan_requisitos_obligatorios = true
+                    }
+                })
+                if (faltan_requisitos_obligatorios) {
+                    this.bandera_requisitos_obligatorios = true
+                } else {
+                    this.dialogRequisitos = false
+                }
+            },
+            checkRequisito(requisito) {
+                this.cita.requisitos.forEach(element => {
+                    if (element.id == requisito.id) {
+                        if (element.checked == '0') {
+                            element.checked = '1'
+                        } else {
+                            element.checked = '0'
+                        }
+                    }
+                })
+            },
+            volverInicio() {
+                this.$router.push('/')
             },
             async login() {
                 this.loading = true
