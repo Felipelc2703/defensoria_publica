@@ -426,7 +426,7 @@ body {
 	    display:inline-block; 
 	    line-height:34px; 
 	}
-    #cal .header .hook { 
+    /* #cal .header .hook { 
 	    width: 9px; 
 	    height: 28px; 
 	    position: absolute; 
@@ -440,13 +440,13 @@ body {
 	    box-shadow:0px -1px 2px rgba(0, 0, 0, 0.65 ); 
 	    -moz-box-shadow:0px -1px 2px rgba(0, 0, 0, 0.65 ); 
 	    -webkit-box-shadow:0px -1px 2px rgba(0, 0, 0, 0.65 ); 
-	} 
-	.right.hook { 
+	}  */
+	/* .right.hook { 
 	    right:15%; 
 	} 
 	.left.hook { 
 	    left: 15%; 
-	}
+	} */
     #cal .header .button { 
 	    width:24px; 
 	    text-align:center; 
@@ -534,6 +534,7 @@ body {
 </style>
 
 <script>
+    //import { create } from 'domain'
     import { defineComponent } from 'vue'
     import { errorSweetAlert } from './../helpers/sweetAlertGlobals'
 
@@ -622,12 +623,56 @@ body {
 	    function switchMonth(next, month, year) { 
             var curr = label.text().trim().split(" "), calendar, tempYear =  parseInt(curr[1], 10); 
 	month = month || ((next) ? ( (curr[0] === "December") ? 0 : months.indexOf(curr[0]) + 1 ) : ( (curr[0] === "January") ? 11 : months.indexOf(curr[0]) - 1 )); 
-    year = year || ((next && month === 0) ? tempYear + 1 : (!next && month === 11) ? tempYear - 1 : tempYear);S
-	    } 
+    year = year || ((next && month === 0) ? tempYear + 1 : (!next && month === 11)) ? tempYear - 1 : tempYear;
+            calendar = createCal(year, month);
+} 
  
 	    function createCal(year, month) { 
-            var day = 1,
-            startDay = new Date
+            var day = 1, i, j , haveDays = true,
+            startDay = new Date(year, month, day).getDay(),
+            daysInMonth = [31,(((year%4===0)&&(year%100!==0))||(year%400===0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ],
+            calendar =[];
+            if (createCal.cache[year]){
+                if (createCal.cache[year][month]){
+                    return createCal.cache[year][month];
+                }
+            }else {
+                create.Cal.cache[year]={};
+            }
+            i = 0;
+            while(haveDays){
+                calendar[i] = [];
+                for (j = 0; j < 7; j++) {
+                    if (i === 0){
+                        if (j === startDay){
+                            calendar[i][j] = day++;
+                            startDay++;
+                        }
+                    }else if ( day <=daysInMonth[month]){
+                        calendar[i][j] = day++;
+                    }else {
+                        calendar[i][j] = "";
+                        haveDays = false;
+                    }if (day > daysInMonth[month]){
+                        haveDays = false;
+                    }
+                }
+                i++;
+            }
+            if (calendar[5]){
+                for (i = 0; i < calendar[5].length; i++){
+                    if (calendar[5][i] !== ""){
+                        calendar[4][i] = "<span>" + calendar[4][i] + "</span><span>"+ calendar[5][i] + "</span>";
+                    }
+                }
+                calendar = calendar.slice(0,5);
+            }
+for (i = 0; i< calendar.length; i++){
+    calendar[i] = "<tr><td>" + calendar.join("</td><td>")+ "</td><td>"
+}
+calendar = $("<table>" + calendar.join("") + "</table").addClass("curr");
+    $("")
+            console.dir(calendar);
  
 	    } 
 	    createCal.cache = {}; 
