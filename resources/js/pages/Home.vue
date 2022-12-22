@@ -1,116 +1,77 @@
 <template>
-    <div class="container">
-        <div class="text-center mt-4">
-            <h2 class="text-left">Defensoría Pública</h2>
-            <h3 class="text-left">Citas en Linea</h3>
-        </div>
-        <div>
-            <v-card>
-                <p for="">Si usted ya cuenta con una cita y desea imprimir su confirmación o cancelarla, ingrese a continuación su número de folio, serie o placa:</p>
-                <v-row
-                    justify="space-between"
-                    >
-                    <v-col
-                        cols="12"
-                        md="6"
-                    >
-                    <v-form>                        
-                        <v-text-field
-                        variant="solo"
-                        v-model="datos.clave"
-                        label=""
-                        ></v-text-field>
-                    </v-form>
-                    </v-col>
-
-                    <v-col
-                        cols="12"
-                        md="6"
-                    >
-                        <v-btn
-                            variant="flat"
-                            color="error"
-                            @click="buscar()"
-                            >
-                            Buscar
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </v-card>
-            
-        </div>
-        <div class="text-center mt-4 mb-4">
-            <div class="row justify-content-around" v-if="showFirstOptions">
-                <div class="col-sm-12 col-md-6 col-lg-3 mt-4">
-                    <v-card variant="tonal" @click="mostrarTipoCitas(1)">
-                        <!-- <div class="m-2">
-                            <p><span>Asuntos Civiles y Familiares</span></p>
-                            <v-icon icon="mdi-account-child"></v-icon>
-                        </div> -->
-                        <img width="200" height="200" src="./../../../public/images/boton_1.png" alt="">
-                    </v-card>
+    <div>
+        <div class="row justify-content-between">
+            <div class="col-sm-9 col-12 border-uno">
+                <div class="text-center border-dos py-2">
+                    <img class="scale-logo-defensoria" width="200" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-3 mt-4">
-                    <v-card variant="tonal" @click="mostrarTipoCitas(2)">
-                        <!-- <div class="m-2">
-                            <p><span>Asuntos Administrativos</span></p>
-                            <v-icon icon="mdi-folder"></v-icon>
-                        </div> -->
-                        <img width="200" height="200" src="./../../../public/images/boton_2.png" alt="">
-                    </v-card>
+                <div v-if="showFirstOptions">
+                    <div class="row justify-content-around mt-12">
+                        <div class="col-sm-12 col-md-6 text-center">
+                            <div class="transition-button mt-4 ml-8 mr-4 text-center" @click="mostrarTipoCitas(1)">
+                                <img src="./../../../public/images/boton_1.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 text-center">
+                            <div class="transition-button mt-4 ml-8 mr-4">
+                                <img src="./../../../public/images/boton_2.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-around mb-12">
+                        <div class="col-sm-12 col-md-6 text-center">
+                            <div class="transition-button mt-4 ml-8 mr-4">
+                                <img src="./../../../public/images/boton_3.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 text-center">
+                            <div class="transition-button mt-4 ml-8 mr-4">
+                                <img src="./../../../public/images/boton_4.png" alt="">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-3 mt-4">
-                    <v-card variant="tonal" @click="mostrarTipoCitas(3)">
-                        <!-- <div class="m-2">
-                            <p><span>Asuntos Laborales</span></p>
-                            <v-icon icon="mdi-account-hard-hat"></v-icon>
-                        </div> -->
-                        <img width="200" height="200" src="./../../../public/images/boton_3.png" alt="">
-                    </v-card>
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-3 mt-4">
-                    <v-card variant="tonal" @click="mostrarTipoCitas(4)">
-                        <!-- <div class="m-2">
-                            <p><span>Ejecución de Sentencias</span></p>
-                            <v-icon icon="mdi-account-tie"></v-icon>
-                        </div> -->
-                        <img width="200" height="200" src="./../../../public/images/boton_4.png" alt="">
-                    </v-card>
-                </div>
-            </div>
-            <div v-if="showSecondOptions">
-                <div class="text-left">
-                    <v-btn variant="text" prepend-icon="mdi-arrow-left" @click="volverFirstOptions">Regresar</v-btn>
-                </div>
-                <div class="mt-4">
-                    <v-expansion-panels>
-                        <template v-for="(tipo_cita, index) in tipos_citas" :key="index">
-                            <v-expansion-panel>
-                                <v-expansion-panel-title>
-                                    <v-row no-gutters>
-                                        <h6 class="font-weight-bold text-uppercase">
-                                            <span class="text-red-custom">{{tipo_cita.nombre}}</span>
-                                        </h6>
-                                    </v-row>
-                                </v-expansion-panel-title>
-                                <v-expansion-panel-text>
-                                    <v-row no-gutters class="text-left">
-                                        {{tipo_cita.descripcion}}
-                                    </v-row>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn
-                                            variant="flat"
-                                            color="error"
-                                            @click="agendar(tipo_cita)"
-                                        >
-                                            Agendar
-                                        </v-btn>
-                                    </v-card-actions>
-                                </v-expansion-panel-text>
-                            </v-expansion-panel>
-                        </template>
-                    </v-expansion-panels>
+                <div class="text-center mt-4 mb-4 ml-10 mr-10" v-if="showSecondOptions">
+                    <div class="container">
+                        <div class="row justify-content-around">
+                            <div class="col-sm-12 col-md-6 text-left">
+                                <p class="titulo_tipo_tramite">Asuntos Civiles y Familiares</p>
+                            </div>
+                            <div class="col-sm-12 col-md-6 text-right">
+                                <v-btn variant="text" prepend-icon="mdi-arrow-left" @click="volverFirstOptions">Regresar</v-btn>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <v-expansion-panels>
+                                <template v-for="(tipo_cita, index) in tipos_citas" :key="index">
+                                    <v-expansion-panel>
+                                        <v-expansion-panel-title>
+                                            <v-row no-gutters>
+                                                <h6 class="font-weight-bold text-uppercase">
+                                                    <span class="text-red-custom">{{tipo_cita.nombre}}</span>
+                                                </h6>
+                                            </v-row>
+                                        </v-expansion-panel-title>
+                                        <v-expansion-panel-text>
+                                            <v-row no-gutters class="text-left">
+                                                {{tipo_cita.descripcion}}
+                                            </v-row>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                <v-btn
+                                                    variant="flat"
+                                                    color="error"
+                                                    @click="agendar(tipo_cita)"
+                                                >
+                                                    Agendar
+                                                </v-btn>
+                                            </v-card-actions>
+                                        </v-expansion-panel-text>
+                                    </v-expansion-panel>
+                                </template>
+                            </v-expansion-panels>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -478,7 +439,7 @@
                 console.log(this.datos)
                 this.$store.commit('setClave', this.datos);
                 this.$router.push('/buscar-folio')
-            }
+            },
         }
     })
 </script>
@@ -486,5 +447,48 @@
 <style scoped>
     .text-red-custom {
         color: #691C32;
+    }
+
+    .border-uno {
+        border-style: none solid none none;
+        border-color: #adadad;
+        border-width: 2px;
+        padding: 0!important;
+    }
+
+    .border-dos {
+        border-style: none none solid none;
+        border-color: #adadad;
+        border-width: 2px;
+    }
+
+    .scale-logo-defensoria {
+        transform: scale(1.8);
+    }
+
+    .transition-button {
+        background-color: #e7e7e7;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.5s ease-out;
+    }
+    
+    .transition-button:hover, .transition-button:focus {
+        background-color: #adadad;
+        color: #fff;
+    }
+
+    .boton_sicopep {
+        transition: all .2s ease-in-out;
+    }
+
+    .boton_sicopep:hover {
+        transform: scale(1.1);
+    }
+
+    .titulo_tipo_tramite {
+        font-size: 20px;
+        font-weight: bold;
+        font-family: 'Lato', sans-serif;
     }
 </style>
