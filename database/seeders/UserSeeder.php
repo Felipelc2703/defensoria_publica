@@ -23,5 +23,13 @@ class UserSeeder extends Seeder
             'centro_atencion_id' => 1,
             'rol_id' => 1,
         ]);
+        DB::table('users')->insert([
+            'name' => 'Marco Polo',
+            'clave' => 'Polo',
+            'email' => 'marcopoloolivaresgonzalez@gmail.com',
+            'password' => bcrypt('polo123'),
+            'centro_atencion_id' => 1,
+            'rol_id' => 1,
+        ]);
     }
 }
