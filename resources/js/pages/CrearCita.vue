@@ -160,7 +160,7 @@
                               v-model="trip.location"
                               :items="locations"
                               flat
-                              variant="solo"
+                              variant="underlined"
                               ></v-select>
                           </v-col>
 
@@ -188,7 +188,7 @@
                             class="text--secondary"
                         >
                             <v-fade-transition leave-absolute>
-                            <span v-if="open">When do you want to travel?</span>
+                            <span v-if="open"></span>
                             <v-row
                                 v-else
                                 no-gutters
@@ -205,12 +205,64 @@
                         no-gutters
                         >
                         <v-col cols="3">
-                            <v-text-field
+                            Fecha:
+                            <!-- <v-text-field
                             v-model="trip.fecha"
-                            label="date"
-                            type="date" 
-                            ></v-text-field>
-                            
+                            type="date"
+                            variant="underlined"
+                            ></v-text-field> -->
+                            <!-- <div class="calendar">
+                                <div class="calendar__info">
+                                    <div class="calendar__prev" id="prev-month">&#9664;</div>
+                                    <div class="calendar__month" id="month"></div>
+                                    <div class="calendar__year" id="year"></div>
+                                    <div class="calendar__next" id="next-month">&#9654;</div>
+                                </div>
+
+                                <div class="calendar__week">
+                                    <div class="calendar__day calendar__item">Lunes</div>
+                                    <div class="calendar__day calendar__item">Martes</div>
+                                    <div class="calendar__day calendar__item">Miercoles</div>
+                                    <div class="calendar__day calendar__item">Jueves</div>
+                                    <div class="calendar__day calendar__item">Viernes</div>
+                                    <div class="calendar__day calendar__item">Sabado</div>
+                                    <div class="calendar__day calendar__item">Domingo</div>
+                                </div>
+
+                                <div class="calendar__dates" id="dates"></div>
+                            </div> -->
+                            <div id="cal"> 
+                                <div class="header"> 
+                                    <span class="left button" id="prev"> &lang; </span> 
+                                    <span class="left hook"></span> 
+                                    <span class="month-year" id="label"> June 20&0 </span> 
+                                    <span class="right hook"></span> 
+                                    <span class="right button" id="next"> &rang; </span>
+                        
+                                </div> 
+                                <table id="days"> 
+                                    <tr>
+                                        <td>Dom</td> 
+                                        <td>Lun</td> 
+                                        <td>Mar</td> 
+                                        <td>Mier</td> 
+                                        <td>Jue</td> 
+                                        <td>Vie</td> 
+                                        <td>Sab</td>
+                                    </tr>                        
+                                </table> 
+                                <div id="cal-frame"> 
+                                    <table class="curr"> 
+                                        <tbody> 
+                                            <tr><td class="nil"></td><td class="nil"></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr> 
+                                            <tr><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td class="today">11</td><td>12</td></tr> 
+                                            <tr><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr> 
+                                            <tr><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr> 
+                                            <tr><td>27</td><td>28</td><td>29</td><td>30</td><td class="nil"></td><td class="nil"></td><td class="nil"></td></tr> 
+                                        </tbody> 
+                                    </table>
+                                </div> 
+                            </div>
                         </v-col>
                         <v-col cols="2">
                             Hora:
@@ -218,7 +270,7 @@
                               v-model="trip.Hour"
                               :items="Hour"
                               flat
-                              variant="solo"
+                              variant="underlined"
                               ></v-select>
                           </v-col>
 
@@ -253,29 +305,29 @@
             </template>
           </v-expansion-panel-title>
             <v-expansion-panel-text>
-                <v-card >
                     <v-form ref="form">
                 Nombre:*
                 <v-text-field
                     ref="name"
                     v-model="name"
                     :rules="[rules.required]"
-                    label="Nombre"
+                    variant="underlined"
                 ></v-text-field>
                 Correo Electrónico:*
                 <v-text-field
                     ref="email"
                     v-model="email"
                     :rules="[rules.required, rules.email]"
-                    label="E-mail"
-                    requerid
+                    variant="underlined"
                 ></v-text-field>
                 Teléfono:*
                 <v-text-field
+                    counter="10"
+                    maxlength="10"
                     ref="tel"
                     v-model="tel"
-                    :rules="[rules.required, rules.counter]"
-                    label="Teléfono"
+                    :rules="[rules.required]"
+                    variant="underlined"
                 ></v-text-field>
                 Seleccione sexo:*
                 <v-radio-group ref="sexo" v-model="sexo" inline :rules="[rules.required]">
@@ -299,7 +351,7 @@
                               v-model="trip.disca"
                               :items="disca"
                               flat
-                              variant="solo"
+                              variant="underlined"
                               :rules="[rules.required]"
                               ></v-select>
                       
@@ -308,13 +360,12 @@
                     <v-btn
                         color="primary"
                         variant="text"
-                        @click="Enviar()"
+                        @click="login"
                     >
                         Enviar
                     </v-btn>
                 </v-card-actions>
             </v-form> 
-            </v-card>
           </v-expansion-panel-text>
         </v-expansion-panel>
                 </v-expansion-panels>
@@ -341,7 +392,151 @@
 </div>
 </template>
 
+<style>
+body { 
+	    background: #e0e0e0; 
+	} 
+ 
+	#cal { 
+	    -moz-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25); 
+	    -webkit-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25); 
+	    margin:50px auto; 
+	    font: 13px/1.5 "Helvetica Neue", Helvatica, Arial, san-serif; 
+	    display:table; 
+	}
+    #cal .header { 
+	    cursor:default; 
+	    background: #cd310d; 
+	    background: -moz-linear-gradient(top, #b32b0c, #cd310d); 
+	    background: -webkit-gradient(linear, left top, left bottom, from(#b32b0c), to(#cd310d)); 
+	    height: 34px; 
+	    position: relative; 
+	    color:#fff; 
+	    -webkit-border-top-left-radius: 5px; 
+	    -webkit-border-top-right-radius: 5px; 
+	    -moz-border-radius-topleft: 5px; 
+	    -moz-border-radius-topright: 5px; 
+	    border-top-left-radius: 5px; 
+	    border-top-right-radius: 5px; 
+	    font-weight:bold; 
+	    text-shadow:0px -1px 0 #87260C; 
+	    text-transform: uppercase; 
+	} 
+	#cal .header span { 
+	    display:inline-block; 
+	    line-height:34px; 
+	}
+    #cal .header .hook { 
+	    width: 9px; 
+	    height: 28px; 
+	    position: absolute; 
+	    bottom:60%; 
+	    border-radius:10px; 
+	    -moz-border-radius:10px; 
+	    -webkit-border-radius:10px; 
+	    background:#ececec; 
+	    background: -moz-linear-gradient(right top, #fff, #827e7d); 
+	    background: -webkit-gradient(linear, right top, right bottom, from(#fff), to(#827e7d)); 
+	    box-shadow:0px -1px 2px rgba(0, 0, 0, 0.65 ); 
+	    -moz-box-shadow:0px -1px 2px rgba(0, 0, 0, 0.65 ); 
+	    -webkit-box-shadow:0px -1px 2px rgba(0, 0, 0, 0.65 ); 
+	} 
+	.right.hook { 
+	    right:15%; 
+	} 
+	.left.hook { 
+	    left: 15%; 
+	}
+    #cal .header .button { 
+	    width:24px; 
+	    text-align:center; 
+	    position:absolute; 
+	} 
+	#cal .header .left.button { 
+	    left:0; 
+	    -webkit-border-top-left-radius: 5px; 
+	    -moz-border-radius-topleft: 5px; 
+	    border-top-left-radius: 5px; 
+	    border-right:1px solid #ae2a0c; 
+	} 
+	#cal .header .right.button { 
+	    right:0; 
+	    top:0; 
+	    border-left:1px solid #ae2a0c; 
+	    -webkit-border-top-right-radius: 5px; 
+	    -moz-border-radius-topright: 5px; 
+	    border-top-right-radius: 5px; 
+	} 
+	#cal .header .button:hover { 
+	    background: -moz-linear-gradient(top, #d94215, #bb330f); 
+	    background: -webkit-gradient(linear, left top, left bottom, from(#d94215), to(#bb330f)); 
+	}
+    #cal .header .month-year { 
+	    letter-spacing: 1px; 
+	    width: 100%; 
+	    text-align: center; 
+	}
+    #cal table { 
+	    background:#fff; 
+	    border-collapse:collapse; 
+	} 
+	#cal td { 
+	    color:#2b2b2b; 
+	    width:30px; 
+	    height:30px; 
+	    line-height:30px; 
+	    text-align:center; 
+	    border:1px solid #e6e6e6; 
+	    cursor:default; 
+	} 
+	#cal #days td { 
+	    height:26px; 
+	    line-height: 26px; 
+	    text-transform:uppercase; 
+	    font-size:90%; 
+	    color:#9e9e9e; 
+	} 
+	#cal #days td:not(:last-child) { 
+	    border-right:1px solid #fff; 
+	}
+    #cal #cal-frame td.today { 
+	    background:#ededed; 
+	    color:#8c8c8c; 
+	    box-shadow:1px 1px 0px #fff inset; 
+	    -moz-box-shadow:1px 1px 0px #fff inset; 
+	    -webkit-box-shadow:1px 1px 0px #fff inset; 
+	} 
+	#cal #cal-frame td:not(.nil):hover { 
+	    color:#fff; 
+	    text-shadow: #6C1A07 0px -1px; 
+	    background:#CD310D; 
+	    background: -moz-linear-gradient(top, #b32b0c, #cd310d); 
+	    background: -webkit-gradient(linear, left top, left bottom, from(#b32b0c), to(#cd310d)); 
+	    -moz-box-shadow:0px 0px 0px; 
+	    -webkit-box-shadow:0px 0px 0px; 
+	}
+    #cal #cal-frame td span { 
+	    font-size:80%; 
+	    position:relative; 
+	} 
+	#cal #cal-frame td span:first-child { 
+	    bottom:5px; 
+	} 
+	#cal #cal-frame td span:last-child { 
+	    top:5px; 
+	}
+    #cal #cal-frame table.curr { 
+	    float:left;      
+	} 
+	#cal #cal-frame table.temp { 
+	    position:absolute; 
+	}
+</style>
+
 <script>
+    import { defineComponent } from 'vue'
+    import { errorSweetAlert } from './../helpers/sweetAlertGlobals'
+
     export default {
         data: () => ({
                 name: '',
@@ -359,7 +554,7 @@
                     trip: {
                     location: null,
                     },
-                    locations: ['Seleccione', 'Dirección asuntos civiles, familiares y administrativos(Puebla Capital)', 'DISTRITO JUDICIAL ACATLÁN', 'DISTRITO JUDICIAL ALATRISTE', 'DISTRITO JUDICIAL ATLIXCO', 'DISTRITO JUDICIAL CHALCHICOMULA', 'DISTRITO JUDICIAL CHIAUTLA', 'DISTRITO JUDICIAL CHOLULA'],
+                    locations: ['Dirección asuntos civiles, familiares y administrativos(Puebla Capital)', 'DISTRITO JUDICIAL ACATLÁN', 'DISTRITO JUDICIAL ALATRISTE', 'DISTRITO JUDICIAL ATLIXCO', 'DISTRITO JUDICIAL CHALCHICOMULA', 'DISTRITO JUDICIAL CHIAUTLA', 'DISTRITO JUDICIAL CHOLULA'],
                     dialogRequisitos: true,
                     
                     trip: {
@@ -370,7 +565,6 @@
        
                 rules: {
                     required: value => !!value || 'Campo requerido',
-                    counter: value => value.lenght <=10 || 'Max 10 characters',
                     email: value => {
                         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
                         return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
@@ -386,9 +580,61 @@
             aceptar() {
               this.dialogRequisitos = false
             },
+            async login() {
+                this.loading = true
+                const { valid } = await this.$refs.form.validate()
+                if (valid) {
+                    try {
+                        let response = await axios.post('/api/login', this.form)
+                        if (response.status === 200) {
+                            if (response.data.status === "ok") {
+                                this.$store.dispatch('setToken', response.data.data.token)
+                                this.$router.push({name: 'Dashboard'})
+                            } else {
+                                errorSweetAlert(response.data.message)
+                            }
+                        } else {
+                            errorSweetAlert('Ocurrió un error')
+                        }
+                    } catch (error) {
+                        errorSweetAlert('Ocurrió un error')
+                    }
+                }
+                this.loading = false
+            }
         },
         
     }
-   
-
+    var CALENDAR = function () { 
+	    var wrap, label,  
+	            months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; 
+ 
+	    function init(newWrap) { 
+            wrap     = $(newWrap || "#cal"); 
+            label    = wrap.find("#label"); 
+            wrap.find("#prev").bind("click.calendar", function () { switchMonth(false); }); 
+            wrap.find("#next").bind("click.calendar", function () { switchMonth(true);  }); 
+            label.bind("click", function () { switchMonth(null, new Date().getMonth(), new Date().getFullYear()); });        
+            label.click();
+ 
+	    } 
+ 
+	    function switchMonth(next, month, year) { 
+            var curr = label.text().trim().split(" "), calendar, tempYear =  parseInt(curr[1], 10); 
+	month = month || ((next) ? ( (curr[0] === "December") ? 0 : months.indexOf(curr[0]) + 1 ) : ( (curr[0] === "January") ? 11 : months.indexOf(curr[0]) - 1 )); 
+    year = year || ((next && month === 0) ? tempYear + 1 : (!next && month === 11) ? tempYear - 1 : tempYear);S
+	    } 
+ 
+	    function createCal(year, month) { 
+            var day = 1,
+            startDay = new Date
+ 
+	    } 
+	    createCal.cache = {}; 
+	    return { 
+	        init : init, 
+	        switchMonth : switchMonth, 
+	        createCal   : createCal 
+	    }; 
+	};
 </script>
