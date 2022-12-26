@@ -130,40 +130,22 @@
                                     </v-expansion-panel-title>
                                     <v-expansion-panel-text>
                                         <v-row justify="space-around" no-gutters>
-                                            <v-col cols="3">
+                                            <v-col cols="10">
                                                 Fecha:
-                                                <div id="cal"> 
-                                                    <div class="header"> 
-                                                        <span class="left button" id="prev"> &lang; </span> 
-                                                        <span class="left hook"></span> 
-                                                        <span class="month-year" id="label"> June 20&0 </span> 
-                                                        <span class="right hook"></span> 
-                                                        <span class="right button" id="next"> &rang; </span>
-                                            
-                                                    </div> 
-                                                    <table id="days"> 
-                                                        <tr>
-                                                            <td>Dom</td> 
-                                                            <td>Lun</td> 
-                                                            <td>Mar</td> 
-                                                            <td>Mier</td> 
-                                                            <td>Jue</td> 
-                                                            <td>Vie</td> 
-                                                            <td>Sab</td>
-                                                        </tr>                        
-                                                    </table> 
-                                                    <div id="cal-frame"> 
-                                                        <table class="curr"> 
-                                                            <tbody> 
-                                                                <tr><td class="nil"></td><td class="nil"></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr> 
-                                                                <tr><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td class="today">11</td><td>12</td></tr> 
-                                                                <tr><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr> 
-                                                                <tr><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td></tr> 
-                                                                <tr><td>27</td><td>28</td><td>29</td><td>30</td><td class="nil"></td><td class="nil"></td><td class="nil"></td></tr> 
-                                                            </tbody> 
-                                                        </table>
-                                                    </div> 
-                                                </div>
+                                                <div id="calendario">
+                                                        <div id="posterior" onclick="mesdespues()">-></div>
+                                                        <h2 id="titulos">Diciembre 2022</h2>
+                                                        <table id="diasc">
+                                                            <tr id="fila0"><th>Dom</th><th>Lun</th><th>Mar</th><th>Mier</th><th>Jue</th><th>Vie</th><th>Sabado</th></tr>
+                                                            <tr id="fila1"><td id="dia" onclick="dia()"></td><td id="dia" onclick="dia()"></td><td></td><td></td><td>1</td><td>2</td><td>3</td></tr>
+                                                            <tr id="fila2"><td id="dia" onclick="dia()">4</td><td id="dia" onclick="dia()">5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr>
+                                                            <tr id="fila3"><td id="dia" onclick="dia()">11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td></tr>
+                                                            <tr id="fila4"><td id="dia" onclick="dia()">18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td></tr>
+                                                            <tr id="fila5"><td id="dia" onclick="dia()">25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td></tr>
+                                                            <tr id="fila6"><td id="dia" onclick="dia()"></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+                                                        </table>                                                            
+                                                        </div>
+                                                
                                             </v-col>
                                             <v-col cols="2">
                                                 Hora:
@@ -258,7 +240,7 @@
                                                 <v-btn
                                                     color="primary"
                                                     variant="text"
-                                                    @click="login"
+                                                    @click="validar"
                                                 >
                                                     Enviar
                                                 </v-btn>
@@ -510,10 +492,30 @@
         font-size: 14px;
         font-weight: bold;
     }
+
+    * { margin: auto; }
+    /*cabecera de la página*/
+    h1 { text-align: center; padding: 0.5em; }
+    /*div principal del calendario*/
+    #calendario { border: 4px double black ; max-width: 536px; 
+                background-color:#fffafa; text-align: center; }
+    /*tabla del calendario*/
+    #diasc { border: 1px solid black; border-collapse: 
+            separate; border-spacing: 4px; }
+    #dia:hover{color: blue; text-decoration: underline; cursor: pointer ;}
+    
+    #diasc th,#diasc td { font: normal 14pt arial; width: 70px; height: 30px; }
+    #diasc th { color: #990099; background-color: #5ecdec }
+    #diasc td { color: #492736; background-color: #9bf5ff }
+    
+    #posterior { float: right; width: 100px; font: bold 12pt arial; 
+            padding: 0.5em 0.1em; cursor: pointer ;}
+    #posterior:hover {color: blue; text-decoration: underline;}
+    #titulos { font: normal 20pt "arial black"; padding: 0.2em; }
 </style>
 
 <script>
-    //import { create } from 'domain'
+
     import { defineComponent } from 'vue'
     import { errorSweetAlert } from './../helpers/sweetAlertGlobals'
 
@@ -560,6 +562,7 @@
                 },
                 Hour: ['8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30'],
                 dialogRequisitos: true,
+
                 rules: {
                     required: value => !!value || 'Campo requerido',
                     email: value => {
@@ -571,6 +574,8 @@
         },
         created() {
             this.cita.requisitos = this.tramiteSeleccionado.requisitos
+            console.log("tramite: ", this.tramiteSeleccionado)
+            // prueba
         },
         computed: {
             tramiteSeleccionado() {
@@ -612,7 +617,7 @@
             seleccionarCentroAtencion() {
                 console.log("asdfasdf")
             },
-            async login() {
+            async validar() {
                 this.loading = true
                 const { valid } = await this.$refs.form.validate()
                 if (valid) {
@@ -636,81 +641,4 @@
             }
         },
     })
-
-    var CALENDAR = function () { 
-	    var wrap, label,  
-	            months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; 
- 
-	    function init(newWrap) { 
-            wrap     = $(newWrap || "#cal"); 
-            label    = wrap.find("#label"); 
-            wrap.find("#prev").bind("click.calendar", function () { switchMonth(false); }); 
-            wrap.find("#next").bind("click.calendar", function () { switchMonth(true);  }); 
-            label.bind("click", function () { switchMonth(null, new Date().getMonth(), new Date().getFullYear()); });        
-            label.click();
- 
-	    } 
- 
-	    function switchMonth(next, month, year) { 
-            var curr = label.text().trim().split(" "), calendar, tempYear =  parseInt(curr[1], 10); 
-	month = month || ((next) ? ( (curr[0] === "December") ? 0 : months.indexOf(curr[0]) + 1 ) : ( (curr[0] === "January") ? 11 : months.indexOf(curr[0]) - 1 )); 
-    year = year || ((next && month === 0) ? tempYear + 1 : (!next && month === 11)) ? tempYear - 1 : tempYear;
-            calendar = createCal(year, month);
-} 
- 
-	    function createCal(year, month) { 
-            var day = 1, i, j , haveDays = true,
-            startDay = new Date(year, month, day).getDay(),
-            daysInMonth = [31,(((year%4===0)&&(year%100!==0))||(year%400===0)) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ],
-            calendar =[];
-            if (createCal.cache[year]){
-                if (createCal.cache[year][month]){
-                    return createCal.cache[year][month];
-                }
-            }else {
-                create.Cal.cache[year]={};
-            }
-            i = 0;
-            while(haveDays){
-                calendar[i] = [];
-                for (j = 0; j < 7; j++) {
-                    if (i === 0){
-                        if (j === startDay){
-                            calendar[i][j] = day++;
-                            startDay++;
-                        }
-                    }else if ( day <=daysInMonth[month]){
-                        calendar[i][j] = day++;
-                    }else {
-                        calendar[i][j] = "";
-                        haveDays = false;
-                    }if (day > daysInMonth[month]){
-                        haveDays = false;
-                    }
-                }
-                i++;
-            }
-            if (calendar[5]){
-                for (i = 0; i < calendar[5].length; i++){
-                    if (calendar[5][i] !== ""){
-                        calendar[4][i] = "<span>" + calendar[4][i] + "</span><span>"+ calendar[5][i] + "</span>";
-                    }
-                }
-                calendar = calendar.slice(0,5);
-            }
-for (i = 0; i< calendar.length; i++){
-    calendar[i] = "<tr><td>" + calendar.join("</td><td>")+ "</td><td>"
-}
-calendar = $("<table>" + calendar.join("") + "</table").addClass("curr");
-    $("")
-            console.dir(calendar);
- 
-	    } 
-	    createCal.cache = {}; 
-	    return { 
-	        init : init, 
-	        switchMonth : switchMonth, 
-	        createCal   : createCal 
-	    }; 
-	};
 </script>
