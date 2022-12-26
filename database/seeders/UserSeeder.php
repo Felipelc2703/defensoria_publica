@@ -24,6 +24,12 @@ class UserSeeder extends Seeder
             'rol_id' => 1,
         ]);
         DB::table('users')->insert([
+            'name' => 'Marco Polo',
+            'clave' => 'Polo',
+            'email' => 'marcopoloolivaresgonzalez@gmail.com',
+            'password' => bcrypt('polo123'),
+        ]);
+        DB::table('users')->insert([
             'name' => 'Felipe Lopez',
             'clave' => 'FelipeLC',
             'email' => 'felipe.loezc188@gmail.com',

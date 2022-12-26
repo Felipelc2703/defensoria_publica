@@ -1,13 +1,15 @@
 <template>
     <v-container>
+        <v-col cols="7" class="mx-auto">
         <v-card-title>
             Editar usuario
         </v-card-title>
                 Nombre Usuario:
-                <v-text-field variant="outlined"></v-text-field>
+                <v-text-field variant="underlined"></v-text-field>
                 Clave Usuario:
-                <v-text-field variant="outlined"></v-text-field>
+                <v-text-field variant="underlined"></v-text-field>
                 <v-text-field
+                    variant="underlined"
                     v-model="password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
@@ -19,13 +21,14 @@
                 Rol:
                 <v-select
                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    variant="solo"  
+                    variant="underlined"  
                 ></v-select>
                 Centro de Atención:
                 <v-select
                     :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                    variant="solo"  
-                ></v-select>
+                    variant="underlined"  
+                ></v-select> 
+            </v-col>
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
@@ -41,7 +44,6 @@
                         Aceptar
                     </v-btn>
                 </v-card-actions>
-
     </v-container>
 </template>
 <script>

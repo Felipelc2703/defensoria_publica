@@ -8,6 +8,8 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\CentroAtencionController;
 use App\Http\Controllers\RequisitoController;
 use App\Http\Controllers\TipoTramiteController;
+use App\Http\Controllers\CentroAtencionController;
+// use App\Http\Controllers\API\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,3 +43,8 @@ Route::get('/catalogos/requisitos', [RequisitoController::class, 'getRequisitos'
 Route::post('/requisito/guardar-nuevo', [RequisitoController::class, 'guardarNuevoRequisito']);
 Route::post('/requisito/actualizar-requisito', [RequisitoController::class, 'actualizarRequisito']);
 Route::post('/requisito/eliminar-requisito', [RequisitoController::class, 'eliminarRequisito']);
+Route::get('/tramites-citas', [TramiteController::class, 'getTramitesCitas']);
+
+// Route::post('agregar-usuario', 'UserController@store');
+
+// Route::post('agregar-usuario', 'UserController@store');

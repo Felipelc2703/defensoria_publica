@@ -9,6 +9,9 @@ import CentrosAtencion from './pages/CentrosAtencion.vue'
 import confwhats from './pages/confwhats.vue'
 import edituser from './pages/edituser.vue'
 import createuser from './pages/createuser.vue'
+import ReporteGraf from './pages/ReporteGraf.vue'
+import Reportes from './pages/Reportes.vue'
+
 import store from './store'
 import CatalogoRequisitos from './pages/CatalogoRequisitos.vue'
 import CatalogoUsuarios from './pages/CatalogoUsuarios.vue'
@@ -87,6 +90,22 @@ const routes = [
         }
     },
     {
+        path: '/reporte-graficas',
+        name: 'ReporteGraf',
+        component: ReporteGraf,
+        meta: {
+            requiresAuth: false
+        }
+    },
+    {
+        path: '/reportes',
+        name: 'Reportes',
+        component: Reportes,
+        meta: {
+            requiresAuth: false
+        }
+    },
+    {        
         path: '/catalogo-requisitos',
         name: 'CatalogoRequisitos',
         component: CatalogoRequisitos,
