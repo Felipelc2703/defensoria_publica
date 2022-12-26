@@ -17,11 +17,13 @@
         </nav> -->
 
         <div>
-            <div class="text-center">
-                <img class="scale-logo-principal" width="200" height="75" src="../../../public/images/logo_pj_principal.svg" alt="">
+            <div class="header-fixed">
+                <div class="text-center">
+                    <img class="scale-logo-principal" width="200" height="75" src="../../../public/images/logo_pj_principal.svg" alt="">
+                </div>
+                <div class="first-line"></div>
             </div>
-            <div class="first-line"></div>
-            <div class="text-right">
+            <div class="text-right" style="margin-top: -2px;">
                 <button class="button-usuarios" @click="irLogin()">Usuarios</button>
             </div>
             <div>

@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="mt-4">
-                            <v-expansion-panels>
+                            <v-expansion-panels v-model="panel">
                                 <v-expansion-panel>
                                     <v-expansion-panel-title v-slot="{ open }">
                                         <v-row no-gutters>
@@ -99,6 +99,7 @@
                                                     :items="locations"
                                                     flat
                                                     variant="underlined"
+                                                    @change="seleccionarCentroAtencion()"
                                                 >
                                                 </v-select>
                                             </v-col>
@@ -113,7 +114,7 @@
                                         </v-row>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
-                                <v-expansion-panel>
+                                <v-expansion-panel v-if="mostrarPaso2">
                                     <v-expansion-panel-title v-slot="{ open }">
                                         <v-row no-gutters>
                                             <v-col cols="8" class="d-flex justify-start">
@@ -176,7 +177,7 @@
                                         </v-row>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
-                                <v-expansion-panel>
+                                <v-expansion-panel v-if="mostrarPaso3">
                                     <v-expansion-panel-title>
                                         <template v-slot:default="{ expanded }">
                                             <v-row no-gutters>
@@ -524,6 +525,20 @@
                     requisitos: []
                 },
                 bandera_requisitos_obligatorios: false,
+                panel: [0],
+                mostrarPaso2: false,
+                mostrarPaso3: false,
+
+
+
+
+
+
+
+
+
+
+
                 name: '',
                 email: '',
                 tel: '',
@@ -593,6 +608,9 @@
             },
             volverInicio() {
                 this.$router.push('/')
+            },
+            seleccionarCentroAtencion() {
+                console.log("asdfasdf")
             },
             async login() {
                 this.loading = true

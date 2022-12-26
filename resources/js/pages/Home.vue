@@ -45,26 +45,31 @@
                             <v-expansion-panels>
                                 <template v-for="(tipo_cita, index) in tipos_citas" :key="index">
                                     <v-expansion-panel>
-                                        <v-expansion-panel-title>
+                                        <v-expansion-panel-title color="#6a73a0">
                                             <v-row no-gutters>
                                                 <h6 class="font-weight-bold text-uppercase">
-                                                    <span class="text-red-custom">{{tipo_cita.nombre}}</span>
+                                                    <span class="text-white-custom">{{tipo_cita.nombre}}</span>
                                                 </h6>
                                             </v-row>
                                         </v-expansion-panel-title>
                                         <v-expansion-panel-text>
                                             <v-row no-gutters class="text-left">
-                                                {{tipo_cita.descripcion}}
+                                                <span class="texto-cita">
+                                                    {{tipo_cita.descripcion}}
+                                                </span>
                                             </v-row>
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>
-                                                <v-btn
+                                                <button class="boton-agendar">Agendar</button>
+                                                <!-- <v-btn
+                                                    rounded
                                                     variant="flat"
-                                                    color="error"
+                                                    color="#a4bc4b"
+                                                    class=""
                                                     @click="agendar(tipo_cita)"
                                                 >
                                                     Agendar
-                                                </v-btn>
+                                                </v-btn> -->
                                             </v-card-actions>
                                         </v-expansion-panel-text>
                                     </v-expansion-panel>
@@ -156,8 +161,11 @@
 </script>
 
 <style scoped>
-    .text-red-custom {
-        color: #691C32;
+    .text-white-custom {
+        color: white;
+        font-family: 'Lato', sans-serif;
+        font-size: 14pt;
+        font-weight: 900;
     }
 
     .border-uno {
@@ -201,5 +209,23 @@
         font-size: 20px;
         font-weight: bold;
         font-family: 'Lato', sans-serif;
+    }
+
+    .texto-cita {
+        font-family: 'Lato', sans-serif;
+        font-size: 15pt;
+    }
+
+    .boton-agendar {
+        color: white;
+        background-color: #a4bc4b;
+        padding: 5px 20px;
+        border-radius: 20px;
+        font-family: 'Lato', sans-serif;
+        font-size: 12pt;
+    }
+
+    .v-expansion-panel-title__icon  i{
+        color: white;
     }
 </style>
