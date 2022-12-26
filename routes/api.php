@@ -8,8 +8,6 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\CentroAtencionController;
 use App\Http\Controllers\RequisitoController;
 use App\Http\Controllers\TipoTramiteController;
-use App\Http\Controllers\CentroAtencionController;
-// use App\Http\Controllers\API\UserController;
 
 /*
 |--------------------------------------------------------------------------
