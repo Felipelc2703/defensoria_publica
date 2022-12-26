@@ -28,6 +28,12 @@ class UserSeeder extends Seeder
             'clave' => 'Polo',
             'email' => 'marcopoloolivaresgonzalez@gmail.com',
             'password' => bcrypt('polo123'),
+        ]);
+        DB::table('users')->insert([
+            'name' => 'Felipe Lopez',
+            'clave' => 'FelipeLC',
+            'email' => 'felipe.loezc188@gmail.com',
+            'password' => bcrypt('123456'),
             'centro_atencion_id' => 1,
             'rol_id' => 1,
         ]);
