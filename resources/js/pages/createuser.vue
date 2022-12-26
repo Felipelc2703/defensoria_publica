@@ -35,7 +35,7 @@
                         variant="flat"
                         color="error"
                     >
-                        Aceptar
+                        Guardar
                     </v-btn>
                 </v-card-actions>
     </v-container>
