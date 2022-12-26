@@ -2,8 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TramiteController;
 use App\Http\Controllers\API\AuthController;
 // use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\CentroAtencionController;
+use App\Http\Controllers\RequisitoController;
+use App\Http\Controllers\TipoTramiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +27,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(AuthController::class)->group(function() {
     Route::post('login', 'login');
     Route::post('register', 'register');
-    Route::post('agregar-usuario', 'UserController@store');
 });
 
-// Route::post('agregar-usuario', 'UserController@store');
+Route::get('/catalogos/tramites', [TramiteController::class, 'getTramites']);
+Route::get('/catalogos/centros-de-atencion', [CentroAtencionController::class, 'getCentrosAtencion']);
+Route::post('/centro-atencion/guardar-nuevo', [CentroAtencionController::class, 'guardarNuevoCentro']);
+Route::post('/centro-atencion/actualizar-centro', [CentroAtencionController::class, 'actualizarCentroAtencion']);
+Route::post('/centro-atencion/eliminar-centro', [CentroAtencionController::class, 'eliminarCentroAtencion']);
+
+Route::get('/catalogos/tipos-de-tramite', [TipoTramiteController::class, 'getTipoTramite']);
+//Rutas utilizadas para catalogo de requisitos
+Route::get('/catalogos/requisitos', [RequisitoController::class, 'getRequisitos']);
+Route::post('/requisito/guardar-nuevo', [RequisitoController::class, 'guardarNuevoRequisito']);
+Route::post('/requisito/actualizar-requisito', [RequisitoController::class, 'actualizarRequisito']);
+Route::post('/requisito/eliminar-requisito', [RequisitoController::class, 'eliminarRequisito']);

@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import catalogos from './../modules/catalogos'
 
 const store = createStore({
     state: {
@@ -35,6 +36,9 @@ const store = createStore({
             localStorage.removeItem('token')
             context.commit('UPDATE_TOKEN', 0)
         }
+    },
+    modules: {
+        catalogos,
     }
 })
 

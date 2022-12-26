@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 75);
             $table->string('direccion', 250);
-            $table->string('telefono', 50);
-            $table->integer('numero_cajas');
+            $table->string('telefono', 50)->nullable();
+            $table->integer('numero_cajas')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

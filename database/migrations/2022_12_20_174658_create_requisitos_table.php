@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->foreignId('tipo_tramite_id')->constrained();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

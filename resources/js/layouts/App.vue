@@ -68,10 +68,10 @@
                             <v-list-item @click="this.$router.push('/centros-atencion')">
                                 Centro de Atención
                             </v-list-item>
-                            <v-list-item @click="this.$router.push('/dashboard')">
+                            <v-list-item @click="this.$router.push('/catalogo-requisitos')">
                                 Requisito
                             </v-list-item>
-                            <v-list-item @click="this.$router.push('/dashboard')">
+                            <v-list-item @click="this.$router.push('/catalogo-tramites')">
                                 Tramite
                             </v-list-item>
                             <v-list-item @click="this.$router.push('/dashboard')">

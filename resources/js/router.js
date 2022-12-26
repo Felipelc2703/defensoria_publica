@@ -12,6 +12,7 @@ import createuser from './pages/createuser.vue'
 import store from './store'
 import CatalogoRequisitos from './pages/CatalogoRequisitos.vue'
 import CatalogoUsuarios from './pages/CatalogoUsuarios.vue'
+import CatalogoTramites from './pages/CatalogoTramites.vue'
 
 const routes = [
     {
@@ -97,6 +98,14 @@ const routes = [
         path: '/catalogo-usuarios',
         name: 'CatalogoUsuarios',
         component: CatalogoUsuarios,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/catalogo-tramites',
+        name: 'CatalogoTramites',
+        component: CatalogoTramites,
         meta: {
             requiresAuth: true
         }
