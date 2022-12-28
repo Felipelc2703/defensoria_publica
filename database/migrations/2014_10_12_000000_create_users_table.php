@@ -23,6 +23,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->unsignedBigInteger('centro_atencion_id');
             $table->unsignedBigInteger('rol_id');
+            $table->boolean('status')->default(true);
             $table->timestamps();
 
             $table->foreign('centro_atencion_id')->references('id')->on('centros_atencion');
