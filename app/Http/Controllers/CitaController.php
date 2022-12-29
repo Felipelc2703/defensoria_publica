@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Mail\ConfirmacionCita;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
+use PDF;
 
 class CitaController extends Controller
 {
@@ -40,7 +42,53 @@ class CitaController extends Controller
             $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
             $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
 
-            Mail::to($cita->email)->send(new ConfirmacionCita($cita));
+            // $pdf = $this->generarArchivoCitaPdf();
+            // $pdf = '';
+            // $pdf = app('App\Http\Controllers\CitaController')->generarArchivoCitaPdf();
+
+            // Custom Header
+            PDF::setHeaderCallback(function($pdf) {
+
+                // $pdf->SetY(10);
+
+                // Set font
+                $pdf->SetFont('helvetica', 'B', 11);
+                // Header
+                $header_image_file = public_path() . '/images/header_pdf.png';           
+                $pdf->Image($header_image_file, 0,0,0,0);
+
+            });
+
+            
+            // Custom Footer
+            PDF::setFooterCallback(function($pdf) {
+                
+                // Position at 15 mm from bottom
+                // $pdf->SetY(-15);
+                // Set font
+                $pdf->SetFont('helvetica', 'I', 8);
+                // footer
+                $footer_image_file = public_path() . '/images/footer_pdf.png';
+                $pdf->Image($footer_image_file, 0,280,0,0);
+                // Page number
+                //$pdf->Cell(0, 10, 'Página '.$pdf->getAliasNumPage().'/'.$pdf->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+
+            });
+
+            $view = View::make('pdf.pdf_confirmacion_cita', compact('citaAgendada'));
+            $html_content = $view->render();
+
+            PDF::SetTitle('Confirmación Cita');
+            
+            PDF::AddPage('P', 'A4');
+
+            PDF::writeHTML($html_content, true, false, true, false, '');
+
+            ob_end_clean();
+            
+            $pdf = PDF::Output('Confirmacion_Cita.pdf', 'S');
+
+            Mail::to($cita->email)->send(new ConfirmacionCita($citaAgendada, $pdf));
 
             DB::commit();
             $exito = true;
@@ -63,5 +111,53 @@ class CitaController extends Controller
                 "cita_agendada" => $citaAgendada,
             ], 200);
         }
+    }
+
+    public function generarArchivoCitaPdf()
+    {
+        // Custom Header
+        PDF::setHeaderCallback(function($pdf) {
+
+            $pdf->SetY(10);
+
+            // Set font
+            $pdf->SetFont('helvetica', 'B', 11);
+            // Header
+            // $header_image_file = asset('/img/pages/fichapdf/header.svg');            
+            // $pdf->Image($header_image_file, 12,10,188,30);
+
+        });
+
+        
+        // Custom Footer
+        PDF::setFooterCallback(function($pdf) {
+            
+            // Position at 15 mm from bottom
+            $pdf->SetY(-15);
+            // Set font
+            $pdf->SetFont('helvetica', 'I', 8);
+            // footer
+            // $footer_image_file = asset('/img/pages/fichapdf/footer.svg');            
+            // $pdf->Image($footer_image_file, 12,270,188,17);
+            // Page number
+            //$pdf->Cell(0, 10, 'Página '.$pdf->getAliasNumPage().'/'.$pdf->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+
+        });
+
+        $view = View::make('pdf.pdf_confirmacion_cita');
+        $html_content = $view->render();
+
+        PDF::SetTitle('Confirmación Cita');
+        
+        PDF::AddPage('P', 'A4');
+
+        PDF::writeHTML($html_content, true, false, true, false, '');
+
+        ob_end_clean();
+        
+        // $ficha_registro = PDF::Output(uniqid().'_Ficha.pdf', 'S');
+        // return $ficha_registro;
+        // PDF::Output(public_path($filename), 'I');
+        PDF::Output(uniqid().'_Ficha.pdf', 'I');
     }
 }
