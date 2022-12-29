@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Cita;
 use Illuminate\Http\Request;
+use App\Mail\ConfirmacionCita;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CitaController extends Controller
 {
@@ -37,6 +39,8 @@ class CitaController extends Controller
             $citaAgendada->hora = $cita->hora_cita;
             $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
             $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
+
+            Mail::to($cita->email)->send(new ConfirmacionCita($cita));
 
             DB::commit();
             $exito = true;
