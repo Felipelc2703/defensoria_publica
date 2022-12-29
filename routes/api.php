@@ -2,12 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CitaController;
 use App\Http\Controllers\TramiteController;
-use App\Http\Controllers\API\AuthController;
 // use App\Http\Controllers\API\UserController;
-use App\Http\Controllers\CentroAtencionController;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\RequisitoController;
 use App\Http\Controllers\TipoTramiteController;
+use App\Http\Controllers\CentroAtencionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,8 @@ Route::post('/requisito/guardar-nuevo', [RequisitoController::class, 'guardarNue
 Route::post('/requisito/actualizar-requisito', [RequisitoController::class, 'actualizarRequisito']);
 Route::post('/requisito/eliminar-requisito', [RequisitoController::class, 'eliminarRequisito']);
 Route::get('/tramites-citas', [TramiteController::class, 'getTramitesCitas']);
+Route::get('/calendario-citas', [TramiteController::class, 'getCalendarioCitas']);
+Route::post('/citas/agendar-cita', [CitaController::class, 'agendarCita']);
 
 // Route::post('agregar-usuario', 'UserController@store');
 

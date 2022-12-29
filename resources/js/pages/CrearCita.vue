@@ -1,70 +1,65 @@
 <template>
-    <div>
+    <div class="m-0">
         <v-dialog
             v-model="dialogRequisitos"
             max-width="600px"
+            persistent
         >
             <v-card>
-                <v-card-title>
-                    Sistema de Citas
+                <v-card-title class="text-center">
+                    <span class="titulo-modal-requisitos">Sistema de Citas</span>
+                    <div class="first-line"></div>
                 </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text>
-                    <div class="m-1">
-                        <p><span>Estimado ciudadano:</span></p>
-                        <v-divider></v-divider>
-                        <p>A continuación se muestran los requisitos que deberá presentar ante el Centro de Atención para realizar el trámite; favor de seleccionar aquéllos con los que cuenta:</p>
-                        <v-card class="mb-14">
-                            <table class="table table-striped table-sm">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="text-center">Requisitos</th>
-                                        <th></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="(requisito, index) in tramiteSeleccionado.requisitos" :key="index">
-                                        <td>{{requisito.nombre}}</td>
-                                        <td><input type="checkbox" @change="checkRequisito(requisito)"></td>
-                                        <td><p class="campo-obligatorio" v-if="requisito.obligatorio">*</p></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </v-card>
-                        <p>Si usted ya cuenta con una cita agendada y desea consultarla, dé click aquí. Todos los trámites son personales. Para verificar las especificaciones de los requisitos dé click <span class="text-red">aquí</span>.</p>
+                <div class="container mb-2">
+                    <p class="texto-saludo"><span class="">Estimado ciudadano:</span></p>
+                    <div class="second-line"></div>
+                    <p class="texto-instrucciones">A continuación se muestran los requisitos que deberá presentar ante el Centro de Atención para realizar el trámite; favor de seleccionar aquéllos con los que cuenta:</p>
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr class="encabezado-tabla-requisitos">
+                                <th scope="col" class="text-center texto-encabezado-tabla-requisitos">Requisitos</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(requisito, index) in tramiteSeleccionado.requisitos" :key="index">
+                                <td><span class="texto-requisito-tabla">{{requisito.nombre}}</span></td>
+                                <td><input type="checkbox" @change="checkRequisito(requisito)"></td>
+                                <td><p class="campo-obligatorio" v-if="requisito.obligatorio">*</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="ultimos-textos-modal-requisitos">
+                        <p>Si usted ya cuenta con una cita agendada y desea consultarla, dé <span class="texto-click-aqui">click aquí</span>.</p>
+                        <p>Todos los trámites son personales. Para verificar las especificaciones de los requisitos dé <span class="texto-click-aqui">click aquí</span>.</p>
                         <p class="texto-requisitos-obligatorios">(*) Requisitos obligatorios</p>
                         <div class="text-center">
                             <p v-if="bandera_requisitos_obligatorios" class="texto-faltan-requisitos-obligatorios">Atención: Debe seleccionar al menos una opción para continuar.</p>
                         </div>
                     </div>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
+                    <div class="third-line"></div>
+                </div>
+                <v-card-actions class="mb-4">
                     <v-spacer></v-spacer>
-                    <v-btn
-                        variant="flat"
-                        color="error"
-                        @click="cancelarSolicitud()"
-                    >
-                        Cancelar
-                    </v-btn>
-                    <v-btn
-                        variant="flat"
-                        color="error"
-                        @click="aceptarRequisitos()"
-                    >
-                        Aceptar
-                    </v-btn>
+                    <button class="boton-cancelar" @click="cancelarSolicitud()">Cancelar</button>
+                    <button class="boton-aceptar" @click="aceptarRequisitos()">Aceptar</button>
+                    <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>
         </v-dialog>
 
-        <div class="row justify-content-between">
-            <div class="col-sm-9 col-12 border-uno">
-                <div class="text-center border-dos py-2">
+        <div class="row contenedor">
+            <div class="col-sm-9 col-12 contenedor-uno">
+                <div class="text-center py-2">
                     <img class="scale-logo-defensoria" width="200" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
                 </div>
+            </div>
+            <div class="col-sm-3 col-12 contenedor-dos">
+                <p class="titulo-nombre-tramite">Resumen de cita:</p>
+            </div>
+            <div class="w-100"></div>
+            <div class="col-sm-9 col-12 contenedor-tres">
                 <div class="text-center mt-4 mb-4 ml-10 mr-10">
                     <div class="container">
                         <div class="row justify-content-around">
@@ -81,7 +76,7 @@
                                     <v-expansion-panel-title v-slot="{ open }">
                                         <v-row no-gutters>
                                             <v-col cols="8" class="d-flex justify-start">
-                                                PASO 1: Seleccione el centro de atención
+                                                <h6><span class="texto-pasos">PASO 1:</span> <span class="texto-nombre-paso">Seleccione el centro de atención</span></h6>
                                             </v-col>
                                             <v-col cols="8" class="text--secondary">
                                                 <v-fade-transition leave-absolute>
@@ -92,33 +87,32 @@
                                         </v-row>
                                     </v-expansion-panel-title>
                                     <v-expansion-panel-text>
-                                        <v-row no-gutters>
-                                            <v-col cols="6">
+                                        <div class="row mt-4">
+                                            <div class="col-md-6 col-12">
                                                 <v-select
-                                                    v-model="trip.location"
-                                                    :items="locations"
-                                                    flat
-                                                    variant="underlined"
-                                                    @change="seleccionarCentroAtencion()"
+                                                    @update:modelValue="seleccionarCentroAtencion()"
+                                                    v-model="cita.centro_atencion"
+                                                    :items="tramiteSeleccionado.centrosAtencion"
+                                                    item-title="nombre"
+                                                    item-value="id"
+                                                    variant="outlined"
+                                                    label="Centro de Atención:"
                                                 >
                                                 </v-select>
-                                            </v-col>
-
-                                            <v-divider vertical class="mx-4"></v-divider>
-
-                                            <v-col cols="4">
-                                                Si requiere conocer la ubicación de cada uno de los lugares donde puede realizar el trámite, 
-                                                <br>
-                                                <a href="#"> de click aqui</a>
-                                            </v-col>
-                                        </v-row>
+                                            </div>
+                                            <div class="col-md-6 col-12">
+                                                <div class="texto-ubicacion-centros">
+                                                    <p class="text-left m-0">Si requiere conocer la ubicación de cada uno de los lugares donde puede realizar el trámite, de <span class="texto-click-aqui">click aqui</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
                                 <v-expansion-panel v-if="mostrarPaso2">
                                     <v-expansion-panel-title v-slot="{ open }">
                                         <v-row no-gutters>
                                             <v-col cols="8" class="d-flex justify-start">
-                                                PASO 2: Seleccione la fecha y hora de la cita 
+                                                <h6><span class="texto-pasos">PASO 2: </span> <span class="texto-nombre-paso">Seleccione la fecha y hora de la cita</span></h6>
                                             </v-col>
                                             <v-col cols="8" class="text--secondary">
                                                 <v-fade-transition leave-absolute>
@@ -129,123 +123,123 @@
                                         </v-row>
                                     </v-expansion-panel-title>
                                     <v-expansion-panel-text>
-                                        <v-row justify="space-around" no-gutters>
-                                            <v-col cols="10">
-                                                Fecha:
-                                                <div id="calendario">
-                                                        <div id="posterior" onclick="mesdespues()">-></div>
-                                                        <h2 id="titulos">Diciembre 2022</h2>
-                                                        <table id="diasc">
-                                                            <tr id="fila0"><th>Dom</th><th>Lun</th><th>Mar</th><th>Mier</th><th>Jue</th><th>Vie</th><th>Sabado</th></tr>
-                                                            <tr id="fila1"><td id="dia" onclick="dia()"></td><td id="dia" onclick="dia()"></td><td></td><td></td><td>1</td><td>2</td><td>3</td></tr>
-                                                            <tr id="fila2"><td id="dia" onclick="dia()">4</td><td id="dia" onclick="dia()">5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr>
-                                                            <tr id="fila3"><td id="dia" onclick="dia()">11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td></tr>
-                                                            <tr id="fila4"><td id="dia" onclick="dia()">18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td></tr>
-                                                            <tr id="fila5"><td id="dia" onclick="dia()">25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td></tr>
-                                                            <tr id="fila6"><td id="dia" onclick="dia()"></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-                                                        </table>                                                            
-                                                        </div>
-                                                
-                                            </v-col>
-                                            <v-col cols="2">
-                                                Hora:
+                                        <div class="row mt-4">
+                                            <div class="col-md-6 col-12 text-center">
+                                                <table class="m-0 w-100" id="calendar">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td colspan="7">
+                                                                <table class="w-100 calendar-header">
+                                                                    <tbody>
+                                                                        <tr class="tr-header">
+                                                                            <td class="previous-month"></td>
+                                                                            <td class="calendar-month">Diciembre de 2022</td>
+                                                                            <td class="next-month"></td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="w-100">
+                                                            <th class="calendar-day-name">dom.</th>
+                                                            <th class="calendar-day-name">lun.</th>
+                                                            <th class="calendar-day-name">mar.</th>
+                                                            <th class="calendar-day-name">mié.</th>
+                                                            <th class="calendar-day-name">jue.</th>
+                                                            <th class="calendar-day-name">vie.</th>
+                                                            <th class="calendar-day-name">sab.</th>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-md-6 col-12">
                                                 <v-select
-                                                v-model="trip.Hour"
-                                                :items="Hour"
-                                                flat
-                                                variant="underlined"
+                                                    v-model="cita.hora_cita"
+                                                    label="Seleccione el horario"
+                                                    :items="horarios_disponibles"
+                                                    item-title="hora"
+                                                    item-value="hora"
+                                                    variant="outlined"
                                                 ></v-select>
-                                            </v-col>
-                                        </v-row>
+                                            </div>
+                                        </div>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
                                 <v-expansion-panel v-if="mostrarPaso3">
-                                    <v-expansion-panel-title>
-                                        <template v-slot:default="{ expanded }">
-                                            <v-row no-gutters>
-                                                <v-col cols="8" class="d-flex justify-start">
-                                                PASO 3: Ingrese los datos del solicitante 
-                                                </v-col>
-                                                <v-col
-                                                cols="8"
-                                                class="text-grey"
-                                                >
+                                    <v-expansion-panel-title v-slot="{ open }">
+                                        <v-row no-gutters>
+                                            <v-col cols="8" class="d-flex justify-start">
+                                                <h6><span class="texto-pasos">PASO 3: </span> <span class="texto-nombre-paso">Ingrese los datos del solicitante</span></h6>
+                                            </v-col>
+                                            <v-col cols="8" class="text--secondary">
                                                 <v-fade-transition leave-absolute>
-                                                    <span
-                                                    v-if="expanded"
-                                                    key="0"
-                                                    >
-                                                    </span>
-                                                    <span
-                                                    v-else
-                                                    key="1"
-                                                    >
-                                                    </span>
+                                                    <span v-if="open"></span>
+                                                    <v-row v-else no-gutters style="width: 100%"></v-row>
                                                 </v-fade-transition>
-                                                </v-col>
-                                            </v-row>
-                                        </template>
+                                            </v-col>
+                                        </v-row>
                                     </v-expansion-panel-title>
                                     <v-expansion-panel-text>
-                                        <v-form ref="form">
-                                            Nombre:*
-                                            <v-text-field
-                                                ref="name"
-                                                v-model="name"
-                                                :rules="[rules.required]"
-                                                variant="underlined"
-                                            ></v-text-field>
-                                            Correo Electrónico:*
-                                            <v-text-field
-                                                ref="email"
-                                                v-model="email"
-                                                :rules="[rules.required, rules.email]"
-                                                variant="underlined"
-                                            ></v-text-field>
-                                            Teléfono:*
-                                            <v-text-field
-                                                counter="10"
-                                                maxlength="10"
-                                                ref="tel"
-                                                v-model="tel"
-                                                :rules="[rules.required]"
-                                                variant="underlined"
-                                            ></v-text-field>
-                                            Seleccione sexo:*
-                                            <v-radio-group ref="sexo" v-model="sexo" inline :rules="[rules.required]">
-                                                <v-radio
-                                                    label="Masculino"
-                                                    value="M"
-                                                ></v-radio>
-                                                <v-radio
-                                                    label="Femenino"
-                                                    value="F"
-                                                ></v-radio>
-                                            </v-radio-group>
-                                            ¿Presenta alguna discapacidad?*
-                                            <v-radio-group ref="disc" v-model="disc" inline :rules="[rules.required]">
-                                                <v-radio label="Si" v-model="disc" value="si"></v-radio>
-                                                <v-radio label="No" v-model="disc" value="no"></v-radio>
-                                            </v-radio-group>
-                                            <!--si la respuesta es si-->
-                                            <v-select v-if="disc == 'si'" label="¿Cual?"
-                                                v-model="trip.disca"
-                                                :items="disca"
-                                                flat
-                                                variant="underlined"
-                                                :rules="[rules.required]"
-                                            ></v-select>
-                                            <v-card-actions>
+                                        <v-card>
+                                            <v-card-text>
+                                                <v-container>
+                                                    <v-row>
+                                                        <v-form class="col-12 mt-4 mb-4">
+                                                            <v-text-field
+                                                                v-model="cita.nombre"
+                                                                label="Nombre"
+                                                                :rules="nombreRules"
+                                                            ></v-text-field>
+                                                            <v-text-field
+                                                                v-model="cita.email"
+                                                                label="Correo Electrónico"
+                                                                :rules="emailRules"
+                                                            ></v-text-field>
+                                                            <div class="row justify-content-between">
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-text-field
+                                                                        v-model="cita.telefono"
+                                                                        label="Teléfono"
+                                                                        :rules="telefonoRules"
+                                                                    ></v-text-field>
+                                                                </div>
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-select
+                                                                        v-model="cita.sexo"
+                                                                        label="Seleccione el sexo"
+                                                                        :items="['Masculino', 'Femenino']"
+                                                                        :rules="sexoRules"
+                                                                    ></v-select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row justify-content-between">
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-select
+                                                                        v-model="cita.tiene_discapacidad"
+                                                                        label="¿Presenta alguna discapacidad?"
+                                                                        :items="['Si', 'No']"
+                                                                    ></v-select>
+                                                                </div>
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-select
+                                                                        v-if="cita.tiene_discapacidad == 'Si'"
+                                                                        v-model="cita.discapacidad"
+                                                                        label="¿Cuál?"
+                                                                        :items="['Uno', 'Dos']"
+                                                                    ></v-select>
+                                                                </div>
+                                                            </div>
+                                                        </v-form>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-card-text>
+                                            <v-card-actions class="mb-6">
                                                 <v-spacer></v-spacer>
-                                                <v-btn
-                                                    color="primary"
-                                                    variant="text"
-                                                    @click="validar"
-                                                >
-                                                    Enviar
-                                                </v-btn>
+                                                <button class="boton-cancelar" @click="cancelarSolicitud()">Cancelar</button>
+                                                <button class="boton-aceptar" @click="agendarCita()">Agendar</button>
+                                                <v-spacer></v-spacer>
                                             </v-card-actions>
-                                        </v-form> 
+                                        </v-card>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
                             </v-expansion-panels>
@@ -253,333 +247,149 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 col-12">
-                <div class="text-center py-2 espacio-blanco"></div>
-                <div class="text-center mt-4 mb-4 ml-4 mr-4">
-                    <div>
-                        <fieldset class="text-left">
-                            <legend><h2 class="titulo-resumen-cita">Resumen de Cita:</h2></legend>
-                        </fieldset>
-                        <div>
-                            <div class="row">
-                                <div class="col-md-12 text-left">
-                                    <span class="texto-estatico-resumen-cita">Centro de Atención:</span>
-                                    <br>
-                                    <span class="texto-dinamico-resumen-cita"></span>
-                                    <br>
-                                    <br>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 text-left">
-                                    <span class="texto-estatico-resumen-cita">Día de la Cita:</span>
-                                    <br>
-                                    <span class="texto-dinamico-resumen-cita"></span>
-                                    <br>
-                                    <br>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 text-left">
-                                    <span class="texto-estatico-resumen-cita">Hora de la Cita:</span>
-                                    <br>
-                                    <span class="texto-dinamico-resumen-cita"></span>
-                                    <br>
-                                    <br>
-                                </div>
-                            </div>
+            <div class="col-sm-3 col-12 contenedor-cuatro">
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <span class="texto-estatico-resumen-cita">Centro de Atención:</span>
+                            <br>
+                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.centro_atencion}}</span>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <span class="texto-estatico-resumen-cita">Día de la Cita:</span>
+                            <br>
+                            <span id="span_dia_cita" class="texto-dinamico-resumen-cita"></span>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-left">
+                            <span class="texto-estatico-resumen-cita">Hora de la Cita:</span>
+                            <br>
+                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.hora_cita}}</span>
+                            <br>
+                            <br>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <input id="input_aux_dia_cita" type="text" style="display: none;" value="0">
+        <input id="input_aux_fecha_formateada" type="text" style="display: none;" value="0">
     </div>
 </template>
 
-<style scoped>
-    body { 
-	    background: #e0e0e0; 
-	} 
- 
-	#cal { 
-	    -moz-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25); 
-	    -webkit-box-shadow:0px 3px 3px rgba(0, 0, 0, 0.25); 
-	    margin:50px auto; 
-	    font: 13px/1.5 "Helvetica Neue", Helvatica, Arial, san-serif; 
-	    display:table; 
-	}
-    #cal .header { 
-	    cursor:default; 
-	    background: #cd310d; 
-	    background: -moz-linear-gradient(top, #b32b0c, #cd310d); 
-	    background: -webkit-gradient(linear, left top, left bottom, from(#b32b0c), to(#cd310d)); 
-	    height: 34px; 
-	    position: relative; 
-	    color:#fff; 
-	    -webkit-border-top-left-radius: 5px; 
-	    -webkit-border-top-right-radius: 5px; 
-	    -moz-border-radius-topleft: 5px; 
-	    -moz-border-radius-topright: 5px; 
-	    border-top-left-radius: 5px; 
-	    border-top-right-radius: 5px; 
-	    font-weight:bold; 
-	    text-shadow:0px -1px 0 #87260C; 
-	    text-transform: uppercase; 
-	} 
-	#cal .header span { 
-	    display:inline-block; 
-	    line-height:34px; 
-	}
-    /* #cal .header .hook { 
-	    width: 9px; 
-	    height: 28px; 
-	    position: absolute; 
-	    bottom:60%; 
-	    border-radius:10px; 
-	    -moz-border-radius:10px; 
-	    -webkit-border-radius:10px; 
-	    background:#ececec; 
-	    background: -moz-linear-gradient(right top, #fff, #827e7d); 
-	    background: -webkit-gradient(linear, right top, right bottom, from(#fff), to(#827e7d)); 
-	    box-shadow:0px -1px 2px rgba(0, 0, 0, 0.65 ); 
-	    -moz-box-shadow:0px -1px 2px rgba(0, 0, 0, 0.65 ); 
-	    -webkit-box-shadow:0px -1px 2px rgba(0, 0, 0, 0.65 ); 
-	}  */
-	/* .right.hook { 
-	    right:15%; 
-	} 
-	.left.hook { 
-	    left: 15%; 
-	} */
-    #cal .header .button { 
-	    width:24px; 
-	    text-align:center; 
-	    position:absolute; 
-	} 
-	#cal .header .left.button { 
-	    left:0; 
-	    -webkit-border-top-left-radius: 5px; 
-	    -moz-border-radius-topleft: 5px; 
-	    border-top-left-radius: 5px; 
-	    border-right:1px solid #ae2a0c; 
-	} 
-	#cal .header .right.button { 
-	    right:0; 
-	    top:0; 
-	    border-left:1px solid #ae2a0c; 
-	    -webkit-border-top-right-radius: 5px; 
-	    -moz-border-radius-topright: 5px; 
-	    border-top-right-radius: 5px; 
-	} 
-	#cal .header .button:hover { 
-	    background: -moz-linear-gradient(top, #d94215, #bb330f); 
-	    background: -webkit-gradient(linear, left top, left bottom, from(#d94215), to(#bb330f)); 
-	}
-    #cal .header .month-year { 
-	    letter-spacing: 1px; 
-	    width: 100%; 
-	    text-align: center; 
-	}
-    #cal table { 
-	    background:#fff; 
-	    border-collapse:collapse; 
-	} 
-	#cal td { 
-	    color:#2b2b2b; 
-	    width:30px; 
-	    height:30px; 
-	    line-height:30px; 
-	    text-align:center; 
-	    border:1px solid #e6e6e6; 
-	    cursor:default; 
-	} 
-	#cal #days td { 
-	    height:26px; 
-	    line-height: 26px; 
-	    text-transform:uppercase; 
-	    font-size:90%; 
-	    color:#9e9e9e; 
-	} 
-	#cal #days td:not(:last-child) { 
-	    border-right:1px solid #fff; 
-	}
-    #cal #cal-frame td.today { 
-	    background:#ededed; 
-	    color:#8c8c8c; 
-	    box-shadow:1px 1px 0px #fff inset; 
-	    -moz-box-shadow:1px 1px 0px #fff inset; 
-	    -webkit-box-shadow:1px 1px 0px #fff inset; 
-	} 
-	#cal #cal-frame td:not(.nil):hover { 
-	    color:#fff; 
-	    text-shadow: #6C1A07 0px -1px; 
-	    background:#CD310D; 
-	    background: -moz-linear-gradient(top, #b32b0c, #cd310d); 
-	    background: -webkit-gradient(linear, left top, left bottom, from(#b32b0c), to(#cd310d)); 
-	    -moz-box-shadow:0px 0px 0px; 
-	    -webkit-box-shadow:0px 0px 0px; 
-	}
-    #cal #cal-frame td span { 
-	    font-size:80%; 
-	    position:relative; 
-	} 
-	#cal #cal-frame td span:first-child { 
-	    bottom:5px; 
-	} 
-	#cal #cal-frame td span:last-child { 
-	    top:5px; 
-	}
-    #cal #cal-frame table.curr { 
-	    float:left;      
-	} 
-	#cal #cal-frame table.temp { 
-	    position:absolute; 
-	}
-
-    .border-uno {
-        border-style: none solid none none;
-        border-color: #adadad;
-        border-width: 2px;
-        padding: 0!important;
-    }
-
-    .border-dos {
-        border-style: none none solid none;
-        border-color: #adadad;
-        border-width: 2px;
-    }
-
-    .scale-logo-defensoria {
-        transform: scale(1.8);
-    }
-
-    .titulo_tipo_tramite {
-        font-size: 20px;
-        font-weight: bold;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .espacio-blanco {
-        height: 93px;
-    }
-
-    .titulo-resumen-cita {
-        font-size: 40;
-        font-weight: bold;
-    }
-
-    .texto-estatico-resumen-cita {
-        font-weight: bold;
-    }
-
-    .texto-dinamico-resumen-cita {
-        color: #827e7d;
-        font-weight: bold;
-    }
-
-    .campo-obligatorio {
-        color: red;
-    }
-
-    .texto-requisitos-obligatorios {
-        color: red;
-        font-size: 12px;
-        font-weight: bold;
-    }
-
-    .texto-faltan-requisitos-obligatorios {
-        color: red;
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-    * { margin: auto; }
-    /*cabecera de la página*/
-    h1 { text-align: center; padding: 0.5em; }
-    /*div principal del calendario*/
-    #calendario { border: 4px double black ; max-width: 536px; 
-                background-color:#fffafa; text-align: center; }
-    /*tabla del calendario*/
-    #diasc { border: 1px solid black; border-collapse: 
-            separate; border-spacing: 4px; }
-    #dia:hover{color: blue; text-decoration: underline; cursor: pointer ;}
-    
-    #diasc th,#diasc td { font: normal 14pt arial; width: 70px; height: 30px; }
-    #diasc th { color: #990099; background-color: #5ecdec }
-    #diasc td { color: #492736; background-color: #9bf5ff }
-    
-    #posterior { float: right; width: 100px; font: bold 12pt arial; 
-            padding: 0.5em 0.1em; cursor: pointer ;}
-    #posterior:hover {color: blue; text-decoration: underline;}
-    #titulos { font: normal 20pt "arial black"; padding: 0.2em; }
-</style>
-
 <script>
-
     import { defineComponent } from 'vue'
-    import { errorSweetAlert } from './../helpers/sweetAlertGlobals'
+    import { errorSweetAlert, successSweetAlert } from './../helpers/sweetAlertGlobals'
 
     export default defineComponent({
         name: 'crear-cita',
         data() {
             return {
                 cita: {
-                    requisitos: []
+                    requisitos: [],
+                    centro_atencion: '',
+                    tramite: '',
+                    dia_cita: '',
+                    fecha_formateada: '',
+                    hora_cita: '',
+                    nombre: '',
+                    email: '',
+                    telefono: '',
+                    sexo: '',
+                    tiene_discapacidad: '',
+                    discapacidad: '',
                 },
-                bandera_requisitos_obligatorios: false,
-                panel: [0],
-                mostrarPaso2: false,
-                mostrarPaso3: false,
-
-
-
-
-
-
-
-
-
-
-
-                name: '',
-                email: '',
-                tel: '',
-                sexo: null,
-                disc: null,
-                   
-                trip: {
-                    disca: null,
+                nombreRules: [
+                    v => !!v || 'El nombre es requerido'
+                ],
+                emailRules: [
+                    v => !!v || 'El email es requerido',
+                ],
+                telefonoRules: [
+                    v => !!v || 'El telefono es requerido',
+                ],
+                sexoRules: [
+                    v => !!v || 'El sexo es requerido',
+                ],
+                resumen_cita: {
+                    centro_atencion: '',
+                    dia_cita: '',
+                    hora_cita: '',
                 },
-                disca: ['Motriz', 'Auditiva', 'Visual', 'Intelectual', 'Psicosocial'],
-                dialogRequisitos: true,
-                trip: {
-                    location: null,
-                },
-                locations: ['Dirección asuntos civiles, familiares y administrativos(Puebla Capital)', 'DISTRITO JUDICIAL ACATLÁN', 'DISTRITO JUDICIAL ALATRISTE', 'DISTRITO JUDICIAL ATLIXCO', 'DISTRITO JUDICIAL CHALCHICOMULA', 'DISTRITO JUDICIAL CHIAUTLA', 'DISTRITO JUDICIAL CHOLULA'],
-                dialogRequisitos: true,    
-                trip: {
-                    Hour: null,
-                },
-                Hour: ['8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30'],
-                dialogRequisitos: true,
-
-                rules: {
-                    required: value => !!value || 'Campo requerido',
-                    email: value => {
-                        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                        return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
+                horarios_disponibles: [
+                    {
+                        id: 1,
+                        hora: '09:30:00'
                     },
-                },
+                    {
+                        id: 2,
+                        hora: '10:00:00'
+                    },
+                    {
+                        id: 3,
+                        hora: '10:30:00'
+                    },
+                    {
+                        id: 4,
+                        hora: '11:00:00'
+                    },
+                    {
+                        id: 5,
+                        hora: '11:30:00'
+                    },
+                    {
+                        id: 6,
+                        hora: '12:00:00'
+                    }
+                ],
+                bandera_requisitos_obligatorios: false,
+                panel: [0, 1, 2],
+                mostrarPaso2: true,
+                mostrarPaso3: true,
+                dialogRequisitos: true,
+                semana_uno: [],
+                semana_dos: [],
+                semana_tres: [],
+                semana_cuatro: [],
+                semana_cinco: [],
+                semana_seis: [],
             }
         },
         created() {
             this.cita.requisitos = this.tramiteSeleccionado.requisitos
-            console.log("tramite: ", this.tramiteSeleccionado)
-            // prueba
+            this.cita.requisitos = this.tramiteSeleccionado.requisitos
+            this.cita.requisitos.forEach(element => {
+                element.checked = '0'
+            })
+            this.getCalendar()
         },
         computed: {
             tramiteSeleccionado() {
                 return this.$store.getters.getTramiteSeleccionado
+            }
+        },
+        watch: {
+            'cita.centro_atencion': function () {
+                this.tramiteSeleccionado.centrosAtencion.forEach(e => {
+                    if (e.id == this.cita.centro_atencion) {
+                        this.resumen_cita.centro_atencion = e.nombre
+                    }
+                })
+            },
+            'cita.hora_cita': function () {
+                this.horarios_disponibles.forEach(e => {
+                    // if (e.id == this.cita.hora_cita) {
+                    //     this.resumen_cita.hora_cita = e.hora
+                    // }
+                    this.resumen_cita.hora_cita = `${this.cita.hora_cita} Horas`
+                })
             }
         },
         methods: {
@@ -613,32 +423,481 @@
             },
             volverInicio() {
                 this.$router.push('/')
+                this.cita.requisitos = []
             },
             seleccionarCentroAtencion() {
-                console.log("asdfasdf")
+                // this.tramiteSeleccionado.centrosAtencion.forEach(e => {
+                //     console.log("en foreach")
+                //     console.log("e.id: ", e.id)
+                //     console.log("e.nombre: ", e.nombre)
+                //     console.log("this.cita.centro: ", this.cita.centro_atencion)
+                //     if (e.id == this.cita.centro_atencion) {
+                //         this.resumen_cita.centro_atencion = e.nombre
+                //     }
+                // })
+                // this.mostrarPaso2 = true
+                // this.panel = [1]
+                // let tbodyRef = document.getElementById('calendar').getElementsByTagName('tbody')[0]
+                // let tbodyRef = document.getElementById('calendar')
+                // console.log("asdf", tbodyRef)
+
+                // let row_semana_uno = tbodyRef.insertRow()
+                // let cel_dia = row_semana_uno.insertCell()
+                // let text = document.createTextNode('1')
+                // cel_dia.appendChild(text)
             },
-            async validar() {
-                this.loading = true
-                const { valid } = await this.$refs.form.validate()
-                if (valid) {
-                    try {
-                        let response = await axios.post('/api/login', this.form)
-                        if (response.status === 200) {
-                            if (response.data.status === "ok") {
-                                this.$store.dispatch('setToken', response.data.data.token)
-                                this.$router.push({name: 'Dashboard'})
-                            } else {
-                                errorSweetAlert(response.data.message)
-                            }
+            async getCalendar() {
+                try {
+                    let response = await axios.get('/api/calendario-citas')
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.semana_uno = response.data.calendario_citas.semana_uno
+                            this.semana_dos = response.data.calendario_citas.semana_dos
+                            this.semana_tres = response.data.calendario_citas.semana_tres
+                            this.semana_cuatro = response.data.calendario_citas.semana_cuatro
+                            this.semana_cinco = response.data.calendario_citas.semana_cinco
+                            this.semana_seis = response.data.calendario_citas.semana_seis
+
+                            let tbodyCalendar = document.getElementById('calendar').getElementsByTagName('tbody')[0]
+                            
+                            let row_semana_uno = tbodyCalendar.insertRow()
+                            row_semana_uno.id = 'row_semana_uno'
+                            this.semana_uno.forEach(e => {
+                                let cel_dia = row_semana_uno.insertCell()
+                                let text = document.createTextNode(`${e.dia}`)
+                                cel_dia.style.border = '1px solid #6a73a0'
+                                cel_dia.style.height = '35px'
+                                if (e.dia_disponible == true) {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                } else if (e.dia_sin_servicio == false) {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                if (e.dia_sin_servicio == true) {
+                                    cel_dia.style.backgroundColor = '#B20202'
+                                    cel_dia.style.color = '#ffffff'
+                                }
+                                cel_dia.appendChild(text)
+                            })
+
+                            let row_semana_dos = tbodyCalendar.insertRow()
+                            row_semana_dos.id = 'row_semana_dos'
+                            this.semana_dos.forEach(e => {
+                                let cel_dia = row_semana_dos.insertCell()
+                                let text = document.createTextNode(`${e.dia}`)
+                                cel_dia.style.border = '1px solid #6a73a0'
+                                cel_dia.style.height = '35px'
+                                if (e.dia_disponible == true) {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                } else if (e.dia_sin_servicio == false) {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                if (e.dia_sin_servicio == true) {
+                                    cel_dia.style.backgroundColor = '#B20202'
+                                    cel_dia.style.color = '#ffffff'
+                                }
+                                cel_dia.appendChild(text)
+                            })
+
+                            let row_semana_tres = tbodyCalendar.insertRow()
+                            row_semana_tres.id = 'row_semana_tres'
+                            this.semana_tres.forEach(e => {
+                                let cel_dia = row_semana_tres.insertCell()
+                                let text = document.createTextNode(`${e.dia}`)
+                                cel_dia.style.border = '1px solid #6a73a0'
+                                cel_dia.style.height = '35px'
+                                if (e.dia_disponible == true) {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                } else if (e.dia_sin_servicio == false) {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                if (e.dia_sin_servicio == true) {
+                                    cel_dia.style.backgroundColor = '#B20202'
+                                    cel_dia.style.color = '#ffffff'
+                                }
+                                cel_dia.appendChild(text)
+                            })
+
+                            let row_semana_cuatro = tbodyCalendar.insertRow()
+                            row_semana_cuatro.id = 'row_semana_cuatro'
+                            this.semana_cuatro.forEach(e => {
+                                let cel_dia = row_semana_cuatro.insertCell()
+                                let text = document.createTextNode(`${e.dia}`)
+                                cel_dia.style.border = '1px solid #6a73a0'
+                                cel_dia.style.height = '35px'
+                                if (e.dia_disponible == true) {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                } else if (e.dia_sin_servicio == false) {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                if (e.dia_sin_servicio == true) {
+                                    cel_dia.style.backgroundColor = '#B20202'
+                                    cel_dia.style.color = '#ffffff'
+                                }
+                                cel_dia.appendChild(text)
+                            })
+
+                            let row_semana_cinco = tbodyCalendar.insertRow()
+                            row_semana_cinco.id = 'row_semana_cinco'
+                            this.semana_cinco.forEach(e => {
+                                let cel_dia = row_semana_cinco.insertCell()
+                                let text = document.createTextNode(`${e.dia}`)
+                                
+                                cel_dia.appendChild(text)
+
+                                cel_dia.style.border = '1px solid #6a73a0'
+                                cel_dia.style.height = '35px'
+                                if (e.dia_disponible == true) {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                    cel_dia.onclick = function () {
+                                        document.getElementById('span_dia_cita').innerText = `${e.fecha_formateada}`
+                                        document.getElementById('input_aux_dia_cita').value = e.fecha_completa
+                                        document.getElementById('input_aux_fecha_formateada').value = e.fecha_formateada
+                                    }
+                                } else if (e.dia_sin_servicio == false) {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                if (e.dia_sin_servicio == true) {
+                                    cel_dia.style.backgroundColor = '#B20202'
+                                    cel_dia.style.color = '#ffffff'
+                                }
+                            })
+
+                            let row_semana_seis = tbodyCalendar.insertRow()
+                            row_semana_seis.id = 'row_semana_seis'
+                            this.semana_seis.forEach(e => {
+                                let cel_dia = row_semana_seis.insertCell()
+                                let text = document.createTextNode(`${e.dia}`)
+                                cel_dia.style.border = '1px solid #6a73a0'
+                                cel_dia.style.height = '35px'
+                                if (e.dia_disponible == true) {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                    // cel_dia.addEventListener('click', this.seleccionarDia(e))
+                                } else if (e.dia_sin_servicio == false) {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                if (e.dia_sin_servicio == true) {
+                                    cel_dia.style.backgroundColor = '#B20202'
+                                    cel_dia.style.color = '#ffffff'
+                                }
+                                cel_dia.appendChild(text)
+                            })
                         } else {
-                            errorSweetAlert('Ocurrió un error')
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
-                    } catch (error) {
-                        errorSweetAlert('Ocurrió un error')
+                    } else {
+                        errorSweetAlert('Ocurrió un error al obtener el calendario de citas disponibles.')
                     }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al obtener el calendario de citas disponibles.')
                 }
-                this.loading = false
+            },
+            agendarCita() {
+                this.cita.dia_cita = document.getElementById('input_aux_dia_cita').value
+                this.cita.fecha_formateada = document.getElementById('input_aux_fecha_formateada').value
+                this.cita.tramite = this.tramiteSeleccionado.id
+                // if (valid) {
+                    Swal.fire({
+                        title: '¿Confirma para agendar la cita?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085D6',
+                        cancelButtonColor: '#D33',
+                        confirmButtonText: 'Si, agendar',
+                        cancelButtonText: 'Cancelar',
+                        showLoaderOnConfirm: true,
+                        preConfirm: async () => {
+                            try {
+                                let response = await axios.post('/api/citas/agendar-cita', this.cita)
+                                return response
+                            } catch (error) {
+                                errorSweetAlert('Ocurrió un error al agendar la cita.')
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (result.value.status === 200) {
+                                if (result.value.data.status === "ok") {
+                                    this.$store.commit('setCitaAgendada', result.value.data.cita_agendada)
+                                    this.$router.push('/confirmacion-cita')
+                                } else {
+                                    errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
+                                }
+                            } else {
+                                errorSweetAlert('Ocurrió un error al agendar la cita.')
+                            }
+                        }
+                    })
+                // }
             }
         },
     })
 </script>
+
+<style scoped>
+    .contenedor {
+        padding: 0!important;
+    }
+
+    .contenedor-uno {
+        border-style: none solid solid none;
+        border-color: #adadad;
+        border-width: 2px;
+        padding: 0!important;
+        height: 100px;
+    }
+
+    .contenedor-dos {
+        border-style: none none solid none;
+        border-color: #adadad;
+        border-width: 2px;
+        padding: 0!important;
+        height: 100px;
+    }
+
+    .contenedor-tres {
+        border-style: none solid none none;
+        border-color: #adadad;
+        border-width: 2px;
+        padding: 0!important;
+    }
+
+    .contenedor-cuatro {
+        padding: 0!important;
+    }
+
+    .scale-logo-defensoria {
+        transform: scale(1.8);
+    }
+
+    .titulo_tipo_tramite {
+        font-size: 20px;
+        font-weight: bold;
+        font-family: 'Lato', sans-serif;
+    }
+
+    .espacio-blanco {
+        height: 93px;
+    }
+
+    .titulo-resumen-cita {
+        font-size: 40;
+        font-weight: bold;
+    }
+
+    .campo-obligatorio {
+        color: red;
+    }
+
+    .titulo-modal-requisitos {
+        font-family: 'Lato', sans-serif;
+        font-weight: bold;
+        font-size: 18pt;
+        text-align: center;
+
+    }
+
+    .first-line {
+        background-color: #6a73a0;
+        height: 3px;
+        width: 560px;
+    }
+
+    .texto-saludo {
+        font-family: 'Lato', sans-serif;
+        font-size: 14pt;
+        margin-bottom: 8px;
+    }
+
+    .second-line {
+        background-color: #a4bc4b;
+        height: 3px;
+        width: 560px;;
+    }
+
+    .texto-instrucciones {
+        font-family: 'Lato', sans-serif;
+        font-size: 12pt;
+        margin-bottom: 4px
+    }
+
+    .encabezado-tabla-requisitos {
+        background-color: #6a73a0;   
+    }
+
+    .texto-encabezado-tabla-requisitos {
+        color: white;
+        font-family: 'Lato', sans-serif;
+        font-weight: 900;
+        font-size: 13pt;
+    }
+
+    .texto-requisito-tabla {
+        font-family: 'Lato', sans-serif;
+        font-size: 12pt;
+    }
+
+    .ultimos-textos-modal-requisitos {
+        font-family: 'Lato', sans-serif;
+        font-size: 12pt;
+        margin-top: 10px;
+    }
+
+    .texto-click-aqui {
+        color: #6a73a0;
+    }
+
+    .texto-click-aqui:hover {
+        cursor: pointer;
+    }
+
+    .texto-requisitos-obligatorios {
+        color: #6a73a0;
+    }
+
+    .texto-faltan-requisitos-obligatorios {
+        color: red;
+        font-weight: bold;
+    }
+
+    .third-line {
+        background-color: #a4bc4b;
+        height: 2px;
+        width: 560px;
+        margin-bottom: 6px;
+        margin-top: 6px;
+    }
+
+    .boton-cancelar {
+        background-color: #6a73a0;
+        color: white;
+        font-family: 'Lato', sans-serif;
+        font-size: 12pt;
+        font-weight: bold;
+        padding: 6px 10px;
+        margin-right: 15px;
+        border-radius: 20px;
+    }
+
+    .boton-aceptar {
+        background-color: #a4bc4b;
+        color: white;
+        font-family: 'Lato', sans-serif;
+        font-size: 12pt;
+        font-weight: bold;
+        padding: 6px 10px;
+        margin-left: 15px;
+        border-radius: 20px;
+    }
+
+    .titulo-nombre-tramite {
+        font-family: 'Lato', sans-serif;
+        font-size: 30pt;
+        font-weight: 900;
+        line-height: 40px;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .texto-estatico-resumen-cita {
+        font-family: 'Lato', sans-serif;
+        font-weight: bold;
+        font-size: 16pt;
+    }
+
+    .texto-dinamico-resumen-cita {
+        font-family: 'Lato', sans-serif;
+        font-weight: 900;
+        font-size: 10pt;
+        color: #8c8c8c;
+    }
+    
+    .texto-pasos {
+        font-family: 'Lato', sans-serif;
+        font-size: 14pt;
+        font-weight: 900;
+    }
+
+    .texto-nombre-paso {
+        font-family: 'Lato', sans-serif;
+        font-size: 16pt;
+        font-weight: 300;
+    }
+
+    .texto-ubicacion-centros {
+        font-family: 'Lato', sans-serif;
+        font-size: 10pt;
+        background-color: #e5e5e5;
+        padding: 7px 10px 7px 10px;
+        border-radius: 5px;
+    }
+
+    .calendar-header {
+        border-style: solid;
+        border-color: #6a73a0;
+        border-width: 2px;
+    }
+
+    .calendar-month {
+        font-family: 'Lato', sans-serif;
+        font-size: 14pt;
+        font-weight: bold;
+        text-transform: uppercase;
+        width: 70%;
+    }
+
+    .previous-month {
+        width: 15%;
+    }
+
+    .next-month {
+        width: 15%;
+    }
+
+    .tr-header {
+        height: 40px;
+    }
+
+    .calendar-day-name {
+        width: 14.28%;
+        text-transform: uppercase;
+        background-color: #6a73a0;
+        color: white;
+        font-family: 'Lato', sans-serif;
+        font-weight: 100;
+        font-size: 10pt;
+        padding: 2px 2px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #8c8c8c;
+    }
+
+    .celDia {
+        color: white;
+        background-color: black;
+    }
+</style>
