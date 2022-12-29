@@ -62,12 +62,12 @@ class TramiteSeeder extends Seeder
         ]);
         DB::table('tramites')->insert([
             'nombre' => 'Juicio de rectificación de actas de nacimiento',
-            'descripcion' => 'La rectificación de acta del Registro Civil en Puebla, es la enmienda que se solicita cuando un acta del Registro Civil presenta algún error que afecta de manera directa la personalidad jurídica del titular del documento; variando algún nombre u otro dato esencial que afecte el estado civil, la filiación, la nacionalidad, el sexo o la identidad de la persona',
+            'descripcion' => 'La rectificación de acta del Registro Civil en Puebla, es la enmienda que se solicita cuando un acta del Registro Civil presenta algún error que afecta de manera directa la personalidad jurídica del titular del documento; variando algún nombre u otro dato esencial que afecte el estado civil, la filiación, la nacionalidad, el sexo o la identidad de la persona.',
             'tipo_tramite_id' => 1,
         ]);
         DB::table('tramites')->insert([
             'nombre' => 'Información testimonial AD-PERPETUAM de dependencia económica.',
-            'descripcion' => 'La rectificación de acta del Registro Civil en Puebla, es la enmienda que se solicita cuando un acta del Registro Civil presenta algún error que afecta de manera directa la personalidad jurídica del titular del documento; variando algún nombre u otro dato esencial que afecte el estado civil, la filiación, la nacionalidad, el sexo o la identidad de la persona',
+            'descripcion' => 'Es un Acto de jurisdicción voluntaria que tiene por objeto llevar a cabo una averiguación o prueba destinada a justificar algún hecho o acreditar un derecho, para que en lo sucesivo conste inequívocamente, respecto de la dependencia económica.',
             'tipo_tramite_id' => 1,
         ]);
         DB::table('tramites')->insert([
