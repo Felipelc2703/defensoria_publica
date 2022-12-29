@@ -47,6 +47,7 @@ Route::get('/catalogos/requisitos', [RequisitoController::class, 'getRequisitos'
 Route::post('/requisito/guardar-nuevo', [RequisitoController::class, 'guardarNuevoRequisito']);
 Route::post('/requisito/actualizar-requisito', [RequisitoController::class, 'actualizarRequisito']);
 Route::post('/requisito/eliminar-requisito', [RequisitoController::class, 'eliminarRequisito']);
+
 Route::get('/tramites-citas', [TramiteController::class, 'getTramitesCitas']);
 Route::get('/calendario-citas', [TramiteController::class, 'getCalendarioCitas']);
 Route::post('/citas/agendar-cita', [CitaController::class, 'agendarCita']);
@@ -66,6 +67,8 @@ Route::post('/usuarios/agregar-nota', [NotaController::class, 'guardarNuevaNota'
 Route::post('/usuarios/actualizar-nota', [NotaController::class, 'actualizarNota']);
 Route::post('/usuarios/eliminar-nota', [NotaController::class, 'eliminarNota']);
 
+Route::post('/tramite/guardar-nuevo', [TramiteController::class, 'guardarNuevoTramite']);
+Route::post('/tramite/actualizar-tramite', [TramiteController::class, 'actualizarTramite']);
 
 
 // Route::post('agregar-usuario', 'UserController@store');

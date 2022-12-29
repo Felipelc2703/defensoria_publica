@@ -40,7 +40,8 @@ class UserController extends Controller
             ], 200);
         }
     }
-    public function guardarNuevoUsuario(Request $request)
+    
+    public function store(Request $request)
     {
         $exito = false;
 
@@ -94,6 +95,7 @@ class UserController extends Controller
             ], 200);
         }
     }
+
     public function actualizarUsuario(Request $request)
     {
         $exito = false;
@@ -147,6 +149,7 @@ class UserController extends Controller
             ], 200);
         }
     }
+    
     public function eliminarUsuario(Request $request)
     {
         $exito = false;
