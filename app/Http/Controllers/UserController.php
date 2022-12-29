@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+
+    public fucntion getUsuarios
     public function store(Request $request)
     {
         try {

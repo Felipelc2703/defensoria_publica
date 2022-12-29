@@ -16,6 +16,7 @@ import store from './store'
 import CatalogoRequisitos from './pages/CatalogoRequisitos.vue'
 import CatalogoUsuarios from './pages/CatalogoUsuarios.vue'
 import CatalogoTramites from './pages/CatalogoTramites.vue'
+import AgregarHorario from './pages/AgregarHorario.vue'
 
 const routes = [
     {
@@ -125,6 +126,14 @@ const routes = [
         path: '/catalogo-tramites',
         name: 'CatalogoTramites',
         component: CatalogoTramites,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/agregar-horario',
+        name: 'AgregarHorario',
+        component: AgregarHorario,
         meta: {
             requiresAuth: true
         }

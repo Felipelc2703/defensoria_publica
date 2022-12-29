@@ -14,6 +14,7 @@ class CentroAtencionController extends Controller
             $centros = CentroAtencion::where('status', 1)->get();
              
             $array_centros = array();
+            
             foreach ($centros as $centro) {
                 $objectCentro = new \stdClass();
                 $objectCentro->id = $centro->id;

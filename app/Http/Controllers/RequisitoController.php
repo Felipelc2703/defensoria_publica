@@ -15,7 +15,7 @@ class RequisitoController extends Controller
             $requisitos = Requisito::where('status',1)->get();
 
             $arrayRequisitos = array();
-            foreach ($requisitos as $requsito) 
+            foreach($requisitos as $requsito) 
             {
                 $objetoRequisito = new \stdClass();
                 $objetoRequisito->id = $requsito->id;

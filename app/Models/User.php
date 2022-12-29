@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function centroAtencion()
+    {
+        return $this->belongsTo(CentroAtencion::class, 'centro_atencion_id');
+    }
 }
