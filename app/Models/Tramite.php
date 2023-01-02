@@ -18,4 +18,9 @@ class Tramite extends Model
     {
         return $this->belongsToMany(Requisito::class, 'requisito_tramite', 'tramite_id', 'requisito_id')->withPivot('obligatorio');
     }
+
+    public function centrosAtencion()
+    {
+        return $this->belongsToMany(CentroAtencion::class, 'tramite_centro', 'tramite_id', 'centro_atencion_id');
+    }
 }

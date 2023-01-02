@@ -250,7 +250,7 @@
 
 <script>
     import { defineComponent } from "vue"
-import { errorSweetAlert } from "../helpers/sweetAlertGlobals"
+    import { errorSweetAlert } from "../helpers/sweetAlertGlobals"
 
     export default defineComponent({
         name: 'app',

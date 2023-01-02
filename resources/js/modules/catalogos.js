@@ -8,6 +8,7 @@ export default {
         tramites_tipo_2: [],
         tramites_tipo_3: [],
         tramites_tipo_4: [],
+        dias: [],
     },
     getters: {
         getCatalogoCentrosAtencion(state) {
@@ -34,6 +35,9 @@ export default {
         },
         getCatalogoTramitesTipo4(state) {
             return state.tramites_tipo_4
+        },
+        getDias(state) {
+            return state.dias
         }
     },
     mutations: {
@@ -60,6 +64,9 @@ export default {
         },
         setCatalogoTramitesTipo4(state, payload) {
             state.tramites_tipo_4 = payload
+        },
+        setDias(state, payload) {
+            state.dias = payload
         }
     }
 }

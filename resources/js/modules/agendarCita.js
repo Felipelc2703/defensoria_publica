@@ -2,6 +2,7 @@ export default {
     state: {
         tramiteSeleccionado: null,
         asuntoStore: null,
+        citaAgendada: null,
     },
     getters: {
         getTramiteSeleccionado(state) {
@@ -9,6 +10,9 @@ export default {
         },
         getAsuntoStore(state) {
             return state.asuntoStore
+        },
+        getCitaAgendada(state) {
+            return state.citaAgendada
         }
     },
     mutations: {
@@ -17,6 +21,9 @@ export default {
         },
         setAsuntoStore(state, payload) {
             state.asuntoStore = payload
+        },
+        setCitaAgendada(state, payload) {
+            state.citaAgendada = payload
         }
     }
 }

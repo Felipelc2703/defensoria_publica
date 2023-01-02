@@ -60,7 +60,7 @@
                                             </v-row>
                                             <v-card-actions>
                                                 <v-spacer></v-spacer>
-                                                <button class="boton-agendar">Agendar</button>
+                                                <button class="boton-agendar" @click="agendar(tipo_cita)">Agendar</button>
                                                 <!-- <v-btn
                                                     rounded
                                                     variant="flat"
@@ -147,6 +147,15 @@
                 }
                 this.showFirstOptions = false
                 this.showSecondOptions = true
+                
+                // TODO: Pendiente cambiar color de icono
+                // let icon_panels = document.getElementsByClassName('v-expansion-panel-title__icon').length
+                // console.log("icon: ", icon_panels)
+                // console.log("lengt: ", icon_panels.length)
+                // for (let index = 0; index < icon_panels.length; index++) {
+                //     console.log("cambiando estilo")
+                //     icon_panels[index].style.color = 'white'
+                // }
             },
             volverFirstOptions() {
                 this.showSecondOptions = false
@@ -225,7 +234,7 @@
         font-size: 12pt;
     }
 
-    .v-expansion-panel-title__icon  i{
-        color: white;
+    .v-expansion-panel-title__icon {
+        color: white !important;
     }
 </style>

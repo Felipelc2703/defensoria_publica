@@ -11,6 +11,7 @@ import edituser from './pages/edituser.vue'
 import createuser from './pages/createuser.vue'
 import ReporteGraf from './pages/ReporteGraf.vue'
 import Reportes from './pages/Reportes.vue'
+import ConfirmacionCita from './pages/ConfirmacionCita.vue'
 
 import store from './store'
 import CatalogoRequisitos from './pages/CatalogoRequisitos.vue'
@@ -137,6 +138,11 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: '/confirmacion-cita',
+        name: 'ConfirmacionCita',
+        component: ConfirmacionCita,
     },
 ]
 
