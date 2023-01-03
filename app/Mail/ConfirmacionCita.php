@@ -3,26 +3,29 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ConfirmacionCita extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $cita;
+    public $pdf;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($cita)
+    public function __construct($cita, $pdf)
     {
         $this->cita = $cita;
+        $this->pdf = $pdf;
     }
 
     /**
@@ -56,6 +59,9 @@ class ConfirmacionCita extends Mailable
      */
     public function attachments()
     {
-        return [];
+        return [
+            Attachment::fromData(fn () => $this->pdf, 'Confirmacion_Cita.pdf')
+                ->withMime('application/pdf'),
+        ];
     }
 }

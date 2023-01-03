@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Citas en Línea</title>
-
     <style>
         .titulo-confirmacion {
             font-family: 'Lato', sans-serif;
@@ -53,21 +52,31 @@
         }
 
         .first-line {
-            background-color: #b1bced;
-            height: 3px;
+            border-bottom: 0.2cm;
+        }
+
+        .second-line {
+            border-bottom: 0.5px;
         }
     </style>
 </head>
 <body>
+    <br>
+    <br>
+    <br>
+    <br>
     <h5 class="titulo-confirmacion">Confirmación de Cita</h5>
     <p><span class="formato-texto">Información Importante</span></p>
-    <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{$cita->nombre}}</span> su cita para el trámite <span class="texto-tramite">{{$cita->tramite}}</span> ha quedado agendada para el {{$cita->fecha}}, a las {{$cita->hora}} horas.</p>
-    <p class="texto-cita">Por lo que reiteramos debe presentarse en el Centro de Atención de <span class="centro-atencion-cita">{{$cita->centro_atencion}}</span> ubicado en <span class="direccion-cita">{{$cita->direccion_centro_atencion}}</span>, en la fecha y hora antes mencionada.</p>
+    <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{$citaAgendada->nombre}}</span> su cita para el trámite <span class="texto-tramite">{{$citaAgendada->tramite}}</span> ha quedado agendada para el {{$citaAgendada->fecha}}, a las {{$citaAgendada->hora}} horas.</p>
+    <p class="texto-cita">Por lo que reiteramos debe presentarse en el Centro de Atención de <span class="centro-atencion-cita">{{$citaAgendada->centro_atencion}}</span> ubicado en <span class="direccion-cita">{{$citaAgendada->direccion_centro_atencion}}</span>, en la fecha y hora antes mencionada.</p>
     <br>
+    <div class="first-line"></div>
     <p>Le recordamos que el <span class="texto-folio">folio</span> de su Cita es:</p>
     <br>
     <br>
-    <h4 class="folio-cita">{{$cita->folio}}</h4>
-    <div class="first-line"></div>
+    <h4 class="folio-cita">{{$citaAgendada->folio}}</h4>
+    <div class="second-line"></div>
+    <br>
+    <p class="texto-cita">Notas:</p>
 </body>
 </html>

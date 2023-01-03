@@ -7,8 +7,6 @@ import CrearCita from './pages/CrearCita.vue'
 import BuscarFolio from './pages/BuscarFolio.vue'
 import CentrosAtencion from './pages/CentrosAtencion.vue'
 import confwhats from './pages/confwhats.vue'
-import edituser from './pages/edituser.vue'
-import createuser from './pages/createuser.vue'
 import ReporteGraf from './pages/ReporteGraf.vue'
 import Reportes from './pages/Reportes.vue'
 import ConfirmacionCita from './pages/ConfirmacionCita.vue'
@@ -17,6 +15,8 @@ import store from './store'
 import CatalogoRequisitos from './pages/CatalogoRequisitos.vue'
 import CatalogoUsuarios from './pages/CatalogoUsuarios.vue'
 import CatalogoTramites from './pages/CatalogoTramites.vue'
+import CatalogoNotas from './pages/CatalogoNotas.vue'
+
 import AgregarHorario from './pages/AgregarHorario.vue'
 
 const routes = [
@@ -76,22 +76,6 @@ const routes = [
         }
     },
     {
-        path: '/edit-user',
-        name: 'edituser',
-        component: edituser,
-        meta: {
-            requiresAuth: false
-        }
-    },
-    {
-        path: '/create-user',
-        name: 'createuser',
-        component: createuser,
-        meta: {
-            requiresAuth: false
-        }
-    },
-    {
         path: '/reporte-graficas',
         name: 'ReporteGraf',
         component: ReporteGraf,
@@ -130,6 +114,16 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: '/confirmacion-cita',
+        name: 'ConfirmacionCita',
+        component: ConfirmacionCita,
+    },
+    {
+        path: '/catalogo-notas',
+        name: 'CatalogoNotas',
+        component: CatalogoNotas,
     },
     {
         path: '/agregar-horario',

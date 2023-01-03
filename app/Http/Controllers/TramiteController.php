@@ -364,8 +364,7 @@ class TramiteController extends Controller
         }
     }
 
-
-    public function actualizarTramite(Request $request)
+    public function guardarNuevoTramite(Request $request)
     {
 
         $exito = false;
@@ -403,7 +402,7 @@ class TramiteController extends Controller
             $exito = false;
             return response()->json([
                 "status" => "error",
-                "message" => "Ocurrió un error al actualizar tramite.",
+                "message" => "Ocurrió un error guardar nuevo tramite",
                 "error" => $th->getMessage(),
                 "location" => $th->getFile(),
                 "line" => $th->getLine(),
@@ -412,7 +411,7 @@ class TramiteController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Tramite actualizado con exito.",
+                "message" => "Nuevo Tramite agregado con exito.",
                 "tramites" => $arrayTramites
             ], 200);
         }
@@ -545,9 +544,5 @@ class TramiteController extends Controller
             ], 200);
         }
 
-    }
-
-    public function formatearDia($dia,$mes,$anio)
-    {
     }
 }

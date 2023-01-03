@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             RequisitoSeeder::class,
             RequisitoTramiteSeeder::class,
             UserSeeder::class,
+            NotaSeeder::class,
         ]);
     }
 }

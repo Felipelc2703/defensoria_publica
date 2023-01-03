@@ -9,6 +9,9 @@ export default {
         tramites_tipo_3: [],
         tramites_tipo_4: [],
         dias: [],
+        usuarios:[],
+        roles:[],
+        notas:[],
     },
     getters: {
         getCatalogoCentrosAtencion(state) {
@@ -37,7 +40,17 @@ export default {
             return state.tramites_tipo_4
         },
         getDias(state) {
+            
             return state.dias
+        },
+        getCatalogoUsuarios(state) {
+            return state.usuarios
+        },
+        getCatalogoRoles(state) {
+            return state.roles
+        },
+        getCatalogoNotas(state) {
+            return state.notas
         }
     },
     mutations: {
@@ -67,6 +80,15 @@ export default {
         },
         setDias(state, payload) {
             state.dias = payload
+        },
+        setCatalogoUsuarios(state, payload){
+            state.usuarios = payload
+        },
+        setCatalogoRoles(state, payload){
+            state.roles = payload
+        },
+        setCatalogoNotas(state, payload){
+            state.notas = payload
         }
     }
 }
