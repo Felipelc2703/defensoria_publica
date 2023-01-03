@@ -75,6 +75,7 @@ class TramiteController extends Controller
                     $object3 = new \stdClass();
                     $object3->id = $centro->id;
                     $object3->nombre = $centro->nombre;
+                    $object3->direccion = $centro->direccion;
                     array_push($centros_atencion, $object3);
                 }
 
@@ -103,6 +104,17 @@ class TramiteController extends Controller
 
                 $object->requisitos = $requisitos;
 
+                $centros_atencion = array();
+                foreach ($tramite->centrosAtencion->where('status', 1) as $centro) {
+                    $object3 = new \stdClass();
+                    $object3->id = $centro->id;
+                    $object3->nombre = $centro->nombre;
+                    $object3->direccion = $centro->direccion;
+                    array_push($centros_atencion, $object3);
+                }
+
+                $object->centrosAtencion = $centros_atencion;
+
                 array_push($tramites_tipo_2, $object);
             }
 
@@ -125,6 +137,17 @@ class TramiteController extends Controller
                 }
 
                 $object->requisitos = $requisitos;
+
+                $centros_atencion = array();
+                foreach ($tramite->centrosAtencion->where('status', 1) as $centro) {
+                    $object3 = new \stdClass();
+                    $object3->id = $centro->id;
+                    $object3->nombre = $centro->nombre;
+                    $object3->direccion = $centro->direccion;
+                    array_push($centros_atencion, $object3);
+                }
+
+                $object->centrosAtencion = $centros_atencion;
 
                 array_push($tramites_tipo_3, $object);
             }
@@ -149,6 +172,17 @@ class TramiteController extends Controller
 
                 $object->requisitos = $requisitos;
 
+                $centros_atencion = array();
+                foreach ($tramite->centrosAtencion->where('status', 1) as $centro) {
+                    $object3 = new \stdClass();
+                    $object3->id = $centro->id;
+                    $object3->nombre = $centro->nombre;
+                    $object3->direccion = $centro->direccion;
+                    array_push($centros_atencion, $object3);
+                }
+
+                $object->centrosAtencion = $centros_atencion;
+
                 array_push($tramites_tipo_4, $object);
             }
 
@@ -171,13 +205,16 @@ class TramiteController extends Controller
         }
     }
 
-    public function getCalendarioCitas()
+    public function getCalendarioCitas(Request $request)
     {
         try {
-            $days = Carbon::now()->month(12)->daysInMonth;
+            $year = $request->year;
+            $month = $request->mes;
+            $first = Carbon::createFromDate($year, $month, 1);
 
-            $first = Carbon::createFromDate(2022, 12, 1);
-            $last = Carbon::createFromDate(2022, 12, $days);
+            $days = $first->month($month)->daysInMonth;
+
+            $last = Carbon::createFromDate($year, $month, $days);
             $period = CarbonPeriod::create($first, $last);
 
             $semana_uno = array();
@@ -187,7 +224,6 @@ class TramiteController extends Controller
             $semana_cinco = array();
             $semana_seis = array();
 
-            // $contador = $first->dayOfWeek+1;
             $objectVacio = new \stdClass();
             $objectVacio->fecha_completa = '';
             $objectVacio->dia = '';
@@ -202,6 +238,33 @@ class TramiteController extends Controller
                 $object->dia = $date->day;
                 $object->numero_dia_semana = $date->dayOfWeek;
                 $object->fecha_formateada = $this->formatearFecha($date->dayOfWeek, $date->day, $date->month, $date->year);
+                
+                $object->horarios_disponibles = array(
+                    (object) [
+                        'id'=> 1,
+                        'hora'=> '09:30:00',
+                    ],
+                    (object) [
+                        'id'=> 2,
+                        'hora'=> '10:00:00',
+                    ],
+                    (object) [
+                        'id'=> 3,
+                        'hora'=> '10:30:00',
+                    ],
+                    (object) [
+                        'id'=> 4,
+                        'hora'=> '11:00:00',
+                    ],
+                    (object) [
+                        'id'=> 5,
+                        'hora'=> '11:30:00',
+                    ],
+                    (object) [
+                        'id'=> 6,
+                        'hora'=> '12:00:00',
+                    ],
+                );
 
                 if ($contador > 0 && $contador <= 7) {
                     $object->dia_disponible = false;

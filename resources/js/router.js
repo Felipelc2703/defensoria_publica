@@ -4,7 +4,7 @@ import Login from './pages/Login.vue'
 import Register from './pages/Register.vue'
 import Dashboard from './pages/Dashboard.vue'
 import CrearCita from './pages/CrearCita.vue'
-import BuscarFolio from './pages/BuscarFolio.vue'
+import ConfirmacionCitaBuscada from './pages/ConfirmacionCitaBuscada.vue'
 import CentrosAtencion from './pages/CentrosAtencion.vue'
 import confwhats from './pages/confwhats.vue'
 import ReporteGraf from './pages/ReporteGraf.vue'
@@ -55,9 +55,9 @@ const routes = [
         component: CrearCita,
     },
     {
-        path: '/buscar-folio',
-        name: 'BuscarFolio',
-        component: BuscarFolio,
+        path: '/confirmacion-cita-buscada',
+        name: 'ConfirmacionCitaBuscada',
+        component: ConfirmacionCitaBuscada,
     },
     {
         path: '/centros-atencion',

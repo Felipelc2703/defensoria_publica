@@ -35,25 +35,26 @@
                     </div>
                     <div class="col-sm-6 col-12">
                         <div class="div-buscar-cita">
-                            <v-form>
-                                <label class="label-buscar-cita" for="buscar-cita">Si usted ya cuenta con una cita y desea imprimir su confirmación o cancelarla, ingrese a continuación su número de folio.</label>
-                                <div class="row justify-content-between">
-                                    <div class="col-sm-9 col-12">
-                                        <div id="input_container">
-                                            <input id="buscar-cita" type="text" class="input-buscar-cita">
-                                            <img width="100" height="100" src="../../../public/images/lupa.png" id="input_img">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3 col-12">
-                                        <button class="button-buscar-cita">Buscar</button>
+                            <label class="label-buscar-cita" for="buscar-cita">Si usted ya cuenta con una cita y desea imprimir su confirmación o cancelarla, ingrese a continuación su número de folio.</label>
+                            <div class="row justify-content-between">
+                                <div class="col-sm-9 col-12">
+                                    <div id="input_container">
+                                        <input id="buscar-cita" type="text" class="input-buscar-cita" @keyup.enter="buscarCita()" v-model="buscar_cita.folio">
+                                        <img width="100" height="100" src="../../../public/images/lupa.png" id="input_img">
                                     </div>
                                 </div>
-                            </v-form>
+                                <div class="col-sm-3 col-12">
+                                    <button class="button-buscar-cita" @click="buscarCita()">Buscar</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="second-line"></div>
+            <div v-if="alert_cita_no_encontrada">
+                <v-alert @input="closeAlert" text type="warning" color="#f5e79e" density="comfortable">No se encontro ninguna cita registrada con ese número de folio.</v-alert>
+            </div>
         </div>
 
         <!-- <header class="background-header">
@@ -256,7 +257,10 @@
         name: 'app',
         data() {
             return {
-                
+                buscar_cita: {
+                    folio: '',
+                },
+                alert_cita_no_encontrada: false,
             }
         },
         created() {
@@ -291,7 +295,29 @@
             },
             irCatalogoUSuarios() {
                 this.$router.push('/catalogo-usuarios')
-            }
+            },
+            async buscarCita() {
+                try {
+                    let response = await axios.post('/api/buscar-cita', this.buscar_cita)
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.$store.commit('setCitaAgendada', response.data.cita)
+                            this.$router.push('/confirmacion-cita-buscada')
+                        } else if (response.data.status === "not-found") {
+                            this.alert_cita_no_encontrada = true
+                            setTimeout(() => {
+                                this.alert_cita_no_encontrada = false
+                            }, "5000")
+                        } else {
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        errorSweetAlert('Ocurrió un error al buscar cita.')
+                    }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al buscar cita.')
+                }
+            },
         }
     })
 </script>
