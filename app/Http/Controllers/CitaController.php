@@ -160,4 +160,134 @@ class CitaController extends Controller
         // PDF::Output(public_path($filename), 'I');
         PDF::Output(uniqid().'_Ficha.pdf', 'I');
     }
+
+    public function buscarCita(Request $request)
+    {
+        try {
+            $cita = Cita::where('folio', $request->folio)->where('status', 1)->first();
+
+            if ($cita) {
+                $citaAgendada = new \stdClass();
+                $citaAgendada->id = $cita->id;
+                $citaAgendada->folio = $cita->folio;
+                $citaAgendada->nombre = $cita->nombre;
+                $citaAgendada->tramite = $cita->tramite->nombre;
+                $citaAgendada->fecha = $cita->fecha_formateada;
+                $citaAgendada->hora = $cita->hora_cita;
+                $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
+                $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Cita encontrada con exito",
+                    "cita" => $citaAgendada
+                ], 200);
+            } else {
+                return response()->json([
+                    "status" => "not-found",
+                    "message" => "No se encontro ninguna cita registrada con ese número de folio.",
+                ], 200);
+            }
+
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $exito = false;
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al buscar cita.",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+    }
+
+    public function cancelarCita($id)
+    {
+        try {
+            $cita = Cita::find($id);
+            $cita->status = 3;
+            $cita->save();
+
+            return response()->json([
+                "status" => "ok",
+                "message" => "Cita cancelada con exito",
+            ], 200);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $exito = false;
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al buscar cita.",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+    }
+
+    public function imprimirCita($id)
+    {
+        $cita = Cita::find($id);
+
+        $citaAgendada = new \stdClass();
+        $citaAgendada->id = $cita->id;
+        $citaAgendada->folio = $cita->folio;
+        $citaAgendada->nombre = $cita->nombre;
+        $citaAgendada->tramite = $cita->tramite->nombre;
+        $citaAgendada->fecha = $cita->fecha_formateada;
+        $citaAgendada->hora = $cita->hora_cita;
+        $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
+        $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
+
+        // Custom Header
+        PDF::setHeaderCallback(function($pdf) {
+
+            // $pdf->SetY(10);
+
+            // Set font
+            $pdf->SetFont('helvetica', 'B', 11);
+            // Header
+            $header_image_file = public_path() . '/images/header_pdf.png';           
+            $pdf->Image($header_image_file, 0,0,0,0);
+
+        });
+
+        
+        // Custom Footer
+        PDF::setFooterCallback(function($pdf) {
+            
+            // Position at 15 mm from bottom
+            // $pdf->SetY(-15);
+            // Set font
+            $pdf->SetFont('helvetica', 'I', 8);
+            // footer
+            $footer_image_file = public_path() . '/images/footer_pdf.png';
+            $pdf->Image($footer_image_file, 0,280,0,0);
+            // Page number
+            //$pdf->Cell(0, 10, 'Página '.$pdf->getAliasNumPage().'/'.$pdf->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+
+        });
+
+        $view = View::make('pdf.pdf_confirmacion_cita', compact('citaAgendada'));
+        $html_content = $view->render();
+
+        PDF::SetTitle('Confirmación Cita');
+        
+        PDF::AddPage('P', 'A4');
+
+        PDF::writeHTML($html_content, true, false, true, false, '');
+
+        ob_end_clean();
+        
+        // $ficha_registro = PDF::Output(uniqid().'_Ficha.pdf', 'S');
+        // return $ficha_registro;
+        // PDF::Output(public_path($filename), 'I');
+        PDF::Output(uniqid().'_Ficha.pdf', 'I');
+
+        // return response()->json([
+        //     "asdf" => "aaaaa",
+        //     "re" => $cita
+        // ], 200);
+    }
 }

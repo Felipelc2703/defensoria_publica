@@ -7,12 +7,13 @@
         <div class="my-6 px-4 py-4">
             <v-form class="col-12" ref="formAgregarHorario">
                 <v-select
-                    v-model="horario.centroAtencion"
+                    v-model="horario.centro_atencion_id"
                     :items="centrosAtencion"
                     item-title="nombre"
                     item-value="id"
                     label="Seleccione el centro de atencion"
                     variant="solo"
+                    :rules="centroAtencionRules"
                 >
                 </v-select>
 
@@ -32,75 +33,164 @@
                     <v-radio
                         v-model="fecha"
                         label="Por Fechas"
+                        @click=activarRango()
                     >
                     </v-radio>
                 </v-row>
 
-                <!-- <v-form class="col-12" ref="formAgregarHorario"> -->
-                    <div v-if="mes == true">
-                        <v-select
-                            v-model="horario.mes"
-                            :items="meses"
-                            item-title="nombre"
-                            item-value="id"
-                            label="Seleccione el mes"
-                            variant="solo"
+                <div v-if="mes == true">
+                    <v-select
+                        v-model="horario.mes"
+                        :items="meses"
+                        item-title="nombre"
+                        item-value="id"
+                        label="Seleccione el mes"
+                        variant="solo"
+                        :rules="mesRules"
+                    >
+                    </v-select>
+                    <v-row>
+                        <v-col
+                            cols="2"
+                            sm="4"
                         >
-                        </v-select>
-                        <v-row>
-                            <v-col
-                                cols="2"
-                                sm="4"
+                            <v-label for="">Seleccione el horario de atención </v-label>
+                        </v-col>
+                        <v-col
+                            cols="2"
+                            sm="4"
+                        >
+                            <v-text-field
+                                v-model="horario.hora_inicio"
+                                variant="solo"
+                                type="time"
+                                label="Hora inicio"
+                                :rules="horaInicioRules"
                             >
-                                <v-label for="">Seleccione el horario de atención </v-label>
-                            </v-col>
-                            <v-col
-                                cols="2"
-                                sm="4"
+                            </v-text-field>
+                        </v-col>
+                        <v-col
+                            cols="2"
+                            sm="4"
+                        >
+                            <v-text-field
+                                v-model="horario.hora_fin"
+                                variant="solo"
+                                type="time" 
+                                label="Hora Fin" 
+                                :rules="horaFinRules"
                             >
-                                <v-text-field
-                                    v-model="horario.hora_inicio"
-                                    variant="solo"
-                                    type="time"
-                                    label="Hora inicio" 
-                                >
-                                </v-text-field>
-                            </v-col>
-                            <v-col
-                                cols="2"
-                                sm="4"
+                        </v-text-field>
+                        </v-col>
+                    </v-row>
+                    
+                    <v-text-field
+                        v-model="horario.duracion"
+                        variant="solo" 
+                        type="number" 
+                        label="Proporcione el tiempo de duracion de las citas en minutos"
+                        :rules="duracionRules"
+                    ></v-text-field>
+
+                    <v-spacer></v-spacer>
+                    <v-row>
+                        <v-col
+                            cols="12"
+                            sm="9"
+                        >
+                            <v-btn
+                                variant="flat"
+                                color="warning"
+                                @click="cargarDias()"
                             >
+                                Cargar Dias
+                            </v-btn>
+                        </v-col>
+                        <v-btn
+                            variant="flat"
+                            color="error"
+                            @click="guardarHorarios()"
+                        >
+                            Guardar Horarios
+                        </v-btn>
+                    </v-row>
+                </div>
+
+                <div v-if="fecha">
+                    <!-- por fechas -->
+                    <v-row class="mt-4">
+                        <div class="col-sm-6 col-12">
+                            <v-text-field
+                                v-model="horario.fecha_inicio"
+                                variant="solo" 
+                                type="date" 
+                                label="Selecciones la fecha inicial"
+                                :rules="fechaInicio"
+                            ></v-text-field>
+                        </div>
+
+                        <div class="col-sm-6 col-12">
+                            <v-text-field
+                                v-model="horario.fecha_fin"
+                                variant="solo" 
+                                type="date" 
+                                label="Selecciones la fecha final"
+                                :rules="fechaInicio"
+                            ></v-text-field>
+                        </div>
+                    </v-row>
+
+                    <v-row class="mt-6">
+                        <div class="col-sm-4 col-12">
+                            <v-label for="">Seleccione el horario de atención </v-label>
+                        </div>
+
+                        <div class="col-sm-4 col-12">
+                            <v-text-field
+                                v-model="horario.hora_inicio"
+                                variant="solo"
+                                type="time"
+                                label="Hora inicio"
+                                :rules="horaInicioRules"
+                            >
+                            </v-text-field>
+                        </div>
+                        
+                        <div class="col-sm-4 col-12">
                                 <v-text-field
                                     v-model="horario.hora_fin"
                                     variant="solo"
                                     type="time" 
                                     label="Hora Fin" 
+                                    :rules="horaFinRules"
                                 >
                             </v-text-field>
-                            </v-col>
-                        </v-row>
-                        
-                        <v-text-field
-                            v-model="horario.duracion"
-                            variant="solo" 
-                            type="number" 
-                            label="Proporcione el tiempo de duracion de las citas en minutos"
-                        ></v-text-field>
+                        </div>
+                    </v-row>
 
-                        <v-spacer></v-spacer>
-                        <v-row>
-                            <v-col
-                                cols="12"
-                                sm="9"
+                    <v-row class="mt-4">
+                        <div class="col-sm-12 col-12">
+                            <v-text-field
+                                v-model="horario.duracion"
+                                variant="solo" 
+                                type="number" 
+                                label="Proporcione el tiempo de duracion de las citas en minutos"
+                                :rules="duracionRules"
+                            ></v-text-field>
+                        </div>
+                    </v-row>
+                    <v-spacer></v-spacer>
+                    <v-row class="mt-4">
+                        <div class="col-sm-6 col-12">
+                            <v-btn
+                                variant="flat"
+                                color="warning"
+                                @click="cargarDias()"
                             >
-                                <v-btn
-                                    variant="flat"
-                                    color="warning"
-                                    @click="cargarDias()"
-                                >
-                                    Cargar Dias
-                                </v-btn>
-                            </v-col>
+                                Cargar Dias
+                            </v-btn>
+                        </div>
+                        <div class="col-sm-6 col-12">
                             <v-btn
                                 variant="flat"
                                 color="error"
@@ -108,37 +198,42 @@
                             >
                                 Guardar Horarios
                             </v-btn>
-                        </v-row>
-                    </div>
-                <!-- </v-form> -->
+                        </div>
+                    </v-row>
+                    
+                  
 
-                <div class="my-6 px-4 py-4" v-if="cargaDias">
-                    <EasyDataTable
-                        class="mb-6"
-                        :headers="headers"
-                        :items="dias"
-                        alternating
-                        > 
-                        <template #item-inhabil="dia">
-                            <v-checkbox
-                                @click=checkinhabil(dia)  
-                            >
-                            </v-checkbox>
-                        </template>
-
-                        <template #item-actions="dia">
-                            <v-icon 
-                            title="Editar Tramite"
-                            @click="editarHorario(dia)"
-                            class="mr-1"
-                            >
-                                mdi-text-box-edit-outline
-                            </v-icon>
-                        </template>
-
-                    </EasyDataTable>
                 </div>
             </v-form>
+           
+            <div class="my-6 px-4 py-4" v-if="cargaDias">
+                <EasyDataTable
+                    class="mb-6"
+                    :headers="headers"
+                    :items="dias"
+                    alternating
+                    > 
+                    <template #item-inhabil="dia">
+                        <v-checkbox
+                            v-model="dia.inhabil"
+                            @click=checkinhabil(dia)  
+                        >
+                        </v-checkbox>
+                    </template>
+
+                    <template #item-actions="dia">
+                        <v-icon 
+                        title="Editar Tramite"
+                        @click="editarHorario(dia)"
+                        class="mr-1"
+                        >
+                            mdi-text-box-edit-outline
+                        </v-icon>
+                    </template>
+
+                </EasyDataTable>
+            </div>
+            
 
             <v-dialog
                 v-model="dialogEditarDia"
@@ -270,7 +365,7 @@
     import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
 
     export default defineComponent({
-        name:'catalogo-tramites',
+        name:'agregar-horario',
         data() {
             return { 
                 loading: false,
@@ -279,12 +374,17 @@
                 cargaDias: false,
                 dialogEditarDia : false,
                 horario: {
+                    centro_atencion_id: '',
                     mes: '',
                     hora_inicio: '',
                     hora_fin: '',
                     duracion: '',
                     inhabil: false,
                     dias: [],
+                    fecha_inicio: '',
+                    fecha_fin: '',
+                    pmes:false,
+                    pfecha: false,
                 },
                 editar: {
                     id: null, 
@@ -333,6 +433,22 @@
                         text: 'Editar', value:'actions'
                     }
                 ],
+                centroAtencionRules: [
+                    v => !!v || 'El campo de centro de atención es requerido'
+                ],
+                mesRules: [
+                    v => !!v || 'El campo mes es requerido'
+                ],
+                horaInicioRules: [
+                    v => !!v || 'El campo de horario inicio es requerido'
+                ],
+                horaFinRules: [
+                    v => !!v || 'El campo de horario fin es requerido'
+                ],
+                duracionRules: [
+                    v => !!v || 'El campo tiempo de duracion es requerido'
+                ],
+
             }
         },
         created() {
@@ -355,15 +471,58 @@
             },
         },
         methods: {
+            async guardarHorarios() {
+                const { valid } = await this.$refs.formAgregarHorario.validate()
+                this.horario.dias = this.dias
+                if (valid) {
+                    Swal.fire({
+                        title: '¿Guardar dias?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085D6',
+                        cancelButtonColor: '#D33',
+                        confirmButtonText: 'Si, guardar',
+                        cancelButtonText: 'Cancelar',
+                        showLoaderOnConfirm: true,
+                        preConfirm: async () => {
+                            try {
+                                let response = await axios.post('/api/horarios/guardar-dias', this.horario)
+                                return response
+                            } catch (error) {
+                                errorSweetAlert('Ocurrió un error al guardar dias.')
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (result.value.status === 200) {
+                                if (result.value.data.status === "ok") {
+                                    successSweetAlert(result.value.data.message)
+                                    // this.$store.commit('setCatalogoTramites', result.value.data.tramites)
+                                    this.limpiarFormulario()
+                                } else {
+                                    errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
+                                }
+                            } else {
+                                errorSweetAlert('Ocurrió un error al guardar dias.')
+                            }
+                        }
+                    })
+                }
+            },
             activarMes()
             {
                 if(this.mes == false)
+                {
                     this.mes = true
-                else
+                    this.fecha = false
+                } else
                     this.mes = false
             },
             async cargarDias()
             {
+                this.horario.pmes = this.mes
+                this.horario.pfecha = this.fecha
                 console.log(this.horario)
                 try {
                     let response = await axios.post('/api/horarios/llenar-dias', this.horario)
@@ -420,10 +579,10 @@
 
                 console.log(this.dias)
             },
-            guardarHorarios() {
-                this.horario.dias = this.dias
-                console.log(this.horario.dias)
-            },
+            // guardarHorarios() {
+            //     this.horario.dias = this.dias
+            //     console.log(this.horario.dias)
+            // },
 
             editarHorario(dia)
             {
@@ -458,6 +617,31 @@
                 })
                 this.dialogEditarDia = false
                 // console.log(this.dias)
+            },
+            limpiarFormulario()
+            {
+
+                this.horario.centro_atencion_id = ''
+                this.horario.mes = ''
+                this.horario.hora_inicio = ''
+                this.horario.hora_fin = ''
+                this.horario.duracion = ''
+                this.horario.inhabil = ''
+                this.horario.dias =  []
+                this.cargaDias = false
+                this.mes = false
+                this.fecha = false
+            },
+            activarRango()
+            {
+                if(this.fecha)
+                {
+                    this.fecha = false
+                }
+                else {
+                    this.fecha = true
+                    this.mes = false
+                }
             }
 
         }

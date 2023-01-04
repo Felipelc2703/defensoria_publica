@@ -75,6 +75,7 @@ class TramiteController extends Controller
                     $object3 = new \stdClass();
                     $object3->id = $centro->id;
                     $object3->nombre = $centro->nombre;
+                    $object3->direccion = $centro->direccion;
                     array_push($centros_atencion, $object3);
                 }
 
@@ -103,6 +104,17 @@ class TramiteController extends Controller
 
                 $object->requisitos = $requisitos;
 
+                $centros_atencion = array();
+                foreach ($tramite->centrosAtencion->where('status', 1) as $centro) {
+                    $object3 = new \stdClass();
+                    $object3->id = $centro->id;
+                    $object3->nombre = $centro->nombre;
+                    $object3->direccion = $centro->direccion;
+                    array_push($centros_atencion, $object3);
+                }
+
+                $object->centrosAtencion = $centros_atencion;
+
                 array_push($tramites_tipo_2, $object);
             }
 
@@ -125,6 +137,17 @@ class TramiteController extends Controller
                 }
 
                 $object->requisitos = $requisitos;
+
+                $centros_atencion = array();
+                foreach ($tramite->centrosAtencion->where('status', 1) as $centro) {
+                    $object3 = new \stdClass();
+                    $object3->id = $centro->id;
+                    $object3->nombre = $centro->nombre;
+                    $object3->direccion = $centro->direccion;
+                    array_push($centros_atencion, $object3);
+                }
+
+                $object->centrosAtencion = $centros_atencion;
 
                 array_push($tramites_tipo_3, $object);
             }
@@ -149,6 +172,17 @@ class TramiteController extends Controller
 
                 $object->requisitos = $requisitos;
 
+                $centros_atencion = array();
+                foreach ($tramite->centrosAtencion->where('status', 1) as $centro) {
+                    $object3 = new \stdClass();
+                    $object3->id = $centro->id;
+                    $object3->nombre = $centro->nombre;
+                    $object3->direccion = $centro->direccion;
+                    array_push($centros_atencion, $object3);
+                }
+
+                $object->centrosAtencion = $centros_atencion;
+
                 array_push($tramites_tipo_4, $object);
             }
 
@@ -171,59 +205,16 @@ class TramiteController extends Controller
         }
     }
 
-    public function guardarNuevoTramite(Request $request)
-    {
-        $exito = false;
-
-        DB::beginTransaction();
-
-        try {
-            $tramite = new Tramite;
-            $tramite->nombre = $request->nombre;
-            $tramite->descripcion = $request->descripcion;
-            $tramite->url_informacion = $request->url;
-            $tramite->tipo_tramite_id = $request->tipo_tramite_id;
-            $tramite->save();
-
-            $tramites = Tramite::all();
-
-            $arrayTramites = array();
-            foreach($tramites as $tramite)
-            {
-                foreach($tramites as $tramite)
-                {
-                    $objectTramite = new \stdClass();
-                    $objectTramite->id = $tramite->id;
-                    $objectTramite->nombre = $tramite->nombre;
-                    $objectTramite->descripcion = $tramite->descripcion;
-                    $objectTramite->url_informacion = $tramite->url_informacion;
-                    $objectTramite->tipo_tramite_id = $tramite->tipo_tramite_id;
-
-                    array_push($arrayTramites,$objectTramite);
-                }
-            }
-
-            DB::commit();
-            $exito = true;
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                "status" => "error",
-                "message" => "Ocurrió un error guardar nuevo tramite",
-                "error" => $th->getMessage(),
-                "location" => $th->getFile(),
-                "line" => $th->getLine(),
-            ], 200);
-        }
-    }
-
-    public function getCalendarioCitas()
+    public function getCalendarioCitas(Request $request)
     {
         try {
-            $days = Carbon::now()->month(12)->daysInMonth;
+            $year = $request->year;
+            $month = $request->mes;
+            $first = Carbon::createFromDate($year, $month, 1);
 
-            $first = Carbon::createFromDate(2022, 12, 1);
-            $last = Carbon::createFromDate(2022, 12, $days);
+            $days = $first->month($month)->daysInMonth;
+
+            $last = Carbon::createFromDate($year, $month, $days);
             $period = CarbonPeriod::create($first, $last);
 
             $semana_uno = array();
@@ -233,7 +224,6 @@ class TramiteController extends Controller
             $semana_cinco = array();
             $semana_seis = array();
 
-            // $contador = $first->dayOfWeek+1;
             $objectVacio = new \stdClass();
             $objectVacio->fecha_completa = '';
             $objectVacio->dia = '';
@@ -248,6 +238,33 @@ class TramiteController extends Controller
                 $object->dia = $date->day;
                 $object->numero_dia_semana = $date->dayOfWeek;
                 $object->fecha_formateada = $this->formatearFecha($date->dayOfWeek, $date->day, $date->month, $date->year);
+                
+                $object->horarios_disponibles = array(
+                    (object) [
+                        'id'=> 1,
+                        'hora'=> '09:30:00',
+                    ],
+                    (object) [
+                        'id'=> 2,
+                        'hora'=> '10:00:00',
+                    ],
+                    (object) [
+                        'id'=> 3,
+                        'hora'=> '10:30:00',
+                    ],
+                    (object) [
+                        'id'=> 4,
+                        'hora'=> '11:00:00',
+                    ],
+                    (object) [
+                        'id'=> 5,
+                        'hora'=> '11:30:00',
+                    ],
+                    (object) [
+                        'id'=> 6,
+                        'hora'=> '12:00:00',
+                    ],
+                );
 
                 if ($contador > 0 && $contador <= 7) {
                     $object->dia_disponible = false;
@@ -366,11 +383,12 @@ class TramiteController extends Controller
 
     public function guardarNuevoTramite(Request $request)
     {
-
         $exito = false;
+
         DB::beginTransaction();
+
         try {
-            $tramite = Tramite::find($request->id);
+            $tramite = new Tramite;
             $tramite->nombre = $request->nombre;
             $tramite->descripcion = $request->descripcion;
             $tramite->url_informacion = $request->url;
@@ -397,9 +415,8 @@ class TramiteController extends Controller
 
             DB::commit();
             $exito = true;
-        }catch (\Throwable $th) {
-            DB::rollback();
-            $exito = false;
+
+        } catch (\Throwable $th) {
             return response()->json([
                 "status" => "error",
                 "message" => "Ocurrió un error guardar nuevo tramite",
@@ -408,6 +425,7 @@ class TramiteController extends Controller
                 "line" => $th->getLine(),
             ], 200);
         }
+
         if ($exito) {
             return response()->json([
                 "status" => "ok",
@@ -488,61 +506,58 @@ class TramiteController extends Controller
         return $fecha_formateada;
     }
 
-    public function getDiasMes(Request $request)
+    public function actualizarTramite(Request $request)
     {
-        try
-        {
-            $days = Carbon::createFromDate(2022, $request->mes, 1)->daysInMonth;
 
-            $first = Carbon::createFromDate(2022, $request->mes, 1);
-            $last = Carbon::createFromDate(2022, $request->mes, $days);
-            $period = CarbonPeriod::create($first, $last);
+        $exito = false;
+        DB::beginTransaction();
+        try {
+            $tramite = Tramite::find($request->id);
+            $tramite->nombre = $request->nombre;
+            $tramite->descripcion = $request->descripcion;
+            $tramite->url_informacion = $request->url;
+            $tramite->tipo_tramite_id = $request->tipo_tramite_id;
+            $tramite->save();
 
-            $arrayDias = array();
+            $tramites = Tramite::all();
 
-            $id = 1;
-
-            foreach($period as $date)
+            $arrayTramites = array();
+            foreach($tramites as $tramite)
             {
-                $objectDia = new \stdClass();
-                $objectDia->id = $id;
-                $objectDia->dia = $this->formatearFecha($date->dayOfWeek,$date->day, $date->month, $date->year);
-                $objectDia->hora_inicio = $request->hora_inicio;
-                $objectDia->hora_fin = $request->hora_fin;
-                $objectDia->duracion = $request->duracion;
-                if($date->day < 10)
+                foreach($tramites as $tramite)
                 {
-                    $objectDia->fecha = '0'.$date->day.'/'.$date->month.'/'.$date->year;
-                }
-                else
-                {
-                    $objectDia->fecha = $date->day.'/'.$date->month.'/'.$date->year;
-                }
-                if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) 
-                {
-                    $objectDia->inhabil = true;
-                } else {
-                    $objectDia->inhabil = false;
-                }
+                    $objectTramite = new \stdClass();
+                    $objectTramite->id = $tramite->id;
+                    $objectTramite->nombre = $tramite->nombre;
+                    $objectTramite->descripcion = $tramite->descripcion;
+                    $objectTramite->url_informacion = $tramite->url_informacion;
+                    $objectTramite->tipo_tramite_id = $tramite->tipo_tramite_id;
 
-                array_push($arrayDias,$objectDia);
-                $id++;
+                    array_push($arrayTramites,$objectTramite);
+                }
             }
 
-            return response()->json([
-                "status" => "ok",
-                "message" => "Dias obtenidos con exito",
-                "dias" => $arrayDias
-            ], 200);
-        } catch (\Throwable $th) {
+            DB::commit();
+            $exito = true;
+        }catch (\Throwable $th) {
+            DB::rollback();
+            $exito = false;
             return response()->json([
                 "status" => "error",
-                "message" => "Ocurrió un error al obtener dias",
+                "message" => "Ocurrió un error guardar nuevo tramite",
                 "error" => $th->getMessage(),
                 "location" => $th->getFile(),
                 "line" => $th->getLine(),
             ], 200);
         }
-
+        if ($exito) {
+            return response()->json([
+                "status" => "ok",
+                "message" => "Nuevo Tramite agregado con exito.",
+                "tramites" => $arrayTramites
+            ], 200);
+        }
     }
+
+   
 }

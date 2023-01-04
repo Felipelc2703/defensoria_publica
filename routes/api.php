@@ -12,6 +12,7 @@ use App\Http\Controllers\CentroAtencionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\NotaController;
+use App\Http\Controllers\DiaController;
 
 
 
@@ -49,7 +50,7 @@ Route::post('/requisito/actualizar-requisito', [RequisitoController::class, 'act
 Route::post('/requisito/eliminar-requisito', [RequisitoController::class, 'eliminarRequisito']);
 
 Route::get('/tramites-citas', [TramiteController::class, 'getTramitesCitas']);
-Route::get('/calendario-citas', [TramiteController::class, 'getCalendarioCitas']);
+Route::post('/calendario-citas', [TramiteController::class, 'getCalendarioCitas']);
 Route::post('/citas/agendar-cita', [CitaController::class, 'agendarCita']);
 
 //Rutas utilizadas para catalogo de Usuarios
@@ -70,7 +71,15 @@ Route::post('/usuarios/eliminar-nota', [NotaController::class, 'eliminarNota']);
 Route::post('/tramite/guardar-nuevo', [TramiteController::class, 'guardarNuevoTramite']);
 Route::post('/tramite/actualizar-tramite', [TramiteController::class, 'actualizarTramite']);
 
-Route::post('/horarios/llenar-dias', [TramiteController::class, 'getDiasMes']);
 
+Route::post('/buscar-cita', [CitaController::class, 'buscarCita']);
+Route::get('/cancelar-cita/{id}', [CitaController::class, 'cancelarCita']);
+Route::get('/imprimir-cita/{id}', [CitaController::class, 'imprimirCita']);
+
+
+Route::post('/horarios/llenar-dias', [DiaController::class, 'getDiasMes']);
+Route::post('/horarios/guardar-dias', [DiaController::class, 'guardarDias']);
+Route::post('/horarios/dias-editar', [DiaController::class, 'getDiasEditar']);
+Route::post('/horarios/actualizar-horario', [DiaController::class, 'actualizarHorario']);
 
 // Route::post('agregar-usuario', 'UserController@store');

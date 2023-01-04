@@ -4,7 +4,7 @@ import Login from './pages/Login.vue'
 import Register from './pages/Register.vue'
 import Dashboard from './pages/Dashboard.vue'
 import CrearCita from './pages/CrearCita.vue'
-import BuscarFolio from './pages/BuscarFolio.vue'
+import ConfirmacionCitaBuscada from './pages/ConfirmacionCitaBuscada.vue'
 import CentrosAtencion from './pages/CentrosAtencion.vue'
 import confwhats from './pages/confwhats.vue'
 import ReporteGraf from './pages/ReporteGraf.vue'
@@ -18,6 +18,7 @@ import CatalogoTramites from './pages/CatalogoTramites.vue'
 import CatalogoNotas from './pages/CatalogoNotas.vue'
 
 import AgregarHorario from './pages/AgregarHorario.vue'
+import EditarHorario from './pages/EditarHorarios.vue'
 
 const routes = [
     {
@@ -55,9 +56,9 @@ const routes = [
         component: CrearCita,
     },
     {
-        path: '/buscar-folio',
-        name: 'BuscarFolio',
-        component: BuscarFolio,
+        path: '/confirmacion-cita-buscada',
+        name: 'ConfirmacionCitaBuscada',
+        component: ConfirmacionCitaBuscada,
     },
     {
         path: '/centros-atencion',
@@ -137,6 +138,14 @@ const routes = [
         path: '/confirmacion-cita',
         name: 'ConfirmacionCita',
         component: ConfirmacionCita,
+    },
+    {
+        path: '/editar-horario',
+        name: 'EditarHorario',
+        component: EditarHorario,
+        meta: {
+            requiresAuth: true
+        }
     },
 ]
 
