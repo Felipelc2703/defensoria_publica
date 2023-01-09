@@ -1,39 +1,27 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-sm-6 mt-4">
-
-                <h2 class="text-center">Login</h2>
-
-                <v-card class="mx-auto px-6 py-8 my-8" max-width="344">
-                    <v-form ref="form">
-                        <v-text-field
-                            label="Usuario"
-                            v-model="form.usuario"
-                            :rules="usuarioRules"
-                        ></v-text-field>
-                        <v-text-field
-                            label="Contraseña"
-                            v-model="form.password"
-                            :rules="passwordRules"
-                            :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                            :type="show ? 'text' : 'password'"
-                            @click:append="show = !show"
-                            @keyup.enter="login"
-                        ></v-text-field>
-                        <br>
-                        <v-btn
-                            color="success"
-                            variant="elevated"
-                            :loading="loading"
-                            block
-                            @click="login"
-                        >
-                            Entrar
-                        </v-btn>
-                    </v-form>
-                </v-card>
-            </div>
+    <div class="conteiner-seg" style="background-color: #353535;">
+        <div class="imagen animate__animated animate__slideInLeft"></div>
+        <div class="app animate__animated animate__zoomIn">
+            <form class="form-login" autocomplete="off" @submit.prevent>    
+                <br>
+                <h1 class="titulo-bienvenido" style="font-weight: 700;">Bienvenido</h1> 
+                <p class="titulo-bienvenido">Defensoría Pública<br></p>    
+                <div class="col-md-12 form-group">
+                    <div class="inner-addon left-addon">
+                        <i class="fa fa-user"></i>   
+                        <input type="text" name="usuario" id="usuario"  class="form-control form-control-lg user" autocomplete="off" placeholder="Usuario" required autofocus v-model="form.usuario">
+                    </div>
+                </div>
+                <div class="col-md-12 form-group">
+                    <div class="inner-addon left-addon">
+                        <i class="fa fa-lock"></i>                                    
+                        <input type="password" name="password" id="password" class="form-control form-control-lg pass" autocomplete="off" placeholder="Contraseña" required v-model="form.password" @keyup.enter="login()">
+                    </div>       
+                </div>        
+                <div class="col-md-12 form-group">
+                    <button class="btn" type="submit" @click="login()">Ingresar</button>
+                </div>
+            </form>
         </div>
     </div>
 </template>
@@ -64,26 +52,24 @@
         methods: {
             async login() {
                 this.loading = true
-                const { valid } = await this.$refs.form.validate()
-                if (valid) {
-                    try {
-                        let response = await axios.post('/api/login', this.form)
-                        if (response.status === 200) {
-                            if (response.data.status === "ok") {
-                                this.$store.dispatch('setToken', response.data.data.token)
-                                this.$router.push({name: 'Dashboard'})
-                            } else {
-                                errorSweetAlert(response.data.message)
-                            }
+                try {
+                    let response = await axios.post('/api/login', this.form)
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.$store.dispatch('setToken', response.data.data.token)
+                            this.$router.push({name: 'AgregarHorario'})
                         } else {
-                            errorSweetAlert('Ocurrió un error al iniciar sesión')
+                            errorSweetAlert(response.data.message)
                         }
-                    } catch (error) {
+                    } else {
                         errorSweetAlert('Ocurrió un error al iniciar sesión')
                     }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al iniciar sesión')
                 }
                 this.loading = false
             }
+
         }
     })
 </script>

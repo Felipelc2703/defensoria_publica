@@ -1,30 +1,15 @@
 <template>
     <v-app>
-        <!-- <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <router-link class="navbar-brand" :to="{name: 'Home'}">Home </router-link>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <router-link class="text-white ml-2" :to="{name: 'Dashboard'}" v-if="$store.getters.getToken != 0">Dashboard</router-link>
-                </li>
-            </ul>
-            <v-spacer></v-spacer>
-            <v-btn variant="text" color="white" @click="irLogin()" v-if="$store.getters.getToken == 0">
-                Usuarios
-            </v-btn>
-            <v-btn variant="text" color="white" @click="logout()" v-if="$store.getters.getToken != 0">
-                Cerrar Sesión
-            </v-btn>
-        </nav> -->
-
-        <div>
+        <div v-if="currentRoute != 'Login'">
             <div class="header-fixed">
                 <div class="text-center">
                     <img class="scale-logo-principal" width="200" height="75" src="../../../public/images/logo_pj_principal.svg" alt="">
                 </div>
                 <div class="first-line"></div>
             </div>
-            <div class="text-right" style="margin-top: -2px;">
-                <button class="button-usuarios" @click="irLogin()">Usuarios</button>
+            <div class="text-right" style="margin-top: -3px;">
+                <button class="button-usuarios" @click="irLogin()" v-if="token == 0">Usuarios</button>
+                <button class="button-usuarios" @click="logout()" v-else>Cerrar Sesión</button>
             </div>
             <div>
                 <div class="row justify-content-between">
@@ -34,7 +19,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-12">
-                        <div class="div-buscar-cita">
+                        <div class="div-buscar-cita" v-if="token == 0">
                             <label class="label-buscar-cita" for="buscar-cita">Si usted ya cuenta con una cita y desea imprimir su confirmación o cancelarla, ingrese a continuación su número de folio.</label>
                             <div class="row justify-content-between">
                                 <div class="col-sm-9 col-12">
@@ -48,6 +33,47 @@
                                 </div>
                             </div>
                         </div>
+                        <div v-else>
+                            <nav class="navbar navbar-expand-lg navbar-light">
+                                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                                  <ul class="navbar-nav">
+                                    <li class="nav-item dropdown link-nav">
+                                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Horarios
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario')">Cargar Horario</a>
+                                            <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario')">Modificar Horario</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown link-nav">
+                                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Catalogos
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                            <a class="dropdown-item link-nav" @click="this.$router.push('/centros-atencion')">Centro de Atención</a>
+                                            <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-requisitos')">Requisito</a>
+                                            <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Tramite</a>
+                                            <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a>
+                                            <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item link-nav">
+                                        <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
+                                    </li>
+                                    <li class="nav-item dropdown link-nav">
+                                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          Reportes
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                          <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas')">Gráficas</a>
+                                          <a class="dropdown-item link-nav" @click="this.$router.push('/reportes')">Reporte de Citas</a>
+                                        </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </nav>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -57,117 +83,9 @@
             </div>
         </div>
 
-        <!-- <header class="background-header">
-            <v-toolbar class="my-2 mx-2" color="#6a73a0">
-                <v-spacer></v-spacer>
-                <v-tabs class="" fixed-tabs v-if="$store.getters.getToken != 0">
-                    <v-menu>
-                        <template v-slot:activator="{ props }">
-                            <v-btn
-                                color="white"
-                                variant="plain"
-                                rounded="0"
-                                class="align-self-center mr-4"
-                                height="100%"
-                                v-bind="props"
-                            >
-                                Horarios
-                                <v-icon end>
-                                    mdi-menu-down
-                                </v-icon>
-                            </v-btn>
-                        </template>
-
-                        <v-list class="bg-grey-lighten-3">
-                            <v-list-item @click="this.$router.push('/home')">
-                                Cargar Horario
-                            </v-list-item>
-                            <v-list-item @click="this.$router.push('/dashboard')">
-                                Modificar Horario
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-
-                    <v-menu>
-                        <template v-slot:activator="{ props }">
-                            <v-btn
-                                color="white"
-                                variant="plain"
-                                rounded="0"
-                                class="align-self-center mr-4"
-                                height="100%"
-                                v-bind="props"
-                            >
-                                Catalogos
-                                <v-icon end>
-                                    mdi-menu-down
-                                </v-icon>
-                            </v-btn>
-                        </template>
-
-                        <v-list class="bg-grey-lighten-3">
-                            <v-list-item @click="this.$router.push('/centros-atencion')">
-                                Centro de Atención
-                            </v-list-item>
-                            <v-list-item @click="this.$router.push('/catalogo-requisitos')">
-                                Requisito
-                            </v-list-item>
-                            <v-list-item @click="this.$router.push('/catalogo-tramites')">
-                                Tramite
-                            </v-list-item>
-                            <v-list-item @click="this.$router.push('/dashboard')">
-                                Notas
-                            </v-list-item>
-                            <v-list-item @click="this.$router.push('/conf-whats')">
-                                Configuración WhatsApp
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-
-                    <v-tab color="white">
-                        Usuario
-                    </v-tab>
-
-                    <v-menu>
-                        <template v-slot:activator="{ props }">
-                            <v-btn
-                                color="white"
-                                variant="plain"
-                                rounded="0"
-                                class="align-self-center mr-4"
-                                height="100%"
-                                v-bind="props"
-                            >
-                                Reportes
-                                <v-icon end>
-                                    mdi-menu-down
-                                </v-icon>
-                            </v-btn>
-                        </template>
-
-                        <v-list class="bg-grey-lighten-3">
-                            <v-list-item @click="this.$router.push('/home')">
-                                Gráficas
-                            </v-list-item>
-                            <v-list-item @click="this.$router.push('/dashboard')">
-                                Reporte de Citas
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                </v-tabs>
-                <v-spacer></v-spacer>
-                <v-btn variant="text" color="white" @click="this.$router.push('/catalogo-usuarios')">
-                    Usuarios
-                </v-btn>
-                <v-btn variant="text" color="white" @click="logout()" v-if="$store.getters.getToken != 0">
-                    Cerrar Sesión
-                </v-btn>
-            </v-toolbar>
-        </header> -->
-
         <router-view></router-view>
 
-        <footer>
+        <footer v-if="currentRoute != 'Login'">
             <div class="third-line"></div>
             <div class="footer-info">
                 <div class="row justify-content-around">
@@ -266,6 +184,14 @@
         created() {
             this.getTramites()
         },
+        computed: {
+            currentRoute() {
+                return this.$route.name
+            },
+            token() {
+                return this.$store.getters.getToken
+            },
+        },
         methods: {
             irLogin() {
                 this.$router.push('/login')
@@ -318,6 +244,10 @@
                     errorSweetAlert('Ocurrió un error al buscar cita.')
                 }
             },
+            logout() {
+                this.$store.dispatch('removeToken')
+                this.$router.push('/login')
+            }
         }
     })
 </script>

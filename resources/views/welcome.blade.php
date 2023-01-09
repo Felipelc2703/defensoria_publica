@@ -14,6 +14,7 @@
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
 
         <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
 
@@ -31,7 +32,7 @@
         {{-- <div id="app"></div> --}}
         <v-app id="app"></v-app>
 
-        @vite('resources/js/app.js')
+        @vite(['resources/sass/app.scss', 'resources/js/app.js'])
         {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     </body>
 </html>
