@@ -1,40 +1,152 @@
 <template>
-    <div class="container my-6">
-    
+    <div class="container mb-6">
         <div class="text-center my-6">
-            <h2>CENTRO DE ATENCIÓN</h2>
-            <v-btn class="mb-4"
-                large
-                title="Nuevo Centro de Atención"
-                @click="agregarCentro" >
-                <v-icon size="30" x-large icon="mdi-pencil-box-outline"></v-icon>
-            </v-btn>
+            <h2>Centros de Atención</h2>
+            <div>
+                <v-btn
+                    color="#6a73a0"
+                    class="mt-4 mb-2 boton-nuevo"
+                    large
+                    title="Nuevo Centro de Atención"
+                    @click="agregarCentro"
+                    append-icon="mdi-plus"
+                    >
+                    Nuevo Centro
+                </v-btn>
+            </div>
         </div>
 
-        <div class="my-6 px-4 py-4">
-            <EasyDataTable
-                class="mb-6"
-                :headers="headers" 
-                :items="centrosAtencion"
-                alternating
-            >
-                <template #item-actions="centro">
-                    <v-icon 
-                        title="Editar Centro"
-                        @click="editarCentro(centro)"
-                        class="mr-1"
-                    >
-                        mdi-text-box-edit-outline
-                    </v-icon>
-                    <v-icon 
-                        title="Eliminar Centro"
-                        @click="eliminarCentro(centro)"
-                        class="ml-1"
-                    >
-                        mdi-trash-can
-                    </v-icon>
-                </template>
-            </EasyDataTable>
+        <div class="text-right">
+            <div class="buscador-data-table">
+                <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
+            </div>
+        </div>
+
+        <div class="my-2 mb-12 py-6">
+            <div class="container-fluid">
+                <table class="table">
+                    <thead class="headers-table">
+                        <tr>
+                            <th class="titulo-columna borde-izquierdo">#</th>
+                            <th class="titulo-columna">Nombre Centro de Atención</th>
+                            <th class="titulo-columna">Dirección</th>
+                            <th class="titulo-columna borde-derecho">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="loading">
+                            <th colspan="6">
+                                <p class="text-center texto-cargando-datos">Cargando datos...</p>
+                                <div class="linear-activity">
+                                    <div class="indeterminate"></div>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr v-else v-for="centro in datosPaginados" :key="centro.id">
+                            <td class="texto-campo-table">
+                                {{centro.numero_registro}}
+                            </td>
+                            <td class="texto-campo-table">
+                                {{centro.nombre}}
+                            </td>
+                            <td class="texto-campo-table">
+                                {{centro.direccion}}
+                            </td>
+                            <td>
+                                <div class="text-center row justify-content-center">
+                                    <div>
+                                        <v-icon 
+                                            title="Editar Centro"
+                                            @click="editarCentro(centro)"
+                                            class="mr-1"
+                                            >
+                                            mdi-text-box-edit-outline
+                                        </v-icon>
+
+                                        <v-tooltip
+                                            activator="parent"
+                                            location="bottom"
+                                            >
+                                            <span style="font-size: 15px;">Editar Centro</span>
+                                        </v-tooltip>
+                                    </div>
+                                    
+                                    <div>
+                                        <v-icon 
+                                            title="Eliminar Centro"
+                                            @click="eliminarCentro(centro)"
+                                            class="ml-1"
+                                        >
+                                            mdi-trash-can
+                                        </v-icon>
+                                        <v-tooltip
+                                            activator="parent"
+                                            location="bottom"
+                                            >
+                                            <span style="font-size: 15px;">Eliminar Centro</span>
+                                        </v-tooltip>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <template v-if="centrosAtencion.length > 0">
+                <div class="row justify-content-between container">
+                    <div>
+                        <p class="text-resultados mt-2">
+                            Mostrando
+                            <span>{{from}}</span>
+                            -
+                            <span>{{to}}</span>
+                            de
+                            <span>{{centrosAtencion.length}}</span>
+                            resultados
+                        </p>
+                    </div>
+                    <div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pagination-lg justify-content-center">
+                                <li class="page-item cursor-paginator" @click="getFirstPage()">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;&lt;</span>
+                                        <span class="sr-only">First</span>
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getPreviousPage()">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li v-for="pagina in pages" @click="getDataPagina(pagina), setCurrentPage(pagina)" :key="pagina" class="page-item cursor-paginator" :class="isActive(pagina)">
+                                    <a class="page-link">
+                                        {{pagina}}
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getNextPage()">
+                                    <a class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">&gt;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getLastPage()">
+                                    <a class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">&gt;&gt;</span>
+                                        <span class="sr-only">Last</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </template>
+            <template v-else-if="!loading">
+                <div class="text-center">
+                    <p class="texto-no-data">Aún no hay datos disponibles</p>
+                </div>
+            </template>
         </div>
 
         <v-dialog
@@ -198,24 +310,22 @@
                     telefono: '',
                     numero_cajas: '',
                     tramites: [],
-                },  
-                headers: [
-                    { 
-                        text: 'Nombre Centro de Atención', value: 'nombre'
-                    },
-                    { 
-                        text: 'Dirección', value: 'direccion'
-                    },
-                    { 
-                        text: 'Acciones', value: 'actions'
-                    }
-                ],
+                },
                 nombreRules: [
                     v => !!v || 'El nombre del centro de atención es requerido'
                 ],
                 direccionRules: [
                     v => !!v || 'La dirección del centro de atención es requerida'
                 ],
+                elementosPorPagina: 10,
+                paginaActual: 1,
+                datosPaginados: [],
+                mostrar: false,
+                from: '',
+                to: '',
+                numShown: 5,
+                current: 1,
+                buscar: '',
             }
         },
         created() {
@@ -224,14 +334,34 @@
         },
         computed: {
             centrosAtencion() {
-                if (this.loading) {
-                    return []
-                } else {
-                    return this.$store.getters.getCatalogoCentrosAtencion
-                }
+                return this.$store.getters.getCatalogoCentrosAtencion
             },
             tramites() {
                 return this.$store.getters.getCatalogoTramites
+            },
+            pages() {
+                const numShown = Math.min(this.numShown, this.totalPaginas())
+                let first = this.current - Math.floor(numShown / 2)
+                first = Math.max(first, 1)
+                first = Math.min(first, this.totalPaginas() - numShown + 1)
+                return [...Array(numShown)].map((k, i) => i + first)
+            }
+        },
+        watch: {
+            buscar: function () {
+                if (!this.buscar.length == 0) {
+                    this.datosPaginados = this.centrosAtencion.filter(item => {
+                        return item.nombre.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.direccion.toLowerCase().includes(this.buscar.toLowerCase())
+                    })
+                } else {
+                    this.getDataPagina(1)
+                }
+            },
+            mostrar: function () {
+                if (this.mostrar) {
+                    this.getDataPagina(1)
+                }
             }
         },
         methods: {
@@ -243,6 +373,7 @@
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             this.$store.commit('setCatalogoCentrosAtencion', response.data.centros_atencion)
+                            this.mostrar = true
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
@@ -417,7 +548,61 @@
                         }
                     }
                 })
-            }
+            },
+            totalPaginas() {
+                return Math.ceil(this.centrosAtencion.length / this.elementosPorPagina)
+            },
+            getDataPagina(noPagina) {
+                this.paginaActual = noPagina
+                this.datosPaginados = []
+
+                let ini = (noPagina * this.elementosPorPagina) - this.elementosPorPagina
+                let fin = (noPagina * this.elementosPorPagina)
+
+                for (let index = ini; index < fin; index++) {
+                    if (this.centrosAtencion[index]) {
+                        this.datosPaginados.push(this.centrosAtencion[index])
+                    }
+                }
+
+                // Para el texto "Mostrando 1 - 10 de 20 resultados"
+                this.from = ini+1
+                if (noPagina < this.totalPaginas()) {
+                    this.to = fin
+                } else {
+                    this.to = this.centrosAtencion.length
+                }
+            },
+            getFirstPage() {
+                this.paginaActual = 1
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getPreviousPage() {
+                if (this.paginaActual > 1) {
+                    this.paginaActual--
+                }
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getNextPage() {
+                if (this.paginaActual < this.totalPaginas()) {
+                    this.paginaActual++
+                }
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getLastPage() {
+                this.paginaActual = this.totalPaginas()
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            isActive (noPagina) {
+                return noPagina == this.paginaActual ? 'active' : ''
+            },
+            setCurrentPage(pagina) {
+                this.current = pagina
+            },
         },
     })
 </script>

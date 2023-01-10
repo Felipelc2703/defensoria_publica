@@ -1,39 +1,154 @@
 <template>
-    <div class="container my-6">
+    <div class="container mb-6">
         <div class="text-center my-6">
-            <h2>USUARIOS</h2>
-            <v-btn class="mb-4"
-                large
-                title="Nuevo Usuario"
-                @click="Agregarusuario" >
-                <v-icon size="30" x-large icon="mdi-pencil-box-outline"></v-icon>
-            </v-btn>
+            <h2>Usuarios</h2>
+            <div>
+                <v-btn
+                    color="#6a73a0"
+                    class="mt-4 mb-2 boton-nuevo"
+                    large
+                    title="Nuevo Usuario"
+                    @click="Agregarusuario"
+                    append-icon="mdi-plus"
+                    >
+                    Nuevo Usuario
+                </v-btn>
+            </div>
         </div>
-        <div class="my-6 px-4 py-4">
-            <EasyDataTable 
-                class="mb-6"
-                :headers="headers" 
-                :items="usuarios"
-                alternating
-            >
-                <template #item-actions="usuario">                        
-                        <v-icon
-                            title="Editar Usuario"
-                            @click="EditarUsuario(usuario)"
-                            class="mr-1" 
-                        >
-                            mdi-text-box-edit-outline
-                        </v-icon>
-                        <v-icon
-                            title="Eliminar usuario"  
-                            @click="eliminarUsuario(usuario)"
-                            class="ml-1"
-                        >
-                            mdi-trash-can
-                        </v-icon>
-                </template>
-            </EasyDataTable>
+
+        <div class="text-right">
+            <div class="buscador-data-table">
+                <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
+            </div>
         </div>
+
+        <div class="my-2 mb-12 py-6">
+            <div class="container-fluid">
+                <table class="table">
+                    <thead class="headers-table">
+                        <tr>
+                            <th class="titulo-columna borde-izquierdo">#</th>
+                            <th class="titulo-columna">Usuario</th>
+                            <th class="titulo-columna">Centro de Atención</th>
+                            <th class="titulo-columna borde-derecho">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="loading">
+                            <th colspan="6">
+                                <p class="text-center texto-cargando-datos">Cargando datos...</p>
+                                <div class="linear-activity">
+                                    <div class="indeterminate"></div>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr v-else v-for="usuario in datosPaginados" :key="usuario.id">
+                            <td class="texto-campo-table">
+                                {{usuario.numero_registro}}
+                            </td>
+                            <td class="texto-campo-table">
+                                {{usuario.nombre}}
+                            </td>
+                            <td class="texto-campo-table">
+                                {{usuario.centro_atencion}}
+                            </td>
+                            <td>
+                                <div class="text-center row justify-content-center">
+                                    <div>
+                                        <v-icon 
+                                        title="Editar Usuario"
+                                        @click="EditarUsuario(usuario)"
+                                        class="mr-1"
+                                        >
+                                            mdi-text-box-edit-outline
+                                        </v-icon>
+
+                                        <v-tooltip
+                                            activator="parent"
+                                            location="bottom"
+                                            >
+                                            <span style="font-size: 15px;">Editar Usuario</span>
+                                        </v-tooltip>
+                                    </div>
+                                    
+                                    <div>
+                                        <v-icon 
+                                            title="Eliminar Usuario"
+                                            @click="eliminarUsuario(usuario)"
+                                            class="ml-1"
+                                        >
+                                            mdi-trash-can
+                                        </v-icon>
+                                        <v-tooltip
+                                            activator="parent"
+                                            location="bottom"
+                                            >
+                                            <span style="font-size: 15px;">Eliminar Usuario</span>
+                                        </v-tooltip>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <template v-if="usuarios.length > 0">
+                <div class="row justify-content-between container">
+                    <div>
+                        <p class="text-resultados mt-2">
+                            Mostrando
+                            <span>{{from}}</span>
+                            -
+                            <span>{{to}}</span>
+                            de
+                            <span>{{usuarios.length}}</span>
+                            resultados
+                        </p>
+                    </div>
+                    <div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pagination-lg justify-content-center">
+                                <li class="page-item cursor-paginator" @click="getFirstPage()">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;&lt;</span>
+                                        <span class="sr-only">First</span>
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getPreviousPage()">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li v-for="pagina in pages" @click="getDataPagina(pagina), setCurrentPage(pagina)" :key="pagina" class="page-item cursor-paginator" :class="isActive(pagina)">
+                                    <a class="page-link">
+                                        {{pagina}}
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getNextPage()">
+                                    <a class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">&gt;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getLastPage()">
+                                    <a class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">&gt;&gt;</span>
+                                        <span class="sr-only">Last</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </template>
+            <template v-else-if="!loading">
+                <div class="text-center">
+                    <p class="texto-no-data">Aún no hay datos disponibles</p>
+                </div>
+            </template>
+        </div>
+
         <!-- modal para agregar usuario -->
         <v-dialog
             v-model="dialogAgregarUsuarios"
@@ -209,44 +324,44 @@
 </template>
 
 <script>
-  import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
-    export default {
+    import { defineComponent } from "vue"
+    import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
+    
+    export default defineComponent({
         data() {
             return {
-                        dialogAgregarUsuarios: false,
-                        dialogEditarUsuario: false,
-                        usuario: {
-                            id: null,
-                            nombre: '',
-                            clave: '',
-                            email: '',
-                            contrasena: '',
-                            conf_contra: '',
-                            rol_id: '',
-                            centro_atencion:''
-                        },
-                        loading: false,
-                        headers: [
-                        { 
-                            text: "USUARIO", value: "nombre" 
-                        },
-                        { 
-                            text: "CENTRO DE ATENCION", value: "centro_atencion"
-                        },
-                        { 
-                            text: 'ACCIONES', value: 'actions'
-                        }
-                        ],
-                        dialogAgregarCentro: false,
-                        rules:{
-                                email: value => {
-                                const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                                return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
-                                },
-                            },
-                            show1: false,
-                            password: 'Password',
-                    }
+                dialogAgregarUsuarios: false,
+                dialogEditarUsuario: false,
+                usuario: {
+                    id: null,
+                    nombre: '',
+                    clave: '',
+                    email: '',
+                    contrasena: '',
+                    conf_contra: '',
+                    rol_id: '',
+                    centro_atencion:''
+                },
+                loading: false,
+                dialogAgregarCentro: false,
+                rules:{
+                    email: value => {
+                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                    return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
+                    },
+                },
+                show1: false,
+                password: 'Password',
+                elementosPorPagina: 10,
+                paginaActual: 1,
+                datosPaginados: [],
+                mostrar: false,
+                from: '',
+                to: '',
+                numShown: 5,
+                current: 1,
+                buscar: '',
+            }
         },
         created(){
             this.getCatalogoUsuarios()
@@ -255,12 +370,7 @@
         },
         computed:{
             usuarios(){
-                if (this.loading) {
-                return []
-            } else {
                 return this.$store.getters.getCatalogoUsuarios
-            }
-
             },
             centrosAtencion() {
                 if (this.loading) {
@@ -275,12 +385,35 @@
                 } else {
                     return this.$store.getters.getCatalogoRoles
                 }
+            },
+            pages() {
+                const numShown = Math.min(this.numShown, this.totalPaginas())
+                let first = this.current - Math.floor(numShown / 2)
+                first = Math.max(first, 1)
+                first = Math.min(first, this.totalPaginas() - numShown + 1)
+                return [...Array(numShown)].map((k, i) => i + first)
+            }
+        },
+        watch: {
+            buscar: function () {
+                if (!this.buscar.length == 0) {
+                    this.datosPaginados = this.usuarios.filter(item => {
+                        return item.nombre.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.centro_atencion.toLowerCase().includes(this.buscar.toLowerCase())
+                    })
+                } else {
+                    this.getDataPagina(1)
+                }
+            },
+            mostrar: function () {
+                if (this.mostrar) {
+                    this.getDataPagina(1)
+                }
             }
         },
         methods: {
             // Abrir modal nuevo usuario
             Agregarusuario() {
-                console.log('agregar usuario')
                 this.dialogAgregarUsuarios = true
             },
             //Cerrar modal nuevo usuario
@@ -297,7 +430,6 @@
             },
             // Guardar nuevo usuario 
             async guardarNuevoUsuario() {
-                console.log(this.usuario)
                 const { valid } = await this.$refs.formAgregarUsuario.validate()
                 if (valid) {
                     Swal.fire({
@@ -361,7 +493,6 @@
             },
             // Guardar Cambios de usuario 
             async guardarCambiosEditarUsuario() {
-                //console.log(this.usuario)
                 const { valid } = await this.$refs.formEditarUsuario.validate()
                 if (valid) {
                     Swal.fire({
@@ -438,24 +569,23 @@
             },
             // para mostrar los datos en la tabla principal
             async getCatalogoUsuarios() {
-              this.loading = true
-              try {
-                  let response = await axios.get('/api/catalogos/usuarios')
-                  if (response.status === 200) {
-                      if (response.data.status === "ok") {
-                          this.$store.commit('setCatalogoUsuarios', response.data.usuarios)
-                           console.log(this.$store.getters.getCatalogoUsuarios)
-                           console.log(this.usuarios)
-                      } else {
-                          errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
-                      }
-                  } else {
-                      errorSweetAlert('Ocurrió un error al obtener el catalogo de usuarios')
-                  }
-              } catch (error) {
-                  errorSweetAlert('Ocurrió un error al obtener el catalogo de usuarios')
-              }
-              this.loading = false
+                this.loading = true
+                try {
+                    let response = await axios.get('/api/catalogos/usuarios')
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.$store.commit('setCatalogoUsuarios', response.data.usuarios)
+                            this.mostrar = true
+                        } else {
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        errorSweetAlert('Ocurrió un error al obtener el catalogo de usuarios')
+                    }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al obtener el catalogo de usuarios')
+                }
+                this.loading = false
           },
 
           // catalogo de centros de atención para el select
@@ -479,7 +609,6 @@
             },
             // catalogo de roles para el select 
             async getRoles() {
-                console.log(this.usuario)
                 this.loading = true
                 try {
                     let response = await axios.get('/api/catalogos/roles')
@@ -497,6 +626,60 @@
                 }
                 this.loading = false
             },
+            totalPaginas() {
+                return Math.ceil(this.usuarios.length / this.elementosPorPagina)
+            },
+            getDataPagina(noPagina) {
+                this.paginaActual = noPagina
+                this.datosPaginados = []
+
+                let ini = (noPagina * this.elementosPorPagina) - this.elementosPorPagina
+                let fin = (noPagina * this.elementosPorPagina)
+
+                for (let index = ini; index < fin; index++) {
+                    if (this.usuarios[index]) {
+                        this.datosPaginados.push(this.usuarios[index])
+                    }
+                }
+
+                // Para el texto "Mostrando 1 - 10 de 20 resultados"
+                this.from = ini+1
+                if (noPagina < this.totalPaginas()) {
+                    this.to = fin
+                } else {
+                    this.to = this.usuarios.length
+                }
+            },
+            getFirstPage() {
+                this.paginaActual = 1
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getPreviousPage() {
+                if (this.paginaActual > 1) {
+                    this.paginaActual--
+                }
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getNextPage() {
+                if (this.paginaActual < this.totalPaginas()) {
+                    this.paginaActual++
+                }
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getLastPage() {
+                this.paginaActual = this.totalPaginas()
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            isActive (noPagina) {
+                return noPagina == this.paginaActual ? 'active' : ''
+            },
+            setCurrentPage(pagina) {
+                this.current = pagina
+            },
         },
-    }
+    })
 </script>

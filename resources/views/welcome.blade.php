@@ -19,9 +19,9 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css') }}">
 
         <style>
-            body {
+            /* body {
                 font-family: 'Nunito', sans-serif;
-            }
+            } */
 
             .swal2-container {
                 z-index: 10000!important;

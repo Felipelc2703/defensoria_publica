@@ -1,41 +1,46 @@
 <template>
-  <div class="container my-6">
-  
-      <div class="text-center my-6">
-          <h2>REQUISITOS</h2>
-          <v-btn class="mb-4"
-              large
-              title="Nuevo Centro de Atención"
-              @click="agregarRequisito" >
-              <v-icon size="30" x-large icon="mdi-pencil-box-outline"></v-icon>
-          </v-btn>
-      </div>
+    <div class="container mb-6">
+        <div class="text-center my-6">
+            <h2>Requisitos</h2>
+            <div>
+                <v-btn
+                    color="#6a73a0"
+                    class="mt-4 mb-2 boton-nuevo"
+                    large
+                    title="Nuevo Requisito"
+                    @click="agregarRequisito"
+                    append-icon="mdi-plus"
+                    >
+                    Nuevo Requisito
+                </v-btn>
+            </div>
+        </div>
 
-      <div class="my-6 px-4 py-4">
-          <EasyDataTable
-              class="mb-6"
-              :headers="headers" 
-              :items="requisitos"
-              alternating
-          >
-              <template #item-actions="requisito">
-                  <v-icon 
-                      title="Editar Centro"
-                      @click="editarRequisito(requisito)"
-                      class="mr-1"
-                  >
-                      mdi-text-box-edit-outline
-                  </v-icon>
-                  <v-icon 
-                      title="Eliminar Centro"
-                      @click="eliminarRequisito(requisito)"
-                      class="ml-1"
-                  >
-                      mdi-trash-can
-                  </v-icon>
-              </template>
-          </EasyDataTable>
-      </div>
+        <div class="my-6 px-4 py-4">
+            <EasyDataTable
+                class="mb-6"
+                :headers="headers" 
+                :items="requisitos"
+                alternating
+            >
+                <template #item-actions="requisito">
+                    <v-icon 
+                        title="Editar Centro"
+                        @click="editarRequisito(requisito)"
+                        class="mr-1"
+                    >
+                        mdi-text-box-edit-outline
+                    </v-icon>
+                    <v-icon 
+                        title="Eliminar Centro"
+                        @click="eliminarRequisito(requisito)"
+                        class="ml-1"
+                    >
+                        mdi-trash-can
+                    </v-icon>
+                </template>
+            </EasyDataTable>
+        </div>
 
       <v-dialog
           v-model="dialogAgregarRequisito"

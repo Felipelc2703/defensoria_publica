@@ -13,16 +13,20 @@ class UserController extends Controller
             $usuarios = User::where('status', 1)->get();
              
             $array_usuario = array();
+            $cont = 1;
             foreach ($usuarios as $usuario) {
                 $objectUsuario = new \stdClass();
                 $objectUsuario->id = $usuario->id;
+                $objectUsuario->numero_registro = $cont;
                 $objectUsuario->nombre = $usuario->name;
                 $objectUsuario->clave = $usuario->clave;
                 $objectUsuario->contrasena = $usuario->password;
                 $objectUsuario->email = $usuario->email;
                 $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
                 $objectUsuario->rol_id = $usuario->rol_id;
+
                 array_push($array_usuario, $objectUsuario);
+                $cont++;
             }
 
             return response()->json([

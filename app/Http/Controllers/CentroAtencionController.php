@@ -14,10 +14,11 @@ class CentroAtencionController extends Controller
             $centros = CentroAtencion::where('status', 1)->get();
              
             $array_centros = array();
-            
+            $cont = 1;
             foreach ($centros as $centro) {
                 $objectCentro = new \stdClass();
                 $objectCentro->id = $centro->id;
+                $objectCentro->numero_registro = $cont;
                 $objectCentro->nombre = $centro->nombre;
                 $objectCentro->direccion = $centro->direccion;
                 $objectCentro->telefono = $centro->telefono;
@@ -29,6 +30,7 @@ class CentroAtencionController extends Controller
                 $objectCentro->tramites = $tramites;
 
                 array_push($array_centros, $objectCentro);
+                $cont++;
             }
 
             return response()->json([
