@@ -22,6 +22,7 @@ class CentroAtencionController extends Controller
                 $objectCentro->direccion = $centro->direccion;
                 $objectCentro->telefono = $centro->telefono;
                 $objectCentro->numero_cajas = $centro->numero_cajas;
+                
                 $tramites = array();
                 foreach ($centro->tramites as $tramite) {
                     array_push($tramites, $tramite->id);

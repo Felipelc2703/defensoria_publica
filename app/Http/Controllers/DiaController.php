@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dia;
+use App\Models\Horario;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
@@ -24,8 +25,6 @@ class DiaController extends Controller
                 $existe_dia = Dia::where('fecha',$dia['date_string'])
                                  ->where('centro_atencion_id', $request->centro_atencion_id)
                                  ->first();
-
-
                 if($existe_dia)
                 {
                     $existe_dia->fecha = $dia['date_string'];
@@ -33,7 +32,6 @@ class DiaController extends Controller
                     $existe_dia->hora_fin = $dia['hora_fin'];
                     $existe_dia->duracion = $dia['duracion'];
                     $existe_dia->inhabil = $dia['inhabil'];
-
                     $existe_dia->save();
                 }
                 else {
@@ -46,6 +44,35 @@ class DiaController extends Controller
                     $day->mes = $dia['mes'];
                     $day->centro_atencion_id = $request->centro_atencion_id;
                     $day->save();
+
+                    $anio = substr($day->fecha, 0, -6);
+                    $dia_fecha = substr($day->fecha, -2, 2);
+
+                    $h = substr($day->hora_inicio, 0, -3);
+                    $m = substr($day->hora_inicio, 3, 2);
+
+                    $hf = substr($day->hora_fin, 0, -3);
+                    $mf = substr($day->hora_fin, 3, 2);
+
+                    $date = Carbon::create($anio, $day->mes, $dia_fecha, $h,$m);
+                    $datef = Carbon::create($anio, $day->mes, $dia_fecha, $hf,$mf);
+
+                    $horario_final = $datef->toTimeString(); //fin del rango de horarios
+                    $horario_insertar = $date->toTimeString(); //inicio rango de horarios
+
+                    $cajas = $day->centroAtencion->numero_cajas;
+
+                    while($horario_insertar < $horario_final)
+                    {
+                        $horario = new Horario;
+                        $horario->hora_inicio = $horario_insertar;
+                        $horario->citas_disponibles = $cajas;
+                        $horario->dia_id = $day->id;
+                        $horario->save();
+
+                        $date->addMinutes($day->duracion);
+                        $horario_insertar = $date->toTimeString();
+                    }
                 }
             }
 

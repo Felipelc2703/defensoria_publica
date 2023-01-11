@@ -37,7 +37,7 @@
 
         <v-dialog
             v-model="dialogAgregarTramite"
-            max-width="800px"
+            max-width="1200px"
             persistent
             >
 
@@ -81,6 +81,19 @@
                                     persistent-hint
                                     variant="solo"
                                 ></v-select>
+
+                                <table>
+                                    <tr>
+                                        <th>Requisito</th>
+                                        <th>Obligatorio *</th>
+                                    </tr>
+                                    <!-- <div v-for="(requisito, index) in requisitosTipoTramite" :key="index"> -->
+                                        <tr v-for="(requisito, index) in requisitosTipoTramite" :key="index">
+                                            <td><input type="checkbox" :value="requisito.id" v-model="tramite.requisitos" :id="`check_${index}`">  <label :for="`check_${index}`">{{requisito.nombre}}</label></td>
+                                            <td><input type="checkbox" :value="requisito.id" v-model="tramite.obligatorios" :id="`check_${index}`"></td>
+                                        </tr>
+                                    <!-- </div> -->
+                                </table>
                             </v-form>
                         </v-row>
                     </v-container>
@@ -198,7 +211,9 @@
                     nombre: '',
                     descripcion: '',
                     url: '',
-                    tipo_tramite_id: ''
+                    tipo_tramite_id: '',
+                    requisitos: [],
+                    obligatorios: [],
                 },
                 headers: [
                     {
@@ -224,9 +239,18 @@
             },
             tiposTramite() {
             return this.$store.getters.getCatalogoTiposTramites
-        }
-
+            },
+            requisitosTipoTramite() {
+                return this.$store.getters.getRequisitosTipoTramite
+            }
         },
+
+        watch: {
+            'tramite.tipo_tramite_id': function () {
+                this.getRequisitos(this.tramite)
+            }
+        },
+
         methods: {
             agregarTramite() {
               this.dialogAgregarTramite = true
@@ -275,42 +299,43 @@
             },
             
             async guardarNuevoTramite() {
-                const { valid } = await this.$refs.formAgregarTramite.validate()
-                if (valid) {
-                    Swal.fire({
-                        title: '¿Guardar nuevo tramite?',
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085D6',
-                        cancelButtonColor: '#D33',
-                        confirmButtonText: 'Si, guardar',
-                        cancelButtonText: 'Cancelar',
-                        showLoaderOnConfirm: true,
-                        preConfirm: async () => {
-                            try {
-                                let response = await axios.post('/api/tramite/guardar-nuevo', this.tramite)
-                                return response
-                            } catch (error) {
-                                errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
-                            }
-                        },
-                        allowOutsideClick: () => !Swal.isLoading()
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            if (result.value.status === 200) {
-                                if (result.value.data.status === "ok") {
-                                    successSweetAlert(result.value.data.message)
-                                    this.$store.commit('setCatalogoTramites', result.value.data.tramites)
-                                    this.cancelarAgregarTramite()
-                                } else {
-                                    errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
-                                }
-                            } else {
-                                errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
-                            }
-                        }
-                    })
-                }
+                console.log(this.tramite)
+                // const { valid } = await this.$refs.formAgregarTramite.validate()
+                // if (valid) {
+                //     Swal.fire({
+                //         title: '¿Guardar nuevo tramite?',
+                //         icon: 'question',
+                //         showCancelButton: true,
+                //         confirmButtonColor: '#3085D6',
+                //         cancelButtonColor: '#D33',
+                //         confirmButtonText: 'Si, guardar',
+                //         cancelButtonText: 'Cancelar',
+                //         showLoaderOnConfirm: true,
+                //         preConfirm: async () => {
+                //             try {
+                //                 let response = await axios.post('/api/tramite/guardar-nuevo', this.tramite)
+                //                 return response
+                //             } catch (error) {
+                //                 errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
+                //             }
+                //         },
+                //         allowOutsideClick: () => !Swal.isLoading()
+                //     }).then((result) => {
+                //         if (result.isConfirmed) {
+                //             if (result.value.status === 200) {
+                //                 if (result.value.data.status === "ok") {
+                //                     successSweetAlert(result.value.data.message)
+                //                     this.$store.commit('setCatalogoTramites', result.value.data.tramites)
+                //                     this.cancelarAgregarTramite()
+                //                 } else {
+                //                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
+                //                 }
+                //             } else {
+                //                 errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
+                //             }
+                //         }
+                //     })
+                // }
             },
             editarTramite(tramite)
             {
@@ -368,6 +393,25 @@
                         }
                     })
                 }
+            },
+            async getRequisitos()
+            {
+
+                console.log("iohdsiusdhbdsiuodsio")
+                try {
+                  let response = await axios.post('/api/tramite/requisitos-tipo-tramite', this.tramite)
+                  if (response.status === 200) {
+                      if (response.data.status === "ok") {
+                          this.$store.commit('setRequisitosTipoTramite', response.data.requisitos)
+                      } else {
+                          errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                      }
+                  } else {
+                      errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
+                  }
+              } catch (error) {
+                errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
+              }
             }
         }
 

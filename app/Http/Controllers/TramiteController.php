@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Tramite;
+use App\Models\TipoTramite;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Dia;
+use App\Models\Horario;
 
 class TramiteController extends Controller
 {
@@ -18,17 +21,25 @@ class TramiteController extends Controller
             $arrayTramites = array();
             foreach($tramites as $tramite)
             {
-                foreach($tramites as $tramite)
-                {
-                    $objectTramite = new \stdClass();
-                    $objectTramite->id = $tramite->id;
-                    $objectTramite->nombre = $tramite->nombre;
-                    $objectTramite->descripcion = $tramite->descripcion;
-                    $objectTramite->url_informacion = $tramite->url_informacion;
-                    $objectTramite->tipo_tramite_id = $tramite->tipo_tramite_id;
+                $objectTramite = new \stdClass();
+                $objectTramite->id = $tramite->id;
+                $objectTramite->nombre = $tramite->nombre;
+                $objectTramite->descripcion = $tramite->descripcion;
+                $objectTramite->url_informacion = $tramite->url_informacion;
+                $objectTramite->tipo_tramite_id = $tramite->tipo_tramite_id;
 
-                    array_push($arrayTramites,$objectTramite);
+                $requisitos = array();
+
+                foreach($tramite->requisitos as $requisito)
+                {
+                    $objectRequisitoTramite = new \stdClass();
+                    $objectRequisitoTramite->id = $requisito->id;
+                    $objectRequisitoTramite->nombre = $requisito->nombre;
+
+                    array_push($requisitos, $objectRequisitoTramite);
                 }
+
+                array_push($arrayTramites,$objectTramite);
             }
 
             return response()->json([
@@ -232,42 +243,53 @@ class TramiteController extends Controller
             $objectVacio->dia_sin_servicio = false;
 
             $contador = $first->dayOfWeek+1;
-            foreach ($period as $date) {
-                $object = new \stdClass();
-                $object->fecha_completa = $date->toDateString();
-                $object->dia = $date->day;
-                $object->numero_dia_semana = $date->dayOfWeek;
-                $object->fecha_formateada = $this->formatearFecha($date->dayOfWeek, $date->day, $date->month, $date->year);
-                
-                $object->horarios_disponibles = array(
-                    (object) [
-                        'id'=> 1,
-                        'hora'=> '09:30:00',
-                    ],
-                    (object) [
-                        'id'=> 2,
-                        'hora'=> '10:00:00',
-                    ],
-                    (object) [
-                        'id'=> 3,
-                        'hora'=> '10:30:00',
-                    ],
-                    (object) [
-                        'id'=> 4,
-                        'hora'=> '11:00:00',
-                    ],
-                    (object) [
-                        'id'=> 5,
-                        'hora'=> '11:30:00',
-                    ],
-                    (object) [
-                        'id'=> 6,
-                        'hora'=> '12:00:00',
-                    ],
-                );
 
-                if ($contador > 0 && $contador <= 7) {
-                    $object->dia_disponible = false;
+            //comparacion con dias que se tienen en la table 
+            foreach ($period as $date) 
+            {
+                $fecha = $date->toDateString();
+                $dia =  Dia::where('fecha',$fecha)
+                            ->where('centro_atencion_id',$request->centro_atencion_id)
+                            ->first();
+                if($dia)
+                {
+                    $object = new \stdClass();
+                    $object->fecha_completa = $dia->fecha;
+                    $object->dia = $date->day;
+                    $object->numero_dia_semana = $date->dayOfWeek;
+                    $object->fecha_formateada = $this->formatearFecha($date->dayOfWeek, $date->day, $date->month, $date->year);
+                    $object->hora_inicio = $dia->hora_inicio;
+                    $object->hora_fin = $dia->hora_fin;
+                    $object->duracion = $dia->duracion;
+                    $object->centro_atencion_id = $dia->centro_atencion_id;
+
+                    $horarios = $dia->horarios;
+
+                    $horariosAtencion = [];
+
+                    foreach($horarios as $horario)
+                    {
+                        if($horario->citas_disponibles > 0)
+                        {
+                            array_push($horariosAtencion, $horario);
+                        }
+                    }
+
+                    $object->horarios_disponibles = $horariosAtencion;
+
+                    if($horariosAtencion == [])
+                    {
+                        $object->dia_disponible = false;
+                    }
+                    else
+                    {
+                        $object->dia_disponible = true;
+                    }
+                }
+
+                if ($contador > 0 && $contador <= 7) 
+                {
+                    // $object->dia_disponible = true;
                     if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
                         $object->dia_sin_servicio = true;
                     } else {
@@ -275,7 +297,7 @@ class TramiteController extends Controller
                     }
                     array_push($semana_uno, $object);
                 } else if ($contador > 7 && $contador <= 14) {
-                    $object->dia_disponible = false;
+                    // $object->dia_disponible = true;
                     if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
                         $object->dia_sin_servicio = true;
                     } else {
@@ -283,7 +305,7 @@ class TramiteController extends Controller
                     }
                     array_push($semana_dos, $object);
                 } else if ($contador > 14 && $contador <= 21) {
-                    $object->dia_disponible = false;
+                    // $object->dia_disponible = true;
                     if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
                         $object->dia_sin_servicio = true;
                     } else {
@@ -291,17 +313,16 @@ class TramiteController extends Controller
                     }
                     array_push($semana_tres, $object);
                 } else if ($contador > 21 && $contador <= 28) {
-                    $object->dia_disponible = false;
-                    $object->dia_sin_servicio = true;
-                    // if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
-                    //     $object->dia_sin_servicio = true;
-                    // } else {
-                    //     $object->dia_sin_servicio = false;
-                    // }
+                    // $object->dia_disponible = true;
+                    if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
+                        $object->dia_sin_servicio = true;
+                    } else {
+                        $object->dia_sin_servicio = false;
+                    }
                     array_push($semana_cuatro, $object);
                 } else if ($contador > 28 && $contador <= 35) {
                     if ($contador > 31 && $contador <= 34) {
-                        $object->dia_disponible = true;
+                        // $object->dia_disponible = true;
                     }
                     if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
                         $object->dia_sin_servicio = true;
@@ -310,7 +331,7 @@ class TramiteController extends Controller
                     }
                     array_push($semana_cinco, $object);
                 } else if ($contador > 35) {
-                    $object->dia_disponible = false;
+                    // $object->dia_disponible = true;
                     if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
                         $object->dia_sin_servicio = true;
                     } else {
@@ -372,13 +393,7 @@ class TramiteController extends Controller
             ], 200);
         }
 
-        if ($exito) {
-            return response()->json([
-                "status" => "ok",
-                "message" => "Nuevo Tramite agregado con exito.",
-                "tramites" => $arrayTramites
-            ], 200);
-        }
+       
     }
 
     public function guardarNuevoTramite(Request $request)
@@ -555,6 +570,46 @@ class TramiteController extends Controller
                 "status" => "ok",
                 "message" => "Nuevo Tramite agregado con exito.",
                 "tramites" => $arrayTramites
+            ], 200);
+        }
+    }
+
+    public function getRequisitosTramite(Request $request)
+    {
+        try {
+
+            $tipo_tramite_id = $request->tipo_tramite_id;
+            $tramite = TipoTramite::find($tipo_tramite_id);
+            
+
+            $requisitos = array();
+            foreach($tramite->requisitos as $requisito)
+            {
+                $objectRequisito = new \stdClass();
+                $objectRequisito->id = $requisito->id;
+                $objectRequisito->nombre = $requisito->nombre;
+                $objectRequisito->obligatorio = false;
+
+                array_push($requisitos,$objectRequisito);
+
+                // array_push($requisitos, $objectRequisito);
+            }
+
+            return response()->json([
+                "status" => "ok",
+                "message" => "Requisitos asociados.",
+                "requisitos" => $requisitos
+            ], 200);
+            
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $exito = false;
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener requisitos asociados",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
             ], 200);
         }
     }

@@ -13,7 +13,7 @@
             <div class="first-line"></div>
             <div class="mt-6 text-center row">
                 <div class="col-sm-12 col-md-6">
-                    <button class="boton-cancelar" @click="cancelarCita()">Cancelar Cita</button>
+                    <button class="boton-cancelar" @click="cancelarCita(citaAgendada.id)">Cancelar Cita</button>
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <button class="boton-imprimir" @click="imprimirCita()">Imprimir</button>
@@ -25,6 +25,7 @@
 
 <script>
     import { defineComponent } from "vue";
+    import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
 
     export default defineComponent({
         name: 'confirmacion-cita',
@@ -34,10 +35,40 @@
             }
         },
         methods: {
-            cancelarCita() {
-
+            async cancelarCita() {
+                try {
+                    let response = await axios.get(`/api/cancelar-cita/${this.citaAgendada.id}`)
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            successSweetAlert(response.data.message)
+                            this.$router.push('/')
+                        } else {
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        errorSweetAlert('Ocurrió un error al cancelar la cita.')
+                    }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al cancelar la cita.')
+                }
+                
             },
-            imprimirCita() {
+            async imprimirCita() {
+                try {
+                    let response = await axios.get(`/api/imprimir-cita/${this.citaAgendada.id}`, {
+                        responseType: 'arraybuffer'
+                    }).then((response)=>{                                                        
+                        let blob = new Blob([response.data], { type: 'application/pdf' })
+                        let link = document.createElement('a')
+                        link.href = window.URL.createObjectURL(blob)
+                        // link.download = `${item.nombre}.pdf
+                        link.download = 'confirmacion_cita.pdf'
+                        link.click()
+                    })
+                    // console.log(response)
+                } catch (error) {
+                    console.log("error: ", error)
+                }
 
             }
         }

@@ -15,4 +15,9 @@ class CentroAtencion extends Model
     {
         return $this->belongsToMany(Tramite::class, 'tramite_centro', 'centro_atencion_id', 'tramite_id');
     }
+
+    public function dias()
+    {
+        return $this->hasMany(Dia::class, 'centro_atencion_id');
+    }
 }

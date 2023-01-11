@@ -82,4 +82,6 @@ Route::post('/horarios/guardar-dias', [DiaController::class, 'guardarDias']);
 Route::post('/horarios/dias-editar', [DiaController::class, 'getDiasEditar']);
 Route::post('/horarios/actualizar-horario', [DiaController::class, 'actualizarHorario']);
 
+Route::post('/tramite/requisitos-tipo-tramite', [TramiteController::class, 'getRequisitosTramite']);
+
 // Route::post('agregar-usuario', 'UserController@store');

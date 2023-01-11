@@ -12,6 +12,7 @@ export default {
         usuarios:[],
         roles:[],
         notas:[],
+        requsiitosTipoTramite: [],
     },
     getters: {
         getCatalogoCentrosAtencion(state) {
@@ -51,6 +52,9 @@ export default {
         },
         getCatalogoNotas(state) {
             return state.notas
+        },
+        getRequisitosTipoTramite(state) {
+            return state.requsiitosTipoTramite
         }
     },
     mutations: {
@@ -89,6 +93,10 @@ export default {
         },
         setCatalogoNotas(state, payload){
             state.notas = payload
-        }
+        },
+        setRequisitosTipoTramite(state, payload){
+            state.requsiitosTipoTramite = payload
+        },
+        
     }
 }
