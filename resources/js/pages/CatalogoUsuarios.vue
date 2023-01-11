@@ -35,7 +35,7 @@
                     </thead>
                     <tbody>
                         <tr v-if="loading">
-                            <th colspan="6">
+                            <th colspan="4">
                                 <p class="text-center texto-cargando-datos">Cargando datos...</p>
                                 <div class="linear-activity">
                                     <div class="indeterminate"></div>

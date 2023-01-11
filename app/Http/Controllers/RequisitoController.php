@@ -15,14 +15,17 @@ class RequisitoController extends Controller
             $requisitos = Requisito::where('status',1)->get();
 
             $arrayRequisitos = array();
+            $cont = 1;
             foreach($requisitos as $requsito) 
             {
                 $objetoRequisito = new \stdClass();
                 $objetoRequisito->id = $requsito->id;
+                $objetoRequisito->numero_registro = $cont;
                 $objetoRequisito->nombre = $requsito->nombre;
                 $objetoRequisito->tipo_tramite = $requsito->tipo_tramite_id;
 
                 array_push($arrayRequisitos,$objetoRequisito);
+                $cont++;
             }
 
             return response()->json([

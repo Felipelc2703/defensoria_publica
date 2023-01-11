@@ -13,12 +13,15 @@ class NotaController extends Controller
             $notas = Nota::all();
              
             $array_nota = array();
+            $cont = 1;
             foreach ($notas as $nota) {
                 $objectNota = new \stdClass();
                 $objectNota->id = $nota->id;
+                $objectNota->numero_registro = $cont;
                 $objectNota->nombre = $nota->nombre;
                 $objectNota->descripcion = $nota->descripcion;
                 array_push($array_nota, $objectNota);
+                $cont++;
             }
 
             return response()->json([

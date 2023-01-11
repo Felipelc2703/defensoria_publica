@@ -19,10 +19,12 @@ class TramiteController extends Controller
             $tramites = Tramite::all();
 
             $arrayTramites = array();
+            $cont = 1;
             foreach($tramites as $tramite)
             {
                 $objectTramite = new \stdClass();
                 $objectTramite->id = $tramite->id;
+                $objectTramite->numero_registro = $cont;
                 $objectTramite->nombre = $tramite->nombre;
                 $objectTramite->descripcion = $tramite->descripcion;
                 $objectTramite->url_informacion = $tramite->url_informacion;
@@ -40,6 +42,7 @@ class TramiteController extends Controller
                 }
 
                 array_push($arrayTramites,$objectTramite);
+                $cont++;
             }
 
             return response()->json([

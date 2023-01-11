@@ -1,39 +1,154 @@
 <template>
     <div class="container my-6">
         <div class="text-center my-6">
-            <h2>NOTAS</h2>
-            <v-btn class="mb-4"
-                large
-                title="Nueva Nota"
-                @click="Agregarnota" >
-                <v-icon size="30" x-large icon="mdi-pencil-box-outline"></v-icon>
-            </v-btn>
+            <h2>Notas</h2>
+            <div>
+                <v-btn 
+                    color="#6a73a0"
+                    class="mt-4 mb-2 boton-nuevo"
+                    large
+                    title="Nueva Nota"
+                    @click="Agregarnota"
+                    append-icon="mdi-plus"
+                    >
+                    Nueva Nota
+                </v-btn>
+            </div>
         </div>
-        <div class="my-6 px-4 py-4">
-            <EasyDataTable 
-                class="mb-6"
-                :headers="headers" 
-                :items="notas"
-                alternating
-            >
-                <template #item-actions="nota">                        
-                        <v-icon
-                            title="Editar Nota"
-                            @click="EditarNota(nota)"
-                            class="mr-1" 
-                        >
-                            mdi-text-box-edit-outline
-                        </v-icon>
-                        <v-icon
-                            title="Eliminar nota"  
-                            @click="eliminarNota(nota)"
-                            class="ml-1"
-                        >
-                            mdi-trash-can
-                        </v-icon>
-                </template>
-            </EasyDataTable>
+
+        <div class="text-right">
+            <div class="buscador-data-table">
+                <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
+            </div>
         </div>
+
+        <div class="my-2 mb-12 py-6">
+            <div class="container-fluid">
+                <table class="table">
+                    <thead class="headers-table">
+                        <tr>
+                            <th class="titulo-columna borde-izquierdo">#</th>
+                            <th class="titulo-columna">Nombre</th>
+                            <th class="titulo-columna">Descripción</th>
+                            <th class="titulo-columna borde-derecho">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="loading">
+                            <th colspan="4">
+                                <p class="text-center texto-cargando-datos">Cargando datos...</p>
+                                <div class="linear-activity">
+                                    <div class="indeterminate"></div>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr v-else v-for="nota in datosPaginados" :key="nota.id">
+                            <td class="texto-campo-table">
+                                {{nota.numero_registro}}
+                            </td>
+                            <td class="texto-campo-table">
+                                {{nota.nombre}}
+                            </td>
+                            <td class="texto-campo-table">
+                                {{nota.descripcion}}
+                            </td>
+                            <td>
+                                <div class="text-center row justify-content-center">
+                                    <div>
+                                        <v-icon 
+                                            title="Editar Nota"
+                                            @click="EditarNota(nota)"
+                                            class="mr-1"
+                                            >
+                                            mdi-text-box-edit-outline
+                                        </v-icon>
+
+                                        <v-tooltip
+                                            activator="parent"
+                                            location="bottom"
+                                            >
+                                            <span style="font-size: 15px;">Editar Nota</span>
+                                        </v-tooltip>
+                                    </div>
+                                    
+                                    <div>
+                                        <v-icon 
+                                            title="Eliminar Nota"
+                                            @click="eliminarNota(nota)"
+                                            class="ml-1"
+                                        >
+                                            mdi-trash-can
+                                        </v-icon>
+                                        <v-tooltip
+                                            activator="parent"
+                                            location="bottom"
+                                            >
+                                            <span style="font-size: 15px;">Eliminar Nota</span>
+                                        </v-tooltip>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <template v-if="notas.length > 0">
+                <div class="row justify-content-between container">
+                    <div>
+                        <p class="text-resultados mt-2">
+                            Mostrando
+                            <span>{{from}}</span>
+                            -
+                            <span>{{to}}</span>
+                            de
+                            <span>{{notas.length}}</span>
+                            resultados
+                        </p>
+                    </div>
+                    <div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pagination-lg justify-content-center">
+                                <li class="page-item cursor-paginator" @click="getFirstPage()">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;&lt;</span>
+                                        <span class="sr-only">First</span>
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getPreviousPage()">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li v-for="pagina in pages" @click="getDataPagina(pagina), setCurrentPage(pagina)" :key="pagina" class="page-item cursor-paginator" :class="isActive(pagina)">
+                                    <a class="page-link">
+                                        {{pagina}}
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getNextPage()">
+                                    <a class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">&gt;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getLastPage()">
+                                    <a class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">&gt;&gt;</span>
+                                        <span class="sr-only">Last</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </template>
+            <template v-else-if="!loading">
+                <div class="text-center">
+                    <p class="texto-no-data">Aún no hay datos disponibles</p>
+                </div>
+            </template>
+        </div>
+
         <!-- modal para agregar usuario -->
         <v-dialog
             v-model="dialogAgregarNota"
@@ -136,45 +251,63 @@
 </template>
 
 <script>
-  import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
-    export default {
+    import { defineComponent } from 'vue';
+    import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
+    
+    export default defineComponent({
+        name: 'catalogo-notas',
         data() {
             return {
-                        dialogAgregarNota: false,
-                        dialogEditarNota: false,
-                        nota: {
-                            id: null,
-                            nombre: '',
-                            descripcion: '',
-                        },
-                        loading: false,
-                        headers: [
-                        { 
-                            text: "Nombre", value: "nombre" 
-                        },
-                        { 
-                            text: "Descripción", value: "descripcion"
-                        },
-                        { 
-                            text: 'ACCIONES', value: 'actions'
-                        }
-                        ],
-                        dialogAgregarCentro: false,
-                        
-                    }
+                dialogAgregarNota: false,
+                dialogEditarNota: false,
+                nota: {
+                    id: null,
+                    nombre: '',
+                    descripcion: '',
+                },
+                loading: false,
+                elementosPorPagina: 10,
+                paginaActual: 1,
+                datosPaginados: [],
+                mostrar: false,
+                from: '',
+                to: '',
+                numShown: 5,
+                current: 1,
+                buscar: '',
+            }
         },
         created(){
             this.getCatalogoNotas()
         },
         computed:{
             notas(){
-                if (this.loading) {
-                return []
-            } else {
                 return this.$store.getters.getCatalogoNotas
-            }
-
             },
+            pages() {
+                const numShown = Math.min(this.numShown, this.totalPaginas())
+                let first = this.current - Math.floor(numShown / 2)
+                first = Math.max(first, 1)
+                first = Math.min(first, this.totalPaginas() - numShown + 1)
+                return [...Array(numShown)].map((k, i) => i + first)
+            }
+        },
+        watch: {
+            buscar: function () {
+                if (!this.buscar.length == 0) {
+                    this.datosPaginados = this.notas.filter(item => {
+                        return item.nombre.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.descripcion.toLowerCase().includes(this.buscar.toLowerCase())
+                    })
+                } else {
+                    this.getDataPagina(1)
+                }
+            },
+            mostrar: function () {
+                if (this.mostrar) {
+                    this.getDataPagina(1)
+                }
+            }
         },
         methods: {
             // Abrir modal nueva nota
@@ -327,8 +460,7 @@
                   if (response.status === 200) {
                       if (response.data.status === "ok") {
                           this.$store.commit('setCatalogoNotas', response.data.notas)
-                           console.log(this.$store.getters.getCatalogoNotas)
-                           console.log(this.notas)
+                           this.mostrar = true
                       } else {
                           errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                       }
@@ -340,6 +472,60 @@
               }
               this.loading = false
           },
+          totalPaginas() {
+                return Math.ceil(this.notas.length / this.elementosPorPagina)
+            },
+            getDataPagina(noPagina) {
+                this.paginaActual = noPagina
+                this.datosPaginados = []
+
+                let ini = (noPagina * this.elementosPorPagina) - this.elementosPorPagina
+                let fin = (noPagina * this.elementosPorPagina)
+
+                for (let index = ini; index < fin; index++) {
+                    if (this.notas[index]) {
+                        this.datosPaginados.push(this.notas[index])
+                    }
+                }
+
+                // Para el texto "Mostrando 1 - 10 de 20 resultados"
+                this.from = ini+1
+                if (noPagina < this.totalPaginas()) {
+                    this.to = fin
+                } else {
+                    this.to = this.notas.length
+                }
+            },
+            getFirstPage() {
+                this.paginaActual = 1
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getPreviousPage() {
+                if (this.paginaActual > 1) {
+                    this.paginaActual--
+                }
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getNextPage() {
+                if (this.paginaActual < this.totalPaginas()) {
+                    this.paginaActual++
+                }
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getLastPage() {
+                this.paginaActual = this.totalPaginas()
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            isActive (noPagina) {
+                return noPagina == this.paginaActual ? 'active' : ''
+            },
+            setCurrentPage(pagina) {
+                this.current = pagina
+            },
         },
-    }
+    })
 </script>

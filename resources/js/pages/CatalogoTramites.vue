@@ -1,38 +1,152 @@
 <template>
     <div class="container my-6">
         <div class="text-center my-6">
-            <h2>TRAMITES</h2>
-            <v-btn
-                large
-                title="Nuevo Tramite"
-                @click="agregarTramite">
-                <v-icon size="30" x-large icon="mdi-pencil-box-outline"></v-icon>
-            </v-btn>
+            <h2>Tramites</h2>
+            <div>
+                <v-btn
+                    color="#6a73a0"
+                    class="mt-4 mb-2 boton-nuevo"
+                    large
+                    title="Nuevo Tramite"
+                    @click="agregarTramite"
+                    append-icon="mdi-plus"
+                    >
+                    Nuevo Tramite
+                </v-btn>
+            </div>
         </div>
-        <div class="my-6 px-4 py-4">
-            <EasyDataTable
-                class="mb-6"
-                :headers="headers"
-                :items="tramites"
-                alternating
-                >
-                <template #item-actions="tramite">
-                    <v-icon 
-                      title="Editar Tramite"
-                      @click="editarTramite(tramite)"
-                      class="mr-1"
-                    >
-                        mdi-text-box-edit-outline
-                    </v-icon>
-                    <v-icon 
-                        title="Eliminar Tramite"
-                        @click="eliminarTramite(tramite)"
-                        class="ml-1"
-                    >
-                        mdi-trash-can
-                    </v-icon>
-                </template>
-            </EasyDataTable>
+
+        <div class="text-right">
+            <div class="buscador-data-table">
+                <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
+            </div>
+        </div>
+
+        <div class="my-2 mb-12 py-6">
+            <div class="container-fluid">
+                <table class="table">
+                    <thead class="headers-table">
+                        <tr>
+                            <th class="titulo-columna borde-izquierdo">#</th>
+                            <th class="titulo-columna">Nombre</th>
+                            <th class="titulo-columna">Descripción Corta</th>
+                            <th class="titulo-columna borde-derecho">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="loading">
+                            <th colspan="4">
+                                <p class="text-center texto-cargando-datos">Cargando datos...</p>
+                                <div class="linear-activity">
+                                    <div class="indeterminate"></div>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr v-else v-for="tramite in datosPaginados" :key="tramite.id">
+                            <td class="texto-campo-table">
+                                {{tramite.numero_registro}}
+                            </td>
+                            <td class="texto-campo-table">
+                                {{tramite.nombre}}
+                            </td>
+                            <td class="texto-campo-table">
+                                {{tramite.descripcion}}
+                            </td>
+                            <td>
+                                <div class="text-center row justify-content-center">
+                                    <div>
+                                        <v-icon 
+                                            title="Editar Tramite"
+                                            @click="editarTramite(tramite)"
+                                            class="mr-1"
+                                            >
+                                            mdi-text-box-edit-outline
+                                        </v-icon>
+
+                                        <v-tooltip
+                                            activator="parent"
+                                            location="bottom"
+                                            >
+                                            <span style="font-size: 15px;">Editar Tramite</span>
+                                        </v-tooltip>
+                                    </div>
+                                    
+                                    <div>
+                                        <v-icon 
+                                            title="Eliminar Tramite"
+                                            @click="eliminarTramite(tramite)"
+                                            class="ml-1"
+                                        >
+                                            mdi-trash-can
+                                        </v-icon>
+                                        <v-tooltip
+                                            activator="parent"
+                                            location="bottom"
+                                            >
+                                            <span style="font-size: 15px;">Eliminar Tramite</span>
+                                        </v-tooltip>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <template v-if="tramites.length > 0">
+                <div class="row justify-content-between container">
+                    <div>
+                        <p class="text-resultados mt-2">
+                            Mostrando
+                            <span>{{from}}</span>
+                            -
+                            <span>{{to}}</span>
+                            de
+                            <span>{{tramites.length}}</span>
+                            resultados
+                        </p>
+                    </div>
+                    <div>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination pagination-lg justify-content-center">
+                                <li class="page-item cursor-paginator" @click="getFirstPage()">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;&lt;</span>
+                                        <span class="sr-only">First</span>
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getPreviousPage()">
+                                    <a class="page-link" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li v-for="pagina in pages" @click="getDataPagina(pagina), setCurrentPage(pagina)" :key="pagina" class="page-item cursor-paginator" :class="isActive(pagina)">
+                                    <a class="page-link">
+                                        {{pagina}}
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getNextPage()">
+                                    <a class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">&gt;</span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                                <li class="page-item cursor-paginator" @click="getLastPage()">
+                                    <a class="page-link" aria-label="Next">
+                                        <span aria-hidden="true">&gt;&gt;</span>
+                                        <span class="sr-only">Last</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </template>
+            <template v-else-if="!loading">
+                <div class="text-center">
+                    <p class="texto-no-data">Aún no hay datos disponibles</p>
+                </div>
+            </template>
         </div>
 
         <v-dialog
@@ -187,11 +301,6 @@
               </v-card-actions>
             </v-card>
         </v-dialog>
-
-
-        
-
-
     </div>
 </template>
 
@@ -215,42 +324,59 @@
                     requisitos: [],
                     obligatorios: [],
                 },
-                headers: [
-                    {
-                        text: 'Nombre tramite', value: 'nombre'
-                    },
-                    {
-                        text: 'Descripcion Corta', value: 'descripcion'
-                    },
-                    {
-                        text: 'Acciones', value:'actions'
-                    }
-                ],
+                elementosPorPagina: 10,
+                paginaActual: 1,
+                datosPaginados: [],
+                mostrar: false,
+                from: '',
+                to: '',
+                numShown: 5,
+                current: 1,
+                buscar: '',
             }
         },
         created() {
             this.getCatalogoTramites()
             this.getTiposTramite();
-
         },
         computed: {
             tramites() {
                 return this.$store.getters.getCatalogoTramites
             },
             tiposTramite() {
-            return this.$store.getters.getCatalogoTiposTramites
+                return this.$store.getters.getCatalogoTiposTramites
             },
             requisitosTipoTramite() {
                 return this.$store.getters.getRequisitosTipoTramite
+            },
+            pages() {
+                const numShown = Math.min(this.numShown, this.totalPaginas())
+                let first = this.current - Math.floor(numShown / 2)
+                first = Math.max(first, 1)
+                first = Math.min(first, this.totalPaginas() - numShown + 1)
+                return [...Array(numShown)].map((k, i) => i + first)
             }
         },
-
         watch: {
             'tramite.tipo_tramite_id': function () {
                 this.getRequisitos(this.tramite)
+            },
+            buscar: function () {
+                if (!this.buscar.length == 0) {
+                    this.datosPaginados = this.tramites.filter(item => {
+                        return item.nombre.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.descripcion.toLowerCase().includes(this.buscar.toLowerCase())
+                    })
+                } else {
+                    this.getDataPagina(1)
+                }
+            },
+            mostrar: function () {
+                if (this.mostrar) {
+                    this.getDataPagina(1)
+                }
             }
         },
-
         methods: {
             agregarTramite() {
               this.dialogAgregarTramite = true
@@ -269,7 +395,7 @@
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             this.$store.commit('setCatalogoTramites', response.data.tramites)
-                            //   console.log($response.data.requisitos)
+                            this.mostrar = true
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
@@ -354,10 +480,9 @@
                 this.tramite.tipo_tramite_id = ''
                 this.dialogEditarTramite = false
             },
-            async  guardarCambiosTramite()
+            async guardarCambiosTramite()
             {
                 const { valid } = await this.$refs.formEditarTramite.validate()
-                //   console.log(this.requisito)
                 if (valid) {
                     Swal.fire({
                         title: '¿Guardar cambios?',
@@ -412,9 +537,61 @@
               } catch (error) {
                 errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
               }
-            }
+            },
+            totalPaginas() {
+                return Math.ceil(this.tramites.length / this.elementosPorPagina)
+            },
+            getDataPagina(noPagina) {
+                this.paginaActual = noPagina
+                this.datosPaginados = []
+
+                let ini = (noPagina * this.elementosPorPagina) - this.elementosPorPagina
+                let fin = (noPagina * this.elementosPorPagina)
+
+                for (let index = ini; index < fin; index++) {
+                    if (this.tramites[index]) {
+                        this.datosPaginados.push(this.tramites[index])
+                    }
+                }
+
+                // Para el texto "Mostrando 1 - 10 de 20 resultados"
+                this.from = ini+1
+                if (noPagina < this.totalPaginas()) {
+                    this.to = fin
+                } else {
+                    this.to = this.tramites.length
+                }
+            },
+            getFirstPage() {
+                this.paginaActual = 1
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getPreviousPage() {
+                if (this.paginaActual > 1) {
+                    this.paginaActual--
+                }
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getNextPage() {
+                if (this.paginaActual < this.totalPaginas()) {
+                    this.paginaActual++
+                }
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            getLastPage() {
+                this.paginaActual = this.totalPaginas()
+                this.setCurrentPage(this.paginaActual)
+                this.getDataPagina(this.paginaActual)
+            },
+            isActive (noPagina) {
+                return noPagina == this.paginaActual ? 'active' : ''
+            },
+            setCurrentPage(pagina) {
+                this.current = pagina
+            },
         }
-
-
     })
 </script>
