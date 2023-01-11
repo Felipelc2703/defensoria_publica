@@ -12,6 +12,7 @@ use App\Http\Controllers\CentroAtencionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\NotaController;
+use App\Http\Controllers\DiaController;
 
 
 
@@ -69,8 +70,18 @@ Route::post('/usuarios/eliminar-nota', [NotaController::class, 'eliminarNota']);
 
 Route::post('/tramite/guardar-nuevo', [TramiteController::class, 'guardarNuevoTramite']);
 Route::post('/tramite/actualizar-tramite', [TramiteController::class, 'actualizarTramite']);
+
+
 Route::post('/buscar-cita', [CitaController::class, 'buscarCita']);
 Route::get('/cancelar-cita/{id}', [CitaController::class, 'cancelarCita']);
 Route::get('/imprimir-cita/{id}', [CitaController::class, 'imprimirCita']);
+
+
+Route::post('/horarios/llenar-dias', [DiaController::class, 'getDiasMes']);
+Route::post('/horarios/guardar-dias', [DiaController::class, 'guardarDias']);
+Route::post('/horarios/dias-editar', [DiaController::class, 'getDiasEditar']);
+Route::post('/horarios/actualizar-horario', [DiaController::class, 'actualizarHorario']);
+
+Route::post('/tramite/requisitos-tipo-tramite', [TramiteController::class, 'getRequisitosTramite']);
 
 // Route::post('agregar-usuario', 'UserController@store');

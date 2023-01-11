@@ -127,9 +127,10 @@
                                                     v-model="cita.hora_cita"
                                                     label="Seleccione el horario"
                                                     :items="horarios_disponibles"
-                                                    item-title="hora"
-                                                    item-value="hora"
+                                                    item-title="hora_inicio"
+                                                    item-value="id"
                                                     variant="outlined"
+                                                    
                                                 ></v-select>
                                             </div>
                                         </div>
@@ -360,6 +361,9 @@
                     sexo: '',
                     tiene_discapacidad: '',
                     discapacidad: '',
+                    dia: '',
+                    horario: '',
+                    
                 },
                 nombreRules: [
                     v => !!v || 'El nombre es requerido'
@@ -411,7 +415,7 @@
             }
         },
         created() {
-            this.cita.requisitos = this.tramiteSeleccionado.requisitos
+            // this.cita.requisitos = this.tramiteSeleccionado.requisitos
             this.cita.requisitos = this.tramiteSeleccionado.requisitos
             this.cita.requisitos.forEach(element => {
                 element.checked = '0'
@@ -420,11 +424,13 @@
             this.fecha_calendario.numero_mes = date.getMonth() + 1
             this.fecha_calendario.mes = this.formatearMes(date.getMonth() + 1)
             this.fecha_calendario.año = date.getFullYear()
+            console.log(this.tramiteSeleccionado)
         },
         computed: {
             tramiteSeleccionado() {
                 return this.$store.getters.getTramiteSeleccionado
-            }
+               
+            },
         },
         watch: {
             'cita.centro_atencion': function () {
@@ -448,11 +454,15 @@
             },
             'cita.hora_cita': function () {
                 this.horarios_disponibles.forEach(e => {
-                    this.resumen_cita.hora_cita = `${this.cita.hora_cita} Horas`
+                    if (this.cita.hora_cita == e.id) {
+                        this.resumen_cita.hora_cita = ''
+                        this.resumen_cita.hora_cita = `${e.hora_inicio} Horas`
+                        this.cita.horario = e.hora_inicio
+                    }
                 })
                 this.mostrarPaso3 = true
                 this.panel = [2]
-            }
+            },
         },
         methods: {
             cancelarSolicitud() {
@@ -512,6 +522,7 @@
                 }
             },
             dibujarCalendario() {
+                let band = 0 
                 setTimeout(() => {
                     
                     if (!document.getElementById('row_semana_uno')) {
@@ -525,18 +536,38 @@
                             let text = document.createTextNode(`${e.dia}`)
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
-                            if (e.dia_disponible == true) {
-                                cel_dia.style.cursor = 'pointer';
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            } else if (e.dia_sin_servicio == false) {
-                                cel_dia.style.backgroundColor = '#b1bced'
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            }
-                            if (e.dia_sin_servicio == true) {
+
+                            if(e.dia_sin_servicio == true)
+                            {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
+                            }
+                            else
+                            {
+                                if(e.dia_disponible == false)
+                                {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                else {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                    cel_dia.onclick = () => {
+
+                                        this.cita.hora_cita = ''
+                                        this.resumen_cita.hora_cita = ''
+
+                                        this.horarios_disponibles = e.horarios_disponibles
+                                        this.cita.dia_cita = e.fecha_completa
+                                        this.cita.fecha_formateada = e.fecha_formateada
+                                        cel_dia.style.backgroundColor = '#CDCDD1'
+
+                                        console.log("valor", this.cita.hora_cita)
+                                        console.log("horarios",this.horarios_disponibles)
+                                    }
+                                }
                             }
                             cel_dia.appendChild(text)
                         })
@@ -548,18 +579,38 @@
                             let text = document.createTextNode(`${e.dia}`)
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
-                            if (e.dia_disponible == true) {
-                                cel_dia.style.cursor = 'pointer';
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            } else if (e.dia_sin_servicio == false) {
-                                cel_dia.style.backgroundColor = '#b1bced'
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            }
-                            if (e.dia_sin_servicio == true) {
+                            
+                            if(e.dia_sin_servicio == true)
+                            {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
+                            }
+                            else
+                            {
+                                if(e.dia_disponible == false)
+                                {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                else {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                    cel_dia.onclick = () => {
+                            
+                                        this.cita.hora_cita = ''
+                                        this.resumen_cita.hora_cita = ''
+
+                                        this.horarios_disponibles = e.horarios_disponibles
+                                        this.cita.dia_cita = e.fecha_completa
+                                        this.cita.fecha_formateada = e.fecha_formateada
+                                        // cel_dia.style.backgroundColor = '#CDCDD1'
+
+                                        console.log("valor", this.cita.hora_cita)
+                                        console.log("horarios",this.horarios_disponibles)
+                                    }
+                                }
                             }
                             cel_dia.appendChild(text)
                         })
@@ -571,19 +622,40 @@
                             let text = document.createTextNode(`${e.dia}`)
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
-                            if (e.dia_disponible == true) {
-                                cel_dia.style.cursor = 'pointer';
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            } else if (e.dia_sin_servicio == false) {
-                                cel_dia.style.backgroundColor = '#b1bced'
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            }
-                            if (e.dia_sin_servicio == true) {
+
+                            if(e.dia_sin_servicio == true)
+                            {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
                             }
+                            else
+                            {
+                                if(e.dia_disponible == false)
+                                {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                else {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                    cel_dia.onclick = () => {
+                                        
+                                        this.cita.hora_cita = ''
+                                        this.resumen_cita.hora_cita = ''
+
+                                        this.horarios_disponibles = e.horarios_disponibles
+                                        this.cita.dia_cita = e.fecha_completa
+                                        this.cita.fecha_formateada = e.fecha_formateada
+                                        cel_dia.style.backgroundColor = '#CDCDD1'
+
+                                        console.log("valor", this.cita.hora_cita)
+                                        console.log("horarios",this.horarios_disponibles)
+                                    }
+                                }
+                            }
+                            
                             cel_dia.appendChild(text)
                         })
         
@@ -594,18 +666,38 @@
                             let text = document.createTextNode(`${e.dia}`)
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
-                            if (e.dia_disponible == true) {
-                                cel_dia.style.cursor = 'pointer';
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            } else if (e.dia_sin_servicio == false) {
-                                cel_dia.style.backgroundColor = '#b1bced'
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            }
-                            if (e.dia_sin_servicio == true) {
+
+                            if(e.dia_sin_servicio == true)
+                            {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
+                            }
+                            else
+                            {
+                                if(e.dia_disponible == false)
+                                {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                else {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                    cel_dia.onclick = () => {
+                                        
+                                        this.cita.hora_cita = ''
+                                        this.resumen_cita.hora_cita = ''
+
+                                        this.horarios_disponibles = e.horarios_disponibles
+                                        this.cita.dia_cita = e.fecha_completa
+                                        this.cita.fecha_formateada = e.fecha_formateada
+                                        cel_dia.style.backgroundColor = '#CDCDD1'
+
+                                        console.log("valor", this.cita.hora_cita)
+                                        console.log("horarios",this.horarios_disponibles)
+                                    }
+                                }
                             }
                             cel_dia.appendChild(text)
                         })
@@ -613,31 +705,45 @@
                         let row_semana_cinco = tbodyCalendar.insertRow()
                         row_semana_cinco.id = 'row_semana_cinco'
                         this.semana_cinco.forEach(e => {
+
                             let cel_dia = row_semana_cinco.insertCell()
                             let text = document.createTextNode(`${e.dia}`)
-                            
-                            cel_dia.appendChild(text)
-        
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
-                            if (e.dia_disponible == true) {
-                                cel_dia.style.cursor = 'pointer';
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                                cel_dia.onclick = () => {
-                                    this.horarios_disponibles = e.horarios_disponibles
-                                    this.cita.dia_cita = e.fecha_completa
-                                    this.cita.fecha_formateada = e.fecha_formateada
-                                }
-                            } else if (e.dia_sin_servicio == false) {
-                                cel_dia.style.backgroundColor = '#b1bced'
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            }
-                            if (e.dia_sin_servicio == true) {
+
+                            if(e.dia_sin_servicio == true)
+                            {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
                             }
+                            else
+                            {
+                                if(e.dia_disponible == false)
+                                {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                else {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                    cel_dia.onclick = () => {
+                                        
+                                        this.cita.hora_cita = ''
+                                        this.resumen_cita.hora_cita = ''
+
+                                        this.horarios_disponibles = e.horarios_disponibles
+                                        this.cita.dia_cita = e.fecha_completa
+                                        this.cita.fecha_formateada = e.fecha_formateada
+                                        cel_dia.style.backgroundColor = '#CDCDD1'
+
+                                        console.log("valor", this.cita.hora_cita)
+                                        console.log("horarios",this.horarios_disponibles)
+                                    }
+                                }
+                            }
+                            cel_dia.appendChild(text)
                         })
         
                         let row_semana_seis = tbodyCalendar.insertRow()
@@ -647,18 +753,38 @@
                             let text = document.createTextNode(`${e.dia}`)
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
-                            if (e.dia_disponible == true) {
-                                cel_dia.style.cursor = 'pointer';
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            } else if (e.dia_sin_servicio == false) {
-                                cel_dia.style.backgroundColor = '#b1bced'
-                                cel_dia.style.fontFamily = 'Lato, sans-serif'
-                                cel_dia.style.fontWeight = 'bold'
-                            }
-                            if (e.dia_sin_servicio == true) {
+
+                           if(e.dia_sin_servicio == true)
+                            {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
+                            }
+                            else
+                            {
+                                if(e.dia_disponible == false)
+                                {
+                                    cel_dia.style.backgroundColor = '#b1bced'
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                }
+                                else {
+                                    cel_dia.style.cursor = 'pointer';
+                                    cel_dia.style.fontFamily = 'Lato, sans-serif'
+                                    cel_dia.style.fontWeight = 'bold'
+                                    cel_dia.onclick = () => {
+                                        
+                                        this.cita.hora_cita = ''
+                                        this.resumen_cita.hora_cita = ''
+
+                                        this.horarios_disponibles = e.horarios_disponibles
+                                        this.cita.dia_cita = e.fecha_completa
+                                        this.cita.fecha_formateada = e.fecha_formateada
+                                        cel_dia.style.backgroundColor = '#CDCDD1'
+
+                                        console.log("valor", this.cita.hora_cita)
+                                        console.log("horarios",this.horarios_disponibles)
+                                    }
+                                }
                             }
                             cel_dia.appendChild(text)
                         })
@@ -756,7 +882,9 @@
                 }
             },
             async agendarCita() {
+
                 this.cita.tramite = this.tramiteSeleccionado.id
+                console.log(this.cita)
                 const { valid } = await this.$refs.form.validate()
                 if (valid) {
                     Swal.fire({
@@ -792,6 +920,11 @@
                         }
                     })
                 }
+            },
+            setHorario()
+            {
+                console.log("entro")
+                // console.log(horario)
             }
         },
     })

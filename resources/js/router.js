@@ -18,6 +18,7 @@ import CatalogoTramites from './pages/CatalogoTramites.vue'
 import CatalogoNotas from './pages/CatalogoNotas.vue'
 
 import AgregarHorario from './pages/AgregarHorario.vue'
+import EditarHorario from './pages/EditarHorarios.vue'
 
 const routes = [
     {
@@ -129,6 +130,19 @@ const routes = [
         path: '/agregar-horario',
         name: 'AgregarHorario',
         component: AgregarHorario,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/confirmacion-cita',
+        name: 'ConfirmacionCita',
+        component: ConfirmacionCita,
+    },
+    {
+        path: '/editar-horario',
+        name: 'EditarHorario',
+        component: EditarHorario,
         meta: {
             requiresAuth: true
         }
