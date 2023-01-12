@@ -337,7 +337,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/usuarios/agregar-nota', this.nota)
+                                let response = await axios.post('/api/notas/agregar-nota', this.nota)
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al guardar la nueva nota.')
@@ -391,7 +391,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/usuarios/actualizar-nota', this.nota)
+                                let response = await axios.post('/api/notas/actualizar-nota', this.nota)
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al actualizar los datos de la nota.')
@@ -428,7 +428,7 @@
                   showLoaderOnConfirm: true,
                   preConfirm: async () => {
                       try {
-                          let response = await axios.post('/api/usuarios/eliminar-nota', nota)
+                          let response = await axios.post('/api/notas/eliminar-nota', nota)
                           return response
                       } catch (error) {
                           errorSweetAlert('Ocurrió un error al eliminar esta nota.')

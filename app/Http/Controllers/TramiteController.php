@@ -44,6 +44,7 @@ class TramiteController extends Controller
                 array_push($arrayTramites,$objectTramite);
                 $cont++;
             }
+            
 
             return response()->json([
                 "status" => "ok",
@@ -416,20 +417,19 @@ class TramiteController extends Controller
             $tramites = Tramite::all();
 
             $arrayTramites = array();
+            
             foreach($tramites as $tramite)
             {
-                foreach($tramites as $tramite)
-                {
-                    $objectTramite = new \stdClass();
-                    $objectTramite->id = $tramite->id;
-                    $objectTramite->nombre = $tramite->nombre;
-                    $objectTramite->descripcion = $tramite->descripcion;
-                    $objectTramite->url_informacion = $tramite->url_informacion;
-                    $objectTramite->tipo_tramite_id = $tramite->tipo_tramite_id;
+                $objectTramite = new \stdClass();
+                $objectTramite->id = $tramite->id;
+                $objectTramite->nombre = $tramite->nombre;
+                $objectTramite->descripcion = $tramite->descripcion;
+                $objectTramite->url_informacion = $tramite->url_informacion;
+                $objectTramite->tipo_tramite_id = $tramite->tipo_tramite_id;
 
-                    array_push($arrayTramites,$objectTramite);
-                }
+                array_push($arrayTramites,$objectTramite);
             }
+        
 
             DB::commit();
             $exito = true;
@@ -540,20 +540,19 @@ class TramiteController extends Controller
             $tramites = Tramite::all();
 
             $arrayTramites = array();
+            
             foreach($tramites as $tramite)
             {
-                foreach($tramites as $tramite)
-                {
-                    $objectTramite = new \stdClass();
-                    $objectTramite->id = $tramite->id;
-                    $objectTramite->nombre = $tramite->nombre;
-                    $objectTramite->descripcion = $tramite->descripcion;
-                    $objectTramite->url_informacion = $tramite->url_informacion;
-                    $objectTramite->tipo_tramite_id = $tramite->tipo_tramite_id;
+                $objectTramite = new \stdClass();
+                $objectTramite->id = $tramite->id;
+                $objectTramite->nombre = $tramite->nombre;
+                $objectTramite->descripcion = $tramite->descripcion;
+                $objectTramite->url_informacion = $tramite->url_informacion;
+                $objectTramite->tipo_tramite_id = $tramite->tipo_tramite_id;
 
-                    array_push($arrayTramites,$objectTramite);
-                }
+                array_push($arrayTramites,$objectTramite);
             }
+        
 
             DB::commit();
             $exito = true;
@@ -572,6 +571,53 @@ class TramiteController extends Controller
             return response()->json([
                 "status" => "ok",
                 "message" => "Nuevo Tramite agregado con exito.",
+                "tramites" => $arrayTramites
+            ], 200);
+        }
+    }
+    public function eliminarTramite(Request $request)
+    {
+        $exito = false;
+
+        DB::beginTransaction();
+        try {
+            $tramite = Tramite::find($request->id);
+            $tramite->status = false;
+            $tramite->save();
+
+            $tramites = Tramite::where('status', 1)->get();
+
+            $arrayTramites = array();
+            foreach($tramites as $tramite)
+            {
+                $objectTramite = new \stdClass();
+                $objectTramite->id = $tramite->id;
+                $objectTramite->nombre = $tramite->nombre;
+                $objectTramite->descripcion = $tramite->descripcion;
+                $objectTramite->url_informacion = $tramite->url_informacion;
+                $objectTramite->tipo_tramite_id = $tramite->tipo_tramite_id;
+
+            array_push($arrayTramites,$objectTramite);
+            }
+
+            DB::commit();
+            $exito = true;
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $exito = false;
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al eliminar este tramite.",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+
+        if ($exito) {
+            return response()->json([
+                "status" => "ok",
+                "message" => "Tramite actualizado con exito.",
                 "tramites" => $arrayTramites
             ], 200);
         }
