@@ -41,7 +41,7 @@ class UserController extends Controller
         }
     }
     
-    public function store(Request $request)
+    public function guardarNuevoUsuario(Request $request)
     {
         $exito = false;
 

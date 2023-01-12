@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('requisitos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
+            $table->text('nombre');
             $table->foreignId('tipo_tramite_id')->constrained();
             $table->boolean('status')->default(true);
             $table->timestamps();

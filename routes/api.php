@@ -63,12 +63,14 @@ Route::get('/catalogos/roles', [RolController::class, 'getRoles']);
 
 //Rutas utilizadas para catalogo de notas 
 Route::get('/catalogos/notas', [NotaController::class, 'getNota']);
-Route::post('/usuarios/agregar-nota', [NotaController::class, 'guardarNuevaNota']);
-Route::post('/usuarios/actualizar-nota', [NotaController::class, 'actualizarNota']);
-Route::post('/usuarios/eliminar-nota', [NotaController::class, 'eliminarNota']);
+Route::post('/notas/agregar-nota', [NotaController::class, 'guardarNuevaNota']);
+Route::post('/notas/actualizar-nota', [NotaController::class, 'actualizarNota']);
+Route::post('/notas/eliminar-nota', [NotaController::class, 'eliminarNota']);
 
 Route::post('/tramite/guardar-nuevo', [TramiteController::class, 'guardarNuevoTramite']);
 Route::post('/tramite/actualizar-tramite', [TramiteController::class, 'actualizarTramite']);
+Route::post('/tramite/eliminar-tramite', [TramiteController::class, 'eliminarTramite']);
+
 
 
 // Route::post('agregar-usuario', 'UserController@store');
