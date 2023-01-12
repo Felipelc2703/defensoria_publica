@@ -444,6 +444,7 @@
                                     successSweetAlert(result.value.data.message)
                                     this.$store.commit('setCatalogoCentrosAtencion', result.value.data.centros_atencion)
                                     this.cancelarAgregarCentroAtencion()
+                                    this.getDataPagina(1)
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
@@ -503,6 +504,7 @@
                                     successSweetAlert(result.value.data.message)
                                     this.$store.commit('setCatalogoCentrosAtencion', result.value.data.centros_atencion)
                                     this.cancelarEditarCentroAtencion()
+                                    this.getDataPagina(1)
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
@@ -540,6 +542,7 @@
                                 successSweetAlert(result.value.data.message)
                                 this.$store.commit('setCatalogoCentrosAtencion', result.value.data.centros_atencion)
                                 this.cancelarAgregarCentroAtencion()
+                                this.getDataPagina(1)
                             } else {
                                 errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                             }
