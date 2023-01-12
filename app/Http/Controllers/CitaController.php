@@ -34,6 +34,7 @@ class CitaController extends Controller
             $cita->telefono = $request->telefono;
             $cita->sexo = $request->sexo;
             $cita->tiene_discapacidad = $request->tiene_discapacidad == 'Si' ? true : false;
+            $cita->discapacidad = $request->discapacidad;
             $cita->tramite_id = $request->tramite;
             $cita->centro_atencion_id = $request->centro_atencion;
 
