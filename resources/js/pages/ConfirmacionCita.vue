@@ -13,13 +13,37 @@
             <div class="first-line"></div>
             <div class="mt-6 text-center row">
                 <div class="col-sm-12 col-md-6">
-                    <button class="boton-cancelar" @click="cancelarCita(citaAgendada.id)">Cancelar Cita</button>
+                    <button class="boton-cancelar" @click="abrirModalCancelarCita()">Cancelar Cita</button>
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <button class="boton-imprimir" @click="imprimirCita()">Imprimir</button>
                 </div>
             </div>
         </div>
+        <v-dialog
+            v-model="dialogCancelarCita"
+            max-width="600px"
+            persistent
+        >
+            <v-card>
+                <div class="container mb-2">
+                    <div class="text-center mt-10 mb-10">
+                        <img width="123" height="123" src="./../../../public/images/logo_calendario_cancelar.svg" alt="">
+                    </div>
+                    <div class="text-center mt-10 mb-10">
+                        <p class="texto-confirmacion-cancelar-cita">¿Seguro desea cancelar su cita?</p>
+                    </div>
+                    <div class="mt-10 mb-10 text-center row">
+                        <div class="col-sm-12 col-md-6 text-ri">
+                            <button class="boton-cerrar-modal" @click="dialogCancelarCita = false">No!</button>
+                        </div>
+                        <div class="col-sm-12 col-md-6 text-left">
+                            <button class="boton-cancelar-cita" @click="cancelarCita()">Si, Cancelar Cita</button>
+                        </div>
+                    </div>
+                </div>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -29,12 +53,20 @@
 
     export default defineComponent({
         name: 'confirmacion-cita',
+        data(){
+            return{
+                dialogCancelarCita: false,
+            }
+        },
         computed: {
             citaAgendada() {
                 return this.$store.getters.getCitaAgendada
             }
         },
         methods: {
+            abrirModalCancelarCita(){
+                this.dialogCancelarCita = true
+            },
             async cancelarCita() {
                 try {
                     let response = await axios.get(`/api/cancelar-cita/${this.citaAgendada.id}`)
@@ -142,6 +174,34 @@
         color: white;
         font-family: 'Lato', sans-serif;
         font-size: 15pt;
+        font-weight: bold;
+        padding: 6px 50px;
+        margin-left: 15px;
+        border-radius: 20px;
+    }
+    
+    .texto-confirmacion-cancelar-cita {
+        font-family: 'Lato', sans-serif;
+        font-size: 18pt;
+        font-weight: 400;
+    }
+
+    .boton-cerrar-modal {
+        background-color: #6a73a0;
+        color: white;
+        font-family: 'Lato', sans-serif;
+        font-size: 12pt;
+        font-weight: bold;
+        padding: 6px 80px;
+        margin-right: 15px;
+        border-radius: 20px;
+    }
+
+    .boton-cancelar-cita {
+        background-color: #a4bc4b;
+        color: white;
+        font-family: 'Lato', sans-serif;
+        font-size: 12pt;
         font-weight: bold;
         padding: 6px 50px;
         margin-left: 15px;

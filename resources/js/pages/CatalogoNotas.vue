@@ -351,6 +351,7 @@
                                     successSweetAlert(result.value.data.message)
                                     this.$store.commit('setCatalogoNotas', result.value.data.notas)
                                     this.cancelarAgregarNuevaNota()
+                                    this.getDataPagina(1)
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
@@ -405,6 +406,7 @@
                                     successSweetAlert(result.value.data.message)
                                     this.$store.commit('setCatalogoNotas', result.value.data.notas)
                                     this.CancelarEditarNota()
+                                    this.getDataPagina(1)
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
@@ -442,6 +444,7 @@
                               successSweetAlert(result.value.data.message)
                               this.$store.commit('setCatalogoNotas', result.value.data.notas)
                               this.CancelarEditarNota()
+                              this.getDataPagina(1)
                           } else {
                               errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                           }

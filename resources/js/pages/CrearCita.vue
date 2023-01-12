@@ -164,14 +164,15 @@
                                                             <v-text-field
                                                                 v-model="cita.email"
                                                                 label="Correo Electrónico"
-                                                                :rules="emailRules"
+                                                                :rules="[rules.email]"
                                                             ></v-text-field>
                                                             <div class="row justify-content-between">
                                                                 <div class="col-sm-6 col-12">
                                                                     <v-text-field
                                                                         v-model="cita.telefono"
                                                                         label="Teléfono"
-                                                                        :rules="telefonoRules"
+                                                                        :rules="[rules.tel]"
+                                                                        maxlength="10"
                                                                     ></v-text-field>
                                                                 </div>
                                                                 <div class="col-sm-6 col-12">
@@ -197,7 +198,7 @@
                                                                         v-if="cita.tiene_discapacidad == 'Si'"
                                                                         v-model="cita.discapacidad"
                                                                         label="¿Cuál?"
-                                                                        :items="['Uno', 'Dos']"
+                                                                        :items="['Motriz', 'Auditiva', 'Visual', 'Intelectual', 'Psicosocial']"
                                                                         :rules="discapacidadRules"
                                                                     ></v-select>
                                                                 </div>
@@ -368,9 +369,6 @@
                 nombreRules: [
                     v => !!v || 'El nombre es requerido'
                 ],
-                emailRules: [
-                    v => !!v || 'El email es requerido',
-                ],
                 telefonoRules: [
                     v => !!v || 'El telefono es requerido',
                 ],
@@ -383,6 +381,18 @@
                 discapacidadRules: [
                     v => !!v || 'Seleccione una opción',
                 ],
+                rules:{
+                    email: value => {
+                        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                        return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
+                    },
+
+                    tel: value =>{
+                        const pattern = (/^[0-9]{10}$/)
+                        return pattern.test(value) || 'El campo no contiene un numero valido'
+
+                    },
+                },
                 resumen_cita: {
                     centro_atencion: '',
                     dia_cita: '',

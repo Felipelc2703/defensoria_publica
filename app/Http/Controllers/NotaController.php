@@ -10,7 +10,8 @@ class NotaController extends Controller
 {
     public function getNota(){
         try {
-            $notas = Nota::all();
+            $notas = Nota::where('status', 1)->get();
+
              
             $array_nota = array();
             $cont = 1;
