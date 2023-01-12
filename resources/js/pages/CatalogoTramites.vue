@@ -67,7 +67,7 @@
                                             activator="parent"
                                             location="bottom"
                                             >
-                                            <span style="font-size: 15px;">Editar Tramite</span>
+                                            <span style="font-size: 15px;">Editar dsdsdsdsd</span>
                                         </v-tooltip>
                                     </div>
                                     
@@ -426,52 +426,52 @@
             
             async guardarNuevoTramite() {
                 console.log(this.tramite)
-                // const { valid } = await this.$refs.formAgregarTramite.validate()
-                // if (valid) {
-                //     Swal.fire({
-                //         title: '¿Guardar nuevo tramite?',
-                //         icon: 'question',
-                //         showCancelButton: true,
-                //         confirmButtonColor: '#3085D6',
-                //         cancelButtonColor: '#D33',
-                //         confirmButtonText: 'Si, guardar',
-                //         cancelButtonText: 'Cancelar',
-                //         showLoaderOnConfirm: true,
-                //         preConfirm: async () => {
-                //             try {
-                //                 let response = await axios.post('/api/tramite/guardar-nuevo', this.tramite)
-                //                 return response
-                //             } catch (error) {
-                //                 errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
-                //             }
-                //         },
-                //         allowOutsideClick: () => !Swal.isLoading()
-                //     }).then((result) => {
-                //         if (result.isConfirmed) {
-                //             if (result.value.status === 200) {
-                //                 if (result.value.data.status === "ok") {
-                //                     successSweetAlert(result.value.data.message)
-                //                     this.$store.commit('setCatalogoTramites', result.value.data.tramites)
-                //                     this.cancelarAgregarTramite()
-                //                 } else {
-                //                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
-                //                 }
-                //             } else {
-                //                 errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
-                //             }
-                //         }
-                //     })
-                // }
+                const { valid } = await this.$refs.formAgregarTramite.validate()
+                if (valid) {
+                    Swal.fire({
+                        title: '¿Guardar nuevo tramite?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085D6',
+                        cancelButtonColor: '#D33',
+                        confirmButtonText: 'Si, guardar',
+                        cancelButtonText: 'Cancelar',
+                        showLoaderOnConfirm: true,
+                        preConfirm: async () => {
+                            try {
+                                let response = await axios.post('/api/tramite/guardar-nuevo', this.tramite)
+                                return response
+                            } catch (error) {
+                                errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (result.value.status === 200) {
+                                if (result.value.data.status === "ok") {
+                                    successSweetAlert(result.value.data.message)
+                                    this.$store.commit('setCatalogoTramites', result.value.data.tramites)
+                                    this.cancelarAgregarTramite()
+                                } else {
+                                    errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
+                                }
+                            } else {
+                                errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
+                            }
+                        }
+                    })
+                }
             },
-            editarTramite(tramite)
-            {
-                this.tramite.id = tramite.id
-                this.tramite.nombre = tramite.nombre
-                this.tramite.descripcion = tramite.descripcion
-                this.tramite.url = tramite.url_informacion
-                this.tramite.tipo_tramite_id = tramite.tipo_tramite_id
-                this.dialogEditarTramite = true
-            },
+            // editarTramite(tramite)
+            // {
+            //     this.tramite.id = tramite.id
+            //     this.tramite.nombre = tramite.nombre
+            //     this.tramite.descripcion = tramite.descripcion
+            //     this.tramite.url = tramite.url_informacion
+            //     this.tramite.tipo_tramite_id = tramite.tipo_tramite_id
+            //     this.dialogEditarTramite = true
+            // },
             cancelarEditartramite() {
                 this.tramite.id = null
                 this.tramite.nombre = ''
@@ -521,7 +521,6 @@
             },
             async getRequisitos()
             {
-
                 console.log("iohdsiusdhbdsiuodsio")
                 try {
                   let response = await axios.post('/api/tramite/requisitos-tipo-tramite', this.tramite)

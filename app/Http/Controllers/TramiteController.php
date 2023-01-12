@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Dia;
 use App\Models\Horario;
+use App\Models\RequisitoTramite;
 
 class TramiteController extends Controller
 {
@@ -234,6 +235,29 @@ class TramiteController extends Controller
             $tramite->tipo_tramite_id = $request->tipo_tramite_id;
             $tramite->save();
 
+
+            foreach($request->requisitos as $requisito)
+            {
+                $requ_tram = new RequisitoTramite;
+                $requ_tram->requisito_id = $requisito;
+                $requ_tram->tramite_id = $tramite->id;
+
+                foreach($request->obligatorios as $obligatorio)
+                {
+                    if($requisito == $obligatorio)
+                    {
+                        $requ_tram->obligatorio = true;
+                        break;
+                    }
+                    else {
+                        $requ_tram->obligatorio = false;
+                        // break;
+                    }
+                }
+
+                $requ_tram->save();
+            }
+            
             $tramites = Tramite::all();
 
             $arrayTramites = array();

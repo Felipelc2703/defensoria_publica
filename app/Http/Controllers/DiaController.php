@@ -18,6 +18,8 @@ class DiaController extends Controller
 
         DB::beginTransaction();
 
+        
+
         try
         {
             foreach($request->dias as $dia)
@@ -35,6 +37,8 @@ class DiaController extends Controller
                     $existe_dia->save();
                 }
                 else {
+
+                    
                     $day = new Dia;
                     $day->fecha = $dia['date_string'];
                     $day->hora_inicio = $dia['hora_inicio'];
@@ -53,6 +57,22 @@ class DiaController extends Controller
 
                     $hf = substr($day->hora_fin, 0, -3);
                     $mf = substr($day->hora_fin, 3, 2);
+
+
+                    // return response()->json([
+                    //     "status" => "ok",
+                    //     "message" => "Dias agregados con exito.",
+                    //     "ddd" => $anio
+                    // ], 500);
+                    // return response()->json([
+                    //     "status" => "ok",
+                    //     "message" => "Dias obtenidos con exito",
+                    //     "año" => $anio,
+                    //     "dia_mes" => $day->mes,
+                    //     "dia_fecha" => $dia_fecha,
+                    //     "h" => $h,
+                    //     "m" => $m
+                    // ], 500);
 
                     $date = Carbon::create($anio, $day->mes, $dia_fecha, $h,$m);
                     $datef = Carbon::create($anio, $day->mes, $dia_fecha, $hf,$mf);
@@ -124,13 +144,6 @@ class DiaController extends Controller
                     // $objectDia->inhabil = false;
                     $objectDia->date_string = $date->toDateString();
                     $objectDia->mes = $date->month;
-
-
-
-                    // if($dia->inhabil == 0)
-                    //     $objectDia->inhabil = false;
-                    // else
-                    //     $objectDia->inhabil = true;
 
                     if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
                         $objectDia->inhabil = true;
@@ -268,10 +281,71 @@ class DiaController extends Controller
             $dia->inhabil = $request->inhabil;
             $dia->save();
 
+            foreach($dia->horarios as $horario)
+            {
+                $horario->delete();
+            }
+
+            //Se agregan los horarios en horarios
+
+            $anio = intval(substr($dia->fecha, 0, -6));
+            $dia_fecha = intval(substr($dia->fecha, -2, 2));
+
+            $h = intval(substr($dia->hora_inicio, 0, -3));
+            $m = intval(substr($dia->hora_inicio, 3, 2));
+
+            $hf = intval(substr($dia->hora_fin, 0, -3));
+            $mf = intval(substr($dia->hora_fin, 3, 2));
+
+
+
+            $mes = intval($dia->mes);
+            // return response()->json([
+            //     "status" => "ok",
+            //     "message" => "Dias obtenidos con exito",
+            //     "año" => $anio,
+            //     "dia_mes" => $mes,
+            //     "dia_fecha" => $dia_fecha,
+            //     "h" => $h,
+            //     "m" => $m
+
+            // ], 500);
+
+            $date = Carbon::create($anio, $mes, $dia_fecha, $h,$m);
+            $datef = Carbon::create($anio, $mes, $dia_fecha, $hf,$mf);
+
+            // return response()->json([
+            //     "status" => "ok",
+            //     "message" => "Dias obtenidos con exito",
+            //     "dias" => $date
+            // ], 500);
+
+            $horario_final = $datef->toTimeString(); //fin del rango de horarios
+            $horario_insertar = $date->toTimeString(); //inicio rango de horarios
+
+
+            $cajas = $dia->centroAtencion->numero_cajas;
+            while($horario_insertar < $horario_final)
+            {
+                $horario = new Horario;
+                $horario->hora_inicio = $horario_insertar;
+                $horario->citas_disponibles = $cajas;
+                $horario->dia_id = $dia->id;
+                $horario->save();
+
+                $date->addMinutes($dia->duracion);
+                $horario_insertar = $date->toTimeString();
+            }
+
+
+            // $horario = Horario::where('dia_id',$dia->id)->first();
+            // $horario->hora_inicio = $dia->hora_inicio;
+            // $horario->save();
+
 
             $dias = Dia::where('mes',$request->mes)
-            ->where('centro_atencion_id', $request->centro_atencion_id)
-            ->get();
+                        ->where('centro_atencion_id', $request->centro_atencion_id)
+                        ->get();
 
             $arrayDias = array();
             $id = 1;
