@@ -391,4 +391,180 @@ class DiaController extends Controller
         $fecha_formateada = $nombre_dia . ', ' . $day . ' de ' . $nombre_mes . ' de ' . $year;
         return $fecha_formateada;
     }
+
+    public function getCalendarioCitas(Request $request)
+    {
+        try {
+            $current_date = Carbon::now();
+
+            $year = $request->year;
+            $month = $request->mes;
+
+            // Primer dia del mes
+            $first = Carbon::createFromDate($year, $month, 1);
+            // Numero de dias en el mes
+            $days = $first->month($month)->daysInMonth;
+            // Ultimo dia del mes
+            $last = Carbon::createFromDate($year, $month, $days);
+            // Arregle con todas las fechas del mes
+            $period = CarbonPeriod::create($first, $last);
+
+            // Se declara un arreglo por semana a dibujar en el calendario en la vista.
+            $semana_uno = array();
+            $semana_dos = array();
+            $semana_tres = array();
+            $semana_cuatro = array();
+            $semana_cinco = array();
+            $semana_seis = array();
+
+            $objectVacio = new \stdClass();
+            $objectVacio->fecha_completa = '';
+            $objectVacio->dia = '';
+            $objectVacio->numero_dia_semana = '';
+            $objectVacio->fecha_formateada = '';
+            $objectVacio->hora_inicio = '';
+            $objectVacio->hora_fin = '';
+            $objectVacio->duracion = '';
+            $objectVacio->centro_atencion_id = null;
+            $objectVacio->dia_disponible = false;
+            $objectVacio->dia_sin_servicio = false;
+
+            $contador = $first->dayOfWeek+1;
+
+            // Comparacion con dias que se tienen en la tabla 
+            foreach ($period as $date) {
+                // Obtenemos solo parte de la fecha de $date 
+                $fecha = $date->toDateString();
+                // Buscamos el día en la base de datos
+                $dia =  Dia::where('fecha', $fecha)->where('centro_atencion_id', $request->centro_atencion_id)->first();
+
+                if($dia) {
+                    // Creamos nuestro objeto para cada día
+                    $object = new \stdClass();
+                    $object->fecha_completa = $dia->fecha;
+                    $object->dia = $date->day;
+                    $object->numero_dia_semana = $date->dayOfWeek;
+                    $object->fecha_formateada = $this->formatearFecha($date->dayOfWeek, $date->day, $date->month, $date->year);
+                    $object->hora_inicio = $dia->hora_inicio;
+                    $object->hora_fin = $dia->hora_fin;
+                    $object->duracion = $dia->duracion;
+                    $object->centro_atencion_id = $dia->centro_atencion_id;
+                
+                    // Obtenemos los horarios relacionados al registro dia en la base de datos
+                    $horarios = $dia->horarios;
+
+                    // Recorremos los horarios y si el campo citas disponibles es mayor a cero agregamos el horario a un arreglo
+                    $horariosAtencion = [];
+                    foreach ($horarios as $horario) {
+                        if ($horario->citas_disponibles > 0) {
+                            array_push($horariosAtencion, $horario);
+                        }
+                    }
+
+                    // El arreglo donde guardamos los horarios lo agregamos a nuestro objeto dia
+                    $object->horarios_disponibles = $horariosAtencion;
+
+                    // Si el arreglo de horarios esta vacio indicamos dia sin disponibilidad
+                    if($horariosAtencion == []) {
+                        $object->dia_disponible = false;
+                    } else {
+                        if ($date < $current_date) {
+                            $object->dia_disponible = false;
+                        } else {
+                            $object->dia_disponible = true;
+                        }    
+                    }
+
+                    // Verificamos si el registro dia en la base de datos en el campo inhabil es true o false para ponerlo como dia sin servicio
+                    if ($dia->inhabil) {
+                        $object->dia_sin_servicio = true;
+                    } else {
+                        $object->dia_sin_servicio = false;
+                    }
+                } else {
+                    $object = new \stdClass();
+                    $object->fecha_completa = '';
+                    $object->dia = $date->day;
+                    $object->numero_dia_semana = $date->dayOfWeek;
+                    $object->fecha_formateada = $this->formatearFecha($date->dayOfWeek, $date->day, $date->month, $date->year);
+                    $object->hora_inicio = '';
+                    $object->hora_fin = '';
+                    $object->duracion = '';
+                    $object->centro_atencion_id = null;
+
+                    if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
+                        $object->dia_sin_servicio = true;
+                    } else {
+                        $object->dia_sin_servicio = false;
+                    }
+                }
+
+                // Agregamos el día a su correspondiente arreglo
+                if ($contador > 0 && $contador <= 7) {
+                    array_push($semana_uno, $object);
+                } else if ($contador > 7 && $contador <= 14) {
+                    array_push($semana_dos, $object);
+                } else if ($contador > 14 && $contador <= 21) {
+                    array_push($semana_tres, $object);
+                } else if ($contador > 21 && $contador <= 28) {
+                    array_push($semana_cuatro, $object);
+                } else if ($contador > 28 && $contador <= 35) {
+                    array_push($semana_cinco, $object);
+                } else if ($contador > 35) {
+                    array_push($semana_seis, $object);
+                }
+
+                $contador++;
+            }
+
+            $array_aux_1 = array();
+            $dias_faltantes_semana_uno = 7 - count($semana_uno);
+            if ($dias_faltantes_semana_uno > 0) {
+                for ($i = 0; $i < $dias_faltantes_semana_uno; $i++) {
+                    array_push($array_aux_1, $objectVacio);
+                }
+                $semana_uno = array_merge($array_aux_1, $semana_uno);
+            }
+            
+            $array_aux_2 = array();
+            $dias_faltantes_semana_seis = 7 - count($semana_seis);
+            if ($dias_faltantes_semana_seis > 0) {
+                for ($i = 0; $i < $dias_faltantes_semana_seis; $i++) {
+                    array_push($array_aux_2, $objectVacio);
+                }
+                $semana_seis = array_merge($semana_seis, $array_aux_2);
+            }
+
+            $array_aux_3 = array();
+            $dias_faltantes_semana_cinco = 7 - count($semana_cinco);
+            if ($dias_faltantes_semana_cinco > 0) {
+                for ($i = 0; $i < $dias_faltantes_semana_cinco; $i++) {
+                    array_push($array_aux_3, $objectVacio);
+                }
+                $semana_cinco = array_merge($semana_cinco, $array_aux_3);
+            }
+
+            $objectCalendarioCitas = new \stdClass();
+            $objectCalendarioCitas->semana_uno = $semana_uno;
+            $objectCalendarioCitas->semana_dos = $semana_dos;
+            $objectCalendarioCitas->semana_tres = $semana_tres;
+            $objectCalendarioCitas->semana_cuatro = $semana_cuatro;
+            $objectCalendarioCitas->semana_cinco = $semana_cinco;
+            $objectCalendarioCitas->semana_seis = $semana_seis;
+            
+            return response()->json([
+                "status" => "ok",
+                "message" => "Calendario de citas obtenido con exito.",
+                "calendario_citas" => $objectCalendarioCitas,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener el calendario de citas disponibles.",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+    }
 }

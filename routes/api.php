@@ -50,7 +50,7 @@ Route::post('/requisito/actualizar-requisito', [RequisitoController::class, 'act
 Route::post('/requisito/eliminar-requisito', [RequisitoController::class, 'eliminarRequisito']);
 
 Route::get('/tramites-citas', [TramiteController::class, 'getTramitesCitas']);
-Route::post('/calendario-citas', [TramiteController::class, 'getCalendarioCitas']);
+Route::post('/calendario-citas', [DiaController::class, 'getCalendarioCitas']);
 Route::post('/citas/agendar-cita', [CitaController::class, 'agendarCita']);
 
 //Rutas utilizadas para catalogo de Usuarios
