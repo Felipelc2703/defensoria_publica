@@ -182,6 +182,13 @@ class DiaController extends Controller
                     $objectDia->inhabil = false;
                     $objectDia->date_string = $date->toDateString();
                     $objectDia->mes = $date->month;
+
+                    if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
+                        $objectDia->inhabil = true;
+                    } else {
+                        $objectDia->inhabil = false;
+                    }
+                    
                     if($date->day < 10)
                     {
                         $objectDia->fecha = '0'.$date->day.'/'.$date->month.'/'.$date->year;
