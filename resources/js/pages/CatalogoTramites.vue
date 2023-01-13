@@ -201,12 +201,10 @@
                                         <th>Requisito</th>
                                         <th>Obligatorio *</th>
                                     </tr>
-                                    <!-- <div v-for="(requisito, index) in requisitosTipoTramite" :key="index"> -->
-                                        <tr v-for="(requisito, index) in requisitosTipoTramite" :key="index">
-                                            <td><input type="checkbox" :value="requisito.id" v-model="tramite.requisitos" :id="`check_${index}`">  <label :for="`check_${index}`">{{requisito.nombre}}</label></td>
-                                            <td><input type="checkbox" :value="requisito.id" v-model="tramite.obligatorios" :id="`check_${index}`"></td>
-                                        </tr>
-                                    <!-- </div> -->
+                                    <tr v-for="(requisito, index) in requisitosTipoTramite" :key="index">
+                                        <td><input type="checkbox" :value="requisito.id" v-model="tramite.requisitos" :id="`check_${index}`">  <label :for="`check_${index}`">{{requisito.nombre}}</label></td>
+                                        <td><input type="checkbox" :value="requisito.id" v-model="tramite.obligatorios" :id="`check_${index}`"></td>
+                                    </tr>
                                 </table>
                             </v-form>
                         </v-row>
@@ -250,26 +248,26 @@
                             
                                 <v-text-field
                                     variant="solo"
-                                    v-model="tramite.nombre"
+                                    v-model="modelEditarTramite.nombre"
                                     type="text" 
                                     label="Nombre Tramite*"
                                 ></v-text-field>
 
                                 <v-textarea 
-                                    v-model="tramite.descripcion"
+                                    v-model="modelEditarTramite.descripcion"
                                     label="Descripcion Corta*" 
                                     variant="solo">
                                 </v-textarea>
 
                                 <v-text-fild
                                     variant="solo"
-                                    v-model="tramite.url"
+                                    v-model="modelEditarTramite.url"
                                     type="text"
                                     label="Url donde se encuntra la informacion dle tramite (iniciando con http://)*">
                                 </v-text-fild>
 
                                 <v-select
-                                    v-model="tramite.tipo_tramite_id"
+                                    v-model="modelEditarTramite.tipo_tramite_id"
                                     label="Tipo de tramite*"
                                     :items="tiposTramite"
                                     item-title="nombre"
@@ -278,6 +276,18 @@
                                     persistent-hint
                                     variant="solo"
                                 ></v-select>
+
+                                <table>
+                                    <tr>
+                                        <th>Requisito</th>
+                                        <th>Obligatorio *</th>
+                                    </tr>
+                                    <tr v-for="(requisito, index) in requisitosTipoTramite" :key="index">
+                                        <td><input type="checkbox" :value="requisito.id" v-model="modelEditarTramite.requisitos" :id="`check_${index}`">  <label :for="`check_${index}`">{{requisito.nombre}}</label></td>
+                                        <td><input type="checkbox" :value="requisito.id" v-model="modelEditarTramite.obligatorios" :id="`check_${index}`"></td>
+                                    </tr>
+                                </table>
+
                             </v-form>
                         </v-row>
                     </v-container>
@@ -324,6 +334,15 @@
                     requisitos: [],
                     obligatorios: [],
                 },
+                modelEditarTramite: {
+                    id: null,
+                    nombre: '',
+                    descripcion: '',
+                    url: '',
+                    tipo_tramite_id: '',
+                    requisitos: [],
+                    obligatorios: [],
+                },
                 elementosPorPagina: 10,
                 paginaActual: 1,
                 datosPaginados: [],
@@ -333,6 +352,7 @@
                 numShown: 5,
                 current: 1,
                 buscar: '',
+                requisitosEditar: [],
             }
         },
         created() {
@@ -360,6 +380,10 @@
         watch: {
             'tramite.tipo_tramite_id': function () {
                 this.getRequisitos(this.tramite)
+            },
+
+            'modelEditarTramite.tipo_tramite_id': function () {
+                this.getRequisitos(this.modelEditarTramite)
             },
             buscar: function () {
                 if (!this.buscar.length == 0) {
@@ -463,15 +487,15 @@
                     })
                 }
             },
-            // editarTramite(tramite)
-            // {
-            //     this.tramite.id = tramite.id
-            //     this.tramite.nombre = tramite.nombre
-            //     this.tramite.descripcion = tramite.descripcion
-            //     this.tramite.url = tramite.url_informacion
-            //     this.tramite.tipo_tramite_id = tramite.tipo_tramite_id
-            //     this.dialogEditarTramite = true
-            // },
+            editarTramite(tramite)
+            {
+                this.modelEditarTramite.id = tramite.id
+                this.modelEditarTramite.nombre = tramite.nombre
+                this.modelEditarTramite.descripcion = tramite.descripcion
+                this.modelEditarTramite.url = tramite.url_informacion
+                this.modelEditarTramite.tipo_tramite_id = tramite.tipo_tramite_id
+                this.dialogEditarTramite = true
+            },
             cancelarEditartramite() {
                 this.tramite.id = null
                 this.tramite.nombre = ''
@@ -482,6 +506,7 @@
             },
             async guardarCambiosTramite()
             {
+                console.log(this.modelEditarTramite)
                 const { valid } = await this.$refs.formEditarTramite.validate()
                 if (valid) {
                     Swal.fire({
@@ -495,7 +520,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/tramite/actualizar-tramite', this.tramite)
+                                let response = await axios.post('/api/tramite/actualizar-tramite', this.modelEditarTramite)
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al actualizar tramite.')
@@ -519,14 +544,17 @@
                     })
                 }
             },
-            async getRequisitos()
+            async getRequisitos(tram)
             {
                 console.log("iohdsiusdhbdsiuodsio")
                 try {
-                  let response = await axios.post('/api/tramite/requisitos-tipo-tramite', this.tramite)
+                  let response = await axios.post('/api/tramite/requisitos-tipo-tramite', tram)
                   if (response.status === 200) {
                       if (response.data.status === "ok") {
                           this.$store.commit('setRequisitosTipoTramite', response.data.requisitos)
+                          this.modelEditarTramite.requisitos = response.data.seleccionados
+                          this.modelEditarTramite.obligatorios = response.data.obligatorios
+
                       } else {
                           errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                       }
@@ -537,6 +565,32 @@
                 errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
               }
             },
+
+
+            async getRequisitosEditar() {
+                try {
+                  let response = await axios.post('/api/tramite/requisitos-tipo-tramite-editar', this.modelEditarTramite)
+                  if (response.status === 200) {
+                      if (response.data.status === "ok") {
+                        //   this.$store.commit('setRequisitosTipoTramite', response.data.requisitos)
+                        this.requisitosEditar = response.data.requisitos
+                        this.modelEditarTramite.requisitos = response.data.req_seleccionados
+                        this.modelEditarTramite.obligatorios = response.data.obligatorios
+
+                        console.log(this.requisitosEditar)
+                      } else {
+                          errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                      }
+                  } else {
+                      errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
+                  }
+              } catch (error) {
+                errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
+              }
+            },
+
+
+
             totalPaginas() {
                 return Math.ceil(this.tramites.length / this.elementosPorPagina)
             },
