@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('telefono');
             $table->string('sexo');
             $table->boolean('tiene_discapacidad');
-            $table->string('discapacidad');
+            $table->string('discapacidad')->nullable();
             $table->integer('status')->default(1);
             $table->foreignId('tramite_id')->constrained();
             $table->unsignedBigInteger('centro_atencion_id');

@@ -199,7 +199,6 @@
                                                                         v-model="cita.discapacidad"
                                                                         label="¿Cuál?"
                                                                         :items="['Motriz', 'Auditiva', 'Visual', 'Intelectual', 'Psicosocial']"
-                                                                        :rules="discapacidadRules"
                                                                     ></v-select>
                                                                 </div>
                                                             </div>
