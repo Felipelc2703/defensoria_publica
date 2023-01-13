@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('descripcion');
             $table->string('url_informacion')->nullable();
             $table->foreignId('tipo_tramite_id')->constrained();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

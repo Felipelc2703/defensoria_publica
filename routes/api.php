@@ -50,7 +50,7 @@ Route::post('/requisito/actualizar-requisito', [RequisitoController::class, 'act
 Route::post('/requisito/eliminar-requisito', [RequisitoController::class, 'eliminarRequisito']);
 
 Route::get('/tramites-citas', [TramiteController::class, 'getTramitesCitas']);
-Route::post('/calendario-citas', [TramiteController::class, 'getCalendarioCitas']);
+Route::post('/calendario-citas', [DiaController::class, 'getCalendarioCitas']);
 Route::post('/citas/agendar-cita', [CitaController::class, 'agendarCita']);
 
 //Rutas utilizadas para catalogo de Usuarios
@@ -64,12 +64,14 @@ Route::get('/catalogos/roles', [RolController::class, 'getRoles']);
 
 //Rutas utilizadas para catalogo de notas 
 Route::get('/catalogos/notas', [NotaController::class, 'getNota']);
-Route::post('/usuarios/agregar-nota', [NotaController::class, 'guardarNuevaNota']);
-Route::post('/usuarios/actualizar-nota', [NotaController::class, 'actualizarNota']);
-Route::post('/usuarios/eliminar-nota', [NotaController::class, 'eliminarNota']);
+Route::post('/notas/agregar-nota', [NotaController::class, 'guardarNuevaNota']);
+Route::post('/notas/actualizar-nota', [NotaController::class, 'actualizarNota']);
+Route::post('/notas/eliminar-nota', [NotaController::class, 'eliminarNota']);
 
 Route::post('/tramite/guardar-nuevo', [TramiteController::class, 'guardarNuevoTramite']);
 Route::post('/tramite/actualizar-tramite', [TramiteController::class, 'actualizarTramite']);
+Route::post('/tramite/eliminar-tramite', [TramiteController::class, 'eliminarTramite']);
+
 
 
 Route::post('/buscar-cita', [CitaController::class, 'buscarCita']);

@@ -645,6 +645,41 @@
             setCurrentPage(pagina) {
                 this.current = pagina
             },
+            eliminarTramite(tramite) {
+                Swal.fire({
+                  title: '¿Eliminar Tramite?',
+                  icon: 'question',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085D6',
+                  cancelButtonColor: '#D33',
+                  confirmButtonText: 'Si, eliminar',
+                  cancelButtonText: 'Cancelar',
+                  showLoaderOnConfirm: true,
+                  preConfirm: async () => {
+                      try {
+                          let response = await axios.post('/api/tramite/eliminar-tramite', tramite)
+                          return response
+                      } catch (error) {
+                          errorSweetAlert('Ocurrió un error al eliminar este tramite.')
+                      }
+                  },
+                  allowOutsideClick: () => !Swal.isLoading()
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                      if (result.value.status === 200) {
+                          if (result.value.data.status === "ok") {
+                              successSweetAlert(result.value.data.message)
+                              this.$store.commit('setCatalogoUsuarios', result.value.data.tramites)
+                              this.cancelarEditartramite()
+                          } else {
+                              errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
+                          }
+                      } else {
+                          errorSweetAlert('Ocurrió un error al eliminar este tramite.')
+                      }
+                  }
+              })
+            }
         }
     })
 </script>

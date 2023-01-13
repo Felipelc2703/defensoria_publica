@@ -337,7 +337,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/usuarios/agregar-nota', this.nota)
+                                let response = await axios.post('/api/notas/agregar-nota', this.nota)
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al guardar la nueva nota.')
@@ -351,6 +351,7 @@
                                     successSweetAlert(result.value.data.message)
                                     this.$store.commit('setCatalogoNotas', result.value.data.notas)
                                     this.cancelarAgregarNuevaNota()
+                                    this.getDataPagina(1)
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
@@ -391,7 +392,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/usuarios/actualizar-nota', this.nota)
+                                let response = await axios.post('/api/notas/actualizar-nota', this.nota)
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al actualizar los datos de la nota.')
@@ -405,6 +406,7 @@
                                     successSweetAlert(result.value.data.message)
                                     this.$store.commit('setCatalogoNotas', result.value.data.notas)
                                     this.CancelarEditarNota()
+                                    this.getDataPagina(1)
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
@@ -428,7 +430,7 @@
                   showLoaderOnConfirm: true,
                   preConfirm: async () => {
                       try {
-                          let response = await axios.post('/api/usuarios/eliminar-nota', nota)
+                          let response = await axios.post('/api/notas/eliminar-nota', nota)
                           return response
                       } catch (error) {
                           errorSweetAlert('Ocurrió un error al eliminar esta nota.')
@@ -442,6 +444,7 @@
                               successSweetAlert(result.value.data.message)
                               this.$store.commit('setCatalogoNotas', result.value.data.notas)
                               this.CancelarEditarNota()
+                              this.getDataPagina(1)
                           } else {
                               errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                           }

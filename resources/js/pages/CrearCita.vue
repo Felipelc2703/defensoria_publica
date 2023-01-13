@@ -164,14 +164,15 @@
                                                             <v-text-field
                                                                 v-model="cita.email"
                                                                 label="Correo Electrónico"
-                                                                :rules="emailRules"
+                                                                :rules="[rules.email]"
                                                             ></v-text-field>
                                                             <div class="row justify-content-between">
                                                                 <div class="col-sm-6 col-12">
                                                                     <v-text-field
                                                                         v-model="cita.telefono"
                                                                         label="Teléfono"
-                                                                        :rules="telefonoRules"
+                                                                        :rules="[rules.tel]"
+                                                                        maxlength="10"
                                                                     ></v-text-field>
                                                                 </div>
                                                                 <div class="col-sm-6 col-12">
@@ -197,8 +198,7 @@
                                                                         v-if="cita.tiene_discapacidad == 'Si'"
                                                                         v-model="cita.discapacidad"
                                                                         label="¿Cuál?"
-                                                                        :items="['Uno', 'Dos']"
-                                                                        :rules="discapacidadRules"
+                                                                        :items="['Motriz', 'Auditiva', 'Visual', 'Intelectual', 'Psicosocial']"
                                                                     ></v-select>
                                                                 </div>
                                                             </div>
@@ -368,9 +368,6 @@
                 nombreRules: [
                     v => !!v || 'El nombre es requerido'
                 ],
-                emailRules: [
-                    v => !!v || 'El email es requerido',
-                ],
                 telefonoRules: [
                     v => !!v || 'El telefono es requerido',
                 ],
@@ -383,6 +380,18 @@
                 discapacidadRules: [
                     v => !!v || 'Seleccione una opción',
                 ],
+                rules:{
+                    email: value => {
+                        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                        return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
+                    },
+
+                    tel: value =>{
+                        const pattern = (/^[0-9]{10}$/)
+                        return pattern.test(value) || 'El campo no contiene un numero valido'
+
+                    },
+                },
                 resumen_cita: {
                     centro_atencion: '',
                     dia_cita: '',
@@ -424,7 +433,6 @@
             this.fecha_calendario.numero_mes = date.getMonth() + 1
             this.fecha_calendario.mes = this.formatearMes(date.getMonth() + 1)
             this.fecha_calendario.año = date.getFullYear()
-            console.log(this.tramiteSeleccionado)
         },
         computed: {
             tramiteSeleccionado() {
@@ -537,35 +545,30 @@
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
 
-                            if(e.dia_sin_servicio == true)
-                            {
+                            if(e.dia_sin_servicio == true) {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
-                            }
-                            else
-                            {
-                                if(e.dia_disponible == false)
-                                {
+                            } else {
+                                if(e.dia_disponible == false) {
                                     cel_dia.style.backgroundColor = '#b1bced'
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
-                                }
-                                else {
+                                } else {
                                     cel_dia.style.cursor = 'pointer';
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
                                     cel_dia.onclick = () => {
-
+                                        let dias_seleccionados = document.getElementsByClassName('eliminar-color')
+                                        for (let item of dias_seleccionados) {
+                                            item.style.backgroundColor = '#ffffff'
+                                        }
                                         this.cita.hora_cita = ''
                                         this.resumen_cita.hora_cita = ''
-
                                         this.horarios_disponibles = e.horarios_disponibles
                                         this.cita.dia_cita = e.fecha_completa
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
-
-                                        console.log("valor", this.cita.hora_cita)
-                                        console.log("horarios",this.horarios_disponibles)
+                                        cel_dia.className = 'eliminar-color'
                                     }
                                 }
                             }
@@ -580,35 +583,30 @@
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
                             
-                            if(e.dia_sin_servicio == true)
-                            {
+                            if(e.dia_sin_servicio == true) {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
-                            }
-                            else
-                            {
-                                if(e.dia_disponible == false)
-                                {
+                            } else {
+                                if(e.dia_disponible == false) {
                                     cel_dia.style.backgroundColor = '#b1bced'
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
-                                }
-                                else {
+                                } else {
                                     cel_dia.style.cursor = 'pointer';
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
                                     cel_dia.onclick = () => {
-                            
+                                        let dias_seleccionados = document.getElementsByClassName('eliminar-color')
+                                        for (let item of dias_seleccionados) {
+                                            item.style.backgroundColor = '#ffffff'
+                                        }
                                         this.cita.hora_cita = ''
                                         this.resumen_cita.hora_cita = ''
-
                                         this.horarios_disponibles = e.horarios_disponibles
                                         this.cita.dia_cita = e.fecha_completa
                                         this.cita.fecha_formateada = e.fecha_formateada
-                                        // cel_dia.style.backgroundColor = '#CDCDD1'
-
-                                        console.log("valor", this.cita.hora_cita)
-                                        console.log("horarios",this.horarios_disponibles)
+                                        cel_dia.style.backgroundColor = '#CDCDD1'
+                                        cel_dia.className = 'eliminar-color'
                                     }
                                 }
                             }
@@ -623,35 +621,30 @@
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
 
-                            if(e.dia_sin_servicio == true)
-                            {
+                            if(e.dia_sin_servicio == true) {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
-                            }
-                            else
-                            {
-                                if(e.dia_disponible == false)
-                                {
+                            } else {
+                                if(e.dia_disponible == false) {
                                     cel_dia.style.backgroundColor = '#b1bced'
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
-                                }
-                                else {
+                                } else {
                                     cel_dia.style.cursor = 'pointer';
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
                                     cel_dia.onclick = () => {
-                                        
+                                        let dias_seleccionados = document.getElementsByClassName('eliminar-color')
+                                        for (let item of dias_seleccionados) {
+                                            item.style.backgroundColor = '#ffffff'
+                                        }
                                         this.cita.hora_cita = ''
                                         this.resumen_cita.hora_cita = ''
-
                                         this.horarios_disponibles = e.horarios_disponibles
                                         this.cita.dia_cita = e.fecha_completa
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
-
-                                        console.log("valor", this.cita.hora_cita)
-                                        console.log("horarios",this.horarios_disponibles)
+                                        cel_dia.className = 'eliminar-color'
                                     }
                                 }
                             }
@@ -667,35 +660,30 @@
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
 
-                            if(e.dia_sin_servicio == true)
-                            {
+                            if(e.dia_sin_servicio == true) {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
-                            }
-                            else
-                            {
-                                if(e.dia_disponible == false)
-                                {
+                            } else {
+                                if(e.dia_disponible == false) {
                                     cel_dia.style.backgroundColor = '#b1bced'
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
-                                }
-                                else {
+                                } else {
                                     cel_dia.style.cursor = 'pointer';
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
                                     cel_dia.onclick = () => {
-                                        
+                                        let dias_seleccionados = document.getElementsByClassName('eliminar-color')
+                                        for (let item of dias_seleccionados) {
+                                            item.style.backgroundColor = '#ffffff'
+                                        }
                                         this.cita.hora_cita = ''
                                         this.resumen_cita.hora_cita = ''
-
                                         this.horarios_disponibles = e.horarios_disponibles
                                         this.cita.dia_cita = e.fecha_completa
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
-
-                                        console.log("valor", this.cita.hora_cita)
-                                        console.log("horarios",this.horarios_disponibles)
+                                        cel_dia.className = 'eliminar-color'
                                     }
                                 }
                             }
@@ -705,41 +693,35 @@
                         let row_semana_cinco = tbodyCalendar.insertRow()
                         row_semana_cinco.id = 'row_semana_cinco'
                         this.semana_cinco.forEach(e => {
-
                             let cel_dia = row_semana_cinco.insertCell()
                             let text = document.createTextNode(`${e.dia}`)
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
 
-                            if(e.dia_sin_servicio == true)
-                            {
+                            if(e.dia_sin_servicio == true) {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
-                            }
-                            else
-                            {
-                                if(e.dia_disponible == false)
-                                {
+                            } else {
+                                if(e.dia_disponible == false) {
                                     cel_dia.style.backgroundColor = '#b1bced'
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
-                                }
-                                else {
+                                } else {
                                     cel_dia.style.cursor = 'pointer';
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
                                     cel_dia.onclick = () => {
-                                        
+                                        let dias_seleccionados = document.getElementsByClassName('eliminar-color')
+                                        for (let item of dias_seleccionados) {
+                                            item.style.backgroundColor = '#ffffff'
+                                        }
                                         this.cita.hora_cita = ''
                                         this.resumen_cita.hora_cita = ''
-
                                         this.horarios_disponibles = e.horarios_disponibles
                                         this.cita.dia_cita = e.fecha_completa
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
-
-                                        console.log("valor", this.cita.hora_cita)
-                                        console.log("horarios",this.horarios_disponibles)
+                                        cel_dia.className = 'eliminar-color'
                                     }
                                 }
                             }
@@ -754,35 +736,30 @@
                             cel_dia.style.border = '1px solid #6a73a0'
                             cel_dia.style.height = '35px'
 
-                           if(e.dia_sin_servicio == true)
-                            {
+                            if(e.dia_sin_servicio == true) {
                                 cel_dia.style.backgroundColor = '#B20202'
                                 cel_dia.style.color = '#ffffff'
-                            }
-                            else
-                            {
-                                if(e.dia_disponible == false)
-                                {
+                            } else {
+                                if(e.dia_disponible == false) {
                                     cel_dia.style.backgroundColor = '#b1bced'
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
-                                }
-                                else {
+                                } else {
                                     cel_dia.style.cursor = 'pointer';
                                     cel_dia.style.fontFamily = 'Lato, sans-serif'
                                     cel_dia.style.fontWeight = 'bold'
                                     cel_dia.onclick = () => {
-                                        
+                                        let dias_seleccionados = document.getElementsByClassName('eliminar-color')
+                                        for (let item of dias_seleccionados) {
+                                            item.style.backgroundColor = '#ffffff'
+                                        }
                                         this.cita.hora_cita = ''
                                         this.resumen_cita.hora_cita = ''
-
                                         this.horarios_disponibles = e.horarios_disponibles
                                         this.cita.dia_cita = e.fecha_completa
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
-
-                                        console.log("valor", this.cita.hora_cita)
-                                        console.log("horarios",this.horarios_disponibles)
+                                        cel_dia.className = 'eliminar-color'
                                     }
                                 }
                             }
@@ -877,14 +854,12 @@
                 this.variables_calendario.year = this.fecha_calendario.año
                 this.getCalendar()
                 this.limpiarCalendario()
-                if (this.fecha_calendario.numero_mes != current_date.getMonth()+1 && this.fecha_calendario.año != current_date.getFullYear()) {
+                if ((this.fecha_calendario.numero_mes > current_date.getMonth()+1 && this.fecha_calendario.año == current_date.getFullYear()) || (this.fecha_calendario.año < current_date.getFullYear())) {
                     this.bandera_mes_actual = true
                 }
             },
             async agendarCita() {
-
                 this.cita.tramite = this.tramiteSeleccionado.id
-                console.log(this.cita)
                 const { valid } = await this.$refs.form.validate()
                 if (valid) {
                     Swal.fire({
@@ -921,11 +896,6 @@
                     })
                 }
             },
-            setHorario()
-            {
-                console.log("entro")
-                // console.log(horario)
-            }
         },
     })
 </script>
