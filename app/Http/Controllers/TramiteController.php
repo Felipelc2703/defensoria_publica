@@ -550,7 +550,6 @@ class TramiteController extends Controller
 
     public function actualizarTramite(Request $request)
     {
-
         $exito = false;
         DB::beginTransaction();
         try {
@@ -560,6 +559,36 @@ class TramiteController extends Controller
             $tramite->url_informacion = $request->url;
             $tramite->tipo_tramite_id = $request->tipo_tramite_id;
             $tramite->save();
+
+            $requisitos = $tramite->requisitos;
+
+            foreach($requisitos as $requisito)
+            {
+                $requisito->pivot->delete();
+            }
+
+
+            foreach($request->requisitos as $requisito)
+            {
+                $requ_tram = new RequisitoTramite;
+                $requ_tram->requisito_id = $requisito;
+                $requ_tram->tramite_id = $tramite->id;
+
+                foreach($request->obligatorios as $obligatorio)
+                {
+                    if($requisito == $obligatorio)
+                    {
+                        $requ_tram->obligatorio = true;
+                        break;
+                    }
+                    else {
+                        $requ_tram->obligatorio = false;
+                        // break;
+                    }
+                }
+
+                $requ_tram->save();
+            }
 
             $tramites = Tramite::all();
 
@@ -605,32 +634,76 @@ class TramiteController extends Controller
     {
         try {
 
-            $tipo_tramite_id = $request->tipo_tramite_id;
-            $tramite = TipoTramite::find($tipo_tramite_id);
-            
-
-            $requisitos = array();
-            foreach($tramite->requisitos as $requisito)
+            if($request->id != Null)
             {
-                $objectRequisito = new \stdClass();
-                $objectRequisito->id = $requisito->id;
-                $objectRequisito->nombre = $requisito->nombre;
-                $objectRequisito->obligatorio = false;
+                $tipo_tramite_id = $request->tipo_tramite_id;
+                $tramite = TipoTramite::find($tipo_tramite_id);
 
-                array_push($requisitos,$objectRequisito);
+                $tramite_s = $tramite->tramites->where('id',$request->id)->first();
 
-                // array_push($requisitos, $objectRequisito);
+                $requisitos = array();
+
+            
+                foreach($tramite->requisitos as $requisito)
+                {
+                    $objectRequisito = new \stdClass();
+                    $objectRequisito->id = $requisito->id;
+                    $objectRequisito->nombre = $requisito->nombre;
+                    // $objectRequisito->obligatorio = false;
+                    array_push($requisitos,$objectRequisito);
+
+                }
+
+                $obligatorios = array();
+                $requisitos_s = array();
+                $requisitos_r = $tramite_s->requisitos;
+
+                
+                foreach($requisitos_r as $requisito)
+                {
+
+                    array_push($requisitos_s, $requisito->pivot->requisito_id);
+
+                    if($requisito->pivot->obligatorio == 1)
+                    {
+                        array_push($obligatorios,$requisito->pivot->requisito_id);
+                    }
+                }
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Requisitos asociados.",
+                    "seleccionados" => $requisitos_s,
+                    "obligatorios" => $obligatorios,
+                    "requisitos" => $requisitos
+                ], 200);
             }
 
-            return response()->json([
-                "status" => "ok",
-                "message" => "Requisitos asociados.",
-                "requisitos" => $requisitos
-            ], 200);
-            
+            else {
+                $tipo_tramite_id = $request->tipo_tramite_id;
+                $tramite = TipoTramite::find($tipo_tramite_id);
+                
+                $requisitos = array();
+                foreach($tramite->requisitos as $requisito)
+                {
+                    $objectRequisito = new \stdClass();
+                    $objectRequisito->id = $requisito->id;
+                    $objectRequisito->nombre = $requisito->nombre;
+                    $objectRequisito->obligatorio = false;
+
+                    array_push($requisitos,$objectRequisito);
+
+                }
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Requisitos asociados.",
+                    "requisitos" => $requisitos
+                ], 200);
+                
+            }
+
         } catch (\Throwable $th) {
-            DB::rollback();
-            $exito = false;
             return response()->json([
                 "status" => "error",
                 "message" => "Ocurrió un error al obtener requisitos asociados",
@@ -639,6 +712,46 @@ class TramiteController extends Controller
                 "line" => $th->getLine(),
             ], 200);
         }
+    }
+
+    public function getRequisitosTramiteEditar(Request $request)
+    {   
+
+
+        // $tipoTramite = TipoTramite::find($tipo_tramite_id);
+        // $tramite = $tipoTramite->tramite->where('id',$request->id);
+
+        $tramite = Tramite::find($request->id);
+
+
+        $requisitos = array();
+        $obligatorios = array();
+        $requisitosSeleccionado = array();
+         
+        foreach($tramite->requisitos as $requisito)
+        {
+            $objectRequisito = new \stdClass();
+            $objectRequisito->id = $requisito->id;
+            $objectRequisito->nombre = $requisito->nombre;
+
+            array_push($requisitos,$objectRequisito);
+
+            if($requisito->pivot->obligatorio === 1)
+            {
+                array_push($obligatorios,$requisito->id);
+            }
+            array_push($requisitosSeleccionado,$requisito->pivot->requisito_id);
+
+        }
+
+        return response()->json([
+            "status" => "ok",
+            "message" => "Requisitos asociados.",
+            "requisitos" => $requisitos,
+            "req_seleccionados" => $requisitosSeleccionado,
+            "obligatorios" => $obligatorios
+        ], 200);
+
     }
 
    
