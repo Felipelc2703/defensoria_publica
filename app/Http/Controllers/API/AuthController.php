@@ -46,12 +46,16 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        // $user = User::where('clave', $request->usuario)->where('password', $request->password)->first();
+
+        if (Auth::attempt(['clave' => $request->usuario, 'password' => $request->password])) {
+        // if ($user){
             $user = Auth::user();
             $success['token'] = $user->createToken('MyApp')->plainTextToken;
             $success['name'] = $user->name;
             
             $response = [
+                'status' => 'ok',
                 'success' => true,
                 'data' => $success,
                 'message' => 'User login successfully'
@@ -60,8 +64,9 @@ class AuthController extends Controller
             return response()->json($response, 200);
         } else {
             $response = [
+                'status' => 'error',
                 'success' => false,
-                'message' => 'Unauthorized'
+                'message' => 'Usuario y/o contraseña invalidos'
             ];
 
             return response()->json($response);
