@@ -13,14 +13,14 @@
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6 text-center">
-                            <div class="transition-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(2)">
+                            <div class="transition-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(3)">
                                 <img src="./../../../public/images/boton_2.png" alt="">
                             </div>
                         </div>
                     </div>
                     <div class="row justify-content-around mb-12">
                         <div class="col-sm-12 col-md-6 text-center">
-                            <div class="transition-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(3)">
+                            <div class="transition-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(2)">
                                 <img src="./../../../public/images/boton_3.png" alt="">
                             </div>
                         </div>
@@ -130,12 +130,12 @@
                         this.$store.commit('setAsuntoStore', 1)
                         break
                     case 2:
-                        this.tipo_asunto = 'Asuntos Laborales'
+                        this.tipo_asunto = 'Asuntos Administrativos'
                         this.tipos_citas = this.tramites_tipo_2
                         this.$store.commit('setAsuntoStore', 2)
                         break
                     case 3:
-                        this.tipo_asunto = 'Asuntos Administrativos'
+                        this.tipo_asunto = 'Asuntos Laborales'
                         this.tipos_citas = this.tramites_tipo_3
                         this.$store.commit('setAsuntoStore', 3)
                         break
