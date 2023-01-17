@@ -17,7 +17,9 @@ class TramiteController extends Controller
     public function getTramites()
     {
         try {
-            $tramites = Tramite::all();
+            $tramites = Tramite::where('status', 1)->get();
+
+            // $tramites = Tramite::all();
 
             $arrayTramites = array();
             $cont = 1;
@@ -490,7 +492,7 @@ class TramiteController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Tramite actualizado con exito.",
+                "message" => "Tramite eliminado con exito.",
                 "tramites" => $arrayTramites
             ], 200);
         }
