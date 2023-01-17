@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('fecha_formateada');
             $table->time('hora_cita');
             $table->string('nombre');
+            $table->string('curp');
             $table->string('email');
             $table->string('telefono');
             $table->string('sexo');

@@ -202,6 +202,16 @@
                                                                     ></v-select>
                                                                 </div>
                                                             </div>
+                                                            <div class="row justify-content-between">
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-text-field
+                                                                        v-model="cita.curp"
+                                                                        label="Curp"
+                                                                        :rules="[rules.curp]"
+                                                                        
+                                                                    ></v-text-field>
+                                                                </div>
+                                                            </div>
                                                         </v-form>
                                                     </v-row>
                                                 </v-container>
@@ -342,7 +352,7 @@
 
 <script>
     import { defineComponent } from 'vue'
-    import { errorSweetAlert, successSweetAlert } from './../helpers/sweetAlertGlobals'
+    import { errorSweetAlert, successSweetAlert, warningSweetAlert } from './../helpers/sweetAlertGlobals'
 
     export default defineComponent({
         name: 'crear-cita',
@@ -363,6 +373,7 @@
                     discapacidad: '',
                     dia: '',
                     horario: '',
+                    curp:'',
                     
                 },
                 nombreRules: [
@@ -391,6 +402,12 @@
                         return pattern.test(value) || 'El campo no contiene un numero valido'
 
                     },
+                    curp: value =>{
+                        const pattern = /^([A-Z&]|[a-z&]{1})([AEIOU]|[aeiou]{1})([A-Z&]|[a-z&]{1})([A-Z&]|[a-z&]{1})([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([HM]|[hm]{1})([AS|as|BC|bc|BS|bs|CC|cc|CS|cs|CH|ch|CL|cl|CM|cm|DF|df|DG|dg|GT|gt|GR|gr|HG|hg|JC|jc|MC|mc|MN|mn|MS|ms|NT|nt|NL|nl|OC|oc|PL|pl|QT|qt|QR|qr|SP|sp|SL|sl|SR|sr|TC|tc|TS|ts|TL|tl|VZ|vz|YN|yn|ZS|zs|NE|ne]{2})([^A|a|E|e|I|i|O|o|U|u]{1})([^A|a|E|e|I|i|O|o|U|u]{1})([^A|a|E|e|I|i|O|o|U|u]{1})([0-9]{2})$/
+                        return pattern.test(value) || 'El campo no contiene una curp valida'
+
+                    },
+
                 },
                 resumen_cita: {
                     centro_atencion: '',
@@ -886,7 +903,10 @@
                                 if (result.value.data.status === "ok") {
                                     this.$store.commit('setCitaAgendada', result.value.data.cita_agendada)
                                     this.$router.push('/confirmacion-cita')
-                                } else {
+                                }else if(result.value.data.status === "no_data") {
+                                        warningSweetAlert(result.value.data.message)
+                                
+                                } else  {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
                             } else {
