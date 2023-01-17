@@ -23,13 +23,27 @@ class CitaController extends Controller
 
         DB::beginTransaction();
         try {
-            $cita = new Cita;
+            
+            $cita = Cita::where('curp', $request->curp)->where('status', 1)->first();
+
+            if($cita)
+                {
+                    return response()->json([
+                        "status" => "no_data",
+                        "message" => "Usted ya cuenta con una cita agendada",
+                        
+                    ], 200);  
+                }  
+
+
+         $cita = new Cita;
             // $cita->folio = 'FDEA3C';
             $cita->folio = '';
             $cita->fecha_cita = $request->dia_cita;
             $cita->fecha_formateada = $request->fecha_formateada;
             $cita->hora_cita = $request->horario;
             $cita->nombre = $request->nombre;
+            $cita->curp = $request->curp;
             $cita->email = $request->email;
             $cita->telefono = $request->telefono;
             $cita->sexo = $request->sexo;
@@ -243,6 +257,7 @@ class CitaController extends Controller
                 "cita_agendada" => $citaAgendada,
             ], 200);
         }
+    
     }
 
     public function generarArchivoCitaPdf()
