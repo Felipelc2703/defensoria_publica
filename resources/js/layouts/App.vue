@@ -55,7 +55,7 @@
                                             <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-requisitos')">Requisito</a>
                                             <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Tramite</a>
                                             <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a>
-                                            <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a> -->
+                                            <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
                                         </div>
                                     </li>
                                     <li class="nav-item link-nav">
