@@ -497,11 +497,13 @@
                 this.dialogEditarTramite = true
             },
             cancelarEditartramite() {
-                this.tramite.id = null
-                this.tramite.nombre = ''
-                this.tramite.descripcion = ''
-                this.tramite.url = ''
-                this.tramite.tipo_tramite_id = ''
+                this.modelEditarTramite.id = null
+                this.modelEditarTramite.nombre = ''
+                this.modelEditarTramite.descripcion = ''
+                this.modelEditarTramite.url = ''
+                this.modelEditarTramite.tipo_tramite_id = ''
+                this.modelEditarTramite.requisitos = []
+                this.modelEditarTramite.obligatorios = []
                 this.dialogEditarTramite = false
             },
             async guardarCambiosTramite()
