@@ -91,4 +91,6 @@ Route::post('/tramite/requisitos-tipo-tramite-editar', [TramiteController::class
 Route::post('/whatsapp/guardar-numero', [NumeroContactoController::class, 'guardarNumero']);
 Route::get('/whatsapp/get-numero', [NumeroContactoController::class, 'getNumero']);
 
+Route::post('/reporte/grafica', [CitaController::class, 'getReporteGraficas']);
+
 // Route::post('agregar-usuario', 'UserController@store');

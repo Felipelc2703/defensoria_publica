@@ -81,7 +81,7 @@ const routes = [
         name: 'ReporteGraf',
         component: ReporteGraf,
         meta: {
-            requiresAuth: false
+            requiresAuth: true
         }
     },
     {
@@ -89,7 +89,7 @@ const routes = [
         name: 'Reportes',
         component: Reportes,
         meta: {
-            requiresAuth: false
+            requiresAuth: true
         }
     },
     {        
