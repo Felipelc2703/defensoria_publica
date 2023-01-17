@@ -130,7 +130,6 @@
                                                     item-title="hora_inicio"
                                                     item-value="id"
                                                     variant="outlined"
-                                                    
                                                 ></v-select>
                                             </div>
                                         </div>

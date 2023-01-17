@@ -2,17 +2,18 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CitaController;
-use App\Http\Controllers\TramiteController;
+use App\Http\Controllers\DiaController;
 // use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\RolController;
+use App\Http\Controllers\CitaController;
+use App\Http\Controllers\NotaController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\TramiteController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\RequisitoController;
 use App\Http\Controllers\TipoTramiteController;
 use App\Http\Controllers\CentroAtencionController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\RolController;
-use App\Http\Controllers\NotaController;
-use App\Http\Controllers\DiaController;
+use App\Http\Controllers\NumeroContactoController;
 
 
 
@@ -89,5 +90,9 @@ Route::post('/tramite/requisitos-tipo-tramite-editar', [TramiteController::class
 
 //Ruta utilizada para el catalogo de citas del dia 
 Route::get('/catalogos/citas-del-dia', [CitaController::class, 'getCitasDelDia']);
+Route::post('/whatsapp/guardar-numero', [NumeroContactoController::class, 'guardarNumero']);
+Route::get('/whatsapp/get-numero', [NumeroContactoController::class, 'getNumero']);
+
+Route::post('/reporte/grafica', [CitaController::class, 'getReporteGraficas']);
 
 // Route::post('agregar-usuario', 'UserController@store');

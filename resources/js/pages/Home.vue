@@ -78,6 +78,7 @@
                         </div>
                     </div>
                 </div>
+                <a v-if="whatsapp.id != null" :href="`https://api.whatsapp.com/send?phone=5${whatsapp.telefono}`" class="whatsapp" target="_blank"> <i class="fa fa-whatsapp whatsapp-icon"></i></a>
             </div>
         </div>
     </div>
@@ -97,12 +98,26 @@
                 },
                 tipos_citas: [],
                 tipo_asunto: '',
+                whatsapp: {
+                    id: null,
+                    telefono: '',
+                    hora_inicio: '',
+                    hora_fin: '',
+                    dia1: false,
+                    dia2: false,
+                    dia3: false,
+                    dia4: false,
+                    dia5: false,
+                    dia6: false,
+                    dia7: false,
+                },
             }
         },
         created() {
             if (this.asunto_store) {
                 this.mostrarTipoCitas(this.asunto_store)
             }
+            this.getWhatsApp()
         },
         computed: {
             tramites_tipo_1() {
@@ -122,6 +137,34 @@
             }
         },
         methods: {
+            async getWhatsApp() {
+                try {
+                    let response = await axios.get('/api/whatsapp/get-numero')
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.whatsapp.id = response.data.registro.id
+                            this.whatsapp.telefono = response.data.registro.telefono
+                            this.whatsapp.hora_inicio = response.data.registro.hora_inicio
+                            this.whatsapp.hora_fin = response.data.registro.hora_fin
+                            this.whatsapp.dia1 = response.data.registro.dia1
+                            this.whatsapp.dia2 = response.data.registro.dia2
+                            this.whatsapp.dia3 = response.data.registro.dia3
+                            this.whatsapp.dia4 = response.data.registro.dia4
+                            this.whatsapp.dia5 = response.data.registro.dia5
+                            this.whatsapp.dia6 = response.data.registro.dia6
+                            this.whatsapp.dia7 = response.data.registro.dia7
+                        } else if (response.data.status === "no-data") {
+                            
+                        } else {
+                            // errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        // errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites para agendar citas.')
+                    }
+                } catch (error) {
+                    // errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites para agendar citas.')
+                }
+            },
             mostrarTipoCitas(asunto) {
                 switch (asunto) {
                     case 1:
@@ -237,4 +280,22 @@
     .v-expansion-panel-title__icon {
         color: white !important;
     }
+
+    .whatsapp {
+        position:fixed;
+        width:60px;
+        height:60px;
+        bottom:40px;
+        right:40px;
+        background-color:#25d366;
+        color:#FFF;
+        border-radius:50px;
+        text-align:center;
+        font-size:30px;
+        z-index:100;
+      }
+      
+      .whatsapp-icon {
+        margin-top:13px;
+      }
 </style>
