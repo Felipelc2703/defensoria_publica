@@ -17,7 +17,7 @@
                     >
                 </v-select>
 
-                <div class="row justify-content-between">
+                <div class="row justify-content-between" v-if="showRango">
                     <div class="col-md-4 col-12">
                         <p>Seleccione el mes o el rango de fechas</p>
                     </div>
@@ -73,7 +73,7 @@
                                 variant="solo" 
                                 type="date" 
                                 label="Selecciones la fecha final"
-                                :rules="fechaInicio"
+                                :rules="fechaFin"
                             ></v-text-field>
                         </div>
                     </div>
@@ -126,8 +126,8 @@
                             color="#6a73a0"
                             class="boton-nuevo"
                             @click="cargarDias()"
-                        >
-                            Cargar Dias
+                            >
+                            Cargar Días
                         </v-btn>
                     </div>
                 </div>
@@ -175,12 +175,20 @@
                                         <input disabled type="checkbox" v-model="fecha.inhabil" @click="checkinhabil(fecha)">
                                     </td>
                                     <td class="text-center">
-                                        <v-icon
-                                            title="Editar Fecha"
-                                            @click="editarHorario(fecha)"
-                                            >
-                                            mdi-text-box-edit-outline
-                                        </v-icon>
+                                        <div>
+                                            <v-icon
+                                                @click="editarHorario(fecha)"
+                                                >
+                                                mdi-text-box-edit-outline
+                                            </v-icon>
+
+                                            <v-tooltip
+                                                activator="parent"
+                                                location="bottom"
+                                                >
+                                                <span style="font-size: 15px;">Editar Fecha</span>
+                                            </v-tooltip>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -262,118 +270,75 @@
                 >
                 <v-card>
                     <v-card-title>
-                        <h3>Cambio de Horario</h3>
+                        <h3 class="mt-2">Cambio de Horario</h3>
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <v-container>
-                            <v-form class="col-12" ref="formCambioHorario">
-                                <v-select
-                                    v-model="editar.accion"
-                                    :items="acciones"
-                                    label="Seleccione una acción"
-                                    variant="solo"
-                                ></v-select>
-                                
-                                <p><strong>Dia: </strong>{{ editar.dia }}</p>
+                            <v-row>
+                                <v-form class="col-12" ref="formCambioHorario">
+                                    <p><strong>Día: </strong>{{ editar.dia }}</p>
 
-                                <h4>Horario de atencion</h4>
-                                <div v-if="editar.accion =='AMPLIAR HORARIO' || editar.accion == 'REDUCIR HORARIO'">
-                                    <v-text-field
-                                        v-model="editar.hora_inicio"
-                                        variant="solo"
-                                        type="time" 
-                                        label="Hora inicio" 
-                                    >
-                                    </v-text-field>
+                                    <div class="row justify-content-between">
+                                        <div class="col-md-6 col-12">
+                                            <v-text-field
+                                                v-model="editar.hora_inicio"
+                                                variant="solo"
+                                                type="time" 
+                                                label="Hora inicio"
+                                            >
+                                            </v-text-field>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <v-text-field
+                                                v-model="editar.hora_fin"
+                                                variant="solo"
+                                                type="time" 
+                                                label="Hora Fin" 
+                                            >
+                                            </v-text-field>
+                                        </div>
+                                    </div>
 
-                                    <v-text-field
-                                        v-model="editar.hora_fin"
-                                        variant="solo"
-                                        type="time" 
-                                        label="Hora Fin" 
-                                    >
-                                    </v-text-field>
-                                </div>
-
-                                <div v-else>
-                                    <v-text-field
-                                        v-model="editar.hora_inicio"
-                                        variant="solo"
-                                        type="time" 
-                                        label="Hora inicio" 
-                                        disabled
-                                    >
-                                    </v-text-field>
-
-                                    <v-text-field
-                                        v-model="editar.hora_fin"
-                                        variant="solo"
-                                        type="time" 
-                                        label="Hora Fin" 
-                                        disabled
-                                    >
-                                    </v-text-field>
-                                </div>
-
-                                <div v-if="editar.accion == 'CAMBIAR DURACIÓN DE CITA'">
-                                    <v-text-field
-                                        v-model="editar.duracion"
-                                        label="Duracion Cita"
-                                        type="number"
-                                        variant="solo"
-                                    >
-                                    </v-text-field>
-                                </div>
-
-                                <div v-else>
-                                    <v-text-field
-                                        v-model="editar.duracion"
-                                        label="Duracion Cita"
-                                        type="number"
-                                        variant="solo"
-                                        disabled
-                                    >
-                                    </v-text-field>
-                                </div>
-
-                                <div v-if="editar.accion =='HABILITAR/DESHABILITRA DIA'">
-                                    <v-checkbox
-                                        v-model="editar.inhabil"
-                                        label="Inhabil"
-                                    >
-                                    </v-checkbox>
-                                </div>
-
-                                <div v-else>
-                                    <v-checkbox
-                                        v-model="editar.inhabil"
-                                        label="Inhabil"   
-                                        disabled                                 
-                                    >
-                                    </v-checkbox>
-                                </div>
-
-                            </v-form>
+                                    <div class="row justify-content-between">
+                                        <div class="col-md-6 col-12">
+                                            <v-text-field
+                                                v-model="editar.duracion"
+                                                label="Duracion Cita"
+                                                type="number"
+                                                variant="solo"
+                                            >
+                                            </v-text-field>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <v-checkbox
+                                                v-model="editar.inhabil"
+                                                label="Inhabil"
+                                            >
+                                            </v-checkbox>
+                                        </div>
+                                    </div>
+                                </v-form>
+                            </v-row>
                         </v-container>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                variant="flat"
+                                color="#881001"
+                                @click="cancelarCambioHorario()"
+                            >
+                                <span style="color: #eaeaed;">Cancelar</span>
+                            </v-btn>
+                            <v-btn
+                                variant="flat"
+                                color="#6a73a0"
+                                @click="guardarCambios()"
+                            >
+                                <span style="color: #eaeaed;">Guardar Cambios</span>
+                            </v-btn>
+                        </v-card-actions>
                     </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            variant="flat"
-                            color="warning"
-                            @click="cancelarCambioHorario()"
-                        >
-                            Cerar
-                        </v-btn>
-                        <v-btn
-                            variant="flat"
-                            color="error"
-                            @click="guardarCambios()"
-                        >
-                            Guardar Cambios
-                        </v-btn>
-                    </v-card-actions>
                 </v-card>
             </v-dialog>
         </div>
@@ -393,6 +358,7 @@
                 fecha: false,
                 cargaDias: false,
                 dialogEditarDia : false,
+                showRango: false,
                 horario: {
                     centro_atencion_id: '',
                     mes: '',
@@ -415,9 +381,6 @@
                     duracion: '',
                     inhabil: false
                 },
-                acciones: [
-                    'HABILITAR/DESHABILITRA DIA', 'AMPLIAR HORARIO','REDUCIR HORARIO', 'CAMBIAR DURACIÓN DE CITA'
-                ],
                 meses: [
                     {
                         id: '1',
@@ -468,23 +431,6 @@
                         nombre: 'Diciembre'
                     },
                 ],
-                headers: [
-                    {
-                        text: 'Dia', value: 'dia'
-                    },
-                    {
-                        text: 'Horario Inicial', value: 'hora_inicio'
-                    },
-                    {
-                        text: 'Horario Fin' , value:'hora_fin'
-                    },
-                    {
-                        text: 'Inhabil', value:'inhabil'
-                    },
-                    {
-                        text: 'Editar', value:'actions'
-                    }
-                ],
                 centroAtencionRules: [
                     v => !!v || 'El campo de centro de atención es requerido'
                 ],
@@ -499,6 +445,12 @@
                 ],
                 duracionRules: [
                     v => !!v || 'El campo tiempo de duracion es requerido'
+                ],
+                fechaInicio: [
+                    v => !!v || 'El campo fecha inicio es requerido'
+                ],
+                fechaFin: [
+                    v => !!v || 'El campo fecha fin es requerido'
                 ],
                 elementosPorPagina: 10,
                 paginaActual: 1,
@@ -530,6 +482,9 @@
             }
         },
         watch: {
+            'horario.centro_atencion_id': function () {
+                this.showRango = true
+            },
             buscar: function () {
                 if (!this.buscar.length == 0) {
                     this.datosPaginados = this.dias.filter(item => {
@@ -573,7 +528,6 @@
                             if (result.value.status === 200) {
                                 if (result.value.data.status === "ok") {
                                     successSweetAlert(result.value.data.message)
-                                    // this.$store.commit('setCatalogoTramites', result.value.data.tramites)
                                     this.limpiarFormulario()
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
@@ -594,26 +548,27 @@
                     this.mes = false
             },
             async cargarDias() {
+                const { valid } = await this.$refs.formAgregarHorario.validate()
                 this.horario.pmes = this.mes
                 this.horario.pfecha = this.fecha
-                console.log(this.horario)
-                try {
-                    let response = await axios.post('/api/horarios/llenar-dias', this.horario)
-                    if(response.status === 200) {
-                        if(response.data.status === "ok") {
-                            console.log(response.data.dias)
-                            this.$store.commit('setDias', response.data.dias)
-                            this.cargaDias = true
-                            this.mostrar = true
+                if (valid) {
+                    try {
+                        let response = await axios.post('/api/horarios/llenar-dias', this.horario)
+                        if(response.status === 200) {
+                            if(response.data.status === "ok") {
+                                this.$store.commit('setDias', response.data.dias)
+                                this.cargaDias = true
+                                this.mostrar = true
+                                this.getDataPagina(1)
+                            } else {
+                                errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                            }
                         } else {
-                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                            errorSweetAlert('Ocurrió un error al cargar dias')
                         }
-                    } else {
+                    }catch (error) {
                         errorSweetAlert('Ocurrió un error al cargar dias')
                     }
-                    
-                }catch (error) {
-                    errorSweetAlert('Ocurrió un error al cargar dias')
                 }
 
             },
@@ -638,7 +593,6 @@
             checkinhabil(dia){
                 this.dias.forEach(element => {
                     if (element.id == dia.id) {
-                        // console.log("encontrado")
                         if (element.inhabil == false) {
                             element.inhabil = true
                         } else {
@@ -686,6 +640,7 @@
                 this.cargaDias = false
                 this.mes = false
                 this.fecha = false
+                this.showRango = false
             },
             activarRango() {
                 if(this.fecha)
