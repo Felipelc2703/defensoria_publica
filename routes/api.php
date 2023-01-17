@@ -87,6 +87,7 @@ Route::post('/horarios/actualizar-horario', [DiaController::class, 'actualizarHo
 Route::post('/tramite/requisitos-tipo-tramite', [TramiteController::class, 'getRequisitosTramite']);
 Route::post('/tramite/requisitos-tipo-tramite-editar', [TramiteController::class, 'getRequisitosTramiteEditar']);
 
-
+//Ruta utilizada para el catalogo de citas del dia 
+Route::get('/catalogos/citas-del-dia', [CitaController::class, 'getCitasDelDia']);
 
 // Route::post('agregar-usuario', 'UserController@store');

@@ -11,10 +11,48 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use PDF;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 
 class CitaController extends Controller
 {
+    public function getCitasDelDia(){
+        try {
+            $date = Carbon::now();
+            $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
+           
+            $array_cita = array();
+                        $cont = 1;
+            foreach ($citas as $cita) {
+                $objectCita = new \stdClass();
+                $objectCita->id = $cita->id;
+                $objectCita->folio = $cita->folio;
+                $objectCita->fecha_formateada = $cita->fecha_formateada;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->nombre = $cita->nombre;
+                $objectCita->curp = $cita->curp;
+                $objectCita->discapacidad = $cita->discapacidad;
+
+                array_push($array_cita, $objectCita);
+                $cont++;
+
+            }
+
+            return response()->json([
+                "status" => "ok",
+                "message" => "Citas obtenidas con exito controller",
+                "citas" => $array_cita
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener el catalogo de citas",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+    }
     public function agendarCita(Request $request)
     {
         $exito = false;

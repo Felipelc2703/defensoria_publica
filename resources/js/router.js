@@ -19,6 +19,8 @@ import CatalogoNotas from './pages/CatalogoNotas.vue'
 
 import AgregarHorario from './pages/AgregarHorario.vue'
 import EditarHorario from './pages/EditarHorarios.vue'
+import CitasDelDia from './pages/CitasDelDia.vue'
+
 
 const routes = [
     {
@@ -143,6 +145,14 @@ const routes = [
         path: '/editar-horario',
         name: 'EditarHorario',
         component: EditarHorario,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/citas-del-dia',
+        name: 'CitasDelDia',
+        component: CitasDelDia,
         meta: {
             requiresAuth: true
         }

@@ -13,6 +13,7 @@ export default {
         roles:[],
         notas:[],
         requsiitosTipoTramite: [],
+        citas:[],
     },
     getters: {
         getCatalogoCentrosAtencion(state) {
@@ -55,6 +56,9 @@ export default {
         },
         getRequisitosTipoTramite(state) {
             return state.requsiitosTipoTramite
+        },
+        getCatalogoCitasDelDia(state) {
+            return state.citas
         }
     },
     mutations: {
@@ -96,6 +100,9 @@ export default {
         },
         setRequisitosTipoTramite(state, payload){
             state.requsiitosTipoTramite = payload
+        },
+        setCatalogoCitasDelDia(state, payload){
+            state.citas = payload
         },
         
     }
