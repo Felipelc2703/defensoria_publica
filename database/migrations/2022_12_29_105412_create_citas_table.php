@@ -27,6 +27,7 @@ return new class extends Migration
             $table->boolean('tiene_discapacidad');
             $table->string('discapacidad')->nullable();
             $table->integer('status')->default(1);
+            $table->string('motivo')->nullable();
             $table->foreignId('tramite_id')->constrained();
             $table->unsignedBigInteger('centro_atencion_id');
             $table->timestamps();

@@ -34,6 +34,13 @@ class CitaController extends Controller
                 $objectCita->status = $cita->status;
                 $objectCita->discapacidad = $cita->discapacidad;
 
+                if($cita->status == 1)
+                $objectCita->status = "1";
+                if($cita->status == 2)
+                $objectCita->status = "2";
+                if($cita->status == 3)
+                $objectCita->status = "3";
+
                 array_push($array_cita, $objectCita);
                 $cont++;
 
@@ -552,4 +559,69 @@ class CitaController extends Controller
             ], 200);
         }
     }
+    public function guardarCambios(Request $request)
+    {
+        $exito = false;
+
+        DB::beginTransaction();
+        try {
+            $cita = Cita::find($request->id);
+            
+            
+            $cita->status = $request->status;
+
+           
+            // $cita->motivo = $request->motivo;
+            $cita->save();
+            $citas = Cita::all();
+            // $date = Carbon::now();
+            // $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
+           
+            $array_cita = array();
+                        $cont = 1;
+            foreach ($citas as $cita) {
+                $objectCita = new \stdClass();
+                $objectCita->id = $cita->id;
+                $objectCita->folio = $cita->folio;
+                $objectCita->fecha_formateada = $cita->fecha_formateada;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->nombre = $cita->nombre;
+                $objectCita->curp = $cita->curp;
+                $objectCita->discapacidad = $cita->discapacidad;
+
+                if($cita->status == 1)
+                $objectCita->status = "1";
+                if($cita->status == 2)
+                $objectCita->status = "2";
+                if($cita->status == 3)
+                $objectCita->status = "3";
+
+                array_push($array_cita, $objectCita);
+                $cont++;
+
+            }
+            
+            DB::commit();
+            $exito = true;
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $exito = false;
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al actualizar el estatus.",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+
+        if ($exito) {
+            return response()->json([
+                "status" => "ok",
+                "message" => "Categoria actualizada con exito.",
+                "citas" => $array_cita
+            ], 200);
+        }
+    }
+    
 }

@@ -22,6 +22,8 @@
                             <th class="titulo-columna">Hora</th>
                             <th class="titulo-columna">Curp</th>
                             <th class="titulo-columna">Discapacidad</th>
+                            <th class="titulo-columna">Editar</th>
+
                             <!-- <th class="titulo-columna borde-derecho">Acciones</th> -->
                             
                         </tr>
@@ -58,6 +60,20 @@
                                 {{citas.discapacidad}}
                             </td>
                             <td>
+                                <div>
+                                            <v-icon
+                                                @click="editar(citas)"
+                                                >
+                                                mdi-text-box-edit-outline
+                                            </v-icon>
+
+                                            <v-tooltip
+                                                activator="parent"
+                                                location="bottom"
+                                                >
+                                                <span style="font-size: 15px;">Editar</span>
+                                            </v-tooltip>
+                                        </div>
                                 <!-- <div class="text-center row justify-content-center">
                                     <div>
                                         <v-icon 
@@ -151,9 +167,82 @@
                 <div class="text-center">
                     <p class="texto-no-data">Aún no hay datos disponibles</p>
                 </div>
+
             </template>
         </div>
     </div>
+
+    <v-dialog
+                v-model="dialogEditar"
+                max-width="800px"
+                persistent
+                >
+                <v-card>
+                    <v-card-title>
+                        <h3 class="mt-2">Citas</h3>
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-form class="col-12" ref="formCambioEstatus" >
+                                  
+                                    <div class="col-md-6 col-12">
+                                            <label class="label">Estatus</label>
+                                            <v-radio-group inline v-model="cita.status">
+                                                <v-radio value='1'>
+                                                    <template v-slot:label>
+                                                        <div><strong class="texto-custom-radio">No atendida</strong></div>
+                                                    </template>
+                                                </v-radio>
+                                                <v-radio value='2'>
+                                                    <template v-slot:label>
+                                                        <div><strong class="texto-custom-radio">Atendida</strong></div>
+                                                    </template>
+                                                </v-radio>
+                                                <v-radio  value='3'>
+                                                    <template v-slot:label>
+                                                        <div><strong class="texto-custom-radio">Cancelada</strong></div>
+                                                    </template>
+                                                </v-radio>
+                                            </v-radio-group>
+                                        
+                                    </div>
+                                <div class="col-md-6 col-12" v-if="cita.status == '3'">
+                                    <label class="black-label">Motivo</label>
+                                    <v-text-field
+                                        v-model="cita.motivo"
+                                        label="Motivo"
+                                        
+                                    >
+                                </v-text-field>
+                                </div>
+                                      
+                                </v-form>
+                            </v-row>
+                        </v-container>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                variant="flat"
+                                color="#881001"
+                                @click="cancelarCambio()"
+                            >
+                                <span style="color: #eaeaed;">Cancelar</span>
+                            </v-btn>
+                            <v-btn
+                                variant="flat"
+                                color="#6a73a0"
+                                @click="guardarCambios()"
+                            >
+                                <span style="color: #eaeaed;">Guardar Cambios</span>
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card-text>
+                </v-card>
+    </v-dialog>
+
+    
 </template>
 
 <script>
@@ -166,6 +255,7 @@
                 
                 loading: false,
                 dialogAgregarCentro: false,
+                dialogEditar: false,
                 show1: false,
                 elementosPorPagina: 10,
                 paginaActual: 1,
@@ -176,6 +266,11 @@
                 numShown: 5,
                 current: 1,
                 buscar: '',
+                cita: {
+                    id: null,
+                    status: '',
+                    motivo: '',
+                }
             }
         },
         created(){
@@ -185,6 +280,7 @@
             citas(){
                 return this.$store.getters.getCatalogoCitasDelDia
             },
+           
             pages() {
                 const numShown = Math.min(this.numShown, this.totalPaginas())
                 let first = this.current - Math.floor(numShown / 2)
@@ -215,6 +311,7 @@
             // para mostrar los datos en la tabla principal
             async getCatalogoCitasDelDia() {
                 this.loading = true
+                
                 try {
                     let response = await axios.get('/api/catalogos/citas-del-dia')
                     if (response.status === 200) {
@@ -286,6 +383,62 @@
             setCurrentPage(pagina) {
                 this.current = pagina
             },
+            editar(citas)
+            {   
+                this.cita.id = citas.id
+                this.cita.status = citas.status
+                this.dialogEditar = true
+                console.log(this.cita)
+            },
+            cancelarCambio() {
+                this.cita.status = ''
+                this.cita.id = null
+                this.dialogEditar = false
+            },
+            async guardarCambios()
+            {
+                console.log(this.cita)
+                const { valid } = await this.$refs.formCambioEstatus.validate()
+                // this.horario.dias = this.dias
+                if (valid) {
+                    Swal.fire({
+                        title: '¿Guardar cambios?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085D6',
+                        cancelButtonColor: '#D33',
+                        confirmButtonText: 'Si, guardar',
+                        cancelButtonText: 'Cancelar',
+                        showLoaderOnConfirm: true,
+                        preConfirm: async () => {
+                            try {
+                                let response = await axios.post('/api/citas/citas-del-dia', this.cita)
+                                
+                                return response
+                            } catch (error) {
+                                errorSweetAlert('Ocurrió un error al actualizar estatus.')
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (result.value.status === 200) {
+                                if (result.value.data.status === "ok") {
+                                    successSweetAlert(result.value.data.message)
+                                    this.$store.commit('setCatalogoCitasDelDia', response.data.cita)
+                                    this.cancelarCambio()
+                                    this.getDataPagina(1)
+                                } else {
+                                    errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
+                                }
+                            } else {
+                                errorSweetAlert('Ocurrió un error al editar estatus.')
+                            }
+                        }
+                    })
+                }
+            },
+            
         },
     })
 </script>
