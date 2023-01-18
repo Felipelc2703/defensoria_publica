@@ -178,12 +178,12 @@
                                     variant="solo">
                                 </v-textarea>
 
-                                <v-text-fild
+                                <v-text-field
                                     variant="solo"
                                     v-model="tramite.url"
                                     type="text"
                                     label="Url donde se encuntra la informacion dle tramite (iniciando con http://)*">
-                                </v-text-fild>
+                                </v-text-field>
 
                                 <v-select
                                     v-model="tramite.tipo_tramite_id"
@@ -214,14 +214,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="cancelarAgregarTramite()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarNuevoTramite()"
                     >
                         Guardar
@@ -259,12 +259,12 @@
                                     variant="solo">
                                 </v-textarea>
 
-                                <v-text-fild
+                                <v-text-field
                                     variant="solo"
                                     v-model="modelEditarTramite.url"
                                     type="text"
                                     label="Url donde se encuntra la informacion dle tramite (iniciando con http://)*">
-                                </v-text-fild>
+                                </v-text-field>
 
                                 <v-select
                                     v-model="modelEditarTramite.tipo_tramite_id"
@@ -296,14 +296,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="cancelarEditartramite()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarCambiosTramite()"
                     >
                         Guardar
@@ -508,7 +508,7 @@
             },
             async guardarCambiosTramite()
             {
-                console.log(this.modelEditarTramite)
+                // console.log(this.modelEditarTramite)
                 const { valid } = await this.$refs.formEditarTramite.validate()
                 if (valid) {
                     Swal.fire({
@@ -523,6 +523,7 @@
                         preConfirm: async () => {
                             try {
                                 let response = await axios.post('/api/tramite/actualizar-tramite', this.modelEditarTramite)
+                                
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al actualizar tramite.')
@@ -548,7 +549,7 @@
             },
             async getRequisitos(tram)
             {
-                console.log("iohdsiusdhbdsiuodsio")
+                // console.log("iohdsiusdhbdsiuodsio")
                 try {
                   let response = await axios.post('/api/tramite/requisitos-tipo-tramite', tram)
                   if (response.status === 200) {

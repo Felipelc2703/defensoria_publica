@@ -185,14 +185,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="cancelarAgregarNuevaNota()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarNuevaNota()"
                     >
                         Guardar
@@ -232,14 +232,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="CancelarEditarNota()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarCambiosEditarNota()"
                     >
                         Guardar

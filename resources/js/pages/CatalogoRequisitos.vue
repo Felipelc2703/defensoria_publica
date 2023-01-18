@@ -185,14 +185,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="cancelarAgregarRequisito()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarNuevoRequisito()"
                     >
                         Guardar
@@ -240,14 +240,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="cancelarEditarCentroAtencion()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarCambiosRequisito()"
                     >
                         Guardar

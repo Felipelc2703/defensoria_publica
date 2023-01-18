@@ -203,14 +203,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="cancelarAgregarCentroAtencion()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarNuevoCentroAtencion()"
                     >
                         Guardar
@@ -274,14 +274,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="cancelarEditarCentroAtencion()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarCambiosCentroAtencion()"
                     >
                         Guardar
@@ -521,10 +521,10 @@
                     title: '¿Eliminar Centro de Atención?',
                     icon: 'question',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085D6',
                     cancelButtonColor: '#D33',
-                    confirmButtonText: 'Si, eliminar',
+                    confirmButtonColor: '#3085D6',
                     cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Si, eliminar',
                     showLoaderOnConfirm: true,
                     preConfirm: async () => {
                         try {

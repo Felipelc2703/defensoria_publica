@@ -3,6 +3,7 @@ export default {
         tramiteSeleccionado: null,
         asuntoStore: null,
         citaAgendada: null,
+        buscarCita: '',
     },
     getters: {
         getTramiteSeleccionado(state) {
@@ -13,6 +14,9 @@ export default {
         },
         getCitaAgendada(state) {
             return state.citaAgendada
+        },
+        getbuscarCita(state) {
+            return state.buscarCita
         }
     },
     mutations: {
@@ -24,6 +28,9 @@ export default {
         },
         setCitaAgendada(state, payload) {
             state.citaAgendada = payload
+        },
+        setbuscarCita(state, payload) {
+            state.buscarCita = payload
         }
     }
 }

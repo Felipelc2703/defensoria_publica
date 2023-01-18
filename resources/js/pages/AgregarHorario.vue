@@ -120,7 +120,8 @@
                             :rules="duracionRules"
                         ></v-text-field>
                     </div>
-                    <div class="text-center mt-4 col-md-6 col-12">
+                </div>
+                <div class="text-center mt-4 col-md-12 col-12">
                         <v-btn
                             variant="flat"
                             color="#6a73a0"
@@ -130,7 +131,6 @@
                             Cargar Días
                         </v-btn>
                     </div>
-                </div>
             </v-form>
 
             <div v-if="cargaDias">
@@ -250,7 +250,6 @@
                         </div>
                     </template>
                 </div>
-    
                 <div class="text-center">
                     <v-btn
                         variant="flat"

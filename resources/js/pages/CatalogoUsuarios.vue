@@ -221,14 +221,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="cancelarAgregarNuevoUsuario()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarNuevoUsuario()"
                     >
                         Guardar
@@ -305,14 +305,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="CancelarEditarUsuario()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarCambiosEditarUsuario()"
                     >
                         Guardar

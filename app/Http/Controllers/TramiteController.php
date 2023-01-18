@@ -552,6 +552,7 @@ class TramiteController extends Controller
                 $tramite = TipoTramite::find($tipo_tramite_id);
                 
                 $requisitos = array();
+                if($tramite){
                 foreach($tramite->requisitos as $requisito)
                 {
                     $objectRequisito = new \stdClass();
@@ -562,7 +563,7 @@ class TramiteController extends Controller
                     array_push($requisitos,$objectRequisito);
 
                 }
-
+            }
                 return response()->json([
                     "status" => "ok",
                     "message" => "Requisitos asociados.",

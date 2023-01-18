@@ -209,6 +209,7 @@
                                                                         :rules="[rules.curp]"
                                                                         
                                                                     ></v-text-field>
+                                                                    <li class="boton_inicio" @click="irCurp()">Consulte su CURP AQUI</li>
                                                                 </div>
                                                             </div>
                                                         </v-form>
@@ -489,6 +490,9 @@
             },
         },
         methods: {
+            irCurp() {
+                window.open("https://www.gob.mx/curp/")
+            },
             cancelarSolicitud() {
                 this.dialogRequisitos = false
                 this.$router.push('/')
@@ -920,6 +924,10 @@
 </script>
 
 <style scoped>
+
+.boton_inicio {
+        cursor: pointer;
+    }
     .contenedor {
         padding: 0!important;
     }

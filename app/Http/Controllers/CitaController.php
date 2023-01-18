@@ -22,7 +22,7 @@ class CitaController extends Controller
             $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
            
             $array_cita = array();
-                        $cont = 1;
+            $cont = 1;
             foreach ($citas as $cita) {
                 $objectCita = new \stdClass();
                 $objectCita->id = $cita->id;
@@ -31,6 +31,7 @@ class CitaController extends Controller
                 $objectCita->hora_cita = $cita->hora_cita;
                 $objectCita->nombre = $cita->nombre;
                 $objectCita->curp = $cita->curp;
+                $objectCita->status = $cita->status;
                 $objectCita->discapacidad = $cita->discapacidad;
 
                 array_push($array_cita, $objectCita);

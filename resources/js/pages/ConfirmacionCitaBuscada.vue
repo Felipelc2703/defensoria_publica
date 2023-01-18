@@ -86,11 +86,13 @@
                 }
             },
             async cancelarCita() {
+                
                 try {
                     let response = await axios.get(`/api/cancelar-cita/${this.citaAgendada.id}`)
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             successSweetAlert(response.data.message)
+                            this.$store.state.buscarCita = ''
                             this.$router.push('/')
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
