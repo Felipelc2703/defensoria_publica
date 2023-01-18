@@ -96,3 +96,6 @@ Route::get('/whatsapp/get-numero', [NumeroContactoController::class, 'getNumero'
 Route::post('/reporte/grafica', [CitaController::class, 'getReporteGraficas']);
 
 // Route::post('agregar-usuario', 'UserController@store');
+
+//Actualizar estatus cita y motivo*
+Route::post('/citas/citas-del-dia', [CitaController::class, 'guardarCambios']);
