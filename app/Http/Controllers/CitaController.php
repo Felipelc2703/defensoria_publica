@@ -619,7 +619,7 @@ class CitaController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Categoria actualizada con éxito.",
+                "message" => "Estatus actualizado con éxito.",
                 "citas" => $array_cita
             ], 200);
         }
