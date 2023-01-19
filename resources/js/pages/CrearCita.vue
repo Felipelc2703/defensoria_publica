@@ -209,7 +209,7 @@
                                                                         :rules="[rules.curp]"
                                                                         
                                                                     ></v-text-field>
-                                                                    <li class="boton_inicio" @click="irCurp()">CONSULTE SU CURP AQUÍ</li>
+                                                                    <a class="boton_inicio" @click="irCurp()">CONSULTE SU CURP AQUÍ</a>
                                                                 </div>
                                                             </div>
                                                         </v-form>

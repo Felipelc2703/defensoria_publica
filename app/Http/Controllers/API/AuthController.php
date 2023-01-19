@@ -46,13 +46,14 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // $user = User::where('clave', $request->usuario)->where('password', $request->password)->first();
+        $user = User::where('clave', $request->usuario)->where('password', $request->password)->first();
 
-        if (Auth::attempt(['clave' => $request->usuario, 'password' => $request->password])) {
-        // if ($user){
-            $user = Auth::user();
+        // if (Auth::attempt(['clave' => $request->usuario, 'password' => $request->password])) {
+        if ($user){
+            // $user = Auth::user();
             $success['token'] = $user->createToken('MyApp')->plainTextToken;
             $success['name'] = $user->name;
+            $success['rol_id'] =$user->rol_id;
             
             $response = [
                 'status' => 'ok',

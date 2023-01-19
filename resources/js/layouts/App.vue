@@ -37,7 +37,7 @@
                             <nav class="navbar navbar-expand-lg navbar-light">
                                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                                   <ul class="navbar-nav">
-                                    <li class="nav-item dropdown link-nav">
+                                    <li class="nav-item dropdown link-nav" v-if="rolId == 1">
                                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Horarios
                                         </a>
@@ -46,7 +46,7 @@
                                             <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario')">Modificar Horario</a>
                                         </div>
                                     </li>
-                                    <li class="nav-item dropdown link-nav">
+                                    <li class="nav-item dropdown link-nav" v-if="rolId == 1">
                                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Catálogos
                                         </a>
@@ -61,14 +61,14 @@
                                     <li class="nav-item link-nav">
                                         <a class="nav-link" @click="this.$router.push('/citas-del-dia')">Citas del día</a>
                                     </li>
-                                    <li class="nav-item link-nav">
+                                    <li class="nav-item link-nav" v-if="rolId == 1">
                                         <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
                                     </li>
-                                    <li class="nav-item dropdown link-nav">
+                                    <li class="nav-item dropdown link-nav" v-if="rolId == 1">
                                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           Reportes
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" v-if="rolId == 1">
                                           <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas')">Gráficas</a>
                                           <a class="dropdown-item link-nav" @click="this.$router.push('/reportes')">Reporte de Citas</a>
                                         </div>
@@ -210,6 +210,9 @@
             buscarCita2() {
                 return this.$store.getters.getbuscarCita
             },
+            rolId() {
+                return this.$store.getters.getrolId
+            },
         },
         methods: {
             irLogin() {
@@ -274,6 +277,7 @@
                         if (response.data.status === "ok") {
                             this.$store.commit('setCitaAgendada', response.data.cita)
                             this.$router.push('/confirmacion-cita-buscada')
+                            this.$store.state.buscarCita = ''
                         } else if (response.data.status === "not-found") {
                             this.alert_cita_no_encontrada = true
                             setTimeout(() => {
@@ -291,6 +295,7 @@
             },
             logout() {
                 this.$store.dispatch('removeToken')
+                this.$store.dispatch('removerolId')
                 this.$router.push('/login')
             }
         }

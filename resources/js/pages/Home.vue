@@ -78,7 +78,7 @@
                         </div>
                     </div>
                 </div>
-                <a v-if="whatsapp.id != null" :href="`https://api.whatsapp.com/send?phone=5${whatsapp.telefono}`" class="whatsapp" target="_blank"> <i class="fa fa-whatsapp whatsapp-icon"></i></a>
+                <a v-if="whatsapp.id != null" :href="`https://api.whatsapp.com/send?phone=52${whatsapp.telefono}`" class="whatsapp" target="_blank"> <i class="fa fa-whatsapp whatsapp-icon"></i></a>
             </div>
         </div>
     </div>

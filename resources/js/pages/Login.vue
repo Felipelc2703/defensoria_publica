@@ -57,6 +57,7 @@
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             this.$store.dispatch('setToken', response.data.data.token)
+                            this.$store.dispatch('setrolId', response.data.data.rol_id)
                             this.$router.push({name: 'AgregarHorario'})
                         } else {
                             errorSweetAlert(response.data.message)

@@ -6,7 +6,8 @@ const store = createStore({
     state: {
         // define variables
         token: localStorage.getItem('token') || 0,
-        clave: ''
+        clave: '',
+        rolId: localStorage.getItem('rol_id') || null,
     },
     getters: {
         // get state variable value
@@ -15,6 +16,9 @@ const store = createStore({
         },
         getClave: function(state) {
             return state.clave
+        },
+        getrolId: function(state) {
+            return state.rolId
         }
     },
     mutations: {
@@ -24,7 +28,10 @@ const store = createStore({
         },
         setClave(state, payload) {
             state.clave = payload
-        }
+        },
+        UPDATE_rolId(state, payload) {
+            state.rolId = payload
+        },
         
     },
     actions: {
@@ -36,7 +43,11 @@ const store = createStore({
         removeToken(context) {
             localStorage.removeItem('token')
             context.commit('UPDATE_TOKEN', 0)
-        }
+        },
+        setrolId(context, payload) {
+            localStorage.setItem('rol_id', payload)
+            context.commit('UPDATE_rolId', payload)
+        },
     },
     modules: {
         catalogos,
