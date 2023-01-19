@@ -34,15 +34,15 @@ class CitaController extends Controller
                 $objectCita->status = $cita->status;
                 $objectCita->discapacidad = $cita->discapacidad;
 
-                if($cita->status == 1)
+                if($cita->status == 1){
                 $objectCita->status = "1";
-                $objectCita->statusnom = "No atendida";
-                if($cita->status == 2)
+                $objectCita->statusnom = "No atendida";}
+                if($cita->status == 2){
                 $objectCita->status = "2";
-                $objectCita->statusnom = "Atendida";
-                if($cita->status == 3)
+                $objectCita->statusnom = "Atendida";}
+                if($cita->status == 3){
                 $objectCita->status = "3";
-                $objectCita->statusnom = "Cancelada";
+                $objectCita->statusnom = "Cancelada";}
 
                 array_push($array_cita, $objectCita);
                 $cont++;
@@ -588,15 +588,15 @@ class CitaController extends Controller
                 $objectCita->curp = $cita->curp;
                 $objectCita->discapacidad = $cita->discapacidad;
 
-                if($cita->status == 1)
+                if($cita->status == 1){
                 $objectCita->status = "1";
-                $objectCita->statusnom = "No atendida";
-                if($cita->status == 2)
+                $objectCita->statusnom = "No atendida";}
+                if($cita->status == 2){
                 $objectCita->status = "2";
-                $objectCita->statusnom = "Atendida";
-                if($cita->status == 3)
+                $objectCita->statusnom = "Atendida";}
+                if($cita->status == 3){
                 $objectCita->status = "3";
-                $objectCita->statusnom = "Cancelada";
+                $objectCita->statusnom = "Cancelada";}
                 array_push($array_cita, $objectCita);
                 $cont++;
 
