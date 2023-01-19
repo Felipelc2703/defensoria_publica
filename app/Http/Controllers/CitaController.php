@@ -85,7 +85,7 @@ class CitaController extends Controller
                 }  
 
 
-         $cita = new Cita;
+            $cita = new Cita;
             // $cita->folio = 'FDEA3C';
             $cita->folio = '';
             $cita->fecha_cita = $request->dia_cita;
@@ -106,12 +106,6 @@ class CitaController extends Controller
 
             $tipoTramite = $cita->tramite->tipoTramite->id;
 
-            // return response()->json([
-            //     "status" => "not-found",
-            //     "message" => "sdfsdfsdfs.",
-            //     "tramite" => $tipoTramite
-            // ], 200);
-            
             $folio = '';
 
             switch ($tipoTramite) {
@@ -210,32 +204,22 @@ class CitaController extends Controller
             $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
             $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
 
+            $f = $citaAgendada->folio;
             // $pdf = $this->generarArchivoCitaPdf();
             // $pdf = '';
             // $pdf = app('App\Http\Controllers\CitaController')->generarArchivoCitaPdf();
 
             //Custom Header
             PDF::setHeaderCallback(function($pdf) {
-
-                // $pdf->SetY(10);
-
-                // Set font
                 $pdf->SetFont('helvetica', 'B', 11);
-
-
                 // Header
                 $header_image_file = public_path() . '/images/header_pdf.png';           
                 $pdf->Image($header_image_file, 0,0,0,0);
-
             });
 
             
            // Custom Footer
-            PDF::setFooterCallback(function($pdf) {
-                
-                // Position at 15 mm from bottom
-                // $pdf->SetY(-15);
-                // Set font
+            PDF::setFooterCallback(function($pdf) use($f) {
                 $pdf->SetFont('helvetica', 'I', 8);
 
                 $style = array(
@@ -247,8 +231,8 @@ class CitaController extends Controller
                     'module_width' => 1, // width of a single module in points
                     'module_height' => 1 // height of a single module in points
                 ); 
-
-                $pdf->write2DBarcode('www.tcpdf.org', 'QRCODE,Q', 160, 200, 70, 70, $style, 'N');
+                // $f = $citaAgendada->folio;
+                $pdf->write2DBarcode('http://defensoria_publica.test/confirmacion-cita-buscada?folio='.$f, 'QRCODE,Q', 160, 135, 70, 70, $style, 'N');
 
                 // footer
                 $footer_image_file = public_path() . '/images/footer_pdf.png';
@@ -258,15 +242,17 @@ class CitaController extends Controller
 
             });
 
-            // $style = array(
-            //     'border' => 2,
-            //     'vpadding' => 'auto',
-            //     'hpadding' => 'auto',
-            //     'fgcolor' => array(0,0,0),
-            //     'bgcolor' => false, //array(255,255,255)
-            //     'module_width' => 1, // width of a single module in points
-            //     'module_height' => 1 // height of a single module in points
-            // );
+            $style = array(
+                // 'border' => 2,
+                'vpadding' => 'auto',
+                'hpadding' => 'auto',
+                'fgcolor' => array(0,0,0),
+                'bgcolor' => false, //array(255,255,255)
+                'module_width' => 1, // width of a single module in points
+                'module_height' => 1 // height of a single module in points
+            ); 
+
+            // PDF::write2DBarcode('http://defensoria_publica.test/confirmacion-cita-buscada?folio='.$f, 'QRCODE,Q', 160, 200, 70, 70, $style, 'N');
 
             $view = View::make('pdf.pdf_confirmacion_cita', compact('citaAgendada'));
             $html_content = $view->render();
@@ -274,6 +260,8 @@ class CitaController extends Controller
             PDF::SetTitle('Confirmación Cita');
             
             PDF::AddPage('P', 'A4');
+
+            // PDF::write2DBarcode('http://defensoria_publica.test/confirmacion-cita-buscada?folio='.$f, 'QRCODE,Q', 160, 200, 70, 70, $style, 'N');
             // PDF::write2DBarcode('www.tcpdf.org', 'QRCODE,H', 20, 210, 50, 50, $style, 'N');
             // PDF::Text(20, 205, 'QRCODE H');
 
@@ -448,6 +436,8 @@ class CitaController extends Controller
         $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
         $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
 
+        $f =  $citaAgendada->folio;
+
         // Custom Header
         PDF::setHeaderCallback(function($pdf) {
 
@@ -462,8 +452,11 @@ class CitaController extends Controller
         });
 
         
+
+        
         // Custom Footer
-        PDF::setFooterCallback(function($pdf) {
+        PDF::setFooterCallback(function($pdf) use($f) {
+            $pdf->SetFont('helvetica', 'I', 8);
 
             $style = array(
                 // 'border' => 2,
@@ -473,15 +466,10 @@ class CitaController extends Controller
                 'bgcolor' => false, //array(255,255,255)
                 'module_width' => 1, // width of a single module in points
                 'module_height' => 1 // height of a single module in points
-            );
-            
-            $pdf->write2DBarcode('http://defensoria_publica.test', 'QRCODE,Q', 160, 200, 70, 70, $style, 'N');
-            // $pdf->Text(20, 145, 'QRCODE Q');
+            ); 
+            // $f = $citaAgendada->folio;
+            $pdf->write2DBarcode('http://defensoria_publica.test/confirmacion-cita-buscada?folio='.$f, 'QRCODE,Q', 160, 135, 70, 70, $style, 'N');
 
-            // Position at 15 mm from bottom
-            // $pdf->SetY(-15);
-            // Set font
-            $pdf->SetFont('helvetica', 'I', 8);
             // footer
             $footer_image_file = public_path() . '/images/footer_pdf.png';
             $pdf->Image($footer_image_file, 0,280,0,0);

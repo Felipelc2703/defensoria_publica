@@ -20,6 +20,7 @@ import CatalogoNotas from './pages/CatalogoNotas.vue'
 import AgregarHorario from './pages/AgregarHorario.vue'
 import EditarHorario from './pages/EditarHorarios.vue'
 import CitasDelDia from './pages/CitasDelDia.vue'
+import DatosCita from './pages/DatosCita.vue'
 
 
 const routes = [
@@ -157,6 +158,11 @@ const routes = [
             requiresAuth: true
         }
     },
+    {
+        path: '/datos-cita',
+        name: 'DatosCita',
+        component: DatosCita
+    }
 ]
 
 const router = createRouter({

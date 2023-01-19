@@ -1,6 +1,6 @@
 <template>
     <div class="m-0">
-        <div class="container pt-6 pb-6" v-if="citaAgendada">
+        <div class="container pt-6 pb-6">
             <h5 class="titulo-confirmacion">Confirmación de Cita</h5>
             <p><span class="formato-texto">Información importante</span></p>
             <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{citaAgendada.nombre}}</span> su cita para el trámite <span class="texto-tramite">{{citaAgendada.tramite}}</span> ha quedado agendada para el {{citaAgendada.fecha}}, a las {{citaAgendada.hora}} horas.</p>
@@ -57,13 +57,7 @@
         data() {
             return {
                 dialogCancelarCita: false,
-                buscar_cita: {
-                    folio: ''
-                }
             }
-        },
-        created() {
-            this.buscarCita()
         },
         computed: {
             citaAgendada() {
@@ -109,38 +103,7 @@
                 } catch (error) {
                     errorSweetAlert('Ocurrió un error al cancelar la cita.')
                 }
-            },
-
-            async buscarCita() {
-                const queryString = window.location.search;
-                const urlParams = new URLSearchParams(queryString);
-
-                console.log(urlParams.get('folio'))
-
-                let folio = urlParams.get('folio')
-
-                console.log("folio", folio)
-                if(folio)
-                {
-                    this.buscar_cita.folio = folio
-                    try {
-                        let response = await axios.post('/api/buscar-cita', this.buscar_cita)
-                        if (response.status === 200) {
-                            if (response.data.status === "ok") {
-                                this.$store.commit('setCitaAgendada', response.data.cita)
-                            } 
-                            else {
-                                errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
-                            }
-                        } else {
-                            errorSweetAlert('Ocurrió un error al buscar cita.')
-                        }
-                    } catch (error) {
-                        errorSweetAlert('Ocurrió un error al buscar cita.')
-                    }
-                }
-                // console.log(this.buscar_cita)
-            },
+            }
         }
     })
 </script>
