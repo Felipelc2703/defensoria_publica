@@ -880,6 +880,7 @@
             },
             async agendarCita() {
                 this.cita.tramite = this.tramiteSeleccionado.id
+                console.log(this.cita)
                 const { valid } = await this.$refs.form.validate()
                 if (valid) {
                     Swal.fire({

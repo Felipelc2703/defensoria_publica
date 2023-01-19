@@ -22,10 +22,8 @@
                             <th class="titulo-columna">Hora</th>
                             <th class="titulo-columna">Curp</th>
                             <th class="titulo-columna">Discapacidad</th>
-                            <th class="titulo-columna">Editar</th>
-
-                            <!-- <th class="titulo-columna borde-derecho">Acciones</th> -->
-                            
+                            <th class="titulo-columna">Estatus</th>
+                            <th class="titulo-columna">Editar</th>                            
                         </tr>
                     </thead>
                     <tbody>
@@ -59,6 +57,9 @@
                             <td class="texto-campo-table">
                                 {{citas.discapacidad}}
                             </td>
+                            <td class="texto-campo-table">
+                                {{citas.statusnom}}
+                            </td>
                             <td>
                                 <div>
                                             <v-icon
@@ -74,40 +75,6 @@
                                                 <span style="font-size: 15px;">Editar</span>
                                             </v-tooltip>
                                         </div>
-                                <!-- <div class="text-center row justify-content-center">
-                                    <div>
-                                        <v-icon 
-                                        title="Editar Usuario"
-                                        @click="EditarUsuario(usuario)"
-                                        class="mr-1"
-                                        >
-                                            mdi-text-box-edit-outline
-                                        </v-icon>
-
-                                        <v-tooltip
-                                            activator="parent"
-                                            location="bottom"
-                                            >
-                                            <span style="font-size: 15px;">Editar Usuario</span>
-                                        </v-tooltip>
-                                    </div>
-                                    
-                                    <div>
-                                        <v-icon 
-                                            title="Eliminar Usuario"
-                                            @click="eliminarUsuario(usuario)"
-                                            class="ml-1"
-                                        >
-                                            mdi-trash-can
-                                        </v-icon>
-                                        <v-tooltip
-                                            activator="parent"
-                                            location="bottom"
-                                            >
-                                            <span style="font-size: 15px;">Eliminar Usuario</span>
-                                        </v-tooltip>
-                                    </div>
-                                </div> -->
                             </td>
                         </tr>
                     </tbody>
@@ -179,7 +146,7 @@
                 >
                 <v-card>
                     <v-card-title>
-                        <h3 class="mt-2">Citas</h3>
+                        <h3 class="mt-2">Estatus de la Cita</h3>
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
@@ -209,10 +176,9 @@
                                         
                                     </div>
                                 <div class="col-md-6 col-12" v-if="cita.status == '3'">
-                                    <label class="black-label">Motivo</label>
+                                    <label class="black-label">¿Por que cancelas la cita?</label>
                                     <v-text-field
                                         v-model="cita.motivo"
-                                        label="Motivo"
                                         
                                     >
                                 </v-text-field>
@@ -225,14 +191,14 @@
                             <v-spacer></v-spacer>
                             <v-btn
                                 variant="flat"
-                                color="#881001"
+                                color="error"
                                 @click="cancelarCambio()"
                             >
                                 <span style="color: #eaeaed;">Cancelar</span>
                             </v-btn>
                             <v-btn
                                 variant="flat"
-                                color="#6a73a0"
+                                color="#A3BC39"
                                 @click="guardarCambios()"
                             >
                                 <span style="color: #eaeaed;">Guardar Cambios</span>
@@ -383,23 +349,21 @@
             setCurrentPage(pagina) {
                 this.current = pagina
             },
-            editar(citas)
-            {   
+            editar(citas){   
                 this.cita.id = citas.id
                 this.cita.status = citas.status
+                this.cita.motivo = citas.motivo
                 this.dialogEditar = true
-                console.log(this.cita)
             },
             cancelarCambio() {
                 this.cita.status = ''
+                this.cita.motivo = ''
                 this.cita.id = null
                 this.dialogEditar = false
             },
             async guardarCambios()
             {
-                console.log(this.cita)
                 const { valid } = await this.$refs.formCambioEstatus.validate()
-                // this.horario.dias = this.dias
                 if (valid) {
                     Swal.fire({
                         title: '¿Guardar cambios?',
@@ -425,7 +389,7 @@
                             if (result.value.status === 200) {
                                 if (result.value.data.status === "ok") {
                                     successSweetAlert(result.value.data.message)
-                                    this.$store.commit('setCatalogoCitasDelDia', response.data.cita)
+                                    this.$store.commit('setCatalogoCitasDelDia', result.value.data.citas)
                                     this.cancelarCambio()
                                     this.getDataPagina(1)
                                 } else {

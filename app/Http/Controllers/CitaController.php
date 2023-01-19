@@ -36,10 +36,13 @@ class CitaController extends Controller
 
                 if($cita->status == 1)
                 $objectCita->status = "1";
+                $objectCita->statusnom = "No atendida";
                 if($cita->status == 2)
                 $objectCita->status = "2";
+                $objectCita->statusnom = "Atendida";
                 if($cita->status == 3)
                 $objectCita->status = "3";
+                $objectCita->statusnom = "Cancelada";
 
                 array_push($array_cita, $objectCita);
                 $cont++;
@@ -70,13 +73,13 @@ class CitaController extends Controller
         DB::beginTransaction();
         try {
             
-            $cita = Cita::where('curp', $request->curp)->where('status', 1)->first();
+            $cita = Cita::where('curp', $request->curp)->where('status', 1)->where('tramite_id', $request->tramite)->exists();
 
             if($cita)
                 {
                     return response()->json([
                         "status" => "no_data",
-                        "message" => "Usted ya cuenta con una cita agendada",
+                        "message" => "Usted ya cuenta con una cita agendada en ese tramite",
                         
                     ], 200);  
                 }  
@@ -566,16 +569,12 @@ class CitaController extends Controller
         DB::beginTransaction();
         try {
             $cita = Cita::find($request->id);
-            
-            
             $cita->status = $request->status;
-
-           
-            // $cita->motivo = $request->motivo;
+            $cita->motivo = $request->motivo;
             $cita->save();
-            $citas = Cita::all();
-            // $date = Carbon::now();
-            // $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
+            // $citas = Cita::all();
+            $date = Carbon::now();
+            $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
            
             $array_cita = array();
                         $cont = 1;
@@ -591,11 +590,13 @@ class CitaController extends Controller
 
                 if($cita->status == 1)
                 $objectCita->status = "1";
+                $objectCita->statusnom = "No atendida";
                 if($cita->status == 2)
                 $objectCita->status = "2";
+                $objectCita->statusnom = "Atendida";
                 if($cita->status == 3)
                 $objectCita->status = "3";
-
+                $objectCita->statusnom = "Cancelada";
                 array_push($array_cita, $objectCita);
                 $cont++;
 
