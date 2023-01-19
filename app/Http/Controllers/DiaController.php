@@ -96,7 +96,7 @@ class DiaController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Dias agregados con exito.",
+                "message" => "Dias agregados con éxito.",
                 // "tramites" => $arrayTramites
             ], 200);
         }   
@@ -187,7 +187,7 @@ class DiaController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Dias obtenidos con exito",
+                "message" => "Dias obtenidos con éxito",
                 "dias" => $arrayDias
             ], 200);
         } catch (\Throwable $th) {
@@ -237,7 +237,7 @@ class DiaController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Dias obtenidos con exito",
+                "message" => "Dias obtenidos con éxito",
                 "dias" => $arrayDias
             ], 200);
 
@@ -537,7 +537,7 @@ class DiaController extends Controller
         if($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Dias obtenidos con exito",
+                "message" => "Dias obtenidos con éxito",
                 "dias" => $arrayDias
             ], 200);
         }
@@ -569,7 +569,7 @@ class DiaController extends Controller
                 $nombre_dia = 'Viernes';
                 break;
             case 6:
-                $nombre_dia = 'Sabado';
+                $nombre_dia = 'Sábado';
                 break;
         }
 
@@ -779,7 +779,7 @@ class DiaController extends Controller
             
             return response()->json([
                 "status" => "ok",
-                "message" => "Calendario de citas obtenido con exito.",
+                "message" => "Calendario de citas obtenido con éxito.",
                 "calendario_citas" => $objectCalendarioCitas,
             ], 200);
         } catch (\Throwable $th) {

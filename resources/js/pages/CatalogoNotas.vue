@@ -185,14 +185,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="cancelarAgregarNuevaNota()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarNuevaNota()"
                     >
                         Guardar
@@ -221,7 +221,7 @@
                                 ></v-text-field>
                                 <v-text-field
                                     v-model="nota.descripcion"
-                                    label="Descripcion"
+                                    label="Descripción"
                                 ></v-text-field>                             
                             </v-form>
                         </v-row>
@@ -232,14 +232,14 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="warning"
+                        color="error"
                         @click="CancelarEditarNota()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
-                        color="error"
+                        color="#A3BC39"
                         @click="guardarCambiosEditarNota()"
                     >
                         Guardar
@@ -468,10 +468,10 @@
                           errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                       }
                   } else {
-                      errorSweetAlert('Ocurrió un error al obtener el catalogo de notas')
+                      errorSweetAlert('Ocurrió un error al obtener el catálogo de notas')
                   }
               } catch (error) {
-                  errorSweetAlert('Ocurrió un error al obtener el catalogo de notas')
+                  errorSweetAlert('Ocurrió un error al obtener el catálogo de notas')
               }
               this.loading = false
           },

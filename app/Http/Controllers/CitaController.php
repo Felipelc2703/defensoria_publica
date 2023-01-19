@@ -22,7 +22,7 @@ class CitaController extends Controller
             $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
            
             $array_cita = array();
-                        $cont = 1;
+            $cont = 1;
             foreach ($citas as $cita) {
                 $objectCita = new \stdClass();
                 $objectCita->id = $cita->id;
@@ -31,7 +31,18 @@ class CitaController extends Controller
                 $objectCita->hora_cita = $cita->hora_cita;
                 $objectCita->nombre = $cita->nombre;
                 $objectCita->curp = $cita->curp;
+                $objectCita->status = $cita->status;
                 $objectCita->discapacidad = $cita->discapacidad;
+
+                if($cita->status == 1){
+                $objectCita->status = "1";
+                $objectCita->statusnom = "No atendida";}
+                if($cita->status == 2){
+                $objectCita->status = "2";
+                $objectCita->statusnom = "Atendida";}
+                if($cita->status == 3){
+                $objectCita->status = "3";
+                $objectCita->statusnom = "Cancelada";}
 
                 array_push($array_cita, $objectCita);
                 $cont++;
@@ -40,7 +51,7 @@ class CitaController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Citas obtenidas con exito controller",
+                "message" => "Citas obtenidas con éxito controller",
                 "citas" => $array_cita
             ], 200);
         } catch (\Throwable $th) {
@@ -62,13 +73,13 @@ class CitaController extends Controller
         DB::beginTransaction();
         try {
             
-            $cita = Cita::where('curp', $request->curp)->where('status', 1)->first();
+            $cita = Cita::where('curp', $request->curp)->where('status', 1)->where('tramite_id', $request->tramite)->exists();
 
             if($cita)
                 {
                     return response()->json([
                         "status" => "no_data",
-                        "message" => "Usted ya cuenta con una cita agendada",
+                        "message" => "Usted ya cuenta con una cita agendada en ese trámite",
                         
                     ], 200);  
                 }  
@@ -291,7 +302,7 @@ class CitaController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Cita agendada con exito.",
+                "message" => "Cita agendada con éxito.",
                 "cita_agendada" => $citaAgendada,
             ], 200);
         }
@@ -364,13 +375,13 @@ class CitaController extends Controller
 
                 return response()->json([
                     "status" => "ok",
-                    "message" => "Cita encontrada con exito",
+                    "message" => "Cita encontrada con éxito",
                     "cita" => $citaAgendada
                 ], 200);
             } else {
                 return response()->json([
                     "status" => "not-found",
-                    "message" => "No se encontro ninguna cita registrada con ese número de folio.",
+                    "message" => "No se encontró ninguna cita registrada con ese número de folio.",
                 ], 200);
             }
 
@@ -408,7 +419,7 @@ class CitaController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Cita cancelada con exito",
+                "message" => "Cita cancelada con éxito",
             ], 200);
         } catch (\Throwable $th) {
             DB::rollback();
@@ -551,4 +562,67 @@ class CitaController extends Controller
             ], 200);
         }
     }
+    public function guardarCambios(Request $request)
+    {
+        $exito = false;
+
+        DB::beginTransaction();
+        try {
+            $cita = Cita::find($request->id);
+            $cita->status = $request->status;
+            $cita->motivo = $request->motivo;
+            $cita->save();
+            // $citas = Cita::all();
+            $date = Carbon::now();
+            $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
+           
+            $array_cita = array();
+                        $cont = 1;
+            foreach ($citas as $cita) {
+                $objectCita = new \stdClass();
+                $objectCita->id = $cita->id;
+                $objectCita->folio = $cita->folio;
+                $objectCita->fecha_formateada = $cita->fecha_formateada;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->nombre = $cita->nombre;
+                $objectCita->curp = $cita->curp;
+                $objectCita->discapacidad = $cita->discapacidad;
+
+                if($cita->status == 1){
+                $objectCita->status = "1";
+                $objectCita->statusnom = "No atendida";}
+                if($cita->status == 2){
+                $objectCita->status = "2";
+                $objectCita->statusnom = "Atendida";}
+                if($cita->status == 3){
+                $objectCita->status = "3";
+                $objectCita->statusnom = "Cancelada";}
+                array_push($array_cita, $objectCita);
+                $cont++;
+
+            }
+            
+            DB::commit();
+            $exito = true;
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $exito = false;
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al actualizar el estatus.",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+
+        if ($exito) {
+            return response()->json([
+                "status" => "ok",
+                "message" => "Categoria actualizada con éxito.",
+                "citas" => $array_cita
+            ], 200);
+        }
+    }
+    
 }

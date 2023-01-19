@@ -2,7 +2,7 @@
     <div class="m-0">
         <div class="container pt-6 pb-6">
             <h5 class="titulo-confirmacion">Confirmación de Cita</h5>
-            <p><span class="formato-texto">Información Importante</span></p>
+            <p><span class="formato-texto">Información importante</span></p>
             <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{citaAgendada.nombre}}</span> su cita para el trámite <span class="texto-tramite">{{citaAgendada.tramite}}</span> ha quedado agendada para el {{citaAgendada.fecha}}, a las {{citaAgendada.hora}} horas.</p>
             <p class="texto-cita">Por lo que reiteramos debe presentarse en el Centro de Atención de <span class="centro-atencion-cita">{{citaAgendada.centro_atencion}}</span> ubicado en <span class="direccion-cita">{{citaAgendada.direccion_centro_atencion}}</span>, en la fecha y hora antes mencionada.</p>
             <br>
@@ -86,11 +86,13 @@
                 }
             },
             async cancelarCita() {
+                
                 try {
                     let response = await axios.get(`/api/cancelar-cita/${this.citaAgendada.id}`)
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             successSweetAlert(response.data.message)
+                            this.$store.state.buscarCita = ''
                             this.$router.push('/')
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)

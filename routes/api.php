@@ -98,3 +98,6 @@ Route::post('/reporte/grafica', [CitaController::class, 'getReporteGraficas']);
 Route::post('/horarios/actualizar-horario-citas', [DiaController::class, 'actualizarHorarioCitas']);
 
 // Route::post('agregar-usuario', 'UserController@store');
+
+//Actualizar estatus cita y motivo*
+Route::post('/citas/citas-del-dia', [CitaController::class, 'guardarCambios']);

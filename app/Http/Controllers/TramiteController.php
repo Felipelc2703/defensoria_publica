@@ -51,7 +51,7 @@ class TramiteController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Tramites obtenidos con exito",
+                "message" => "Tramites obtenidos con éxito",
                 "tramites" => $arrayTramites
             ], 200);
         } catch (\Throwable $th) {
@@ -206,7 +206,7 @@ class TramiteController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Catalogo de tramites para agendar citas obtenido con exito.",
+                "message" => "Catalogo de tramites para agendar citas obtenido con éxito.",
                 "tramites_tipo_1" => $tramites_tipo_1,
                 "tramites_tipo_2" => $tramites_tipo_2,
                 "tramites_tipo_3" => $tramites_tipo_3,
@@ -293,7 +293,7 @@ class TramiteController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Nuevo Tramite agregado con exito.",
+                "message" => "Nuevo Tramite agregado con éxito.",
                 "tramites" => $arrayTramites
             ], 200);
         }
@@ -445,7 +445,7 @@ class TramiteController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Nuevo Tramite agregado con exito.",
+                "message" => "Nuevo Tramite agregado con éxito.",
                 "tramites" => $arrayTramites
             ], 200);
         }
@@ -492,7 +492,7 @@ class TramiteController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Tramite eliminado con exito.",
+                "message" => "Tramite eliminado con éxito.",
                 "tramites" => $arrayTramites
             ], 200);
         }
@@ -552,6 +552,7 @@ class TramiteController extends Controller
                 $tramite = TipoTramite::find($tipo_tramite_id);
                 
                 $requisitos = array();
+                if($tramite){
                 foreach($tramite->requisitos as $requisito)
                 {
                     $objectRequisito = new \stdClass();
@@ -562,7 +563,7 @@ class TramiteController extends Controller
                     array_push($requisitos,$objectRequisito);
 
                 }
-
+            }
                 return response()->json([
                     "status" => "ok",
                     "message" => "Requisitos asociados.",

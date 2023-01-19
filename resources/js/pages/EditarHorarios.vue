@@ -13,7 +13,7 @@
                             :items="centrosAtencion"
                             item-title="nombre"
                             item-value="id"
-                            label="Seleccione el centro de atencion"
+                            label="Seleccione el centro de atención"
                             variant="solo"
                             :rules="centroAtencionRules"
                             >
@@ -60,7 +60,7 @@
                                     <th class="titulo-columna borde-izquierdo">Día</th>
                                     <th class="titulo-columna">Horario Inicial</th>
                                     <th class="titulo-columna">Horario Fin</th>
-                                    <th class="titulo-columna">Inhabil</th>
+                                    <th class="titulo-columna">Inhábil</th>
                                     <th class="titulo-columna borde-derecho">Editar</th>
                                 </tr>
                             </thead>
@@ -205,7 +205,7 @@
                                         <div class="col-md-6 col-12">
                                             <v-text-field
                                                 v-model="editar.duracion"
-                                                label="Duracion Cita"
+                                                label="Duración Cita"
                                                 type="number"
                                                 variant="solo"
                                                 >
@@ -214,7 +214,7 @@
                                         <div class="col-md-6 col-12">
                                             <v-checkbox
                                                 v-model="editar.inhabil"
-                                                label="Inhabil"
+                                                label="Inhábil"
                                                 >
                                             </v-checkbox>
                                         </div>
@@ -512,7 +512,7 @@
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
                             } else {
-                                errorSweetAlert('Ocurrió un error al editar dias.')
+                                errorSweetAlert('Ocurrió un error al editar días.')
                             }
                         }
                     })

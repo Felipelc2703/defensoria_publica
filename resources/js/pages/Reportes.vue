@@ -30,7 +30,7 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                        Tramite:
+                        Trámite:
                         <v-select
                             :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                             variant="underlined"  
