@@ -419,6 +419,7 @@ class DiaController extends Controller
 
             $fecha = $request->dia;
             $citas = Cita::where('fecha_cita',$fecha)
+                        ->where('centro_atencion_id',$request->centro_atencion_id)
                         ->where('status',1)
                         ->get();
             
