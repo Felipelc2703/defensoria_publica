@@ -59,6 +59,9 @@
                             this.$store.dispatch('setToken', response.data.data.token)
                             this.$store.dispatch('setrolId', response.data.data.rol_id)
                             this.$router.push({name: 'AgregarHorario'})
+                            if(response.data.data.rol_id === 2){
+                                this.$router.push({name: 'CitasDelDia'})
+                        }
                         } else {
                             errorSweetAlert(response.data.message)
                         }
