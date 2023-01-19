@@ -5,7 +5,7 @@
             <form class="form-login" autocomplete="off" @submit.prevent>    
                 <br>
                 <h1 class="titulo-bienvenido" style="font-weight: 700;">Bienvenido</h1> 
-                <p class="titulo-bienvenido">Defensoría Pública<br></p>    
+                <p class="titulo-bienvenido">Citas en línea<br></p>    
                 <div class="col-md-12 form-group">
                     <div class="inner-addon left-addon">
                         <i class="fa fa-user"></i>   

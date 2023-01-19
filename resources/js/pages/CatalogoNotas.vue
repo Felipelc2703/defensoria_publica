@@ -221,7 +221,7 @@
                                 ></v-text-field>
                                 <v-text-field
                                     v-model="nota.descripcion"
-                                    label="Descripcion"
+                                    label="Descripción"
                                 ></v-text-field>                             
                             </v-form>
                         </v-row>
@@ -468,10 +468,10 @@
                           errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                       }
                   } else {
-                      errorSweetAlert('Ocurrió un error al obtener el catalogo de notas')
+                      errorSweetAlert('Ocurrió un error al obtener el catálogo de notas')
                   }
               } catch (error) {
-                  errorSweetAlert('Ocurrió un error al obtener el catalogo de notas')
+                  errorSweetAlert('Ocurrió un error al obtener el catálogo de notas')
               }
               this.loading = false
           },

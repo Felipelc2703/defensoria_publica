@@ -52,7 +52,7 @@
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="texto-ubicacion-centros">
-                                                    <p class="text-left m-0">Si requiere conocer la ubicación de cada uno de los lugares donde puede realizar el trámite, de <span class="texto-click-aqui" @click="mostrarUbicacionCentrosAtencion()">click aqui</span></p>
+                                                    <p class="text-left m-0">Si requiere conocer la ubicación de cada uno de los lugares donde puede realizar el trámite, de <span class="texto-click-aqui" @click="mostrarUbicacionCentrosAtencion()">click aquí</span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -209,7 +209,7 @@
                                                                         :rules="[rules.curp]"
                                                                         
                                                                     ></v-text-field>
-                                                                    <li class="boton_inicio" @click="irCurp()">Consulte su CURP AQUI</li>
+                                                                    <li class="boton_inicio" @click="irCurp()">CONSULTE SU CURP AQUÍ</li>
                                                                 </div>
                                                             </div>
                                                         </v-form>
@@ -399,7 +399,7 @@
 
                     tel: value =>{
                         const pattern = (/^[0-9]{10}$/)
-                        return pattern.test(value) || 'El campo no contiene un numero valido'
+                        return pattern.test(value) || 'El campo no contiene un número valido'
 
                     },
                     curp: value =>{

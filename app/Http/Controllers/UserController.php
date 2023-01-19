@@ -31,7 +31,7 @@ class UserController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Usuarios obtenidos con exito",
+                "message" => "Usuarios obtenidos con éxito",
                 "usuarios" => $array_usuario
             ], 200);
         } catch (\Throwable $th) {
@@ -94,7 +94,7 @@ class UserController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Nuevo Usuario guardado con exito.",
+                "message" => "Nuevo Usuario guardado con éxito.",
                 "usuarios" => $array_usuario
             ], 200);
         }
@@ -148,7 +148,7 @@ class UserController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Usuario actualizado con exito.",
+                "message" => "Usuario actualizado con éxito.",
                 "usuarios" => $array_usuario
             ], 200);
         }
@@ -196,7 +196,7 @@ class UserController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Usuario eliminado con exito.",
+                "message" => "Usuario eliminado con éxito.",
                 "usuarios" => $array_usuario
             ], 200);
         }

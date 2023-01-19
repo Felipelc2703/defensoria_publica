@@ -35,7 +35,7 @@ class NumeroContactoController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Número de contacto de WhatsApp obtenido con exito.",
+                "message" => "Número de contacto de WhatsApp obtenido con éxito.",
                 "registro" => $object
             ], 200);
         } catch (\Throwable $th) {
@@ -99,7 +99,7 @@ class NumeroContactoController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Número de contacto de WhatsApp guardado con exito.",
+                "message" => "Número de contacto de WhatsApp guardado con éxito.",
             ], 200);
         }
     }

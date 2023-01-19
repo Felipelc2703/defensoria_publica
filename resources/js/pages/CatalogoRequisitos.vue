@@ -161,7 +161,7 @@
                             <v-form class="col-12" ref="formAgregarRequisito">
                                 <v-select
                                     v-model="requisito.tipo_tramite_id"
-                                    label="Tipo de tramite asociado al requisito*"
+                                    label="Tipo de trámite asociado al requisito*"
                                     :items="tiposTramite"
                                     item-title="nombre"
                                     item-value="id"
@@ -170,7 +170,7 @@
                                     variant="solo"
                                 ></v-select>
                                 <br>
-                                <label for="">Nombre del Requisito*</label>
+                                <label for="">Nombre del requisito*</label>
                                 <v-text-field
                                     variant="solo"
                                     v-model="requisito.nombre"
@@ -225,7 +225,7 @@
                                     variant="solo"
                                 ></v-select>
                                 <br>
-                                <label for="">Nombre del Requisito*</label>
+                                <label for="">Nombre del requisito*</label>
                                 <v-text-field
                                     variant="solo"
                                     v-model="requisito.nombre"
@@ -348,10 +348,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de requisitos')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de requisitos')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de requisitos')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de requisitos')
                 }
                 this.loading = false
             },
@@ -516,10 +516,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de tipos de tramites')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de tipos de tramites')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de tipos de tramites')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de tipos de tramites')
                 }
             },
             totalPaginas() {

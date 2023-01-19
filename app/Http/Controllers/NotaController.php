@@ -27,7 +27,7 @@ class NotaController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Notas obtenidas con exito",
+                "message" => "Notas obtenidas con éxito",
                 "notas" => $array_nota
             ], 200);
         } catch (\Throwable $th) {
@@ -81,7 +81,7 @@ class NotaController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Nuevo nota guardada con exito.",
+                "message" => "Nuevo nota guardada con éxito.",
                 "notas" => $array_nota
             ], 200);
         }
@@ -126,7 +126,7 @@ class NotaController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Nota actualizada con exito.",
+                "message" => "Nota actualizada con éxito.",
                 "notas" => $array_nota
             ], 200);
         }
@@ -169,7 +169,7 @@ class NotaController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Nota eliminada con exito.",
+                "message" => "Nota eliminada con éxito.",
                 "notas" => $array_nota
             ], 200);
         }

@@ -36,7 +36,7 @@ class CentroAtencionController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Centros de atención obtenidos con exito",
+                "message" => "Centros de atención obtenidos con éxito",
                 "centros_atencion" => $array_centros
             ], 200);
         } catch (\Throwable $th) {
@@ -103,7 +103,7 @@ class CentroAtencionController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Nuevo Centro de Atención guardado con exito.",
+                "message" => "Nuevo Centro de Atención guardado con éxito.",
                 "centros_atencion" => $array_centros
             ], 200);
         }
@@ -167,7 +167,7 @@ class CentroAtencionController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Centro de Atención actualizado con exito.",
+                "message" => "Centro de Atención actualizado con éxito.",
                 "centros_atencion" => $array_centros
             ], 200);
         }
@@ -219,7 +219,7 @@ class CentroAtencionController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Centro de Atención eliminado con exito.",
+                "message" => "Centro de Atención eliminado con éxito.",
                 "centros_atencion" => $array_centros
             ], 200);
         }

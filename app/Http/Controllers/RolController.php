@@ -23,7 +23,7 @@ class RolController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Roles obtenidos con exito",
+                "message" => "Roles obtenidos con éxito",
                 "roles" => $array_Roles
             ], 200);
         } catch (\Throwable $th) {

@@ -30,7 +30,7 @@ class RequisitoController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Requisitos obtenidos con exito",
+                "message" => "Requisitos obtenidos con éxito",
                 "requisitos" => $arrayRequisitos
             ], 200);
         } catch (\Throwable $th) {
@@ -88,7 +88,7 @@ class RequisitoController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Nuevo Requisito agregado con exito.",
+                "message" => "Nuevo Requisito agregado con éxito.",
                 "requisitos" => $arrayRequisitos
             ], 200);
         }
@@ -138,7 +138,7 @@ class RequisitoController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Requisito actualizado con exito.",
+                "message" => "Requisito actualizado con éxito.",
                 "requisitos" => $arrayRequisitos
             ], 200);
         }
@@ -187,7 +187,7 @@ class RequisitoController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Requisito eliminado con exito.",
+                "message" => "Requisito eliminado con éxito.",
                 "requisitos" => $arrayRequisitos
             ], 200);
         }
