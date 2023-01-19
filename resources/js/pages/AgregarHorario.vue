@@ -324,14 +324,14 @@
                             <v-spacer></v-spacer>
                             <v-btn
                                 variant="flat"
-                                color="#881001"
+                                color="error"
                                 @click="cancelarCambioHorario()"
                             >
                                 <span style="color: #eaeaed;">Cancelar</span>
                             </v-btn>
                             <v-btn
                                 variant="flat"
-                                color="#6a73a0"
+                                color="#A3BC39"
                                 @click="guardarCambios()"
                             >
                                 <span style="color: #eaeaed;">Guardar Cambios</span>
