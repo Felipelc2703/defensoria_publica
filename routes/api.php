@@ -95,4 +95,6 @@ Route::get('/whatsapp/get-numero', [NumeroContactoController::class, 'getNumero'
 
 Route::post('/reporte/grafica', [CitaController::class, 'getReporteGraficas']);
 
+Route::post('/horarios/actualizar-horario-citas', [DiaController::class, 'actualizarHorarioCitas']);
+
 // Route::post('agregar-usuario', 'UserController@store');

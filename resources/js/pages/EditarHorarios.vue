@@ -397,6 +397,8 @@
                 this.loading = false
             },
             async cargarDias() {
+
+                console.log(this.horario)
                 const { valid } = await this.$refs.formEditarHorario.validate()
                 if (valid) {
                     try {
@@ -434,6 +436,8 @@
             async guardarCambios()
             {
                 const { valid } = await this.$refs.formCambioHorario.validate()
+
+                console.log(this.editar)
                 // this.horario.dias = this.dias
                 if (valid) {
                     Swal.fire({
@@ -450,7 +454,7 @@
                                 let response = await axios.post('/api/horarios/actualizar-horario', this.editar)
                                 return response
                             } catch (error) {
-                                errorSweetAlert('Ocurrió un error al editar el dias.')
+                                errorSweetAlert('Ocurrió un error al editar el días.')
                             }
                         },
                         allowOutsideClick: () => !Swal.isLoading()
@@ -462,7 +466,49 @@
                                     this.$store.commit('setDias', result.value.data.dias)
                                     this.cancelarCambioHorario()
                                     this.getDataPagina(1)
-                                } else {
+                                } 
+                                //elseIF para comparar si existen citas agendadas en el dia
+                                else if(result.value.data.status === "existeCita")
+                                {
+                                    Swal.fire({
+                                        title: '¿Existen citas registradas este día, realmente desea inhabilitar el día?',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085D6',
+                                        cancelButtonColor: '#D33',
+                                        confirmButtonText: 'Si, guardar',
+                                        cancelButtonText: 'Cancelar',
+                                        showLoaderOnConfirm: true,
+                                        preConfirm: async () => {
+                                            try {
+                                                let response = await axios.post('/api/horarios/actualizar-horario-citas', this.editar,{
+                                                    responseType: 'arraybuffer'
+                                                }).then((response)=>{    
+
+                                                    let blob = new Blob([response.data], { type: 'application/pdf' })
+                                                    let link = document.createElement('a')
+                                                    link.href = window.URL.createObjectURL(blob)
+                                                    // link.download = `${item.nombre}.pdf
+                                                    link.download = 'Citas_Canceladas.pdf'
+                                                    link.click()
+                                                    this.cargarDias()
+
+                                                })                                                                                                
+                                            } catch (error) {
+                                                errorSweetAlert('Ocurrió un error al editar el días.')
+                                            }
+                                        },
+                                        allowOutsideClick: () => !Swal.isLoading()
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            successSweetAlert("Horario editado con éxito, se ha generado un PDF con las citas que correspondían al día")
+                                            this.cancelarCambioHorario()
+                                        }
+                                    })
+                                }
+                                //fin comparacion citas agendadas en el dia
+                                
+                                else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
                             } else {
@@ -474,6 +520,8 @@
             },
             limpiarFormulario()
             {
+
+                                              
                 this.horario.centro_atencion_id =''
                 this.horario.mes =  ''
                 this.dialogEditarDia = false
