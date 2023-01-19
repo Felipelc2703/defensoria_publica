@@ -11,7 +11,7 @@
                     :items="centrosAtencion"
                     item-title="nombre"
                     item-value="id"
-                    label="Seleccione el centro de atencion"
+                    label="Seleccione el centro de atención"
                     variant="solo"
                     :rules="centroAtencionRules"
                     >
@@ -63,7 +63,7 @@
                                 v-model="horario.fecha_inicio"
                                 variant="solo" 
                                 type="date" 
-                                label="Selecciones la fecha inicial"
+                                label="Seleccione la fecha inicial"
                                 :rules="fechaInicio"
                             ></v-text-field>
                         </div>
@@ -72,7 +72,7 @@
                                 v-model="horario.fecha_fin"
                                 variant="solo" 
                                 type="date" 
-                                label="Selecciones la fecha final"
+                                label="Seleccione la fecha final"
                                 :rules="fechaFin"
                             ></v-text-field>
                         </div>
@@ -116,7 +116,7 @@
                             variant="solo" 
                             type="number" 
                             min="0"
-                            label="Proporcione el tiempo de duracion de las citas en minutos"
+                            label="Proporcione el tiempo de duración de las citas en minutos"
                             :rules="duracionRules"
                         ></v-text-field>
                     </div>
@@ -148,7 +148,7 @@
                                     <th class="titulo-columna borde-izquierdo">Día</th>
                                     <th class="titulo-columna">Horario Inicial</th>
                                     <th class="titulo-columna">Horario Fin</th>
-                                    <th class="titulo-columna">Inhabil</th>
+                                    <th class="titulo-columna">Inhábil</th>
                                     <th class="titulo-columna borde-derecho">Editar</th>
                                 </tr>
                             </thead>
@@ -303,7 +303,7 @@
                                         <div class="col-md-6 col-12">
                                             <v-text-field
                                                 v-model="editar.duracion"
-                                                label="Duracion Cita"
+                                                label="Duración Cita"
                                                 type="number"
                                                 variant="solo"
                                             >
@@ -312,7 +312,7 @@
                                         <div class="col-md-6 col-12">
                                             <v-checkbox
                                                 v-model="editar.inhabil"
-                                                label="Inhabil"
+                                                label="Inhábil"
                                             >
                                             </v-checkbox>
                                         </div>
@@ -443,7 +443,7 @@
                     v => !!v || 'El campo de horario fin es requerido'
                 ],
                 duracionRules: [
-                    v => !!v || 'El campo tiempo de duracion es requerido'
+                    v => !!v || 'El campo tiempo de duración es requerido'
                 ],
                 fechaInicio: [
                     v => !!v || 'El campo fecha inicio es requerido'
@@ -563,10 +563,10 @@
                                 errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                             }
                         } else {
-                            errorSweetAlert('Ocurrió un error al cargar dias')
+                            errorSweetAlert('Ocurrió un error al cargar días')
                         }
                     }catch (error) {
-                        errorSweetAlert('Ocurrió un error al cargar dias')
+                        errorSweetAlert('Ocurrió un error al cargar días')
                     }
                 }
 
@@ -582,10 +582,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de centros de atención')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de centros de atención')
                 }
                 this.loading = false
             },

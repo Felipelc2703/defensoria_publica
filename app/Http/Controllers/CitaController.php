@@ -51,7 +51,7 @@ class CitaController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Citas obtenidas con exito controller",
+                "message" => "Citas obtenidas con éxito controller",
                 "citas" => $array_cita
             ], 200);
         } catch (\Throwable $th) {
@@ -79,7 +79,7 @@ class CitaController extends Controller
                 {
                     return response()->json([
                         "status" => "no_data",
-                        "message" => "Usted ya cuenta con una cita agendada en ese tramite",
+                        "message" => "Usted ya cuenta con una cita agendada en ese trámite",
                         
                     ], 200);  
                 }  
@@ -302,7 +302,7 @@ class CitaController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Cita agendada con exito.",
+                "message" => "Cita agendada con éxito.",
                 "cita_agendada" => $citaAgendada,
             ], 200);
         }
@@ -375,13 +375,13 @@ class CitaController extends Controller
 
                 return response()->json([
                     "status" => "ok",
-                    "message" => "Cita encontrada con exito",
+                    "message" => "Cita encontrada con éxito",
                     "cita" => $citaAgendada
                 ], 200);
             } else {
                 return response()->json([
                     "status" => "not-found",
-                    "message" => "No se encontro ninguna cita registrada con ese número de folio.",
+                    "message" => "No se encontró ninguna cita registrada con ese número de folio.",
                 ], 200);
             }
 
@@ -419,7 +419,7 @@ class CitaController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Cita cancelada con exito",
+                "message" => "Cita cancelada con éxito",
             ], 200);
         } catch (\Throwable $th) {
             DB::rollback();
@@ -619,7 +619,7 @@ class CitaController extends Controller
         if ($exito) {
             return response()->json([
                 "status" => "ok",
-                "message" => "Categoria actualizada con exito.",
+                "message" => "Categoria actualizada con éxito.",
                 "citas" => $array_cita
             ], 200);
         }

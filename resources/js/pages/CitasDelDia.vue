@@ -1,7 +1,7 @@
 <template>
     <div class="container mb-6">
         <div class="text-center my-6">
-            <h2>Citas del Dia</h2>
+            <h2>Citas del Día</h2>
         </div>
 
         <div class="text-right">

@@ -35,7 +35,7 @@
                             :items="centrosAtencion"
                             item-title="nombre"
                             item-value="id"
-                            label="Seleccione el centro de atencion"
+                            label="Seleccione el centro de atención"
                             variant="solo"
                             :rules="centroAtencionRules"
                             >
@@ -46,7 +46,7 @@
                     <div class="col-md-6 col-12">
                         <v-select
                             :items="['Todos']"
-                            label="Tramite"
+                            label="Trámite"
                             variant="solo"
                             >
                         </v-select>

@@ -170,21 +170,21 @@
                                 ></v-text-field>
                                 <v-text-field
                                     v-model="centro.direccion"
-                                    label="Direccion"
+                                    label="Dirección"
                                     :rules="direccionRules"
                                 ></v-text-field>
                                 <div class="row justify-content-between">
                                     <div class="col-sm-6 col-12">
                                         <v-text-field
                                             v-model="centro.telefono"
-                                            label="Telefono"
+                                            label="Teléfono"
                                         >
                                         </v-text-field>
                                     </div>
                                     <div class="col-sm-6 col-12">
                                         <v-text-field
                                             v-model="centro.numero_cajas"
-                                            label="Numero de cajas"
+                                            label="Número de cajas"
                                             type="number"
                                             min="0"
                                         >
@@ -240,14 +240,14 @@
                                 ></v-text-field>
                                 <v-text-field
                                     v-model="centro.direccion"
-                                    label="Direccion"
+                                    label="Dirección"
                                     :rules="direccionRules"
                                 ></v-text-field>
                                 <div class="row justify-content-between">
                                     <div class="col-sm-6 col-12">
                                         <v-text-field
                                             v-model="centro.telefono"
-                                            label="Telefono"
+                                            label="Teléfono"
                                             counter="10"
                                             maxlength="10"
                                         >
@@ -256,7 +256,7 @@
                                     <div class="col-sm-6 col-12">
                                         <v-text-field
                                             v-model="centro.numero_cajas"
-                                            label="Numero de cajas"
+                                            label="Número de cajas"
                                             type="number"
                                         >
                                         </v-text-field>
@@ -378,10 +378,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de centros de atención')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de centros de atención')
                 }
                 this.loading = false
             },
@@ -396,10 +396,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites')
                 }
             },
             // Abrir modal nuevo centro de atencion

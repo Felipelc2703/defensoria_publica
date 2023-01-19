@@ -42,7 +42,7 @@
                 <label for="check_dia2">&nbsp;Martes</label>
                 <br>
                 <input type="checkbox" id="check_dia3" v-model="data.dia3">
-                <label for="check_dia3">&nbsp;Miercoles</label>
+                <label for="check_dia3">&nbsp;Miércoles</label>
                 <br>
                 <input type="checkbox" id="check_dia4" v-model="data.dia4">
                 <label for="check_dia4">&nbsp;Jueves</label>
@@ -51,7 +51,7 @@
                 <label for="check_dia5">&nbsp;Viernes</label>
                 <br>
                 <input type="checkbox" id="check_dia6" v-model="data.dia6">
-                <label for="check_dia6">&nbsp;Sabado</label>
+                <label for="check_dia6">&nbsp;Sábado</label>
                 <br>
                 <input type="checkbox" id="check_dia7" v-model="data.dia7">
                 <label for="check_dia7">&nbsp;Domingo</label>

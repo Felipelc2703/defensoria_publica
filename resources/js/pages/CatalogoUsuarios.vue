@@ -179,7 +179,7 @@
                                         variant="solo"
                                         v-model="usuario.email"
                                         :rules="[rules.email]"
-                                        label="Correo Electronico"
+                                        label="Correo Electrónico"
                                     ></v-text-field>
                                     <v-text-field
                                         variant="solo"
@@ -261,7 +261,7 @@
                                 ></v-text-field>
                                 <v-text-field
                                     v-model="usuario.email"
-                                    label="Correo Electronico"
+                                    label="Correo Electrónico"
                                 ></v-text-field>
                                 
                                 <v-text-field
@@ -583,10 +583,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de usuarios')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de usuarios')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de usuarios')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de usuarios')
                 }
                 this.loading = false
           },
@@ -603,10 +603,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de centros de atención')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de centros de atención')
                 }
                 this.loading = false
             },
@@ -622,10 +622,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de roles')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de roles')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de roles')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de roles')
                 }
                 this.loading = false
             },

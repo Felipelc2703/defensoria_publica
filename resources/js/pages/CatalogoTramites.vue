@@ -1,7 +1,7 @@
 <template>
     <div class="container my-6">
         <div class="text-center my-6">
-            <h2>Tramites</h2>
+            <h2>Trámites</h2>
             <div>
                 <v-btn
                     color="#6a73a0"
@@ -11,7 +11,7 @@
                     @click="agregarTramite"
                     append-icon="mdi-plus"
                     >
-                    Nuevo Tramite
+                    Nuevo Trámite
                 </v-btn>
             </div>
         </div>
@@ -67,7 +67,7 @@
                                             activator="parent"
                                             location="bottom"
                                             >
-                                            <span style="font-size: 15px;">Editar tramite</span>
+                                            <span style="font-size: 15px;">Editar trámite</span>
                                         </v-tooltip>
                                     </div>
                                     
@@ -83,7 +83,7 @@
                                             activator="parent"
                                             location="bottom"
                                             >
-                                            <span style="font-size: 15px;">Eliminar Tramite</span>
+                                            <span style="font-size: 15px;">Eliminar trámite</span>
                                         </v-tooltip>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
 
             <v-card>
                 <v-card-title>
-                  <h3>Agregar Tramite</h3>
+                  <h3>Agregar Trámite</h3>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
@@ -169,12 +169,12 @@
                                     variant="solo"
                                     v-model="tramite.nombre"
                                     type="text" 
-                                    label="Nombre Tramite*"
+                                    label="Nombre trámite*"
                                 ></v-text-field>
 
                                 <v-textarea 
                                     v-model="tramite.descripcion"
-                                    label="Descripcion Corta*" 
+                                    label="Descripción corta*" 
                                     variant="solo">
                                 </v-textarea>
 
@@ -182,12 +182,12 @@
                                     variant="solo"
                                     v-model="tramite.url"
                                     type="text"
-                                    label="Url donde se encuntra la informacion dle tramite (iniciando con http://)*">
+                                    label="Url donde se encuentra la información del trámite (iniciando con http://)*">
                                 </v-text-field>
 
                                 <v-select
                                     v-model="tramite.tipo_tramite_id"
-                                    label="Tipo de tramite*"
+                                    label="Tipo de trámite*"
                                     :items="tiposTramite"
                                     item-title="nombre"
                                     item-value="id"
@@ -238,7 +238,7 @@
 
             <v-card>
                 <v-card-title>
-                  <h3>Editar Tramite</h3>
+                  <h3>Editar Trámite</h3>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
@@ -250,12 +250,12 @@
                                     variant="solo"
                                     v-model="modelEditarTramite.nombre"
                                     type="text" 
-                                    label="Nombre Tramite*"
+                                    label="Nombre trámite*"
                                 ></v-text-field>
 
                                 <v-textarea 
                                     v-model="modelEditarTramite.descripcion"
-                                    label="Descripcion Corta*" 
+                                    label="Descripción corta*" 
                                     variant="solo">
                                 </v-textarea>
 
@@ -263,12 +263,12 @@
                                     variant="solo"
                                     v-model="modelEditarTramite.url"
                                     type="text"
-                                    label="Url donde se encuntra la informacion dle tramite (iniciando con http://)*">
+                                    label="Url donde se encuentra la información del trámite (iniciando con http://)*">
                                 </v-text-field>
 
                                 <v-select
                                     v-model="modelEditarTramite.tipo_tramite_id"
-                                    label="Tipo de tramite*"
+                                    label="Tipo de trámite*"
                                     :items="tiposTramite"
                                     item-title="nombre"
                                     item-value="id"
@@ -424,10 +424,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites')
                 }
                 this.loading = false
             },
@@ -441,10 +441,10 @@
                           errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                       }
                   } else {
-                      errorSweetAlert('Ocurrió un error al obtener el catalogo de tipos de tramites')
+                      errorSweetAlert('Ocurrió un error al obtener el catálogo de tipos de trámites')
                   }
               } catch (error) {
-                  errorSweetAlert('Ocurrió un error al obtener el catalogo de tipos de tramites')
+                  errorSweetAlert('Ocurrió un error al obtener el catálogo de tipos de trámites')
               }
             },
             
@@ -466,7 +466,7 @@
                                 let response = await axios.post('/api/tramite/guardar-nuevo', this.tramite)
                                 return response
                             } catch (error) {
-                                errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
+                                errorSweetAlert('Ocurrió un error al guardar nuevo trámite.')
                             }
                         },
                         allowOutsideClick: () => !Swal.isLoading()
@@ -481,7 +481,7 @@
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
                             } else {
-                                errorSweetAlert('Ocurrió un error al guardar nuevo tramite.')
+                                errorSweetAlert('Ocurrió un error al guardar nuevo trámite.')
                             }
                         }
                     })
@@ -526,7 +526,7 @@
                                 
                                 return response
                             } catch (error) {
-                                errorSweetAlert('Ocurrió un error al actualizar tramite.')
+                                errorSweetAlert('Ocurrió un error al actualizar trámite.')
                             }
                         },
                         allowOutsideClick: () => !Swal.isLoading()
@@ -541,7 +541,7 @@
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
                             } else {
-                                errorSweetAlert('Ocurrió un error al actualizar tramite.')
+                                errorSweetAlert('Ocurrió un error al actualizar trámite.')
                             }
                         }
                     })
@@ -562,10 +562,10 @@
                           errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                       }
                   } else {
-                      errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
+                      errorSweetAlert('Ocurrió un error al obtener los trámites asociados')
                   }
               } catch (error) {
-                errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
+                errorSweetAlert('Ocurrió un error al obtener los trámites asociados')
               }
             },
 
@@ -585,10 +585,10 @@
                           errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                       }
                   } else {
-                      errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
+                      errorSweetAlert('Ocurrió un error al obtener los trámites asociados')
                   }
               } catch (error) {
-                errorSweetAlert('Ocurrió un error al obtener los tramiotes asociados')
+                errorSweetAlert('Ocurrió un error al obtener los trámites asociados')
               }
             },
 
@@ -650,7 +650,7 @@
             },
             eliminarTramite(tramite) {
                 Swal.fire({
-                  title: '¿Eliminar Tramite?',
+                  title: '¿Eliminar Trámite?',
                   icon: 'question',
                   showCancelButton: true,
                   confirmButtonColor: '#3085D6',
@@ -663,7 +663,7 @@
                           let response = await axios.post('/api/tramite/eliminar-tramite', tramite)
                           return response
                       } catch (error) {
-                          errorSweetAlert('Ocurrió un error al eliminar este tramite.')
+                          errorSweetAlert('Ocurrió un error al eliminar este trámite.')
                       }
                   },
                   allowOutsideClick: () => !Swal.isLoading()
@@ -679,7 +679,7 @@
                               errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                           }
                       } else {
-                          errorSweetAlert('Ocurrió un error al eliminar este tramite.')
+                          errorSweetAlert('Ocurrió un error al eliminar este trámite.')
                       }
                   }
               })

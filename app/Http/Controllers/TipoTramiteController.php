@@ -25,7 +25,7 @@ class TipoTramiteController extends Controller
 
             return response()->json([
                 "status" => "ok",
-                "message" => "Tipos de tramite obtenidos con exito",
+                "message" => "Tipos de tramite obtenidos con éxito",
                 "tiposTramites" => $arrayTipoTramites
             ], 200);
 

@@ -48,18 +48,18 @@
                                     </li>
                                     <li class="nav-item dropdown link-nav">
                                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Catalogos
+                                            Catálogos
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                             <a class="dropdown-item link-nav" @click="this.$router.push('/centros-atencion')">Centro de Atención</a>
                                             <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-requisitos')">Requisito</a>
-                                            <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Tramite</a>
+                                            <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a>
                                             <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a>
                                             <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
                                         </div>
                                     </li>
                                     <li class="nav-item link-nav">
-                                        <a class="nav-link" @click="this.$router.push('/citas-del-dia')">Citas del dia</a>
+                                        <a class="nav-link" @click="this.$router.push('/citas-del-dia')">Citas del día</a>
                                     </li>
                                     <li class="nav-item link-nav">
                                         <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
@@ -82,7 +82,7 @@
             </div>
             <div class="second-line"></div>
             <div v-if="alert_cita_no_encontrada">
-                <v-alert @input="closeAlert" text type="warning" color="#f5e79e" density="comfortable">No se encontro ninguna cita registrada con ese número de folio.</v-alert>
+                <v-alert @input="closeAlert" text type="warning" color="#f5e79e" density="comfortable">No se encontró ninguna cita registrada con ese número de folio.</v-alert>
             </div>
         </div>
 
@@ -150,7 +150,7 @@
                     </div>
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
                         <div>
-                            <p class="texto-ciudad-judicial">Organos Auxiliares</p>
+                            <p class="texto-ciudad-judicial">Órganos Auxiliares</p>
                             <ul class="lista">
                                 <li class="boton_inicio" @click="irEEFJ()">Escuela Estatal de Formación Judicial</li>
                                 <li class="boton_inicio" @click="irJusticiaAlter()">Centro Justicia Alternativa</li>
@@ -228,10 +228,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites para agendar citas.')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de tramites para agendar citas.')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de tramites para agendar citas.')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites para agendar citas.')
                 }
             },
             irInicio() {
