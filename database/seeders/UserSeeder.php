@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'name' => 'Kevin Corona',
             'clave' => 'KevinVanHalen',
             'email' => 'keviinvanhalen@gmail.com',
-            'password' => bcrypt('password'),
+            'password' => 'password',
             'centro_atencion_id' => 1,
             'rol_id' => 1,
         ]);
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             'name' => 'Marco Polo',
             'clave' => 'Polo',
             'email' => 'marcopoloolivaresgonzalez@gmail.com',
-            'password' => bcrypt('polo123'),
+            'password' => 'polo123',
             'centro_atencion_id' => 1,
             'rol_id' => 1,
         ]);
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             'name' => 'Felipe Lopez',
             'clave' => 'FelipeLC',
             'email' => 'felipe.loezc188@gmail.com',
-            'password' => bcrypt('123456'),
+            'password' => '123456',
             'centro_atencion_id' => 1,
             'rol_id' => 1,
         ]);
