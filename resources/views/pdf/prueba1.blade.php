@@ -13,6 +13,7 @@
     <br>
     <center>
         <h2> Citas canceladas por inhabilitar el día {{$fecha_pdf}}</h2> <br>
+        <h3>del centro de atencion de {{$centroAtencion}}</h3>
         {{-- <h2>{{$fecha}}</h2> --}}
     </center>
     <table>

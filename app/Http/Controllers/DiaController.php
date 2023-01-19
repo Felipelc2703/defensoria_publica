@@ -441,6 +441,8 @@ class DiaController extends Controller
                 $cita->save();
             }
             $fecha_pdf = $cita->fecha_formateada;
+
+            $centroAtencion = $cita->centroAtencion->nombre;
             
 
             $dia = Dia::find($request->id);
@@ -511,7 +513,7 @@ class DiaController extends Controller
             });
 
             $r="prueba pdf dias";
-            $view = View::make('pdf.prueba1', compact('citasCanceladas','fecha_pdf'));
+            $view = View::make('pdf.prueba1', compact('citasCanceladas','fecha_pdf','centroAtencion'));
             $html_content = $view->render();
 
             PDF::SetTitle('Citas Canceladas');
