@@ -501,7 +501,7 @@
                                         allowOutsideClick: () => !Swal.isLoading()
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            successSweetAlert("Horario editado con éxito, se ha generado un PDF con las citas que correspondían al día")
+                                            successSweetAlert("Se ha generado un PDF con las citas que correspondían al día")
                                             this.cancelarCambioHorario()
                                         }
                                     })
