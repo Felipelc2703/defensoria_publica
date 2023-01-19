@@ -32,7 +32,7 @@
         {{-- <div id="app"></div> --}}
         <v-app id="app"></v-app>
 
-        @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+        @vite(['resources/js/app.js'])
         {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     </body>
 </html>
