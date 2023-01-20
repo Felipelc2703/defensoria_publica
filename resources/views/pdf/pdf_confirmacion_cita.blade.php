@@ -67,7 +67,7 @@
     <br>
     <h5 class="titulo-confirmacion">Confirmación de Cita</h5>
     <p><span class="formato-texto">Información Importante</span></p>
-    <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{$citaAgendada->nombre}}</span> su cita para el trámite <span class="texto-tramite">{{$citaAgendada->tramite}}</span> ha quedado agendada para el {{$citaAgendada->fecha}}, a las {{$citaAgendada->hora}} horas.</p>
+    <p class="texto-cita">Estimado(a) <span class="texto-nombre font-weight: bold;">{{$citaAgendada->nombre}}</span> su cita para el trámite <span class="texto-tramite">{{$citaAgendada->tramite}}</span> ha quedado agendada para el {{$citaAgendada->fecha}}, a las {{$citaAgendada->hora}} horas.</p>
     <p class="texto-cita">Por lo que reiteramos debe presentarse en el Centro de Atención de <span class="centro-atencion-cita">{{$citaAgendada->centro_atencion}}</span> ubicado en <span class="direccion-cita">{{$citaAgendada->direccion_centro_atencion}}</span>, en la fecha y hora antes mencionada.</p>
     <br>
     <div class="first-line"></div>

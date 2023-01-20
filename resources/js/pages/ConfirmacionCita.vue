@@ -96,6 +96,7 @@
                         // link.download = `${item.nombre}.pdf
                         link.download = 'confirmacion_cita.pdf'
                         link.click()
+                        this.$router.push('/')
                     })
                     // console.log(response)
                 } catch (error) {

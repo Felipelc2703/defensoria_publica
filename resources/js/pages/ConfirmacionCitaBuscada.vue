@@ -85,10 +85,9 @@
                         // link.download = `${item.nombre}.pdf
                         link.download = 'confirmacion_cita.pdf'
                         link.click()
+                        this.$router.push('/')
                     })
-                    // console.log(response)
                 } catch (error) {
-                    console.log("error: ", error)
                 }
             },
             async cancelarCita() {
@@ -139,7 +138,6 @@
                         errorSweetAlert('Ocurrió un error al buscar cita.')
                     }
                 }
-                // console.log(this.buscar_cita)
             },
         }
     })
