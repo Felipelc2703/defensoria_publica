@@ -117,14 +117,14 @@
                             <div class="col-sm-12 col-md-2 text-center div-texto-superior-footer">
                         
                             </div>
-                            <div class="col-sm-12 col-md-8 text-center div-texto-superior-footer">
+                            <!-- <div class="col-sm-12 col-md-8 text-center div-texto-superior-footer">
                                 <div>
                                     <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
                                     <ul class="lista">
                                         <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-12 col-md-3 text-center div-texto-superior-footer">
                                 
                             </div>
@@ -139,6 +139,8 @@
                             </div>
                         </div>
                     </div>
+
+                    
                     
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
                         <div>
@@ -149,6 +151,14 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
+                                <div>
+                                    <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
+                                    <ul class="lista">
+                                        <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
+                                    </ul>
+                                </div>
+                    </div>
+                    <!-- <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
                         <div>
                             <p class="texto-ciudad-judicial">Órganos Auxiliares</p>
                             <ul class="lista">
@@ -158,7 +168,7 @@
                                 <li class="boton_inicio" @click="irArchivoJudi()">Archivo Judicial</li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row justify-content-around">
                     <div class="col-auto text-center">
@@ -167,10 +177,10 @@
                 </div>
                 <div class="row justify-content-around">
                     <div class="col-auto text-center mb-4">
-                        <img class="mr-2" width="30" height="30" src="./../../../public/images/logo_redes_1.png" alt="">
-                        <img class="mr-3" width="30" height="30" src="./../../../public/images/logo_redes_2.png" alt="">
-                        <img class="mr-3" width="30" height="30" src="./../../../public/images/logo_redes_3.png" alt="">
-                        <img class="" width="30" height="30" src="./../../../public/images/logo_redes_4.png" alt="">
+                        <img class="mr-2 boton_inicio" width="30" height="30" src="./../../../public/images/logo_redes_1.png" alt="" @click="irFb()">
+                        <img class="mr-3 boton_inicio" width="30" height="30" src="./../../../public/images/logo_redes_2.png" alt="" @click="irTwi()">
+                        <img class="mr-3 boton_inicio" width="30" height="30" src="./../../../public/images/logo_redes_3.png" alt="" @click="irInst()">
+                        <img class="boton_inicio" width="30" height="30" src="./../../../public/images/logo_redes_4.png" alt="" @click="irYt()">
                     </div>
                 </div>
             </div>
@@ -243,6 +253,18 @@
             },
             irPj() {
                 window.open("https://www.pjpuebla.gob.mx/")
+            },
+            irInst() {
+                window.open("https://instagram.com/podjudpuebla?igshid=YmMyMTA2M2Y=")
+            },
+            irTwi() {
+                window.open("https://twitter.com/PodJudPuebla?t=5IcEy9NNl88eRs4ea4p9Bw&s=09")
+            },
+            irFb() {
+                window.open("https://www.facebook.com/PoderJudicialdelEstadodePuebla?mibextid=ZbWKwL")
+            },
+            irYt() {
+                window.open("https://youtube.com/@PoderJudicialdelEstadodePuebla")
             },
             irUbiCiudadJudicial() {
                 window.open("https://www.google.com.mx/maps/search/Perif%C3%A9rico+Ecol%C3%B3gico+Arco+Sur+No.+4000+San+Andr%C3%A9s+Cholula,+Puebla.+Reserva+Territorial+Atlixc%C3%A1yotl,/@19.014682,-98.2685127,17z/data=!3m1!4b1")
