@@ -186,7 +186,7 @@
                         class="boton-nuevo"
                         @click="exportarReporte()"
                     >
-                        Guardar Horarios
+                        Exportar a Excel
                     </v-btn>
                 </div>
             </div>
@@ -232,15 +232,15 @@
                         nombre:'TODOS'
                     },
                     {
-                        id: 0,
+                        id: 1,
                         nombre:'Reservadas'
                     },
                     {
-                        id: 1,
+                        id: 2,
                         nombre:'Confirmadas'
                     },
                     {
-                        id: 2,
+                        id: 3,
                         nombre:'Canceladas'
                     }
                 ],
