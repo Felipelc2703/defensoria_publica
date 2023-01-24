@@ -117,14 +117,14 @@
                             <div class="col-sm-12 col-md-2 text-center div-texto-superior-footer">
                         
                             </div>
-                            <div class="col-sm-12 col-md-8 text-center div-texto-superior-footer">
+                            <!-- <div class="col-sm-12 col-md-8 text-center div-texto-superior-footer">
                                 <div>
                                     <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
                                     <ul class="lista">
                                         <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-12 col-md-3 text-center div-texto-superior-footer">
                                 
                             </div>
@@ -137,8 +137,18 @@
                             <div class="col-sm-12 col-md-6 text-center">
                                 <img width="150" height="100" src="./../../../public/images/logo_transparencia_footer.png" alt="">
                             </div>
+                            <div class="col-sm-8 col-md-6 text-center">
+                                <ul class="lista-dos">
+                                    <li>INFORMACIÓN PÚBLICA / DENUNCIAS</li>
+                                    <li>SOLICITUDES</li>
+                                    <li>RECURSOS</li>
+                                    <li>BUSCADOR</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+
+                    
                     
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
                         <div>
@@ -149,6 +159,14 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
+                                <div>
+                                    <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
+                                    <ul class="lista">
+                                        <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
+                                    </ul>
+                                </div>
+                    </div>
+                    <!-- <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
                         <div>
                             <p class="texto-ciudad-judicial">Órganos Auxiliares</p>
                             <ul class="lista">
@@ -158,19 +176,19 @@
                                 <li class="boton_inicio" @click="irArchivoJudi()">Archivo Judicial</li>
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row justify-content-around">
                     <div class="col-auto text-center">
-                        <p class="texto-ciudad-judicial">Aviso de Privacidad</p>
+                        <p class="texto-ciudad-judicial boton_inicio" @click="verAviso()">Aviso de Privacidad</p>
                     </div>
                 </div>
                 <div class="row justify-content-around">
                     <div class="col-auto text-center mb-4">
-                        <img class="mr-2" width="30" height="30" src="./../../../public/images/logo_redes_1.png" alt="">
-                        <img class="mr-3" width="30" height="30" src="./../../../public/images/logo_redes_2.png" alt="">
-                        <img class="mr-3" width="30" height="30" src="./../../../public/images/logo_redes_3.png" alt="">
-                        <img class="" width="30" height="30" src="./../../../public/images/logo_redes_4.png" alt="">
+                        <img class="mr-2 boton_inicio" width="30" height="30" src="./../../../public/images/logo_redes_1.png" alt="" @click="irFb()">
+                        <img class="mr-3 boton_inicio" width="30" height="30" src="./../../../public/images/logo_redes_2.png" alt="" @click="irTwi()">
+                        <img class="mr-3 boton_inicio" width="30" height="30" src="./../../../public/images/logo_redes_3.png" alt="" @click="irInst()">
+                        <img class="boton_inicio" width="30" height="30" src="./../../../public/images/logo_redes_4.png" alt="" @click="irYt()">
                     </div>
                 </div>
             </div>
@@ -181,6 +199,29 @@
             </div>
         </footer>
     </v-app>
+    <v-dialog v-model="dialog" max-width="600px">
+        <v-card>
+            <v-card-title>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-container>
+                <div align="center" style="background-color:black;width:100%; height:500px">
+                    <!-- <embed style="width:95%;height:100%" :src="archivo" type="application/pdf"> -->
+                    <iframe src='Avisoprivacidad.pdf' frameborder="0" width="100%" height="100%"></iframe>
+                </div>
+            </v-container>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+                <v-btn
+                    variant="flat"
+                    color="error"
+                    @click="cerrarDialog()"
+                >
+                    Cerrar
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
@@ -195,6 +236,8 @@
                     folio: '',
                 },
                 alert_cita_no_encontrada: false,
+                dialog: false,
+                aviso:'',
             }
         },
         created() {
@@ -213,6 +256,7 @@
             rolId() {
                 return this.$store.getters.getrolId
             },
+            
         },
         methods: {
             irLogin() {
@@ -227,6 +271,7 @@
                             this.$store.commit('setCatalogoTramitesTipo2', response.data.tramites_tipo_2)
                             this.$store.commit('setCatalogoTramitesTipo3', response.data.tramites_tipo_3)
                             this.$store.commit('setCatalogoTramitesTipo4', response.data.tramites_tipo_4)
+                            this.aviso = response.data.aviso
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
@@ -243,6 +288,18 @@
             },
             irPj() {
                 window.open("https://www.pjpuebla.gob.mx/")
+            },
+            irInst() {
+                window.open("https://instagram.com/podjudpuebla?igshid=YmMyMTA2M2Y=")
+            },
+            irTwi() {
+                window.open("https://twitter.com/PodJudPuebla?t=5IcEy9NNl88eRs4ea4p9Bw&s=09")
+            },
+            irFb() {
+                window.open("https://www.facebook.com/PoderJudicialdelEstadodePuebla?mibextid=ZbWKwL")
+            },
+            irYt() {
+                window.open("https://youtube.com/@PoderJudicialdelEstadodePuebla")
             },
             irUbiCiudadJudicial() {
                 window.open("https://www.google.com.mx/maps/search/Perif%C3%A9rico+Ecol%C3%B3gico+Arco+Sur+No.+4000+San+Andr%C3%A9s+Cholula,+Puebla.+Reserva+Territorial+Atlixc%C3%A1yotl,/@19.014682,-98.2685127,17z/data=!3m1!4b1")
@@ -267,6 +324,12 @@
             },
             irCatalogoUSuarios() {
                 this.$router.push('/catalogo-usuarios')
+            },
+            verAviso() {
+                this.dialog = true
+            },
+            cerrarDialog(){
+                this.dialog = false
             },
             async buscarCita() {
                 this.buscar_cita.folio = this.$store.state.buscarCita

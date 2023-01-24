@@ -101,3 +101,5 @@ Route::post('/horarios/actualizar-horario-citas', [DiaController::class, 'actual
 
 //Actualizar estatus cita y motivo*
 Route::post('/citas/citas-del-dia', [CitaController::class, 'guardarCambios']);
+Route::post('/citas/citas-del-dia-buscada', [CitaController::class, 'selectDiaCita']);
+

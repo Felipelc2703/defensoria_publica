@@ -16,11 +16,10 @@ use Carbon\Carbon;
 
 class CitaController extends Controller
 {
-    public function getCitasDelDia(){
+    public function getCitasDelDia(Request $request){
         try {
             $date = Carbon::now();
             $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
-           
             $array_cita = array();
             $cont = 1;
             foreach ($citas as $cita) {
@@ -609,6 +608,52 @@ class CitaController extends Controller
                 "status" => "ok",
                 "message" => "Estatus actualizado con éxito.",
                 "citas" => $array_cita
+            ], 200);
+        }
+    }
+    public function selectDiaCita(Request $request){
+        try {
+            $citas = Cita::where('fecha_cita', $request->dia )->get();
+            $array_cita = array();
+            $cont = 1;
+            foreach ($citas as $cita) {
+                $objectCita = new \stdClass();
+                $objectCita->id = $cita->id;
+                $objectCita->folio = $cita->folio;
+                $objectCita->fecha_formateada = $cita->fecha_formateada;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->nombre = $cita->nombre;
+                $objectCita->curp = $cita->curp;
+                $objectCita->status = $cita->status;
+                $objectCita->discapacidad = $cita->discapacidad;
+
+                if($cita->status == 1){
+                $objectCita->status = "1";
+                $objectCita->statusnom = "No atendida";}
+                if($cita->status == 2){
+                $objectCita->status = "2";
+                $objectCita->statusnom = "Atendida";}
+                if($cita->status == 3){
+                $objectCita->status = "3";
+                $objectCita->statusnom = "Cancelada";}
+
+                array_push($array_cita, $objectCita);
+                $cont++;
+
+            }
+
+            return response()->json([
+                "status" => "ok",
+                "message" => "Citas obtenidas con éxito controller",
+                "citas" => $array_cita
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener el catalogo de citas",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
             ], 200);
         }
     }

@@ -3,10 +3,10 @@
         <div class="container pt-6 pb-6">
             <h5 class="titulo-confirmacion">Confirmación de Cita</h5>
             <p><span class="formato-texto">Información importante</span></p>
-            <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{citaAgendada.nombre}}</span> su cita para el trámite <span class="texto-tramite">{{citaAgendada.tramite}}</span> ha quedado agendada para el {{citaAgendada.fecha}}, a las {{citaAgendada.hora}} horas.</p>
+            <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{citaAgendada.nombre}}</span> su cita para el trámite <span class="texto-tramite">{{citaAgendada.tramite}}</span> ha quedado agendada para el <span class="text-fecha">{{citaAgendada.fecha}}</span>, a las <span class="text-fecha">{{citaAgendada.hora}}</span> horas.</p>
             <p class="texto-cita">Por lo que reiteramos debe presentarse en el Centro de Atención de <span class="centro-atencion-cita">{{citaAgendada.centro_atencion}}</span> ubicado en <span class="direccion-cita">{{citaAgendada.direccion_centro_atencion}}</span>, en la fecha y hora antes mencionada.</p>
             <br>
-            <p>Le recordamos que el <span class="texto-folio">folio</span> de su Cita es:</p>
+            <p>Le recordamos que el <span class="texto-folio">folio</span> de su cita es:</p>
             <br>
             <br>
             <h4 class="folio-cita">{{citaAgendada.folio}}</h4>
@@ -96,6 +96,7 @@
                         // link.download = `${item.nombre}.pdf
                         link.download = 'confirmacion_cita.pdf'
                         link.click()
+                        this.$router.push('/')
                     })
                     // console.log(response)
                 } catch (error) {
@@ -125,18 +126,22 @@
 
     .texto-nombre {
         text-transform: uppercase;
+        font-weight: bold;
     }
 
     .texto-tramite {
         text-transform: uppercase;
+        font-weight: bold;
     }
 
     .centro-atencion-cita {
         text-transform: uppercase;
+        font-weight: bold;
     }
 
     .direccion-cita {
         text-transform: uppercase;
+        font-weight: bold;
     }
 
     .texto-folio {
@@ -206,5 +211,9 @@
         padding: 6px 50px;
         margin-left: 15px;
         border-radius: 20px;
+    }
+    .texto-fecha {
+        text-transform: uppercase;
+        font-weight: bold;
     }
 </style>

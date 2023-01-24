@@ -3,12 +3,38 @@
         <div class="text-center my-6">
             <h2>Citas del Día</h2>
         </div>
-
-        <div class="text-right">
+        <!-- <div class="text-right">
             <div class="buscador-data-table">
                 <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
             </div>
-        </div>
+        </div> -->
+        <div class="row justify-content-between">
+            <v-form ref="formBuscarDia" class="row justify-content-between">
+                    <div class="col-md-8 col-12">
+                        <v-text-field
+                                v-model="ver.dia"
+                                variant="solo" 
+                                type="date" 
+                                label="Seleccione la fecha"
+                                :rules="fechaB"
+                            ></v-text-field>   
+                    </div>
+                    <v-btn
+                            variant="flat"
+                            color="#6a73a0"
+                            class="boton-nuevo"
+                            @click="verCitas()"
+                            >
+                            Ver citas
+                        </v-btn>
+            </v-form>           
+                    <div class="col-md-6 col-12 text-right">
+                        <div class="buscador-data-table">
+                <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
+            </div>
+                    </div>
+                </div>
+       
 
         <div class="my-2 mb-12 py-6">
             <div class="container-fluid">
@@ -236,7 +262,13 @@
                     id: null,
                     status: '',
                     motivo: '',
-                }
+                },
+                ver: {
+                    dia:'',
+                },
+                fechaB: [
+                    v => !!v || 'El campo fecha es requerido'
+                ],
             }
         },
         created(){
@@ -363,6 +395,8 @@
             },
             async guardarCambios()
             {
+                let date = new Date().toISOString().slice(0, 10);
+                console.log(date)
                 const { valid } = await this.$refs.formCambioEstatus.validate()
                 if (valid) {
                     Swal.fire({
@@ -389,9 +423,13 @@
                             if (result.value.status === 200) {
                                 if (result.value.data.status === "ok") {
                                     successSweetAlert(result.value.data.message)
+                                    if(this.ver.dia === date){
                                     this.$store.commit('setCatalogoCitasDelDia', result.value.data.citas)
-                                    this.cancelarCambio()
                                     this.getDataPagina(1)
+                                    }else{
+                                        this.verCitas()
+                                    }
+                                    this.cancelarCambio()
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
@@ -401,6 +439,29 @@
                         }
                     })
                 }
+            },
+            async verCitas() {
+                // console.log($ver)
+                const { valid } = await this.$refs.formBuscarDia.validate()
+                if (valid) {
+                    try {
+                        let response = await axios.post('/api/citas/citas-del-dia-buscada', this.ver)
+                        if(response.status === 200) {
+                            if(response.data.status === "ok") {
+                                this.$store.commit('setCatalogoCitasDelDia', response.data.citas)
+                                this.mostrar = true
+                                this.getDataPagina(1)
+                            } else {
+                                errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                            }
+                        } else {
+                            errorSweetAlert('Ocurrió un error al cargar días')
+                        }
+                    }catch (error) {
+                        errorSweetAlert('Ocurrió un error al cargar días')
+                    }
+                }
+
             },
             
         },
