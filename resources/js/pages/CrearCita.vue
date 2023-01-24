@@ -6,7 +6,7 @@
                     <img class="scale-logo-defensoria" width="200" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
                 </div>
             </div>
-            <div class="col-sm-3 col-12 contenedor-dos">
+            <div class="col-sm-3 hidden-xs contenedor-dos">
                 <p class="titulo-nombre-tramite">Resumen de cita:</p>
             </div>
             <div class="w-100"></div>
@@ -14,11 +14,11 @@
                 <div class="text-center mt-4 mb-4 ml-10 mr-10">
                     <div class="container">
                         <div class="row justify-content-around">
-                            <div class="col-sm-12 col-md-6 text-left">
+                            <div class="col-6 text-left">
                                 <p class="titulo_tipo_tramite">{{tramiteSeleccionado.nombre}}</p>
                             </div>
-                            <div class="col-sm-12 col-md-6 text-right">
-                                <v-btn variant="text" prepend-icon="mdi-arrow-left" @click="volverInicio()">Regresar</v-btn>
+                            <div class="col-6 text-right">
+                                <v-btn class="boton-regresar" variant="text" prepend-icon="mdi-arrow-left" @click="volverInicio()">Regresar</v-btn>
                             </div>
                         </div>
                         <div class="mt-4">
@@ -82,9 +82,9 @@
                                                                 <table class="w-100 calendar-header">
                                                                     <tbody>
                                                                         <tr class="tr-header">
-                                                                            <td class="previous-month" @click="previousMonth()" v-if="bandera_mes_actual"><span>&lt;</span></td>
+                                                                            <td class="previous-month" @click="previousMonth()" v-if="bandera_mes_actual && showPrevious"><span>&lt;</span></td>
                                                                             <td class="calendar-month">{{fecha_calendario.mes}} de {{fecha_calendario.año}}</td>
-                                                                            <td class="next-month" @click="nextMont()"><span>&gt;</span></td>
+                                                                            <td class="next-month" @click="nextMont()" v-if="showNext"><span>&gt;</span></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -122,7 +122,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 col-12">
+                                            <div class="col-md-6 col-12 select-horario">
                                                 <v-select
                                                     v-model="cita.hora_cita"
                                                     label="Seleccione el horario"
@@ -230,7 +230,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3 col-12 contenedor-cuatro">
+            <div class="col-sm-3 hidden-xs contenedor-cuatro">
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col-md-12 text-left">
@@ -252,6 +252,40 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12 text-left">
+                            <span class="texto-estatico-resumen-cita">Hora de la Cita:</span>
+                            <br>
+                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.hora_cita}}</span>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 hidden-sm hidden-md hidden-lg hidden-xl contenedor-dos">
+                <p class="titulo-nombre-tramite">Resumen de cita:</p>
+            </div>
+            <div class="col-sm-3 hidden-sm hidden-md hidden-lg hidden-xl contenedor-cuatro">
+                <div class="container mt-4">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <span class="texto-estatico-resumen-cita">Centro de Atención:</span>
+                            <br>
+                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.centro_atencion}}</span>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <span class="texto-estatico-resumen-cita">Día de la Cita:</span>
+                            <br>
+                            <span id="span_dia_cita" class="texto-dinamico-resumen-cita">{{resumen_cita.dia_cita}}</span>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
                             <span class="texto-estatico-resumen-cita">Hora de la Cita:</span>
                             <br>
                             <span class="texto-dinamico-resumen-cita">{{resumen_cita.hora_cita}}</span>
@@ -374,7 +408,6 @@
                     dia: '',
                     horario: '',
                     curp:'',
-                    
                 },
                 nombreRules: [
                     v => !!v || 'El nombre es requerido'
@@ -438,6 +471,8 @@
                     numero_mes: ''
                 },
                 bandera_mes_actual: false,
+                showPrevious: true,
+                showNext: true,
             }
         },
         created() {
@@ -550,6 +585,8 @@
                 }
             },
             dibujarCalendario() {
+                this.showNext = false
+                this.showPrevious = false
                 let band = 0 
                 setTimeout(() => {
                     
@@ -785,6 +822,8 @@
                             }
                             cel_dia.appendChild(text)
                         })
+                        this.showNext = true
+                        this.showPrevious = true
                     }
                 }, "500")
             },
@@ -923,301 +962,3 @@
         },
     })
 </script>
-
-<style scoped>
-
-.boton_inicio {
-        cursor: pointer;
-    }
-    .contenedor {
-        padding: 0!important;
-    }
-
-    .contenedor-uno {
-        border-style: none solid solid none;
-        border-color: #adadad;
-        border-width: 2px;
-        padding: 0!important;
-        height: 100px;
-    }
-
-    .contenedor-dos {
-        border-style: none none solid none;
-        border-color: #adadad;
-        border-width: 2px;
-        padding: 0!important;
-        height: 100px;
-    }
-
-    .contenedor-tres {
-        border-style: none solid none none;
-        border-color: #adadad;
-        border-width: 2px;
-        padding: 0!important;
-    }
-
-    .contenedor-cuatro {
-        padding: 0!important;
-    }
-
-    .scale-logo-defensoria {
-        transform: scale(1.8);
-    }
-
-    .titulo_tipo_tramite {
-        font-size: 20px;
-        font-weight: bold;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .espacio-blanco {
-        height: 93px;
-    }
-
-    .titulo-resumen-cita {
-        font-size: 40;
-        font-weight: bold;
-    }
-
-    .campo-obligatorio {
-        color: red;
-    }
-
-    .titulo-modal-requisitos {
-        font-family: 'Lato', sans-serif;
-        font-weight: bold;
-        font-size: 18pt;
-        text-align: center;
-
-    }
-
-    .first-line {
-        background-color: #6a73a0;
-        height: 3px;
-        width: 560px;
-    }
-
-    .texto-saludo {
-        font-family: 'Lato', sans-serif;
-        font-size: 14pt;
-        margin-bottom: 8px;
-    }
-
-    .second-line {
-        background-color: #a4bc4b;
-        height: 3px;
-        width: 560px;;
-    }
-
-    .texto-instrucciones {
-        font-family: 'Lato', sans-serif;
-        font-size: 12pt;
-        margin-bottom: 4px
-    }
-
-    .encabezado-tabla-requisitos {
-        background-color: #6a73a0;   
-    }
-
-    .texto-encabezado-tabla-requisitos {
-        color: white;
-        font-family: 'Lato', sans-serif;
-        font-weight: 900;
-        font-size: 13pt;
-    }
-
-    .texto-requisito-tabla {
-        font-family: 'Lato', sans-serif;
-        font-size: 12pt;
-    }
-
-    .ultimos-textos-modal-requisitos {
-        font-family: 'Lato', sans-serif;
-        font-size: 12pt;
-        margin-top: 10px;
-    }
-
-    .texto-click-aqui {
-        color: #6a73a0;
-    }
-
-    .texto-click-aqui:hover {
-        cursor: pointer;
-    }
-
-    .texto-requisitos-obligatorios {
-        color: #6a73a0;
-    }
-
-    .texto-faltan-requisitos-obligatorios {
-        color: red;
-        font-weight: bold;
-    }
-
-    .third-line {
-        background-color: #a4bc4b;
-        height: 2px;
-        width: 560px;
-        margin-bottom: 6px;
-        margin-top: 6px;
-    }
-
-    .boton-cancelar {
-        background-color: #6a73a0;
-        color: white;
-        font-family: 'Lato', sans-serif;
-        font-size: 12pt;
-        font-weight: bold;
-        padding: 6px 10px;
-        margin-right: 15px;
-        border-radius: 20px;
-    }
-
-    .boton-aceptar {
-        background-color: #a4bc4b;
-        color: white;
-        font-family: 'Lato', sans-serif;
-        font-size: 12pt;
-        font-weight: bold;
-        padding: 6px 10px;
-        margin-left: 15px;
-        border-radius: 20px;
-    }
-
-    .titulo-nombre-tramite {
-        font-family: 'Lato', sans-serif;
-        font-size: 30pt;
-        font-weight: 900;
-        line-height: 40px;
-        text-align: center;
-        padding: 20px;
-    }
-
-    .texto-estatico-resumen-cita {
-        font-family: 'Lato', sans-serif;
-        font-weight: bold;
-        font-size: 16pt;
-    }
-
-    .texto-dinamico-resumen-cita {
-        font-family: 'Lato', sans-serif;
-        font-weight: 900;
-        font-size: 10pt;
-        color: #8c8c8c;
-    }
-    
-    .texto-pasos {
-        font-family: 'Lato', sans-serif;
-        font-size: 14pt;
-        font-weight: 900;
-    }
-
-    .texto-nombre-paso {
-        font-family: 'Lato', sans-serif;
-        font-size: 16pt;
-        font-weight: 300;
-    }
-
-    .texto-ubicacion-centros {
-        font-family: 'Lato', sans-serif;
-        font-size: 10pt;
-        background-color: #e5e5e5;
-        padding: 7px 10px 7px 10px;
-        border-radius: 5px;
-    }
-
-    .calendar-header {
-        border-style: solid;
-        border-color: #6a73a0;
-        border-width: 2px;
-    }
-
-    .calendar-month {
-        font-family: 'Lato', sans-serif;
-        font-size: 14pt;
-        font-weight: bold;
-        text-transform: uppercase;
-        width: 70%;
-    }
-
-    .previous-month {
-        width: 15%;
-        font-family: 'Lato', sans-serif;
-        font-weight: bold;
-        cursor: pointer;
-        background-color: #CFCFCF;
-    }
-
-    .next-month {
-        width: 15%;
-        font-family: 'Lato', sans-serif;
-        font-weight: bold;
-        cursor: pointer;
-        background-color: #CFCFCF;
-    }
-
-    .tr-header {
-        height: 40px;
-    }
-
-    .calendar-day-name {
-        width: 14.28%;
-        text-transform: uppercase;
-        background-color: #6a73a0;
-        color: white;
-        font-family: 'Lato', sans-serif;
-        font-weight: 100;
-        font-size: 10pt;
-        padding: 2px 2px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: #8c8c8c;
-    }
-
-    .celDia {
-        color: white;
-        background-color: black;
-    }
-
-    .encabezado-tabla-centros-atencion {
-        background-color: #6a73a0;   
-    }
-
-    .texto-encabezado-tabla-centros-atencion {
-        color: white;
-        font-family: 'Lato', sans-serif;
-        font-weight: 900;
-        font-size: 13pt;
-    }
-
-    .cuadro-disponible {
-        margin-right: 3px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: black;
-    }
-
-    .cuadro-no-disponible {
-        margin-right: 3px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: black;
-        background-color: #b1bced;
-    }
-
-    .cuadro-sin-servicio {
-        margin-right: 3px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: black;
-        background-color: #D33;
-    }
-
-    .cuadro-pasados-disponibles {
-        margin-right: 3px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: black;
-        background-color: black;
-    }
-</style>

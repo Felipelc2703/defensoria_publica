@@ -1,0 +1,282 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+.contenedor {
+    padding: 0!important;
+}
+
+.contenedor-uno {
+    border-style: none solid solid none;
+    border-color: v.$gris_g4;
+    border-width: .2rem;
+    padding: 0!important;
+    height: 10rem;
+}
+
+.contenedor-dos {
+    border-style: none none solid none;
+    border-color: v.$gris_g4;
+    border-width: .2rem;
+    padding: 0!important;
+    height: 10rem;
+}
+
+.contenedor-tres {
+    border-style: none solid none none;
+    border-color: v.$gris_g4;
+    border-width: .2rem;
+    padding: 0!important;
+}
+
+.contenedor-cuatro {
+    padding: 0!important;
+}
+
+.campo-obligatorio {
+    color: red;
+}
+
+.titulo-modal-requisitos {
+    font-weight: bold;
+    font-size: 2.4rem;
+    text-align: center;
+}
+
+.texto-saludo {
+    font-size: 1.9rem;
+    margin-bottom: .8rem;
+}
+
+.texto-instrucciones {
+    font-size: 1.6rem;
+    margin-bottom: .4rem
+}
+
+.encabezado-tabla-requisitos {
+    background-color: v.$morado_m1;   
+}
+
+.texto-encabezado-tabla-requisitos {
+    color: v.$blanco;
+    font-weight: 900;
+    font-size: 1.8rem;
+}
+
+.texto-requisito-tabla {
+    font-size: 1.6rem;
+}
+
+.ultimos-textos-modal-requisitos {
+    font-size: 1.6rem;
+    margin-top: 1rem;
+}
+
+.texto-click-aqui {
+    color: v.$morado_m1;
+}
+
+.texto-click-aqui:hover {
+    cursor: pointer;
+}
+
+.texto-requisitos-obligatorios {
+    color: v.$morado_m1;
+}
+
+.texto-faltan-requisitos-obligatorios {
+    color: red;
+    font-weight: bold;
+}
+
+.boton-cancelar {
+    background-color: v.$morado_m1;
+    color: v.$blanco;
+    font-size: 1.6rem;
+    font-weight: bold;
+    padding: .6rem 1rem;
+    margin-right: 1.5rem;
+    border-radius: 2rem;
+}
+
+.boton-aceptar {
+    background-color: v.$verde_v1;
+    color: v.$blanco;
+    font-size: 1.6rem;
+    font-weight: bold;
+    padding: .6rem 1rem;
+    margin-left: 1.5rem;
+    border-radius: 2rem;
+}
+
+.titulo-nombre-tramite {
+    font-size: 3rem;
+    font-weight: 900;
+    line-height: 4rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+.texto-estatico-resumen-cita {
+    font-weight: bold;
+    font-size: 2.1rem;
+}
+
+.texto-dinamico-resumen-cita {
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: #8c8c8c;
+}
+
+.texto-pasos {
+    font-size: 1.9rem;
+    font-weight: 900;
+}
+
+.texto-nombre-paso {
+    font-size: 2.1rem;
+    font-weight: 300;
+}
+
+.texto-ubicacion-centros {
+    font-size: 1.3rem;
+    background-color: #e5e5e5;
+    padding: .7rem 1rem .7rem 1rem;
+    border-radius: .5rem;
+}
+
+.calendar-header {
+    border-style: solid;
+    border-color: v.$morado_m1;
+    border-width: .2rem;
+}
+
+.calendar-month {
+    font-size: 1.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 70%;
+}
+
+.previous-month {
+    width: 15%;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #CFCFCF;
+}
+
+.next-month {
+    width: 15%;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #CFCFCF;
+}
+
+.tr-header {
+    height: 4rem;
+}
+
+.calendar-day-name {
+    width: 14.28%;
+    text-transform: uppercase;
+    background-color: v.$morado_m1;
+    color: v.$blanco;
+    font-weight: 100;
+    font-size: 1.3rem;
+    padding: .2rem .2rem;
+    border-width: .1rem;
+    border-style: solid;
+    border-color: #8c8c8c;
+}
+
+.celDia {
+    color: v.$blanco;
+    background-color: v.$negro;
+}
+
+.encabezado-tabla-centros-atencion {
+    background-color: v.$morado_m1;   
+}
+
+.texto-encabezado-tabla-centros-atencion {
+    color: v.$blanco;
+    font-weight: 900;
+    font-size: 1.7rem;
+}
+
+.cuadro-disponible {
+    margin-right: .3rem;
+    border-width: .1rem;
+    border-style: solid;
+    border-color: v.$negro;
+}
+
+.cuadro-no-disponible {
+    margin-right: .3rem;
+    border-width: .1rem;
+    border-style: solid;
+    border-color: v.$negro;
+    background-color: v.$morado_m3;
+}
+
+.cuadro-sin-servicio {
+    margin-right: .3rem;
+    border-width: .1rem;
+    border-style: solid;
+    border-color: v.$negro;
+    background-color: #D33;
+}
+
+.cuadro-pasados-disponibles {
+    margin-right: .3rem;
+    border-width: .1rem;
+    border-style: solid;
+    border-color: v.$negro;
+    background-color: v.$negro;
+}
+
+.select-horario {
+    margin-top: 2rem;
+    @include m.tablet {
+        margin-top: 0;
+    }
+}
+
+.boton-cancelar-vista-confirmacion {
+    background-color: #6a73a0;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 15pt;
+    font-weight: bold;
+    padding: 6px 30px;
+    border-radius: 20px;
+}
+
+.boton-imprimir-vista-confirmacion {
+    background-color: #a4bc4b;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 15pt;
+    font-weight: bold;
+    padding: 6px 50px;
+    border-radius: 20px;
+}
+
+.boton-cerrar-modal-vista-confirmacion {
+    background-color: #6a73a0;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 6px 80px;
+    border-radius: 20px;
+}
+
+.boton-cancelar-cita-vista-confirmacion {
+    background-color: #a4bc4b;
+    color: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 6px 50px;
+    border-radius: 20px;
+}

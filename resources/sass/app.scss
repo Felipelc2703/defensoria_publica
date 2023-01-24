@@ -1,6 +1,12 @@
-@import 'variables';
-@import 'animate';
+@import 'base/variables';
+@import 'base/animate';
+@import 'base/globales';
 
-@import 'login';
-@import 'navbar';
-@import 'datatables';
+@import 'components/navbar';
+@import 'components/header';
+@import 'components/footer';
+@import 'components/datatables';
+
+@import 'layouts/login';
+@import 'layouts/home';
+@import 'layouts/crear_cita';
