@@ -44,13 +44,13 @@ class ReportesController extends Controller
 
                     switch($cita->status)
                     {
-                        case 0:
+                        case 1:
                             $objectCita->estatus = 'Reservada';
                             break;
-                        case 1:
+                        case 2:
                             $objectCita->estatus = 'Confirmada';
                             break;
-                        case 2: 
+                        case 3: 
                             $objectCita->estatus = 'Cancelada';
                     }
                     array_push($arrayReporte,$objectCita);
@@ -90,13 +90,13 @@ class ReportesController extends Controller
 
                     switch($cita->status)
                     {
-                        case 0:
+                        case 1:
                             $objectCita->estatus = 'Reservada';
                             break;
-                        case 1:
+                        case 2:
                             $objectCita->estatus = 'Confirmada';
                             break;
-                        case 2: 
+                        case 3: 
                             $objectCita->estatus = 'Cancelada';
                     }
                     array_push($arrayReporte,$objectCita);
@@ -137,13 +137,13 @@ class ReportesController extends Controller
 
                     switch($cita->status)
                     {
-                        case 0:
+                        case 1:
                             $objectCita->estatus = 'Reservada';
                             break;
-                        case 1:
+                        case 2:
                             $objectCita->estatus = 'Confirmada';
                             break;
-                        case 2: 
+                        case 3: 
                             $objectCita->estatus = 'Cancelada';
                     }
                     array_push($arrayReporte,$objectCita);
@@ -185,13 +185,13 @@ class ReportesController extends Controller
 
                     switch($cita->status)
                     {
-                        case 0:
+                        case 1:
                             $objectCita->estatus = 'Reservada';
                             break;
-                        case 1:
+                        case 2:
                             $objectCita->estatus = 'Confirmada';
                             break;
-                        case 2: 
+                        case 3: 
                             $objectCita->estatus = 'Cancelada';
                     }
                     array_push($arrayReporte,$objectCita);
@@ -232,13 +232,13 @@ class ReportesController extends Controller
 
                     switch($cita->status)
                     {
-                        case 0:
+                        case 1:
                             $objectCita->estatus = 'Reservada';
                             break;
-                        case 1:
+                        case 2:
                             $objectCita->estatus = 'Confirmada';
                             break;
-                        case 2: 
+                        case 3: 
                             $objectCita->estatus = 'Cancelada';
                     }
                     array_push($arrayReporte,$objectCita);
@@ -280,13 +280,13 @@ class ReportesController extends Controller
 
                     switch($cita->status)
                     {
-                        case 0:
+                        case 1:
                             $objectCita->estatus = 'Reservada';
                             break;
-                        case 1:
+                        case 2:
                             $objectCita->estatus = 'Confirmada';
                             break;
-                        case 2: 
+                        case 3: 
                             $objectCita->estatus = 'Cancelada';
                     }
                     array_push($arrayReporte,$objectCita);
@@ -328,13 +328,13 @@ class ReportesController extends Controller
 
                     switch($cita->status)
                     {
-                        case 0:
+                        case 1:
                             $objectCita->estatus = 'Reservada';
                             break;
-                        case 1:
+                        case 2:
                             $objectCita->estatus = 'Confirmada';
                             break;
-                        case 2: 
+                        case 3: 
                             $objectCita->estatus = 'Cancelada';
                     }
                     array_push($arrayReporte,$objectCita);
@@ -377,13 +377,13 @@ class ReportesController extends Controller
 
                     switch($cita->status)
                     {
-                        case 0:
+                        case 1:
                             $objectCita->estatus = 'Reservada';
                             break;
-                        case 1:
+                        case 2:
                             $objectCita->estatus = 'Confirmada';
                             break;
-                        case 2: 
+                        case 3: 
                             $objectCita->estatus = 'Cancelada';
                     }
                     array_push($arrayReporte,$objectCita);
