@@ -108,32 +108,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="row justify-content-around">
-                    <div class="col-sm-12 col-md-3 text-center div-texto-superior-footer">
-                        
-                    </div>
-                    <div class="col-sm-12 col-md-8 text-center div-texto-superior-footer">
-                        <div class="row justify-content-around">
-                            <div class="col-sm-12 col-md-2 text-center div-texto-superior-footer">
-                        
-                            </div>
-                            <!-- <div class="col-sm-12 col-md-8 text-center div-texto-superior-footer">
-                                <div>
-                                    <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
-                                    <ul class="lista">
-                                        <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
-                                    </ul>
-                                </div>
-                            </div> -->
-                            <div class="col-sm-12 col-md-3 text-center div-texto-superior-footer">
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-around">
+                <div class="row justify-content-around mt-6">
                     <div class="col-sm-12 col-md-4 text-center">
-                        <div class="row justify-content-around ml-8">
+                        <div class="row justify-content-around div-transparencia">
                             <div class="col-sm-12 col-md-6 text-center">
                                 <img width="150" height="100" src="./../../../public/images/logo_transparencia_footer.png" alt="">
                             </div>
@@ -147,9 +124,6 @@
                             </div>
                         </div>
                     </div>
-
-                    
-                    
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
                         <div>
                             <p class="texto-ciudad-judicial">Te Recomendamos</p>
@@ -159,24 +133,13 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
-                                <div>
-                                    <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
-                                    <ul class="lista">
-                                        <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
-                                    </ul>
-                                </div>
-                    </div>
-                    <!-- <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
                         <div>
-                            <p class="texto-ciudad-judicial">Órganos Auxiliares</p>
+                            <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
                             <ul class="lista">
-                                <li class="boton_inicio" @click="irEEFJ()">Escuela Estatal de Formación Judicial</li>
-                                <li class="boton_inicio" @click="irJusticiaAlter()">Centro Justicia Alternativa</li>
-                                <li class="boton_inicio" @click="irCentroConFam()">Centro de Convivencia Familiar</li>
-                                <li class="boton_inicio" @click="irArchivoJudi()">Archivo Judicial</li>
+                                <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
                             </ul>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
                 <div class="row justify-content-around">
                     <div class="col-auto text-center">
@@ -194,7 +157,7 @@
             </div>
             <div class="fourth-line">
                 <div class="text-center texto-final">
-                    <p>© 2022 Poder Judicial del Estado de Puebla.</p>
+                    <p>© 2023 Poder Judicial del Estado de Puebla.</p>
                 </div>
             </div>
         </footer>
@@ -358,7 +321,7 @@
             },
             logout() {
                 this.$store.dispatch('removeToken')
-                this.$store.dispatch('removerolId')
+                this.$store.dispatch('removeRolId')
                 this.$router.push('/login')
             }
         }

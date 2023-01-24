@@ -48,6 +48,10 @@ const store = createStore({
             localStorage.setItem('rol_id', payload)
             context.commit('UPDATE_rolId', payload)
         },
+        removeRolId(context) {
+            localStorage.removeItem('rol_id')
+            context.commit('UPDATE_rolId', null)
+        }
     },
     modules: {
         catalogos,

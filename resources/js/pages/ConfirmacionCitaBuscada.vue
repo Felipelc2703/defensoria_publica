@@ -12,11 +12,11 @@
             <h4 class="folio-cita">{{citaAgendada.folio}}</h4>
             <div class="first-line"></div>
             <div class="mt-6 text-center row">
-                <div class="col-sm-12 col-md-6">
-                    <button class="boton-cancelar" @click="abrirModalCancelarCita()">Cancelar Cita</button>
+                <div class="col-sm-12 col-md-6 mt-4">
+                    <button class="boton-cancelar-vista-confirmacion" @click="abrirModalCancelarCita()">Cancelar Cita</button>
                 </div>
-                <div class="col-sm-12 col-md-6">
-                    <button class="boton-imprimir" @click="imprimirCita()">Imprimir</button>
+                <div class="col-sm-12 col-md-6 mt-4">
+                    <button class="boton-imprimir-vista-confirmacion" @click="imprimirCita()">Imprimir</button>
                 </div>
             </div>
         </div>
@@ -29,17 +29,17 @@
             <v-card>
                 <div class="container mb-2">
                     <div class="text-center mt-10 mb-10">
-                        <img width="123" height="123" src="./../../../public/images/logo_calendario_cancelar.svg" alt="">
+                        <img width="123" height="123" src="./../../../public/images/logo_calendario_cancelar.png" alt="">
                     </div>
                     <div class="text-center mt-10 mb-10">
                         <p class="texto-confirmacion-cancelar-cita">¿Seguro desea cancelar su cita?</p>
                     </div>
                     <div class="mt-10 mb-10 text-center row">
-                        <div class="col-sm-12 col-md-6 text-ri">
-                            <button class="boton-cerrar-modal" @click="dialogCancelarCita = false">No!</button>
+                        <div class="col-sm-12 col-md-6 mt-4">
+                            <button class="boton-cerrar-modal-vista-confirmacion" @click="dialogCancelarCita = false">No!</button>
                         </div>
-                        <div class="col-sm-12 col-md-6 text-left">
-                            <button class="boton-cancelar-cita" @click="cancelarCita()">Si, Cancelar Cita</button>
+                        <div class="col-sm-12 col-md-6 mt-4">
+                            <button class="boton-cancelar-cita-vista-confirmacion" @click="cancelarCita()">Si, Cancelar Cita</button>
                         </div>
                     </div>
                 </div>
@@ -247,6 +247,7 @@
         margin-left: 15px;
         border-radius: 20px;
     }
+    
     .texto-fecha {
         text-transform: uppercase;
         font-weight: bold;
