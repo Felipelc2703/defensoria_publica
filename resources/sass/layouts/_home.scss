@@ -1,0 +1,92 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+.procedure-text-title {
+    color: v.$blanco;
+    font-family: v.$fuente_principal;
+    font-size: 1.8rem;
+    font-weight: 900;
+}
+
+.border-one {
+    border: none;
+    @include m.tablet {
+        border-style: none solid none none;
+        border-color: v.$gris_g4;
+        border-width: .2rem;
+        padding: 0!important;
+    }
+}
+
+.border-dos {
+    border-style: none none solid none;
+    border-color: v.$gris_g4;
+    border-width: 2px;
+}
+
+.scale-logo-defensoria {
+    transform: scale(1.8);
+}
+
+.defensoria-button {
+    background-color: #e7e7e7;
+    border-radius: 35px;
+    cursor: pointer;
+    transition: all 0.5s ease-out;
+}
+
+.defensoria-button:hover, .defensoria-button:focus {
+    background-color: v.$gris_g4;
+    color: v.$blanco;
+}
+
+.defensoria-button img {
+    height: auto;
+    width: 100%;
+}
+
+.titulo_tipo_tramite {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: v.$fuente_principal;
+}
+
+.texto-cita {
+    font-family: v.$fuente_principal;
+    font-size: 1.5rem;
+}
+
+.boton-agendar {
+    color: v.$blanco;
+    background-color: v.$verde_v1;
+    padding: .5rem 2rem;
+    border-radius: 2rem;
+    font-family: v.$fuente_principal;
+    font-size: 1.6rem;
+}
+
+.v-expansion-panel-title__icon {
+    color: v.$blanco;
+}
+
+.boton-regresar {
+    font-size: 1.2rem;
+}
+
+.whatsapp {
+    position:fixed;
+    width:60px;
+    height:60px;
+    bottom:40px;
+    right:40px;
+    background-color:#25d366;
+    color:#FFF;
+    border-radius:50px;
+    text-align:center;
+    font-size:30px;
+    z-index:100;
+}
+
+.whatsapp-icon {
+    margin-top:13px;
+}

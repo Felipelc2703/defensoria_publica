@@ -1,31 +1,31 @@
 <template>
     <div>
         <div class="row justify-content-between">
-            <div class="col-sm-9 col-12 border-uno">
+            <div class="col-md-9 col-12 border-one">
                 <div class="text-center border-dos py-2">
                     <img class="scale-logo-defensoria" width="200" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
                 </div>
                 <div v-if="showFirstOptions">
-                    <div class="row justify-content-around mt-12">
-                        <div class="col-sm-12 col-md-6 text-center">
-                            <div class="transition-button mt-4 ml-8 mr-4 text-center" @click="mostrarTipoCitas(1)">
+                    <div class="row justify-content-around mt-10">
+                        <div class="col-sm-10 col-md-6 text-center">
+                            <div class="defensoria-button mt-4 ml-8 mr-4 text-center" @click="mostrarTipoCitas(1)">
                                 <img src="./../../../public/images/boton_1.png" alt="">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 text-center">
-                            <div class="transition-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(3)">
+                        <div class="col-sm-10 col-md-6 text-center">
+                            <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(3)">
                                 <img src="./../../../public/images/boton_2.png" alt="">
                             </div>
                         </div>
                     </div>
                     <div class="row justify-content-around mb-12">
-                        <div class="col-sm-12 col-md-6 text-center">
-                            <div class="transition-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(2)">
+                        <div class="col-sm-10 col-md-6 text-center">
+                            <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(2)">
                                 <img src="./../../../public/images/boton_3.png" alt="">
                             </div>
                         </div>
-                        <div class="col-sm-12 col-md-6 text-center">
-                            <div class="transition-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(4)">
+                        <div class="col-sm-10 col-md-6 text-center">
+                            <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(4)">
                                 <img src="./../../../public/images/boton_4.png" alt="">
                             </div>
                         </div>
@@ -34,21 +34,21 @@
                 <div class="text-center mt-4 mb-4 ml-10 mr-10" v-if="showSecondOptions">
                     <div class="container">
                         <div class="row justify-content-around">
-                            <div class="col-sm-12 col-md-6 text-left">
+                            <div class="col-6 text-left">
                                 <p class="titulo_tipo_tramite">{{tipo_asunto}}</p>
                             </div>
-                            <div class="col-sm-12 col-md-6 text-right">
-                                <v-btn variant="text" prepend-icon="mdi-arrow-left" @click="volverFirstOptions">Regresar</v-btn>
+                            <div class="col-6 text-right">
+                                <v-btn class="boton-regresar" variant="text" prepend-icon="mdi-arrow-left" @click="volverFirstOptions">Regresar</v-btn>
                             </div>
                         </div>
                         <div class="mt-4">
                             <v-expansion-panels>
                                 <template v-for="(tipo_cita, index) in tipos_citas" :key="index">
                                     <v-expansion-panel>
-                                        <v-expansion-panel-title color="#6a73a0">
+                                        <v-expansion-panel-title color="#8c92bc">
                                             <v-row no-gutters>
-                                                <h6 class="font-weight-bold text-uppercase">
-                                                    <span class="text-white-custom">{{tipo_cita.nombre}}</span>
+                                                <h6 class="font-weight-bold text-uppercase text-left">
+                                                    <span class="procedure-text-title">{{tipo_cita.nombre}}</span>
                                                 </h6>
                                             </v-row>
                                         </v-expansion-panel-title>
@@ -211,91 +211,3 @@
         }
     })
 </script>
-
-<style scoped>
-    .text-white-custom {
-        color: white;
-        font-family: 'Lato', sans-serif;
-        font-size: 14pt;
-        font-weight: 900;
-    }
-
-    .border-uno {
-        border-style: none solid none none;
-        border-color: #adadad;
-        border-width: 2px;
-        padding: 0!important;
-    }
-
-    .border-dos {
-        border-style: none none solid none;
-        border-color: #adadad;
-        border-width: 2px;
-    }
-
-    .scale-logo-defensoria {
-        transform: scale(1.8);
-    }
-
-    .transition-button {
-        background-color: #e7e7e7;
-        border-radius: 35px;
-        cursor: pointer;
-        transition: all 0.5s ease-out;
-    }
-    
-    .transition-button:hover, .transition-button:focus {
-        background-color: #adadad;
-        color: #fff;
-    }
-
-    .boton_sicopep {
-        transition: all .2s ease-in-out;
-    }
-
-    .boton_sicopep:hover {
-        transform: scale(1.1);
-    }
-
-    .titulo_tipo_tramite {
-        font-size: 20px;
-        font-weight: bold;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .texto-cita {
-        font-family: 'Lato', sans-serif;
-        font-size: 15pt;
-    }
-
-    .boton-agendar {
-        color: white;
-        background-color: #a4bc4b;
-        padding: 5px 20px;
-        border-radius: 20px;
-        font-family: 'Lato', sans-serif;
-        font-size: 12pt;
-    }
-
-    .v-expansion-panel-title__icon {
-        color: white !important;
-    }
-
-    .whatsapp {
-        position:fixed;
-        width:60px;
-        height:60px;
-        bottom:40px;
-        right:40px;
-        background-color:#25d366;
-        color:#FFF;
-        border-radius:50px;
-        text-align:center;
-        font-size:30px;
-        z-index:100;
-      }
-      
-      .whatsapp-icon {
-        margin-top:13px;
-      }
-</style>

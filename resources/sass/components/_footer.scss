@@ -1,0 +1,88 @@
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
+
+.third-line {
+    background-color: v.$verde_v2;
+    height: .5rem;
+}
+
+.footer-info {
+    background-color: #646569;
+}
+
+.texto-ciudad-judicial {
+    margin-top: 1rem;
+    color: white;
+    font-weight: 900;
+    font-size: 1.8rem;
+    padding-left: 6rem;
+    padding-inline: 6rem;
+    font-family: v.$fuente_principal;
+    text-align: center;
+    @include m.tablet {
+        text-align: left;
+    }
+}
+
+.texto-direccion {
+    color: white;
+    font-size: 1.4rem;
+    padding-left: 6rem;
+    padding-right: 6rem;
+    text-align: justify;
+    line-height: 1.8rem;
+    font-family: v.$fuente_principal;
+    @include m.tablet {
+        text-align: left;
+        padding-right: 12rem;
+    }
+}
+
+.div-texto-superior-footer {
+    padding-top: 1.2rem;
+}
+
+.lista{
+    text-align: left;
+    color: white;
+    font-size: 1.4rem;
+    padding-left: 6rem;
+    padding-right: 5rem;
+    line-height: 1.8rem;
+    margin-left: 1.4rem;
+    font-family: v.$fuente_principal;
+}
+
+.lista-dos {
+    color: v.$blanco;
+    font-size: 1.4rem;
+    text-align: left;
+    font-family: v.$fuente_principal;
+}
+
+.fourth-line {
+    background-color: #353535;
+    height: 4rem;
+}
+
+.texto-final {
+    padding-top: .8rem;
+    color: white;
+    font-size: 1.4rem;
+}
+
+.boton_inicio {
+    cursor: pointer;
+}
+
+.div-transparencia {
+    // margin-left: 28px;
+    margin-left: 7rem;
+    margin-right: 7rem;
+    @include m.tablet {
+        margin-left: 2.8rem;
+        margin-right: 0;
+    }
+}
+
+// 80 - 223 224 es el nuevo
