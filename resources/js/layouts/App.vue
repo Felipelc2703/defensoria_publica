@@ -137,6 +137,14 @@
                             <div class="col-sm-12 col-md-6 text-center">
                                 <img width="150" height="100" src="./../../../public/images/logo_transparencia_footer.png" alt="">
                             </div>
+                            <div class="col-sm-8 col-md-6 text-center">
+                                <ul class="lista-dos">
+                                    <li>INFORMACIÓN PÚBLICA / DENUNCIAS</li>
+                                    <li>SOLICITUDES</li>
+                                    <li>RECURSOS</li>
+                                    <li>BUSCADOR</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -172,7 +180,7 @@
                 </div>
                 <div class="row justify-content-around">
                     <div class="col-auto text-center">
-                        <p class="texto-ciudad-judicial">Aviso de Privacidad</p>
+                        <p class="texto-ciudad-judicial boton_inicio" @click="verAviso()">Aviso de Privacidad</p>
                     </div>
                 </div>
                 <div class="row justify-content-around">
@@ -191,6 +199,29 @@
             </div>
         </footer>
     </v-app>
+    <v-dialog v-model="dialog" max-width="600px">
+        <v-card>
+            <v-card-title>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-container>
+                <div align="center" style="background-color:black;width:100%; height:500px">
+                    <!-- <embed style="width:95%;height:100%" :src="archivo" type="application/pdf"> -->
+                    <iframe src='Avisoprivacidad.pdf' frameborder="0" width="100%" height="100%"></iframe>
+                </div>
+            </v-container>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+                <v-btn
+                    variant="flat"
+                    color="error"
+                    @click="cerrarDialog()"
+                >
+                    Cerrar
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
@@ -205,6 +236,8 @@
                     folio: '',
                 },
                 alert_cita_no_encontrada: false,
+                dialog: false,
+                aviso:'',
             }
         },
         created() {
@@ -223,6 +256,7 @@
             rolId() {
                 return this.$store.getters.getrolId
             },
+            
         },
         methods: {
             irLogin() {
@@ -237,6 +271,7 @@
                             this.$store.commit('setCatalogoTramitesTipo2', response.data.tramites_tipo_2)
                             this.$store.commit('setCatalogoTramitesTipo3', response.data.tramites_tipo_3)
                             this.$store.commit('setCatalogoTramitesTipo4', response.data.tramites_tipo_4)
+                            this.aviso = response.data.aviso
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
@@ -289,6 +324,12 @@
             },
             irCatalogoUSuarios() {
                 this.$router.push('/catalogo-usuarios')
+            },
+            verAviso() {
+                this.dialog = true
+            },
+            cerrarDialog(){
+                this.dialog = false
             },
             async buscarCita() {
                 this.buscar_cita.folio = this.$store.state.buscarCita

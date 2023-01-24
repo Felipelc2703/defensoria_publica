@@ -204,6 +204,7 @@ class TramiteController extends Controller
                 array_push($tramites_tipo_4, $object);
             }
 
+
             return response()->json([
                 "status" => "ok",
                 "message" => "Catalogo de tramites para agendar citas obtenido con éxito.",
