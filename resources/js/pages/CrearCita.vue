@@ -626,6 +626,10 @@
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
                                         cel_dia.className = 'eliminar-color'
+                                        setTimeout(() => {
+                                            this.showNext = true
+                                            this.showPrevious = true
+                                        }, "200")
                                     }
                                 }
                             }
@@ -664,6 +668,10 @@
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
                                         cel_dia.className = 'eliminar-color'
+                                        setTimeout(() => {
+                                            this.showNext = true
+                                            this.showPrevious = true
+                                        }, "200")
                                     }
                                 }
                             }
@@ -702,6 +710,10 @@
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
                                         cel_dia.className = 'eliminar-color'
+                                        setTimeout(() => {
+                                            this.showNext = true
+                                            this.showPrevious = true
+                                        }, "200")
                                     }
                                 }
                             }
@@ -741,6 +753,10 @@
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
                                         cel_dia.className = 'eliminar-color'
+                                        setTimeout(() => {
+                                            this.showNext = true
+                                            this.showPrevious = true
+                                        }, "200")
                                     }
                                 }
                             }
@@ -779,6 +795,10 @@
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
                                         cel_dia.className = 'eliminar-color'
+                                        setTimeout(() => {
+                                            this.showNext = true
+                                            this.showPrevious = true
+                                        }, "200")
                                     }
                                 }
                             }
@@ -817,6 +837,10 @@
                                         this.cita.fecha_formateada = e.fecha_formateada
                                         cel_dia.style.backgroundColor = '#CDCDD1'
                                         cel_dia.className = 'eliminar-color'
+                                        setTimeout(() => {
+                                            this.showNext = true
+                                            this.showPrevious = true
+                                        }, "200")
                                     }
                                 }
                             }
