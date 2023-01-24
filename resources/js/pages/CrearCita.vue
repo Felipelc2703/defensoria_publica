@@ -522,6 +522,8 @@
                 })
                 this.mostrarPaso3 = true
                 this.panel = [2]
+                this.showNext = true
+                this.showPrevious = true
             },
         },
         methods: {
