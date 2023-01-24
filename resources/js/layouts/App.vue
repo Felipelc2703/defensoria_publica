@@ -14,7 +14,7 @@
             <div>
                 <div class="row justify-content-between">
                     <div class="col-sm-6 col-12">
-                        <div class="ml-16">
+                        <div class="div-logo-citas">
                             <img class="boton_inicio" @click="irInicio()" width="200" height="75" src="../../../public/images/logo_citas_en_linea.svg" alt="">
                         </div>
                     </div>
@@ -22,7 +22,7 @@
                         <div class="div-buscar-cita" v-if="token == 0">
                             <label class="label-buscar-cita" for="buscar-cita">Si usted ya cuenta con una cita y desea imprimir su confirmación o cancelarla, ingrese a continuación su número de folio.</label>
                             <div class="row justify-content-between">
-                                <div class="col-sm-9 col-12">
+                                <div class="col-sm-9 col-12 div-input-buscar-cita">
                                     <div id="input_container">
                                         <input autocomplete="off" id="buscar-cita" type="text" class="input-buscar-cita" @keyup.enter="buscarCita()" v-model="this.$store.state.buscarCita">
                                         <img width="100" height="100" src="../../../public/images/lupa.png" id="input_img">
@@ -301,158 +301,3 @@
         }
     })
 </script>
-
-<style scoped>
-    .background-header {
-        background-color: #6a73a0;
-    }
-
-    .background-footer {
-        background-color: #353535;
-        color: white;
-    }
-
-    .first-line {
-        background-color: #b1bced;
-        height: 5px;
-    }
-
-    .button-usuarios {
-        background-color: #6a73a0;
-        color: white;
-        padding: 2px 10px 2px 30px;
-        border-radius: 0 0 0 25px;
-        font-size: 12px;
-    }
-
-    .label-buscar-cita {
-        text-align: left;
-        font-size: 14px;
-        font-weight: bold;
-        line-height: 16px;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .input-buscar-cita {
-        padding: 10px;
-        background-color: #e5e5e5;
-        border-radius: 5px;
-        width: 100%;
-        text-decoration: none!important;
-        height: 30px;
-    }
-
-    .input-buscar-cita:focus {
-        outline: none;
-    }
-
-    .div-buscar-cita {
-        margin-left: 10px;
-        margin-right: 65px;
-    }
-
-    .button-buscar-cita {
-        color: white;
-        background-color: #353535;
-        padding: 3px 10px;
-        border-radius: 5px;
-    }
-
-    .second-line {
-        margin-top: 15px;
-        background-color: #c4f45d;
-        height: 5px;
-    }
-
-    .scale-logo-principal {
-        transform: scale(1.3);
-    }
-
-    .third-line {
-        background-color: #c4f45d;
-        height: 5px;
-    }
-
-    .footer-info {
-        background-color: #646569;
-    }
-
-    .texto-ciudad-judicial {
-        margin-top: 10px;
-        text-align: left;
-        color: white;
-        font-weight: 900;
-        font-size: 18px;
-        padding-left: 60px;
-        padding-inline: 60px;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .texto-direccion {
-        text-align: left;
-        color: white;
-        font-size: 14px;
-        padding-left: 60px;
-        padding-right: 120px;
-        text-align: justify;
-        line-height: 18px;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .div-texto-superior-footer {
-        padding-top: 12px;
-    }
-
-    .lista{
-        text-align: left;
-        color: white;
-        font-size: 14px;
-        padding-left: 60px;
-        padding-right: 50px;
-        line-height: 18px;
-        margin-left: 14px;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .lista-dos {
-        color: white;
-        font-size: 14px;
-        text-align: left;
-        font-family: 'Lato', sans-serif;
-    }
-
-    .fourth-line {
-        background-color: #353535;
-        height: 30px;
-    }
-
-    .texto-final {
-        color: white;
-        font-size: 20px;
-    }
-
-    .icon {
-        padding-right: 25px;
-        background: url("./../../../public/images/lupa.png") no-repeat right;
-        background-size: 20px;
-        background-color: #e5e5e5;
-    }
-
-    #input_container { 
-        position:relative;
-        padding:0;
-        margin:0;
-    }
-
-    #input_img {
-        position:absolute;
-        bottom:5px;
-        right:10px;
-        width:20px;
-        height:20px;
-    }
-
-    .boton_inicio {
-        cursor: pointer;
-    }
-</style>

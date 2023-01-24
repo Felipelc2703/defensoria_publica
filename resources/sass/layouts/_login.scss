@@ -1,43 +1,5 @@
-@use 'variables' as v;
-@use 'mixins' as m;
-
-html {
-    height: 100%;
-    font-size: 62.5%;
-}
-
-body {
-    font-family: v.$fuente_principal;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
-    // background-color: v.$gris_g1;
-    color: v.$blanco;
-    font-size: 1.6rem;
-}
-
-a:link, a:visited, a:active a {
-    text-decoration: none;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    color: v.$gris_g1;
-    text-align: center;
-}
-
-h1 {
-    font-size: 3.8rem;
-    margin: 0.67em 0;
-}
-h2 {
-    font-size: 3.4rem;
-}
-h3 {
-    font-size: 3rem;
-}
-h4 {
-    font-size: 2.6rem;
-}
+@use '../base/variables' as v;
+@use '../base/mixins' as m;
 
 .conteiner-seg {
     @include m.tablet {
@@ -48,7 +10,7 @@ h4 {
         background-image: url(../../public/images/background.png);
         background-size: cover;
         background-position: center center;
-        height: 10rem;   
+        height: 18rem;
         @include m.tablet {
             height: auto;
         }
