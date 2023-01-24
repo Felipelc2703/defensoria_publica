@@ -14,6 +14,7 @@ use App\Http\Controllers\RequisitoController;
 use App\Http\Controllers\TipoTramiteController;
 use App\Http\Controllers\CentroAtencionController;
 use App\Http\Controllers\NumeroContactoController;
+use App\Http\Controllers\ReportesController;
 
 
 
@@ -101,3 +102,10 @@ Route::post('/horarios/actualizar-horario-citas', [DiaController::class, 'actual
 
 //Actualizar estatus cita y motivo*
 Route::post('/citas/citas-del-dia', [CitaController::class, 'guardarCambios']);
+
+Route::post('/reportes/generar-reporte', [ReportesController::class, 'generarReporte']);
+Route::post('/reportes/exportar-reporte-citas', [ReportesController::class, 'exportarExcel']);
+
+
+// Route::get('/cancelar-cita/{id}', [CitaController::class, 'cancelarCita']);
+// Route::get('/reportes/exportar-reporte-citas/{citas}', [ReportesController::class, 'exportarExcel']);
