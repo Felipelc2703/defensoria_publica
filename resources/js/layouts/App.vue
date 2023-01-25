@@ -162,7 +162,8 @@
             </div>
         </footer>
     </v-app>
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px" persistent>
+    
         <v-card>
             <v-card-title>
             </v-card-title>

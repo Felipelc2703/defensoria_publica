@@ -32,3 +32,17 @@ createApp(App)
     .use(vuetify)
     .component('EasyDataTable', Vue3EasyDataTable)
     .mount("#app")
+
+    new Vue({
+        router,
+      store
+    }).$mount('#app')
+    
+    
+    ga('set', 'page', router.currentRoute.path);
+    ga('send', 'pageview');
+    
+    router.afterEach(( to, from ) => {
+      ga('set', 'page', to.path);
+      ga('send', 'pageview');
+    });
