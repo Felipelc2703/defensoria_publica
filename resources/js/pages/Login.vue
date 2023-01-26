@@ -18,7 +18,7 @@
                         <input type="password" name="password" id="password" class="form-control form-control-lg pass" autocomplete="off" placeholder="Contraseña" required v-model="form.password" @keyup.enter="login()">
                     </div>       
                 </div>
-                <div class="form-group" style="transform: scale(0.7)">
+                <div class="form-group">
                     <vue-recaptcha v-show="showRecaptcha" sitekey="6Le_MiMkAAAAAJKlciazcCmGFGkucFy0NYWdbzaU"
                             @verify="recaptchaVerified"
                             @expire="recaptchaExpired"

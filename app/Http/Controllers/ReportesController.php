@@ -16,6 +16,8 @@ class ReportesController extends Controller
             {
                 $citas = Cita::where('fecha_cita', '>=', $request->fecha_inicio)
                             ->where('fecha_cita', '<=', $request->fecha_final)
+                            ->orderBy('fecha_cita', 'asc')
+                            ->orderBy('hora_cita', 'asc')
                             ->get();
 
                 $arrayReporte = array();
@@ -62,6 +64,8 @@ class ReportesController extends Controller
                 $citas = Cita::where('fecha_cita', '>=', $request->fecha_inicio)
                             ->where('fecha_cita', '<=', $request->fecha_final)
                             ->where('status',$request->estatus)
+                            ->orderBy('fecha_cita', 'asc')
+                            ->orderBy('hora_cita', 'asc')
                             ->get();
 
                 $arrayReporte = array();
@@ -109,6 +113,8 @@ class ReportesController extends Controller
                 $citas = Cita::where('fecha_cita', '>=', $request->fecha_inicio)
                             ->where('fecha_cita', '<=', $request->fecha_final)
                             ->where('tramite_id',$request->tramite_id)
+                            ->orderBy('fecha_cita', 'asc')
+                            ->orderBy('hora_cita', 'asc')
                             ->get();
 
                 $arrayReporte = array();
@@ -157,6 +163,8 @@ class ReportesController extends Controller
                             ->where('fecha_cita', '<=', $request->fecha_final)
                             ->where('tramite_id',$request->tramite_id)
                             ->where('status',$request->estatus)
+                            ->orderBy('fecha_cita', 'asc')
+                            ->orderBy('hora_cita', 'asc')
                             ->get();
 
                 $arrayReporte = array();
@@ -204,6 +212,8 @@ class ReportesController extends Controller
                 $citas = Cita::where('fecha_cita', '>=', $request->fecha_inicio)
                             ->where('fecha_cita', '<=', $request->fecha_final)
                             ->where('centro_atencion_id',$request->oficina_id)
+                            ->orderBy('fecha_cita', 'asc')
+                            ->orderBy('hora_cita', 'asc')
                             ->get();
 
                 $arrayReporte = array();
@@ -252,6 +262,8 @@ class ReportesController extends Controller
                             ->where('fecha_cita', '<=', $request->fecha_final)
                             ->where('centro_atencion_id',$request->oficina_id)
                             ->where('status',$request->estatus)
+                            ->orderBy('fecha_cita', 'asc')
+                            ->orderBy('hora_cita', 'asc')
                             ->get();
 
                 $arrayReporte = array();
@@ -300,6 +312,8 @@ class ReportesController extends Controller
                             ->where('fecha_cita', '<=', $request->fecha_final)
                             ->where('centro_atencion_id',$request->oficina_id)
                             ->where('tramite_id',$request->tramite_id)
+                            ->orderBy('fecha_cita', 'asc')
+                            ->orderBy('hora_cita', 'asc')
                             ->get();
 
                 $arrayReporte = array();
@@ -349,6 +363,8 @@ class ReportesController extends Controller
                             ->where('centro_atencion_id',$request->oficina_id)
                             ->where('tramite_id',$request->tramite_id)
                             ->where('status',$request->estatus)
+                            ->orderBy('fecha_cita', 'asc')
+                            ->orderBy('hora_cita', 'asc')
                             ->get();
 
                 $arrayReporte = array();

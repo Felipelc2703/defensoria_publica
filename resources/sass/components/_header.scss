@@ -20,14 +20,14 @@
     color: white;
     padding: .2rem 1rem .2rem 3rem;
     border-radius: 0 0 0 2.5rem;
-    font-size: 1.2rem;
+    // font-size: 1.2rem;
 }
 
 .label-buscar-cita {
     text-align: justify;
-    font-size: 1.4rem;
+    font-size: 0.9rem;
     font-weight: bold;
-    line-height: 1.6rem;
+    // line-height: 1.6rem;
     font-family: v.$fuente_principal;
     padding-bottom: .5rem;
     @include m.tablet {
@@ -41,7 +41,7 @@
     border-radius: .5rem;
     width: 100%;
     text-decoration: none!important;
-    height: 3rem;
+    height: 1rem;
 }
 
 
@@ -103,4 +103,20 @@
     right:10px;
     width:20px;
     height:20px;
+}
+.swal2-popup{
+    font-size: 0.8rem;
+}
+
+.page-link{
+    padding: 0.75rem 0.7rem;
+    font-size: 0.9rem;
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
 }

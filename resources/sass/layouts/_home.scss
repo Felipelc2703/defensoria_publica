@@ -4,7 +4,7 @@
 .procedure-text-title {
     color: v.$blanco;
     font-family: v.$fuente_principal;
-    font-size: 1.8rem;
+    // font-size: 1.8rem;
     font-weight: 900;
 }
 
@@ -42,18 +42,18 @@
 
 .defensoria-button img {
     height: auto;
-    width: 100%;
+    width: auto;
 }
 
 .titulo_tipo_tramite {
-    font-size: 2rem;
+    font-size: 1.3rem;
     font-weight: bold;
     font-family: v.$fuente_principal;
 }
 
 .texto-cita {
     font-family: v.$fuente_principal;
-    font-size: 1.5rem;
+    // font-size: 1rem;
 }
 
 .boton-agendar {
@@ -62,7 +62,7 @@
     padding: .5rem 2rem;
     border-radius: 2rem;
     font-family: v.$fuente_principal;
-    font-size: 1.6rem;
+    // font-size: 1.6rem;
 }
 
 .v-expansion-panel-title__icon {
@@ -70,7 +70,7 @@
 }
 
 .boton-regresar {
-    font-size: 1.2rem;
+    // font-size: 1.2rem;
 }
 
 .whatsapp {
@@ -90,3 +90,8 @@
 .whatsapp-icon {
     margin-top:13px;
 }
+
+.dropdown-item{
+    font-size: 0.8rem;
+}
+

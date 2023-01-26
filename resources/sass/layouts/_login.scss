@@ -85,7 +85,7 @@
     color: v.$gris_g1;
     text-transform: uppercase;
     border: none;
-    font-size: 1.7rem;
+    font-size: 0.7rem;
     font-weight:500;
     margin: 0 auto;
     @include m.telefono {
@@ -99,4 +99,7 @@
 
 .titulo-bienvenido {
     color: white;
+}
+.form-control-lg{
+    font-size: 0.8rem;
 }
