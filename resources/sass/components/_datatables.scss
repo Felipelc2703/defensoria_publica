@@ -62,7 +62,7 @@
     padding: 8px;
     line-height: 1.25rem;
     border-radius: 0.375rem;
-    font-size: 1.8rem;
+    font-size: 0.8rem;
     width: 30rem;
     border: 1px solid rgb(209, 213, 219);
 }
@@ -84,7 +84,7 @@
     text-transform: uppercase;
     text-align: center;
     color: #eaeaed;
-    font-size: 1.4rem;
+    font-size: 0.8rem;
     font-weight: bold;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .texto-campo-table {
-    font-size: 1.3rem;
+    font-size: 0.8rem;
 }
 
 .text-resultados {
@@ -126,7 +126,11 @@
     font-weight: bold;
     font-size: 15px;
 }
-
+@media only screen and (max-width: 768px) {
+    .buscador-data-table input {
+        width: 20rem;
+    }
+}
 @media only screen and (max-width: 480px) {
     .hidden-column {
         display: none;
@@ -142,8 +146,10 @@
     .ocultar-titulo {
         border: none!important;
     }
+    .buscador-data-table input {
+        width: 10rem;
+    }
 }
-
 .ocultar-titulo {
     background-color: white!important;
     border: none!important;
@@ -151,6 +157,6 @@
 
 .boton-nuevo {
     color: #fff;
-    padding: 1rem!important;
+    // padding: 1rem!important;
     font-weight: bold!important;
 }

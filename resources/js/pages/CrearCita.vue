@@ -3,7 +3,7 @@
         <div class="row contenedor">
             <div class="col-sm-9 col-12 contenedor-uno">
                 <div class="text-center py-2">
-                    <img class="scale-logo-defensoria" width="200" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
+                    <img class="scale-logo-defensoria logo-defensoria" width="150" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
                 </div>
             </div>
             <div class="col-sm-3 hidden-xs contenedor-dos">

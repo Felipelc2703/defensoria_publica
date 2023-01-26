@@ -111,3 +111,4 @@ Route::post('/reportes/exportar-reporte-citas', [ReportesController::class, 'exp
 
 // Route::get('/cancelar-cita/{id}', [CitaController::class, 'cancelarCita']);
 // Route::get('/reportes/exportar-reporte-citas/{citas}', [ReportesController::class, 'exportarExcel']);
+

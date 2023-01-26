@@ -209,7 +209,7 @@
                             </div>
                             <div>
                                 <nav aria-label="Page navigation example">
-                                    <ul class="pagination pagination-lg justify-content-center">
+                                    <ul class="pagination justify-content-center">
                                         <li class="page-item cursor-paginator" @click="getFirstPage()">
                                             <a class="page-link" aria-label="Previous">
                                                 <span aria-hidden="true">&lt;&lt;</span>

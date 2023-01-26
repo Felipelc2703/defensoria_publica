@@ -11,12 +11,13 @@
 }
 
 .texto-ciudad-judicial {
+    margin-bottom: 0;
     margin-top: 1rem;
     color: white;
     font-weight: 900;
-    font-size: 1.8rem;
-    padding-left: 6rem;
-    padding-inline: 6rem;
+    // font-size: 1.8rem;
+    // padding-left: 6rem;
+    // padding-inline: 6rem;
     font-family: v.$fuente_principal;
     text-align: center;
     @include m.tablet {
@@ -26,15 +27,15 @@
 
 .texto-direccion {
     color: white;
-    font-size: 1.4rem;
-    padding-left: 6rem;
-    padding-right: 6rem;
+    // font-size: 1.4rem;
+    // padding-left: 6rem;
+    // padding-right: 6rem;
     text-align: justify;
-    line-height: 1.8rem;
+    line-height: 1.4;
     font-family: v.$fuente_principal;
     @include m.tablet {
         text-align: left;
-        padding-right: 12rem;
+        // padding-right: 12rem;
     }
 }
 
@@ -45,9 +46,9 @@
 .lista{
     text-align: left;
     color: white;
-    font-size: 1.4rem;
-    padding-left: 6rem;
-    padding-right: 5rem;
+    // font-size: 1.4rem;
+    // padding-left: 6rem;
+    // padding-right: 5rem;
     line-height: 1.8rem;
     margin-left: 1.4rem;
     font-family: v.$fuente_principal;
@@ -55,20 +56,24 @@
 
 .lista-dos {
     color: v.$blanco;
-    font-size: 1.4rem;
+    // font-size: 1.4rem;
     text-align: left;
     font-family: v.$fuente_principal;
 }
 
 .fourth-line {
     background-color: #353535;
-    height: 4rem;
+    height: 2.5rem;
 }
 
 .texto-final {
     padding-top: .8rem;
     color: white;
-    font-size: 1.4rem;
+    // font-size: 1.4rem;
+}
+.texto-final p {
+    font-size: 0.8rem;
+    margin-bottom: 0;
 }
 
 .boton_inicio {
@@ -85,4 +90,18 @@
     }
 }
 
+.trans-logo{
+    width: 200px; 
+    height: auto;
+    @include m.telefono {
+        width: 300px;
+    }
+}
+.separador{
+    margin-top: 1.5rem;
+}
+.margenes{
+    margin-left: 0;
+    margin-right: 0;
+}
 // 80 - 223 224 es el nuevo

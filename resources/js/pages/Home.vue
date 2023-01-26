@@ -1,32 +1,32 @@
 <template>
-    <div>
+    <div class="container-fluid">
         <div class="row justify-content-between">
             <div class="col-md-9 col-12 border-one">
                 <div class="text-center border-dos py-2">
-                    <img class="scale-logo-defensoria" width="200" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
+                    <img class="scale-logo-defensoria logo-defensoria" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
                 </div>
                 <div v-if="showFirstOptions">
                     <div class="row justify-content-around mt-10">
                         <div class="col-sm-10 col-md-6 text-center">
-                            <div class="defensoria-button mt-4 ml-8 mr-4 text-center" @click="mostrarTipoCitas(1)">
-                                <img src="./../../../public/images/boton_1.png" alt="">
+                            <div class="defensoria-button mt-4 ml-8 mr-4 text-center " @click="mostrarTipoCitas(1)">
+                                <img class="p-3" src="./../../../public/images/boton_1.png" alt="">
                             </div>
                         </div>
                         <div class="col-sm-10 col-md-6 text-center">
                             <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(3)">
-                                <img src="./../../../public/images/boton_2.png" alt="">
+                                <img class="p-3" src="./../../../public/images/boton_2.png" alt="">
                             </div>
                         </div>
                     </div>
                     <div class="row justify-content-around mb-12">
                         <div class="col-sm-10 col-md-6 text-center">
                             <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(2)">
-                                <img src="./../../../public/images/boton_3.png" alt="">
+                                <img class="p-3" src="./../../../public/images/boton_3.png" alt="">
                             </div>
                         </div>
                         <div class="col-sm-10 col-md-6 text-center">
                             <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarTipoCitas(4)">
-                                <img src="./../../../public/images/boton_4.png" alt="">
+                                <img class="p-3" src="./../../../public/images/boton_4.png" alt="">
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,8 @@
 @use 'mixins' as m;
 
 html {
-    font-size: 62.5%;
+    font-size: 1.2rem;
+    // font-size: 62.5%;
     box-sizing:  border-box;
 }
 
@@ -14,7 +15,7 @@ html {
 
 body {
     font-family: v.$fuente_principal;
-    font-size: 1.6rem;
+    // font-size: 1.6rem;
 }
 
 a:link, a:visited, a:active a {
@@ -27,18 +28,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 3.8rem;
+    // font-size: 3.8rem;
     margin: 0.67em 0;
 }
 
 h2 {
-    font-size: 3.4rem;
+    font-size: 2rem;
 }
 
 h3 {
-    font-size: 3rem;
+    font-size: 2rem;
 }
 
 h4 {
-    font-size: 2.6rem;
+    font-size: 2rem;
 }

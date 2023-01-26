@@ -11,7 +11,7 @@
                 <button class="button-usuarios" @click="irLogin()" v-if="token == 0">Usuarios</button>
                 <button class="button-usuarios" @click="logout()" v-else>Cerrar Sesión</button>
             </div>
-            <div>
+            <div class="container-fluid">
                 <div class="row justify-content-between">
                     <div class="col-sm-6 col-12">
                         <div class="div-logo-citas">
@@ -90,15 +90,24 @@
 
         <footer v-if="currentRoute != 'Login'">
             <div class="third-line"></div>
-            <div class="footer-info">
-                <div class="row justify-content-around">
+            <div class="footer-info container-fluid">
+                <div class="row justify-content-around margenes">
                     <div class="col-sm-12 col-md-4 text-center">
                         <img width="200" height="170" src="./../../../public/images/logo_pf_footer.svg" alt="">
+                        <div class="col-sm-12 col-md-12 text-center separador">
+                                <img class="trans-logo" src="./../../../public/images/transparencia.png" alt="">
+                        </div>
                     </div>
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
                         <div>
                             <p class="texto-ciudad-judicial">Ciudad Judicial Siglo XXI</p>
                             <p class="texto-direccion boton_inicio" @click="irUbiCiudadJudicial()">Periférico Ecológico Arco Sur No. 4000 San Andrés Cholula, Puebla. Reserva Territorial Atlixcáyotl, Teléfono (222) 223-84-00</p>
+                        </div>
+                        <div class="separador">
+                            <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
+                            <ul class="lista">
+                                <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
@@ -106,41 +115,15 @@
                             <p class="texto-ciudad-judicial">Centro de Justicia</p>
                             <p class="texto-direccion boton_inicio" @click="irUbiCentroJusticia()">Prolongación de la Avenida 11 Sur No. 11921, Colonia: ExHacienda Castillotla, Teléfono. (222) 213 7370. C.P. 72498.</p>
                         </div>
-                    </div>
-                </div>
-                <div class="row justify-content-around mt-6">
-                    <div class="col-sm-12 col-md-4 text-center">
-                        <div class="row justify-content-around div-transparencia">
-                            <div class="col-sm-12 col-md-6 text-center">
-                                <img width="150" height="100" src="./../../../public/images/logo_transparencia_footer.png" alt="">
-                            </div>
-                            <div class="col-sm-8 col-md-6 text-center">
-                                <ul class="lista-dos">
-                                    <li>INFORMACIÓN PÚBLICA / DENUNCIAS</li>
-                                    <li>SOLICITUDES</li>
-                                    <li>RECURSOS</li>
-                                    <li>BUSCADOR</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
-                        <div>
+                        <div class="separador">
                             <p class="texto-ciudad-judicial">Te Recomendamos</p>
                             <ul class="lista">
                                 <li class="boton_inicio" @click="irPj()">Poder Judicial del Estado de Puebla</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
-                        <div>
-                            <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
-                            <ul class="lista">
-                                <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
+                
                 <div class="row justify-content-around">
                     <div class="col-auto text-center">
                         <p class="texto-ciudad-judicial boton_inicio" @click="verAviso()">Aviso de Privacidad</p>
@@ -162,7 +145,8 @@
             </div>
         </footer>
     </v-app>
-    <v-dialog v-model="dialog" max-width="600px">
+    <v-dialog v-model="dialog" max-width="600px" persistent>
+    
         <v-card>
             <v-card-title>
             </v-card-title>

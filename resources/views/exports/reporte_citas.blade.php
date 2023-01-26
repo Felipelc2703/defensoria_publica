@@ -15,9 +15,12 @@
                 <th>NOMBRE INTERESADO</th>
                 <th></th>
                 <th></th>
+                <th>SEXO</th>
+                <th></th>
+                <th></th>
                 <th>CORREO</th>
                 <th></th>
-                <th>TELEFÓNO</th>
+                <th>TELÉFONO</th>
                 <th></th>
                 <th>TRÁMITE</th>
                 <th></th>
@@ -48,6 +51,9 @@
                 <tr>
                     <td>{{$cita['folio']}}</td>
                     <td>{{$cita['nombre_contribuyente']}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{$cita['sexo']}}</td>
                     <td></td>
                     <td></td>
                     <td>{{$cita['correo']}}</td>
