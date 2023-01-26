@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cita;
 
+use PDF;
+
 use App\Exports\ReporteExport;
 
 class ReportesController extends Controller
@@ -442,4 +444,24 @@ class ReportesController extends Controller
         // ], 500);
         return (new ReporteExport($citas,$contador))->download('reporte.xlsx');
     }
+
+
+    public function pasarPDF()
+    {
+        // PDF:: = new Pdf();
+        PDF::SetMargins(PDF_MARGIN_LEFT, 40, PDF_MARGIN_RIGHT);
+        PDF::SetAutoPageBreak(true, 40);
+
+        // add a page
+        PDF::AddPage();
+
+        // get external file content
+        $utf8text = file_get_contents('tcpdf/examples/data/utf8test.txt', true);
+
+        PDF::-SetFont('freeserif', '', 12);
+        // now write some text above the imported page
+        PDF::-Write(5, $utf8text);
+
+        PDF::-Output('generated.pdf', 'I');
+            }
 }

@@ -113,7 +113,7 @@ class CitaController extends Controller
                     {
                         $folio = $folio."ACF000".$cita->id;
                     }
-                    if($cita->id > 10 && $cita->id < 100)
+                    if($cita->id >= 10 && $cita->id < 100)
                     {
                         $folio = $folio."ACF00".$cita->id;
                     }
@@ -132,7 +132,7 @@ class CitaController extends Controller
                     {
                         $folio = $folio."AA000".$cita->id;
                     }
-                    if($cita->id > 10 && $cita->id < 100)
+                    if($cita->id >= 10 && $cita->id < 100)
                     {
                         $folio = $folio."AA00".$cita->id;
                     }
@@ -151,7 +151,7 @@ class CitaController extends Controller
                     {
                         $folio = $folio."AL000".$cita->id;
                     }
-                    if($cita->id > 10 && $cita->id < 100)
+                    if($cita->id >= 10 && $cita->id < 100)
                     {
                         $folio = $folio."AL00".$cita->id;
                     }
@@ -171,7 +171,7 @@ class CitaController extends Controller
                     {
                         $folio = $folio."ES000".$cita->id;
                     }
-                    if($cita->id > 10 && $cita->id < 100)
+                    if($cita->id >= 10 && $cita->id < 100)
                     {
                         $folio = $folio."ES00".$cita->id;
                     }
@@ -502,43 +502,170 @@ class CitaController extends Controller
     public function getReporteGraficas(Request $request)
     {
         try {
-            $reservadas = Cita::where('centro_atencion_id', $request->centro_atencion_id)
-                            ->where('fecha_cita', '>=', $request->fecha_inicio)
-                            ->where('fecha_cita', '<=', $request->fecha_fin)
-                            ->where('status', 1)
-                            ->count();
+            if($request->centro_atencion_id == 9999 && $request->tramite_id == 9999)
+            {
+                $reservadas = Cita::where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 1)
+                                ->count();
 
-            $atendidas = Cita::where('centro_atencion_id', $request->centro_atencion_id)
-                            ->where('fecha_cita', '>=', $request->fecha_inicio)
-                            ->where('fecha_cita', '<=', $request->fecha_fin)
-                            ->where('status', 2)
-                            ->count();
+                $atendidas = Cita::where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 2)
+                                ->count();
 
-            $canceladas = Cita::where('centro_atencion_id', $request->centro_atencion_id)
-                            ->where('fecha_cita', '>=', $request->fecha_inicio)
-                            ->where('fecha_cita', '<=', $request->fecha_fin)
-                            ->where('status', 3)
-                            ->count();
+                $canceladas = Cita::where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 3)
+                                ->count();
 
-            $total = Cita::where('centro_atencion_id', $request->centro_atencion_id)
-                            ->where('fecha_cita', '>=', $request->fecha_inicio)
-                            ->where('fecha_cita', '<=', $request->fecha_fin)
-                            ->count();
-            
-            $objectReporte = new \stdClass();
-            $objectReporte->reservadas = $reservadas;
-            $objectReporte->atendidas = $atendidas;
-            $objectReporte->canceladas = $canceladas;
-            $objectReporte->total = $total;
-            $objectReporte->porcent_1 = $total > 0 ? ($reservadas * 100) / $total : 0;
-            $objectReporte->porcent_2 = $total > 0 ? ($atendidas * 100) / $total : 0;
-            $objectReporte->porcent_3 = $total > 0 ? ($canceladas * 100) / $total : 0;
+                $total = Cita::where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->count();
+                
+                $objectReporte = new \stdClass();
+                $objectReporte->reservadas = $reservadas;
+                $objectReporte->atendidas = $atendidas;
+                $objectReporte->canceladas = $canceladas;
+                $objectReporte->total = $total;
+                $objectReporte->porcent_1 = $total > 0 ? ($reservadas * 100) / $total : 0;
+                $objectReporte->porcent_2 = $total > 0 ? ($atendidas * 100) / $total : 0;
+                $objectReporte->porcent_3 = $total > 0 ? ($canceladas * 100) / $total : 0;
 
-            return response()->json([
-                "status" => "ok",
-                "message" => "Estadisticas obtenidos con éxito",
-                "reporte" => $objectReporte
-            ], 200);
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Estadisticas obtenidos con éxito",
+                    "reporte" => $objectReporte
+                ], 200);
+
+            }
+            if($request->centro_atencion_id != 9999 && $request->tramite_id == 9999)
+            {
+       
+                $reservadas = Cita::where('centro_atencion_id', $request->centro_atencion_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 1)
+                                ->count();
+
+                $atendidas = Cita::where('centro_atencion_id', $request->centro_atencion_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 2)
+                                ->count();
+
+                $canceladas = Cita::where('centro_atencion_id', $request->centro_atencion_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 3)
+                                ->count();
+
+                $total = Cita::where('centro_atencion_id', $request->centro_atencion_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->count();
+                
+                $objectReporte = new \stdClass();
+                $objectReporte->reservadas = $reservadas;
+                $objectReporte->atendidas = $atendidas;
+                $objectReporte->canceladas = $canceladas;
+                $objectReporte->total = $total;
+                $objectReporte->porcent_1 = $total > 0 ? ($reservadas * 100) / $total : 0;
+                $objectReporte->porcent_2 = $total > 0 ? ($atendidas * 100) / $total : 0;
+                $objectReporte->porcent_3 = $total > 0 ? ($canceladas * 100) / $total : 0;
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Estadisticas obtenidos con éxito",
+                    "reporte" => $objectReporte
+                ], 200);
+            }
+            if($request->centro_atencion_id == 9999 && $request->tramite_id != 9999)
+            {
+       
+                $reservadas = Cita::where('tramite_id', $request->tramite_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 1)
+                                ->count();
+
+                $atendidas = Cita::where('tramite_id', $request->tramite_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 2)
+                                ->count();
+
+                $canceladas = Cita::where('tramite_id', $request->tramite_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 3)
+                                ->count();
+
+                $total = Cita::where('tramite_id', $request->tramite_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->count();
+                
+                $objectReporte = new \stdClass();
+                $objectReporte->reservadas = $reservadas;
+                $objectReporte->atendidas = $atendidas;
+                $objectReporte->canceladas = $canceladas;
+                $objectReporte->total = $total;
+                $objectReporte->porcent_1 = $total > 0 ? ($reservadas * 100) / $total : 0;
+                $objectReporte->porcent_2 = $total > 0 ? ($atendidas * 100) / $total : 0;
+                $objectReporte->porcent_3 = $total > 0 ? ($canceladas * 100) / $total : 0;
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Estadisticas obtenidos con éxito",
+                    "reporte" => $objectReporte
+                ], 200);
+            }
+            if($request->centro_atencion_id != 9999 && $request->tramite_id != 9999)
+            {
+       
+                $reservadas = Cita::where('tramite_id', $request->tramite_id)
+                                ->where('centro_atencion_id', $request->centro_atencion_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 1)
+                                ->count();
+
+                $atendidas = Cita::where('tramite_id', $request->tramite_id)
+                                ->where('centro_atencion_id', $request->centro_atencion_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 2)
+                                ->count();
+
+                $canceladas = Cita::where('tramite_id', $request->tramite_id)
+                                ->where('centro_atencion_id', $request->centro_atencion_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 3)
+                                ->count();
+
+                $total = Cita::where('tramite_id', $request->tramite_id)
+                                ->where('centro_atencion_id', $request->centro_atencion_id)
+                                ->where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->count();
+                
+                $objectReporte = new \stdClass();
+                $objectReporte->reservadas = $reservadas;
+                $objectReporte->atendidas = $atendidas;
+                $objectReporte->canceladas = $canceladas;
+                $objectReporte->total = $total;
+                $objectReporte->porcent_1 = $total > 0 ? ($reservadas * 100) / $total : 0;
+                $objectReporte->porcent_2 = $total > 0 ? ($atendidas * 100) / $total : 0;
+                $objectReporte->porcent_3 = $total > 0 ? ($canceladas * 100) / $total : 0;
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Estadisticas obtenidos con éxito",
+                    "reporte" => $objectReporte
+                ], 200);
+            }
         } catch (\Throwable $th) {
             return response()->json([
                 "status" => "error",
