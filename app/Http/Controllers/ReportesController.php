@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cita;
 
+use PDF;
+
 use App\Exports\ReporteExport;
 
 class ReportesController extends Controller
@@ -37,7 +39,7 @@ class ReportesController extends Controller
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
                     $objectCita->sexo = $cita->sexo;
 
-                    if($cita->tiene_discapacidad == 0)
+                    if($cita->tiene_discapacidad == 1)
                     {
                         $objectCita->discapacidad = "SI";
                     }
@@ -85,7 +87,7 @@ class ReportesController extends Controller
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
 
-                    if($cita->tiene_discapacidad == 0)
+                    if($cita->tiene_discapacidad == 1)
                     {
                         $objectCita->discapacidad = "SI";
                     }
@@ -134,7 +136,7 @@ class ReportesController extends Controller
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
 
-                    if($cita->tiene_discapacidad == 0)
+                    if($cita->tiene_discapacidad == 1)
                     {
                         $objectCita->discapacidad = "SI";
                     }
@@ -184,7 +186,7 @@ class ReportesController extends Controller
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
 
-                    if($cita->tiene_discapacidad == 0)
+                    if($cita->tiene_discapacidad == 1)
                     {
                         $objectCita->discapacidad = "SI";
                     }
@@ -233,7 +235,7 @@ class ReportesController extends Controller
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
 
-                    if($cita->tiene_discapacidad == 0)
+                    if($cita->tiene_discapacidad == 1)
                     {
                         $objectCita->discapacidad = "SI";
                     }
@@ -283,7 +285,7 @@ class ReportesController extends Controller
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
 
-                    if($cita->tiene_discapacidad == 0)
+                    if($cita->tiene_discapacidad == 1)
                     {
                         $objectCita->discapacidad = "SI";
                     }
@@ -333,7 +335,7 @@ class ReportesController extends Controller
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
 
-                    if($cita->tiene_discapacidad == 0)
+                    if($cita->tiene_discapacidad == 1)
                     {
                         $objectCita->discapacidad = "SI";
                     }
@@ -384,7 +386,7 @@ class ReportesController extends Controller
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
 
-                    if($cita->tiene_discapacidad == 0)
+                    if($cita->tiene_discapacidad == 1)
                     {
                         $objectCita->discapacidad = "SI";
                     }

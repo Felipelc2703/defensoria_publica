@@ -45,7 +45,10 @@
                 <div class="row justify-content-between mt-2">
                     <div class="col-md-6 col-12">
                         <v-select
-                            :items="['Todos']"
+                            v-model="data.tramite_id"
+                            :items="tramites"
+                            item-title="nombre"
+                            item-value="id"
                             label="Trámite"
                             variant="solo"
                             >
@@ -61,6 +64,7 @@
                             Generar Gráfica
                         </v-btn>
                     </div>
+
                 </div>
             </v-form>
 
@@ -123,10 +127,13 @@
         name: 'reporte-graf',
         data() {
             return {
+                centros: [],
+                tramites: [],
                 data: {
                     fecha_inicio: '',
                     fecha_fin: '',
                     centro_atencion_id: '',
+                    tramite_id: '',
                 },
                 fechaInicioRules: [
                     v => !!v || 'El campo fecha inicio es requerido'
@@ -148,6 +155,17 @@
                     responsive: true
                 },
                 showGraph: false,
+                centro_default: {
+                    id: 9999,
+                    nombre: 'TODOS',
+                    direccion: '',
+                    telefono: '',
+                    numero_cajas: ''
+                },
+                tramite_default: {
+                    id: 9999,
+                    nombre: 'TODOS',
+                },
             }
         },
         components: {
@@ -155,10 +173,14 @@
         },
         created() {
             this.getCentrosAtencion()
+            this.getCatalogoTramites()
         },
         computed: {
             centrosAtencion() {
                 return this.$store.getters.getCatalogoCentrosAtencion
+            },
+            tramites(){
+                return this.$store.getters.getCatalogoTramites
             },
             chartData() {
                 return {
@@ -178,7 +200,9 @@
                     let response = await axios.get('/api/catalogos/centros-de-atencion')
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
-                            this.$store.commit('setCatalogoCentrosAtencion', response.data.centros_atencion)
+                            this.centros = response.data.centros_atencion
+                            this.centros.unshift(this.centro_default)
+                            this.$store.commit('setCatalogoCentrosAtencion', this.centros)
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
@@ -187,6 +211,27 @@
                     }
                 } catch (error) {
                     errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                }
+                this.loading = false
+            },
+            async getCatalogoTramites() {
+                console.log("jhduidbhdiubduidbdu")
+                this.loading = true
+                try {
+                    let response = await axios.get('/api/catalogos/tramites')
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.tramites = response.data.tramites
+                            this.tramites.unshift(this.tramite_default)
+                            this.$store.commit('setCatalogoTramites', this.tramites)
+                        } else {
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites')
+                    }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites')
                 }
                 this.loading = false
             },
