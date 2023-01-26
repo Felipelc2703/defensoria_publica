@@ -113,15 +113,15 @@ class CitaController extends Controller
                     {
                         $folio = $folio."ACF000".$cita->id;
                     }
-                    if($cita->id > 10 && $cita->id < 100)
+                    if($cita->id >= 10 && $cita->id < 100)
                     {
                         $folio = $folio."ACF00".$cita->id;
                     }
-                    if($cita->id > 100 && $cita->id < 1000)
+                    if($cita->id >= 100 && $cita->id < 1000)
                     {
                         $folio = $folio."ACF0".$cita->id;
                     }
-                    if($cita->id > 1000)
+                    if($cita->id >= 1000)
                     {
                         $folio = $folio."ACF".$cita->id;
                     }
@@ -132,15 +132,15 @@ class CitaController extends Controller
                     {
                         $folio = $folio."AA000".$cita->id;
                     }
-                    if($cita->id > 10 && $cita->id < 100)
+                    if($cita->id >= 10 && $cita->id < 100)
                     {
                         $folio = $folio."AA00".$cita->id;
                     }
-                    if($cita->id > 100 && $cita->id < 1000)
+                    if($cita->id >= 100 && $cita->id < 1000)
                     {
                         $folio = $folio."AA0".$cita->id;
                     }
-                    if($cita->id > 1000)
+                    if($cita->id >= 1000)
                     {
                         $folio = $folio."AA".$cita->id;
                     }
@@ -151,15 +151,15 @@ class CitaController extends Controller
                     {
                         $folio = $folio."AL000".$cita->id;
                     }
-                    if($cita->id > 10 && $cita->id < 100)
+                    if($cita->id >= 10 && $cita->id < 100)
                     {
                         $folio = $folio."AL00".$cita->id;
                     }
-                    if($cita->id > 100 && $cita->id < 1000)
+                    if($cita->id >= 100 && $cita->id < 1000)
                     {
                         $folio = $folio."AL0".$cita->id;
                     }
-                    if($cita->id > 1000)
+                    if($cita->id >= 1000)
                     {
                         $folio = $folio."AL".$cita->id;
                     }
@@ -171,15 +171,15 @@ class CitaController extends Controller
                     {
                         $folio = $folio."ES000".$cita->id;
                     }
-                    if($cita->id > 10 && $cita->id < 100)
+                    if($cita->id >= 10 && $cita->id < 100)
                     {
                         $folio = $folio."ES00".$cita->id;
                     }
-                    if($cita->id > 100 && $cita->id < 1000)
+                    if($cita->id >= 100 && $cita->id < 1000)
                     {
                         $folio = $folio."ES0".$cita->id;
                     }
-                    if($cita->id > 1000)
+                    if($cita->id >= 1000)
                     {
                         $folio = $folio."ES".$cita->id;
                     }
