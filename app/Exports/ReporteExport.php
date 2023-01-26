@@ -79,14 +79,14 @@ class ReporteExport implements FromView, WithEvents
         // $active_sheet->mergeCells('B2:D2');
 
         // Tittle
-        $active_sheet->mergeCells('A1:AD1');
-        $active_sheet->getStyle('A1:AD1')->applyFromArray($title_font_style);
-        $active_sheet->getStyle('A1:AD1')->getAlignment()->setHorizontal('center');
+        $active_sheet->mergeCells('A1:AG1');
+        $active_sheet->getStyle('A1:AG1')->applyFromArray($title_font_style);
+        $active_sheet->getStyle('A1:AG1')->getAlignment()->setHorizontal('center');
         // Tittle
 
         // Columns title
-        $active_sheet->getStyle('A2:AD2')->applyFromArray($heads_font_style);
-        $active_sheet->getStyle('A2:AD2')->getAlignment()->setHorizontal('center');
+        $active_sheet->getStyle('A2:AG2')->applyFromArray($heads_font_style);
+        $active_sheet->getStyle('A2:AG2')->getAlignment()->setHorizontal('center');
         // // Columns title
         
         //$active_sheet->getStyle('A3:A'.($num_rows+2))->applyFromArray($body_font_style);
@@ -97,32 +97,35 @@ class ReporteExport implements FromView, WithEvents
         for ($i=2; $i <= $num_rows+2; $i++) { //NOMBRE
             $active_sheet->mergeCells('B'.$i.':D'.$i);
         }
+        for ($i=2; $i <= $num_rows+2; $i++) { //SeXO
+            $active_sheet->mergeCells('E'.$i.':G'.$i);
+        }
         for ($i=2; $i <= $num_rows+2; $i++) { //cORREO
-            $active_sheet->mergeCells('E'.$i.':F'.$i);
+            $active_sheet->mergeCells('H'.$i.':I'.$i);
         }
         for ($i=2; $i <= $num_rows+2; $i++) { //TELEFONO
-            $active_sheet->mergeCells('G'.$i.':H'.$i);
+            $active_sheet->mergeCells('J'.$i.':K'.$i);
         }
         for ($i=2; $i <= $num_rows+2; $i++) { //TRAMITE
-            $active_sheet->mergeCells('I'.$i.':L'.$i);
+            $active_sheet->mergeCells('L'.$i.':O'.$i);
         }
         for ($i=2; $i <= $num_rows+2; $i++) { //FECHA
-            $active_sheet->mergeCells('M'.$i.':N'.$i);
+            $active_sheet->mergeCells('P'.$i.':Q'.$i);
         }
         for ($i=2; $i <= $num_rows+2; $i++) { //HORARIO
-            $active_sheet->mergeCells('O'.$i.':P'.$i);
+            $active_sheet->mergeCells('R'.$i.':S'.$i);
         }
         for ($i=2; $i <= $num_rows+2; $i++) { //ESTATUS
-            $active_sheet->mergeCells('Q'.$i.':R'.$i);
+            $active_sheet->mergeCells('T'.$i.':U'.$i);
         }
         for ($i=2; $i <= $num_rows+2; $i++) { //CENTRO ATENCION
-            $active_sheet->mergeCells('S'.$i.':Y'.$i);
+            $active_sheet->mergeCells('V'.$i.':AB'.$i);
         }
         for ($i=2; $i <= $num_rows+2; $i++) { //DISCAPACIDAD
-            $active_sheet->mergeCells('Z'.$i.':AB'.$i);
+            $active_sheet->mergeCells('AC'.$i.':AE'.$i);
         }
         for ($i=2; $i <= $num_rows+2; $i++) { //TIPO_DIS
-            $active_sheet->mergeCells('AC'.$i.':AD'.$i);
+            $active_sheet->mergeCells('AF'.$i.':AG'.$i);
         }
 
         $active_sheet->getStyle('A3:A'.($num_rows+2))->applyFromArray($body_font_style);
@@ -155,5 +158,8 @@ class ReporteExport implements FromView, WithEvents
         $active_sheet->getStyle('AB3:AB'.($num_rows+2))->applyFromArray($body_font_style);
         $active_sheet->getStyle('AC3:AC'.($num_rows+2))->applyFromArray($body_font_style);
         $active_sheet->getStyle('AD3:AD'.($num_rows+2))->applyFromArray($body_font_style);
+        $active_sheet->getStyle('AE3:AE'.($num_rows+2))->applyFromArray($body_font_style);
+        $active_sheet->getStyle('AF3:AF'.($num_rows+2))->applyFromArray($body_font_style);
+        $active_sheet->getStyle('AG3:AG'.($num_rows+2))->applyFromArray($body_font_style);
     }
 }
