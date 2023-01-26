@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cita;
 
+use PDF;
+
 use App\Exports\ReporteExport;
 
 class ReportesController extends Controller
