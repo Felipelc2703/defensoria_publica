@@ -4,7 +4,7 @@
  */
  export function successSweetAlert(mensaje) {
     return Swal.fire(
-        '¡Exito!',
+        '¡Éxito!',
         `${mensaje}`,
         'success'
     )
