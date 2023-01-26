@@ -65,16 +65,6 @@
                         </v-btn>
                     </div>
 
-                    <div class="text-center mt-4 col-md-6 col-12">
-                        <v-btn
-                            variant="flat"
-                            color="#6a73a0"
-                            class="boton-nuevo"
-                            @click="convertirPDF()"
-                            >
-                            pdf
-                        </v-btn>
-                    </div>
                 </div>
             </v-form>
 
