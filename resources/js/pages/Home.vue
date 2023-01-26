@@ -3,7 +3,7 @@
         <div class="row justify-content-between">
             <div class="col-md-9 col-12 border-one">
                 <div class="text-center border-dos py-2">
-                    <img class="scale-logo-defensoria logo-defensoria" height="75" src="../../../public/images/logo_defensoria_publica.svg" alt="">
+                    <img class="scale-logo-defensoria logo-defensoria" height="75" src="../../../public/images/Logo_Instituto_de_la_Defensoria.svg" alt="">
                 </div>
                 <div v-if="showFirstOptions">
                     <div class="row justify-content-around mt-10">

@@ -8,7 +8,7 @@
                 <div class="first-line"></div>
             </div>
             <div class="text-right" style="margin-top: -3px;">
-                <button class="button-usuarios" @click="irLogin()" v-if="token == 0">Usuarios</button>
+                <button class="button-usuarios" @click="irLogin()" v-if="token == 0">Usuario(a)</button>
                 <button class="button-usuarios" @click="logout()" v-else>Cerrar Sesión</button>
             </div>
             <div class="container-fluid">
@@ -104,7 +104,7 @@
                             <p class="texto-direccion boton_inicio" @click="irUbiCiudadJudicial()">Periférico Ecológico Arco Sur No. 4000 San Andrés Cholula, Puebla. Reserva Territorial Atlixcáyotl, Teléfono (222) 223-84-00</p>
                         </div>
                         <div class="separador">
-                            <p class="texto-ciudad-judicial">Dirección General de Defensoría Pública</p>
+                            <p class="texto-ciudad-judicial">Oficinas Centrales del Instituto de la Defensoría Pública del Poder Judicial del Estado Puebla</p>
                             <ul class="lista">
                                 <li class="boton_inicio" @click="irDF()">Calle 14 Norte no. 205, Barrio La Luz</li>
                             </ul>
