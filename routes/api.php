@@ -102,6 +102,7 @@ Route::post('/horarios/actualizar-horario-citas', [DiaController::class, 'actual
 
 //Actualizar estatus cita y motivo*
 Route::post('/citas/citas-del-dia', [CitaController::class, 'guardarCambios']);
+Route::post('/citas/citas-del-dia-buscada', [CitaController::class, 'selectDiaCita']);
 
 Route::post('/reportes/generar-reporte', [ReportesController::class, 'generarReporte']);
 Route::post('/reportes/exportar-reporte-citas', [ReportesController::class, 'exportarExcel']);
@@ -109,5 +110,4 @@ Route::post('/reportes/exportar-reporte-citas', [ReportesController::class, 'exp
 
 // Route::get('/cancelar-cita/{id}', [CitaController::class, 'cancelarCita']);
 // Route::get('/reportes/exportar-reporte-citas/{citas}', [ReportesController::class, 'exportarExcel']);
-Route::post('/citas/citas-del-dia-buscada', [CitaController::class, 'selectDiaCita']);
 

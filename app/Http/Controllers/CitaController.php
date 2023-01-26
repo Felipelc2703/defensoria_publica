@@ -231,7 +231,7 @@ class CitaController extends Controller
                     'module_height' => 1 // height of a single module in points
                 ); 
                 // $f = $citaAgendada->folio;
-                $pdf->write2DBarcode('http://defensoria_publica.test/confirmacion-cita-buscada?folio='.$f, 'QRCODE,Q', 160, 135, 70, 70, $style, 'N');
+                $pdf->write2DBarcode('http://citasenlinea.pjpuebla.gob.mx/confirmacion-cita-buscada?folio='.$f, 'QRCODE,Q', 160, 135, 70, 70, $style, 'N');
 
                 // footer
                 $footer_image_file = public_path() . '/images/footer_pdf.png';
@@ -467,7 +467,7 @@ class CitaController extends Controller
                 'module_height' => 1 // height of a single module in points
             ); 
             // $f = $citaAgendada->folio;
-            $pdf->write2DBarcode('http://defensoria_publica.test/confirmacion-cita-buscada?folio='.$f, 'QRCODE,Q', 160, 135, 70, 70, $style, 'N');
+            $pdf->write2DBarcode('http://citasenlinea.pjpuebla.gob.mx/confirmacion-cita-buscada?folio='.$f, 'QRCODE,Q', 160, 135, 70, 70, $style, 'N');
 
             // footer
             $footer_image_file = public_path() . '/images/footer_pdf.png';
