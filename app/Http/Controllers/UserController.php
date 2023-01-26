@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function getUsuarios(){
         try {
-            $usuarios = User::where('status', 1)->get();
+            $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
              
             $array_usuario = array();
             $cont = 1;
@@ -61,7 +61,7 @@ class UserController extends Controller
             $usuario->save();
 
 
-            $usuarios = User::where('status', 1)->get();
+            $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
              
             $array_usuario = array();
             foreach ($usuarios as $usuario) {
@@ -116,7 +116,7 @@ class UserController extends Controller
             $usuario->save();
 
             
-            $usuarios = User::where('status', 1)->get();
+            $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
 
             $array_usuario = array();
             foreach ($usuarios as $usuario) {
@@ -164,7 +164,7 @@ class UserController extends Controller
             $Usuario->status = false;
             $Usuario->save();
 
-            $usuarios = User::where('status', 1)->get();
+            $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
 
             $array_usuario = array();
             foreach ($usuarios as $usuario) {

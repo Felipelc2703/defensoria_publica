@@ -39,5 +39,13 @@ class UserSeeder extends Seeder
             'centro_atencion_id' => 1,
             'rol_id' => 1,
         ]);
+        DB::table('users')->insert([
+            'name' => 'Administrador',
+            'clave' => 'administrador',
+            'email' => 'admin@gmail.com',
+            'password' => 'fsLA8C!V',
+            'centro_atencion_id' => 1,
+            'rol_id' => 1,
+        ]);
     }
 }
