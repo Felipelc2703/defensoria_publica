@@ -46,7 +46,18 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $user = User::where('clave', $request->usuario)->where('password', $request->password)->first();
+        $user = User::where('clave', $request->usuario)->where('password', $request->password)->where('status', 1)->first();
+        
+        $user_inactivo = User::where('clave', $request->usuario)->where('password', $request->password)->where('status', 0)->exists();
+        if ($user_inactivo) {
+            $response = [
+                'status' => 'error',
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ];
+
+            return response()->json($response);
+        }
 
         // if (Auth::attempt(['clave' => $request->usuario, 'password' => $request->password])) {
         if ($user){
