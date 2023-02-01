@@ -42,13 +42,11 @@
     export default defineComponent({
         name: 'login',
         components: {
-                vueRecaptcha
-            },
+            vueRecaptcha
+        },
         data() {
             return {
-                cont: 0,
                 mostrarlabel: false,
-                showRecaptcha: false,
                 form: {
                     usuario: '',
                     password: '',
@@ -64,68 +62,90 @@
                 ],
             }
         },
+        computed: {
+            showRecaptcha() {
+                return this.$store.getters.getShowRecaptcha
+            },
+            cont() {
+                return this.$store.getters.getContRecaptcha
+            }
+        },
         methods: {
-                recaptchaVerified(response) {
-                        this.vueRecaptcha = response
-                },
-                recaptchaExpired() {
+            recaptchaVerified(response) {
+                this.vueRecaptcha = response
+            },
+            recaptchaExpired() {
                 this.$refs.vueRecaptcha.reset();
-                },
+            },
             async login() {
                 this.loading = true
                 if(this.cont < 3){
-                try {
-                    let response = await axios.post('/api/login', this.form)
-                    if (response.status === 200) {
-                        if (response.data.status === "ok") {
-                            this.$store.dispatch('setToken', response.data.data.token)
-                            this.$store.dispatch('setrolId', response.data.data.rol_id)
-                            this.$router.push({name: 'AgregarHorario'})
-                            if(response.data.data.rol_id === 2){
-                                this.$router.push({name: 'CitasDelDia'})
-                        }
-                    
-                        } else {
-                            errorSweetAlert(response.data.message)
-                            this.cont++
-                            if(this.cont==3){
-                                this.showRecaptcha = true
-                            }
-                        }
-                    } else {
-                        errorSweetAlert('Ocurrió un error al iniciar sesión')
-                    }
-                } catch (error) {
-                    errorSweetAlert('Ocurrió un error al iniciar sesión')
-                }
-            }else{
-                if(this.vueRecaptcha){
-                    try {
-                    let response = await axios.post('/api/login', this.form)
-                    if (response.status === 200) {
-                        if (response.data.status === "ok") {
-                            this.$store.dispatch('setToken', response.data.data.token)
-                            this.$store.dispatch('setrolId', response.data.data.rol_id)
-                            this.$router.push({name: 'AgregarHorario'})
-                            if(response.data.data.rol_id === 2){
-                                this.$router.push({name: 'CitasDelDia'})
-                        }
-                    
-                        } else {
-                            errorSweetAlert(response.data.message)
-                        }
-                    } else {
-                        errorSweetAlert('Ocurrió un error al iniciar sesión')
-                    }
-                } catch (error) {
-                    errorSweetAlert('Ocurrió un error al iniciar sesión')
-                }
-
+                    this.$store.dispatch('login', {
+                        usuario: this.form.usuario,
+                        password: this.form.password
+                    }).then(() => {
+                        // this.$router.push('/citas-del-dia')
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                    // try {
+                    //     let response = await axios.post('/api/login', this.form)
+                    //     if (response.status === 200) {
+                    //         if (response.data.status === "ok") {
+                    //             this.$store.dispatch('setToken', response.data.data.token)
+                    //             this.$store.dispatch('setrolId', response.data.data.rol_id)
+                    //             this.$router.push({name: 'AgregarHorario'})
+                    //             if(response.data.data.rol_id === 2){
+                    //                 this.$router.push({name: 'CitasDelDia'})
+                    //         }
+                        
+                    //         } else {
+                    //             errorSweetAlert(response.data.message)
+                    //             this.cont++
+                    //             if(this.cont==3){
+                    //                 this.showRecaptcha = true
+                    //             }
+                    //         }
+                    //     } else {
+                    //         errorSweetAlert('Ocurrió un error al iniciar sesión')
+                    //     }
+                    // } catch (error) {
+                    //     errorSweetAlert('Ocurrió un error al iniciar sesión')
+                    // }
                 }else{
-                    this.mostrarlabel = true
+                    if(this.vueRecaptcha){
+                        this.$store.dispatch('login', {
+                            usuario: this.form.usuario,
+                            password: this.form.password
+                        }).then(() => {
+                            // this.$router.push('/citas-del-dia')
+                        }).catch(err => {
+                            console.log(err)
+                        })
+                        // try {
+                        //     let response = await axios.post('/api/login', this.form)
+                        //     if (response.status === 200) {
+                        //         if (response.data.status === "ok") {
+                        //             this.$store.dispatch('setToken', response.data.data.token)
+                        //             this.$store.dispatch('setrolId', response.data.data.rol_id)
+                        //             this.$router.push({name: 'AgregarHorario'})
+                        //             if(response.data.data.rol_id === 2){
+                        //                 this.$router.push({name: 'CitasDelDia'})
+                        //         }
+                            
+                        //         } else {
+                        //             errorSweetAlert(response.data.message)
+                        //         }
+                        //     } else {
+                        //         errorSweetAlert('Ocurrió un error al iniciar sesión')
+                        //     }
+                        // } catch (error) {
+                        //     errorSweetAlert('Ocurrió un error al iniciar sesión')
+                        // }
+                    }else{
+                        this.mostrarlabel = true
+                    }   
                 }
-                
-            }
                 this.loading = false
             }
 

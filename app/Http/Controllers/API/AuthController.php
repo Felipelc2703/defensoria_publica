@@ -46,8 +46,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $user = User::where('clave', $request->usuario)->where('password', $request->password)->where('status', 1)->first();
-        
+        // Verificamos si un usuario esta eliminado(inactivo)
         $user_inactivo = User::where('clave', $request->usuario)->where('password', $request->password)->where('status', 0)->exists();
         if ($user_inactivo) {
             $response = [
@@ -59,21 +58,22 @@ class AuthController extends Controller
             return response()->json($response);
         }
 
+        $user = User::where('clave', $request->usuario)->where('password', $request->password)->where('status', 1)->first();
+
         // if (Auth::attempt(['clave' => $request->usuario, 'password' => $request->password])) {
         if ($user){
-            // $user = Auth::user();
-            $success['token'] = $user->createToken('MyApp')->plainTextToken;
-            $success['name'] = $user->name;
-            $success['rol_id'] =$user->rol_id;
-            
+            $token = $user->createToken('my-app-token')->plainTextToken;
+
             $response = [
-                'status' => 'ok',
-                'success' => true,
-                'data' => $success,
-                'message' => 'User login successfully'
+                'user' => $user,
+                'token' => $token
             ];
 
-            return response()->json($response, 200);
+            return response()->json([
+                "status" => "ok",
+                "message" => "Usuario logueado con exito",
+                "session" => $response
+            ], 200);
         } else {
             $response = [
                 'status' => 'error',
