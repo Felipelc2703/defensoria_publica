@@ -170,12 +170,16 @@ const router = createRouter({
     routes
 })
 
-router.beforeEach((to, from) => {
-    if (to.meta.requiresAuth && store.getters.getToken == 0) {
-        return {name: 'Login'}
-    }
-    if (to.meta.requiresAuth == false && store.getters.getToken != 0) {
-        return {name: 'Dashboard'}
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+    const currentUser = store.state.user
+
+    if (requiresAuth && !currentUser) {
+        next('/login')
+    } else if (to.path == '/login' && currentUser) {
+        next('/citas-del-dia')
+    } else {
+        next()
     }
 })
 

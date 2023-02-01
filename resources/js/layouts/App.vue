@@ -8,8 +8,8 @@
                 <div class="first-line"></div>
             </div>
             <div class="text-right" style="margin-top: -3px;">
-                <button class="button-usuarios" @click="irLogin()" v-if="token == 0">Usuario(a)</button>
-                <button class="button-usuarios" @click="logout()" v-else>Cerrar Sesión</button>
+                <button class="button-usuarios" @click="logout()" v-if="user">Cerrar Sesión</button>
+                <button class="button-usuarios" @click="irLogin()" v-else>Usuario(a)</button>
             </div>
             <div class="container-fluid">
                 <div class="row justify-content-between">
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-12">
-                        <div class="div-buscar-cita" v-if="token == 0">
+                        <div class="div-buscar-cita" v-if="!user">
                             <label class="label-buscar-cita" for="buscar-cita">Si usted ya cuenta con una cita y desea imprimir su confirmación o cancelarla, ingrese a continuación su número de folio.</label>
                             <div class="row justify-content-between">
                                 <div class="col-sm-9 col-12 div-input-buscar-cita">
@@ -37,7 +37,7 @@
                             <nav class="navbar navbar-expand-lg navbar-light">
                                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                                   <ul class="navbar-nav">
-                                    <li class="nav-item dropdown link-nav" v-if="rolId == 1">
+                                    <li class="nav-item dropdown link-nav" v-if="user.user.rol_id == 1">
                                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Horarios
                                         </a>
@@ -46,7 +46,7 @@
                                             <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario')">Modificar Horario</a>
                                         </div>
                                     </li>
-                                    <li class="nav-item dropdown link-nav" v-if="rolId == 1">
+                                    <li class="nav-item dropdown link-nav" v-if="user.user.rol_id == 1">
                                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Catálogos
                                         </a>
@@ -61,14 +61,14 @@
                                     <li class="nav-item link-nav">
                                         <a class="nav-link" @click="this.$router.push('/citas-del-dia')">Citas del día</a>
                                     </li>
-                                    <li class="nav-item link-nav" v-if="rolId == 1">
+                                    <li class="nav-item link-nav" v-if="user.user.rol_id == 1">
                                         <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
                                     </li>
-                                    <li class="nav-item dropdown link-nav" v-if="rolId == 1">
+                                    <li class="nav-item dropdown link-nav" v-if="user.user.rol_id == 1">
                                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           Reportes
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" v-if="rolId == 1">
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" v-if="user.user.rol_id == 1">
                                           <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas')">Gráficas</a>
                                           <a class="dropdown-item link-nav" @click="this.$router.push('/reportes')">Reporte de Citas</a>
                                         </div>
@@ -189,21 +189,31 @@
         },
         created() {
             this.getTramites()
+            const userInfo = localStorage.getItem('user')
+            if (userInfo) {
+                const userData = JSON.parse(userInfo)
+                this.$store.commit('setUserData', userData)
+            }
+            axios.interceptors.response.use(
+                response => response,
+                error => {
+                    if (error.response.status === 401) {
+                        this.$store.dispatch('logout')
+                    }
+                    return Promise.reject(error)
+                }
+            )
         },
         computed: {
             currentRoute() {
                 return this.$route.name
             },
-            token() {
-                return this.$store.getters.getToken
-            },
             buscarCita2() {
                 return this.$store.getters.getbuscarCita
             },
-            rolId() {
-                return this.$store.getters.getrolId
-            },
-            
+            user() {
+                return this.$store.getters.user
+            }
         },
         methods: {
             irLogin() {
@@ -280,7 +290,6 @@
             },
             async buscarCita() {
                 this.buscar_cita.folio = this.$store.state.buscarCita
-                console.log(this.buscar_cita)
                 try {
                     let response = await axios.post('/api/buscar-cita', this.buscar_cita)
                     if (response.status === 200) {
@@ -304,9 +313,8 @@
                 }
             },
             logout() {
-                this.$store.dispatch('removeToken')
-                this.$store.dispatch('removeRolId')
-                this.$router.push('/login')
+                this.$store.dispatch('logout')
+                // localStorage.removeItem('user')
             }
         }
     })

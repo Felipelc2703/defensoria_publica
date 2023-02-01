@@ -1,56 +1,71 @@
 import { createStore } from 'vuex'
 import catalogos from './../modules/catalogos'
 import agendarCita from './../modules/agendarCita.js'
+import { errorSweetAlert } from './../helpers/sweetAlertGlobals'
+import router from '../router'
 
 const store = createStore({
     state: {
-        // define variables
-        token: localStorage.getItem('token') || 0,
-        clave: '',
-        rolId: localStorage.getItem('rol_id') || null,
+        user: null,
+        contRecaptcha: 0,
+        showRecaptcha: false,
     },
     getters: {
-        // get state variable value
-        getToken: function (state) {
-            return state.token
+        isLogged: state => !!state.user,
+        user: function(state) {
+            return state.user
         },
-        getClave: function(state) {
-            return state.clave
+        getShowRecaptcha: function(state) {
+            return state.showRecaptcha
         },
-        getrolId: function(state) {
-            return state.rolId
+        getContRecaptcha: function(state) {
+            return state.contRecaptcha
         }
     },
     mutations: {
-        // update variable value
-        UPDATE_TOKEN(state, payload) {
-            state.token = payload
+        setUserData(state, userData) {
+            state.user = userData
+            localStorage.setItem('user', JSON.stringify(userData))
+            axios.defaults.headers.common.Authorization = `Bearer ${userData.token}`
         },
-        setClave(state, payload) {
-            state.clave = payload
-        },
-        UPDATE_rolId(state, payload) {
-            state.rolId = payload
-        },
-        
+        clearUserData () {
+            localStorage.removeItem('user')
+            location.reload()
+        }
     },
     actions: {
-        // action to be performed
-        setToken(context, payload) {
-            localStorage.setItem('token', payload)
-            context.commit('UPDATE_TOKEN', payload)
+        async login({commit}, credentials) {
+            try {
+                let response = await axios.post('/api/login', credentials)
+                if (response.status === 200) {
+                    if (response.data.status === "ok") {
+                        commit('setUserData', response.data.session)
+
+                        if (response.data.session.user.rol_id == 1) {
+                            router.push({name: 'AgregarHorario'})
+                        } else if (response.data.session.user.rol_id == 2) {
+                            router.push('/citas-del-dia')
+                        }
+
+                        this.state.contRecaptcha = 0
+                        this.state.showRecaptcha = true
+                    } else {
+                        errorSweetAlert(response.data.message)
+                        
+                        this.state.contRecaptcha++
+                        if (this.state.contRecaptcha == 3) {
+                            this.state.showRecaptcha = true
+                        }
+                    }
+                } else {
+                    errorSweetAlert('Ocurrió un error al iniciar sesión')
+                }
+            } catch (error) {
+                errorSweetAlert('Ocurrió un error al iniciar sesión')
+            }
         },
-        removeToken(context) {
-            localStorage.removeItem('token')
-            context.commit('UPDATE_TOKEN', 0)
-        },
-        setrolId(context, payload) {
-            localStorage.setItem('rol_id', payload)
-            context.commit('UPDATE_rolId', payload)
-        },
-        removeRolId(context) {
-            localStorage.removeItem('rol_id')
-            context.commit('UPDATE_rolId', null)
+        logout ({commit}) {
+            commit('clearUserData')
         }
     },
     modules: {
