@@ -10,10 +10,10 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    build: {
-        chunkSizeWarningLimit: 1600,
-    },
-    server: {
-        host: true
-    }
+    //build: {
+    //    chunkSizeWarningLimit: 1600,
+    //},
+    //server: {
+    //    host: true
+    //}
 });
