@@ -86,6 +86,7 @@ class ReportesController extends Controller
                     $objectCita->horario = $cita->hora_cita;
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
+                    $objectCita->sexo = $cita->sexo;
 
                     if($cita->tiene_discapacidad == 1)
                     {
@@ -135,6 +136,7 @@ class ReportesController extends Controller
                     $objectCita->horario = $cita->hora_cita;
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
+                    $objectCita->sexo = $cita->sexo;
 
                     if($cita->tiene_discapacidad == 1)
                     {
@@ -185,6 +187,7 @@ class ReportesController extends Controller
                     $objectCita->horario = $cita->hora_cita;
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
+                    $objectCita->sexo = $cita->sexo;
 
                     if($cita->tiene_discapacidad == 1)
                     {
@@ -234,6 +237,7 @@ class ReportesController extends Controller
                     $objectCita->horario = $cita->hora_cita;
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
+                    $objectCita->sexo = $cita->sexo;
 
                     if($cita->tiene_discapacidad == 1)
                     {
@@ -284,6 +288,7 @@ class ReportesController extends Controller
                     $objectCita->horario = $cita->hora_cita;
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
+                    $objectCita->sexo = $cita->sexo;
 
                     if($cita->tiene_discapacidad == 1)
                     {
@@ -334,6 +339,7 @@ class ReportesController extends Controller
                     $objectCita->horario = $cita->hora_cita;
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
+                    $objectCita->sexo = $cita->sexo;
 
                     if($cita->tiene_discapacidad == 1)
                     {
@@ -385,6 +391,7 @@ class ReportesController extends Controller
                     $objectCita->horario = $cita->hora_cita;
                     $objectCita->centro_atencion = $cita->centroAtencion->nombre;
                     $objectCita->tipo_discapacidad = $cita->discapacidad;
+                    $objectCita->sexo = $cita->sexo;
 
                     if($cita->tiene_discapacidad == 1)
                     {
