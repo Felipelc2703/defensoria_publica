@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router"
 import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
-import Register from './pages/Register.vue'
 import Dashboard from './pages/Dashboard.vue'
 import CrearCita from './pages/CrearCita.vue'
 import ConfirmacionCitaBuscada from './pages/ConfirmacionCitaBuscada.vue'
@@ -33,14 +32,6 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login,
-        meta: {
-            requiresAuth: false
-        }
-    },
-    {
-        path: '/register',
-        name: 'Register',
-        component: Register,
         meta: {
             requiresAuth: false
         }
