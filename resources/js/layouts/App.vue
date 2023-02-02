@@ -64,12 +64,12 @@
                                     <li class="nav-item link-nav" v-if="user.user.rol_id == 1">
                                         <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
                                     </li>
-                                    <li class="nav-item dropdown link-nav" v-if="user.user.rol_id == 1">
+                                    <li class="nav-item dropdown link-nav">
                                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           Reportes
                                         </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" v-if="user.user.rol_id == 1">
-                                          <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas')">Gráficas</a>
+                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                          <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas')" v-if="user.user.rol_id == 1">Gráficas</a>
                                           <a class="dropdown-item link-nav" @click="this.$router.push('/reportes')">Reporte de Citas</a>
                                         </div>
                                     </li>
@@ -314,7 +314,6 @@
             },
             logout() {
                 this.$store.dispatch('logout')
-                // localStorage.removeItem('user')
             }
         }
     })
