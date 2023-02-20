@@ -53,7 +53,14 @@
                     <td>{{$cita['nombre_contribuyente']}}</td>
                     <td></td>
                     <td></td>
-                    <td>{{$cita['sexo']}}</td>
+                    @if($cita['sexo'] == 'Masculino')
+                        <td>Hombre</td>
+                    @elseif($cita['sexo'] == 'Femenino')
+                        <td>Mujer</td>
+                    @else
+                        <td>{{$cita['sexo']}}</td>
+                    @endif
+                    {{-- <td>{{$cita['sexo']}}</td> --}}
                     <td></td>
                     <td></td>
                     <td>{{$cita['correo']}}</td>

@@ -178,7 +178,7 @@
                                                                     <v-select
                                                                         v-model="cita.sexo"
                                                                         label="Seleccione el sexo"
-                                                                        :items="['Masculino', 'Femenino']"
+                                                                        :items="['Hombre', 'Mujer']"
                                                                         :rules="sexoRules"
                                                                     ></v-select>
                                                                 </div>
