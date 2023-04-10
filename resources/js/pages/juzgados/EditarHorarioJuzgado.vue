@@ -9,13 +9,13 @@
                 <div class="row justify-content-between">
                     <div class="col-md-6 col-12">
                         <v-select
-                            v-model="horario.centro_atencion_id"
-                            :items="centrosAtencion"
+                            v-model="horario.juzgado_id"
+                            :items="juzgados"
                             item-title="nombre"
                             item-value="id"
-                            label="Seleccione el centro de atención"
+                            label="Seleccione el juzgado"
                             variant="solo"
-                            :rules="centroAtencionRules"
+                            readonly
                             >
                         </v-select>
                     </div>
@@ -248,17 +248,17 @@
 
 <script>
     import { defineComponent } from 'vue';
-    import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
+    import { errorSweetAlert, successSweetAlert } from "../../helpers/sweetAlertGlobals"
 
     export default defineComponent({
-        name:'editar-horario',
+        name: 'editar-horario-juzgado',
         data() {
             return {
                 loading: false,
                 cargaDias: false,
                 dialogEditarDia: false,
                 horario: {
-                    centro_atencion_id: '',
+                    juzgado_id: '',
                     mes: '',
                     pmes: true,
                 },
@@ -271,7 +271,7 @@
                     duracion: '',
                     inhabil: false,
                     mes: '',
-                    centro_atencion_id: ''
+                    juez_id: ''
                 },
                 acciones: [
                     'HABILITAR/DESHABILITAR DÍA', 'AMPLIAR HORARIO','REDUCIR HORARIO', 'CAMBIAR DURACIÓN DE CITA'
@@ -326,9 +326,6 @@
                         nombre: 'Diciembre'
                     },
                 ],
-                centroAtencionRules: [
-                    v => !!v || 'El campo de centro de atención es requerido'
-                ],
                 mesRules: [
                     v => !!v || 'El campo mes es requerido'
                 ],
@@ -344,14 +341,18 @@
             }
         },
         created() {
-            this.getCentrosAtencion()
+            this.horario.juzgado_id = this.user.user.juzgado_id
+            this.getJuzgados()
         },
         computed: {
             dias() {
                 return this.$store.getters.getDias
             },
-            centrosAtencion() {
-                return this.$store.getters.getCatalogoCentrosAtencion
+            user() {
+                return this.$store.getters.user
+            },
+            juzgados() {
+                return this.$store.getters.getCatalogoJuzgados
             },
             pages() {
                 const numShown = Math.min(this.numShown, this.totalPaginas())
@@ -378,27 +379,23 @@
             }
         },
         methods: {
-            async getCentrosAtencion() {
-                this.loading = true
+            async getJuzgados() {
                 try {
-                    let response = await axios.get('/api/catalogos/centros-de-atencion')
+                    let response = await axios.get('/api/juzgados-citas')
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
-                            this.$store.commit('setCatalogoCentrosAtencion', response.data.centros_atencion)
+                            this.$store.commit('setCatalogoJuzgados', response.data.juzgados)
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
                 }
-                this.loading = false
             },
             async cargarDias() {
-
-                console.log(this.horario)
                 const { valid } = await this.$refs.formEditarHorario.validate()
                 if (valid) {
                     try {
@@ -429,16 +426,12 @@
                 this.editar.duracion = dia.duracion
                 this.editar.inhabil = dia.inhabil
                 this.editar.mes = dia.mes
-                this.editar.centro_atencion_id = dia.centro_atencion_id
+                this.editar.juez_id = dia.juez_id
                 this.dialogEditarDia = true
             },
-
             async guardarCambios()
             {
                 const { valid } = await this.$refs.formCambioHorario.validate()
-
-                console.log(this.editar)
-                // this.horario.dias = this.dias
                 if (valid) {
                     Swal.fire({
                         title: '¿Guardar cambios?',
@@ -451,7 +444,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/horarios/actualizar-horario', this.editar)
+                                let response = await axios.post('/api/horarios/actualizar-horario-juez', this.editar)
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al editar el días.')
@@ -519,10 +512,8 @@
                 }
             },
             limpiarFormulario()
-            {
-
-                                              
-                this.horario.centro_atencion_id =''
+            {                     
+                this.horario.juzgado_id =''
                 this.horario.mes =  ''
                 this.dialogEditarDia = false
             },

@@ -1,25 +1,54 @@
 <template>
     <div class="container mb-6">
         <div class="text-center my-6">
-            <h2>Editar Horarios</h2>
+            <h2>Agregar Horario</h2>
         </div>
 
         <div class="my-6 px-4 py-4">
-            <v-form class="col-12" ref="formEditarHorario">
+            <v-form class="col-12" ref="formAgregarHorario">
                 <div class="row justify-content-between">
-                    <div class="col-md-6 col-12">
+                    <div class="col-12">
                         <v-select
-                            v-model="horario.centro_atencion_id"
-                            :items="centrosAtencion"
+                            v-model="horario.juzgado_id"
+                            :items="juzgados"
                             item-title="nombre"
                             item-value="id"
-                            label="Seleccione el centro de atención"
+                            label="Seleccione el juzgado"
                             variant="solo"
-                            :rules="centroAtencionRules"
+                            readonly
                             >
                         </v-select>
                     </div>
-                    <div class="col-md-6 col-12">
+                </div>
+
+                <div class="row justify-content-between">
+                    <div class="col-md-4 col-12">
+                        <p>Seleccione el mes o el rango de fechas</p>
+                    </div>
+                    <div class="col-md-8 col-12">
+                        <div class="row justify-content-between">
+                            <div class="col-md-6 col-12">
+                                <v-radio
+                                    v-model="mes"
+                                    label="Por Mes"
+                                    @click=activarMes()
+                                    >
+                                </v-radio>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <v-radio
+                                    v-model="fecha"
+                                    label="Por Fechas"
+                                    @click=activarRango()
+                                    >
+                                </v-radio>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between" v-if="mes == true">
+                    <div class="col-12">
                         <v-select
                             v-model="horario.mes"
                             :items="meses"
@@ -33,19 +62,83 @@
                     </div>
                 </div>
 
-                <div class="text-center mt-4">
+                <div class="row justify-content-between" v-if="fecha == true">
+                    <div class="col-md-6 col-12">
+                        <v-text-field
+                            v-model="horario.fecha_inicio"
+                            variant="solo" 
+                            type="date" 
+                            label="Seleccione la fecha inicial"
+                            :rules="fechaInicio"
+                        ></v-text-field>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <v-text-field
+                            v-model="horario.fecha_fin"
+                            variant="solo" 
+                            type="date" 
+                            label="Seleccione la fecha final"
+                            :rules="fechaFin"
+                        ></v-text-field>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between" v-if="mes == true || fecha == true">
+                    <div class="col-md-4 col-12">
+                        <p>Seleccione el horario de atención</p>
+                    </div>
+                    <div class="col-md-8 col-12">
+                        <div class="row justify-content-between">
+                            <div class="col-md-6 col-12">
+                                <v-text-field
+                                    v-model="horario.hora_inicio"
+                                    variant="solo"
+                                    type="time"
+                                    label="Hora inicio"
+                                    :rules="horaInicioRules"
+                                >
+                                </v-text-field>
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <v-text-field
+                                    v-model="horario.hora_fin"
+                                    variant="solo"
+                                    type="time" 
+                                    label="Hora Fin" 
+                                    :rules="horaFinRules"
+                                    >
+                                </v-text-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between" v-if="mes == true || fecha == true">
+                    <div class="col-md-6 col-12">
+                        <v-text-field
+                            v-model="horario.duracion"
+                            variant="solo" 
+                            type="number" 
+                            min="0"
+                            label="Proporcione el tiempo de duración de las citas en minutos"
+                            :rules="duracionRules"
+                        ></v-text-field>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4 col-md-12 col-12" v-if="mes || fecha">
                     <v-btn
                         variant="flat"
                         color="#6a73a0"
                         class="boton-nuevo"
-                        @click="cargarDias()"
+                        @click="obtenerDias()"
                         >
                         Cargar Días
                     </v-btn>
                 </div>
             </v-form>
 
-            <div v-if="cargaDias">
+            <template v-if="cargarDias">
                 <div class="text-right mt-8">
                     <div class="buscador-data-table">
                         <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
@@ -162,8 +255,18 @@
                         </div>
                     </template>
                 </div>
-            </div>
-
+                <div class="text-center">
+                    <v-btn
+                        variant="flat"
+                        color="#A3BC39"
+                        class="boton-nuevo"
+                        @click="guardarHorarios()"
+                    >
+                        Guardar Horarios
+                    </v-btn>
+                </div>
+            </template>
+            
             <v-dialog
                 v-model="dialogEditarDia"
                 max-width="800px"
@@ -186,8 +289,8 @@
                                                 v-model="editar.hora_inicio"
                                                 variant="solo"
                                                 type="time" 
-                                                label="Hora inicio" 
-                                                >
+                                                label="Hora inicio"
+                                            >
                                             </v-text-field>
                                         </div>
                                         <div class="col-md-6 col-12">
@@ -196,7 +299,7 @@
                                                 variant="solo"
                                                 type="time" 
                                                 label="Hora Fin" 
-                                                >
+                                            >
                                             </v-text-field>
                                         </div>
                                     </div>
@@ -208,14 +311,14 @@
                                                 label="Duración Cita"
                                                 type="number"
                                                 variant="solo"
-                                                >
+                                            >
                                             </v-text-field>
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <v-checkbox
                                                 v-model="editar.inhabil"
                                                 label="Inhábil"
-                                                >
+                                            >
                                             </v-checkbox>
                                         </div>
                                     </div>
@@ -234,7 +337,7 @@
                             <v-btn
                                 variant="flat"
                                 color="#A3BC39"
-                                @click="guardarCambios(dia)"
+                                @click="guardarCambios()"
                             >
                                 <span style="color: #eaeaed;">Guardar Cambios</span>
                             </v-btn>
@@ -248,19 +351,30 @@
 
 <script>
     import { defineComponent } from 'vue';
-    import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
+    import { errorSweetAlert, successSweetAlert } from "../../helpers/sweetAlertGlobals"
 
     export default defineComponent({
-        name:'editar-horario',
+        name: 'agregar-horario-juzgado',
         data() {
             return {
                 loading: false,
-                cargaDias: false,
+                mes: false,
+                fecha: false,
+                cargarDias: false,
                 dialogEditarDia: false,
+                showRango: false,
                 horario: {
-                    centro_atencion_id: '',
+                    juzgado_id: '',
                     mes: '',
-                    pmes: true,
+                    hora_inicio: '',
+                    hora_fin: '',
+                    duracion: '',
+                    inhabil: false,
+                    dias: [],
+                    fecha_inicio: '',
+                    fecha_fin: '',
+                    pmes: false,
+                    pfecha: false,
                 },
                 editar: {
                     id: null, 
@@ -269,13 +383,8 @@
                     hora_inicio: '',
                     hora_fin: '',
                     duracion: '',
-                    inhabil: false,
-                    mes: '',
-                    centro_atencion_id: ''
+                    inhabil: false
                 },
-                acciones: [
-                    'HABILITAR/DESHABILITAR DÍA', 'AMPLIAR HORARIO','REDUCIR HORARIO', 'CAMBIAR DURACIÓN DE CITA'
-                ],
                 meses: [
                     {
                         id: '1',
@@ -326,11 +435,23 @@
                         nombre: 'Diciembre'
                     },
                 ],
-                centroAtencionRules: [
-                    v => !!v || 'El campo de centro de atención es requerido'
-                ],
                 mesRules: [
                     v => !!v || 'El campo mes es requerido'
+                ],
+                horaInicioRules: [
+                    v => !!v || 'El campo de horario inicio es requerido'
+                ],
+                horaFinRules: [
+                    v => !!v || 'El campo de horario fin es requerido'
+                ],
+                duracionRules: [
+                    v => !!v || 'El campo tiempo de duración es requerido'
+                ],
+                fechaInicio: [
+                    v => !!v || 'El campo fecha inicio es requerido'
+                ],
+                fechaFin: [
+                    v => !!v || 'El campo fecha fin es requerido'
                 ],
                 elementosPorPagina: 10,
                 paginaActual: 1,
@@ -344,14 +465,18 @@
             }
         },
         created() {
-            this.getCentrosAtencion()
+            this.horario.juzgado_id = this.user.user.juzgado_id
+            this.getJuzgados()
         },
         computed: {
             dias() {
                 return this.$store.getters.getDias
             },
-            centrosAtencion() {
-                return this.$store.getters.getCatalogoCentrosAtencion
+            user() {
+                return this.$store.getters.user
+            },
+            juzgados() {
+                return this.$store.getters.getCatalogoJuzgados
             },
             pages() {
                 const numShown = Math.min(this.numShown, this.totalPaginas())
@@ -378,153 +503,70 @@
             }
         },
         methods: {
-            async getCentrosAtencion() {
-                this.loading = true
+            async getJuzgados() {
                 try {
-                    let response = await axios.get('/api/catalogos/centros-de-atencion')
+                    let response = await axios.get('/api/juzgados-citas')
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
-                            this.$store.commit('setCatalogoCentrosAtencion', response.data.centros_atencion)
+                            this.$store.commit('setCatalogoJuzgados', response.data.juzgados)
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
                 }
-                this.loading = false
             },
-            async cargarDias() {
-
-                console.log(this.horario)
-                const { valid } = await this.$refs.formEditarHorario.validate()
+            activarMes() {
+                if(this.mes == false) {
+                    this.mes = true
+                    this.fecha = false
+                } else {
+                    this.mes = false
+                }
+            },
+            activarRango() {
+                if(this.fecha) {
+                    this.fecha = false
+                } else {
+                    this.fecha = true
+                    this.mes = false
+                }
+            },
+            async obtenerDias() {
+                const { valid } = await this.$refs.formAgregarHorario.validate()
+                this.horario.pmes = this.mes
+                this.horario.pfecha = this.fecha
                 if (valid) {
                     try {
-                        let response = await axios.post('/api/horarios/dias-editar', this.horario)
+                        let response = await axios.post('/api/horarios/llenar-dias', this.horario)
                         if(response.status === 200) {
                             if(response.data.status === "ok") {
                                 this.$store.commit('setDias', response.data.dias)
-                                this.cargaDias = true
+                                this.cargarDias = true
                                 this.mostrar = true
                                 this.getDataPagina(1)
                             } else {
                                 errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                             }
                         } else {
-                            errorSweetAlert('Ocurrió un error al cargar dias')
+                            errorSweetAlert('Ocurrió un error al cargar días')
                         }
                     }catch (error) {
-                        errorSweetAlert('Ocurrió un error al cargar dias')
+                        errorSweetAlert('Ocurrió un error al cargar días')
                     }
                 }
             },
-            editarHorario(dia)
-            {
+            editarHorario(dia) {
                 this.editar.id = dia.id
-                this.editar.dia = dia.dia
+                this.editar.dia = dia.fecha
                 this.editar.hora_inicio = dia.hora_inicio
                 this.editar.hora_fin = dia.hora_fin
                 this.editar.duracion = dia.duracion
                 this.editar.inhabil = dia.inhabil
-                this.editar.mes = dia.mes
-                this.editar.centro_atencion_id = dia.centro_atencion_id
                 this.dialogEditarDia = true
-            },
-
-            async guardarCambios()
-            {
-                const { valid } = await this.$refs.formCambioHorario.validate()
-
-                console.log(this.editar)
-                // this.horario.dias = this.dias
-                if (valid) {
-                    Swal.fire({
-                        title: '¿Guardar cambios?',
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085D6',
-                        cancelButtonColor: '#D33',
-                        confirmButtonText: 'Si, guardar',
-                        cancelButtonText: 'Cancelar',
-                        showLoaderOnConfirm: true,
-                        preConfirm: async () => {
-                            try {
-                                let response = await axios.post('/api/horarios/actualizar-horario', this.editar)
-                                return response
-                            } catch (error) {
-                                errorSweetAlert('Ocurrió un error al editar el días.')
-                            }
-                        },
-                        allowOutsideClick: () => !Swal.isLoading()
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            if (result.value.status === 200) {
-                                if (result.value.data.status === "ok") {
-                                    successSweetAlert(result.value.data.message)
-                                    this.$store.commit('setDias', result.value.data.dias)
-                                    this.cancelarCambioHorario()
-                                    this.getDataPagina(1)
-                                } 
-                                //elseIF para comparar si existen citas agendadas en el dia
-                                else if(result.value.data.status === "existeCita")
-                                {
-                                    Swal.fire({
-                                        title: '¿Existen citas registradas este día, realmente desea inhabilitar el día?',
-                                        icon: 'warning',
-                                        showCancelButton: true,
-                                        confirmButtonColor: '#3085D6',
-                                        cancelButtonColor: '#D33',
-                                        confirmButtonText: 'Si, guardar',
-                                        cancelButtonText: 'Cancelar',
-                                        showLoaderOnConfirm: true,
-                                        preConfirm: async () => {
-                                            try {
-                                                let response = await axios.post('/api/horarios/actualizar-horario-citas', this.editar,{
-                                                    responseType: 'arraybuffer'
-                                                }).then((response)=>{    
-
-                                                    let blob = new Blob([response.data], { type: 'application/pdf' })
-                                                    let link = document.createElement('a')
-                                                    link.href = window.URL.createObjectURL(blob)
-                                                    // link.download = `${item.nombre}.pdf
-                                                    link.download = 'Citas_Canceladas.pdf'
-                                                    link.click()
-                                                    this.cargarDias()
-
-                                                })                                                                                                
-                                            } catch (error) {
-                                                errorSweetAlert('Ocurrió un error al editar el días.')
-                                            }
-                                        },
-                                        allowOutsideClick: () => !Swal.isLoading()
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            successSweetAlert("Se ha generado un PDF con las citas que correspondían al día")
-                                            this.cancelarCambioHorario()
-                                        }
-                                    })
-                                }
-                                //fin comparacion citas agendadas en el dia
-                                
-                                else {
-                                    errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
-                                }
-                            } else {
-                                errorSweetAlert('Ocurrió un error al editar días.')
-                            }
-                        }
-                    })
-                }
-            },
-            limpiarFormulario()
-            {
-
-                                              
-                this.horario.centro_atencion_id =''
-                this.horario.mes =  ''
-                this.dialogEditarDia = false
             },
             cancelarCambioHorario() {
                 this.editar.id = null
@@ -534,6 +576,71 @@
                 this.editar.duracion = ''
                 this.dialogEditarDia = false
             },
+            guardarCambios() {
+                this.dias.forEach(element => {
+                    if (element.id == this.editar.id) {
+                        element.hora_inicio = this.editar.hora_inicio
+                        element.hora_fin =  this.editar.hora_fin
+                        element.duracion = this.editar.duracion
+                        element.inhabil = this.editar.inhabil
+                    }
+                })
+                this.dialogEditarDia = false
+            },
+            limpiarFormulario() {
+                this.horario.mes = ''
+                this.horario.hora_inicio = ''
+                this.horario.hora_fin = ''
+                this.horario.duracion = ''
+                this.horario.inhabil = ''
+                this.horario.dias =  []
+                this.cargaDias = false
+                this.mes = false
+                this.fecha = false
+                this.showRango = false
+            },
+            async guardarHorarios() {
+                const { valid } = await this.$refs.formAgregarHorario.validate()
+                this.horario.dias = this.dias
+                if (valid) {
+                    Swal.fire({
+                        title: '¿Guardar dias?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085D6',
+                        cancelButtonColor: '#D33',
+                        confirmButtonText: 'Si, guardar',
+                        cancelButtonText: 'Cancelar',
+                        showLoaderOnConfirm: true,
+                        preConfirm: async () => {
+                            try {
+                                let response = await axios.post('/api/horarios/guardar-dias-juez', this.horario)
+                                return response
+                            } catch (error) {
+                                errorSweetAlert('Ocurrió un error al guardar dias.')
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (result.value.status === 200) {
+                                if (result.value.data.status === "ok") {
+                                    successSweetAlert(result.value.data.message)
+                                    this.limpiarFormulario()
+                                } else {
+                                    errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
+                                }
+                            } else {
+                                errorSweetAlert('Ocurrió un error al guardar dias.')
+                            }
+                        }
+                    })
+                }
+            },
+
+
+
+
             totalPaginas() {
                 return Math.ceil(this.dias.length / this.elementosPorPagina)
             },

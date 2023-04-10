@@ -3,7 +3,7 @@
         <div class="text-center my-6">
             <h2>Citas del Día</h2>
         </div>
-        
+
         <div class="row justify-content-between m-auto">
             <div class="col-md-4 col-12">
                 <v-form ref="formBuscarDia" class="row justify-content-between">
@@ -11,7 +11,7 @@
                         <v-text-field
                             v-model="ver.dia"
                             variant="solo" 
-                            type="date"
+                            type="date" 
                             label="Seleccione la fecha"
                             :rules="fechaB"
                         ></v-text-field>   
@@ -46,7 +46,7 @@
                             <th class="titulo-columna">Fecha</th>
                             <th class="titulo-columna">Hora</th>
                             <th class="titulo-columna">Curp</th>
-                            <th class="titulo-columna">Discapacidad</th>
+                            <th class="titulo-columna">Expediente</th>
                             <th class="titulo-columna">Estatus</th>
                             <th class="titulo-columna">Editar</th>                            
                         </tr>
@@ -80,7 +80,7 @@
                                 {{citas.curp}}
                             </td>
                             <td class="texto-campo-table">
-                                {{citas.discapacidad}}
+                                {{citas.expediente}}
                             </td>
                             <td class="texto-campo-table">
                                 {{citas.statusnom}}
@@ -235,7 +235,7 @@
 
 <script>
     import { defineComponent } from "vue"
-    import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
+    import { errorSweetAlert, successSweetAlert } from "../../helpers/sweetAlertGlobals"
     
     export default defineComponent({
         data() {
@@ -287,6 +287,7 @@
                     this.datosPaginados = this.citas.filter(item => {
                         return item.nombre.toLowerCase().includes(this.buscar.toLowerCase())
                         || item.folio.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.expediente.toLowerCase().includes(this.buscar.toLowerCase())
                     })
                 } else {
                     this.getDataPagina(1)
@@ -303,7 +304,7 @@
             async getCatalogoCitasDelDia() {
                 this.loading = true
                 try {
-                    let response = await axios.get('/api/catalogos/citas-del-dia')
+                    let response = await axios.get('/api/catalogos/citas-del-dia-juez')
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             this.$store.commit('setCatalogoCitasDelDia', response.data.citas)
@@ -436,7 +437,7 @@
                 const { valid } = await this.$refs.formBuscarDia.validate()
                 if (valid) {
                     try {
-                        let response = await axios.post('/api/citas/citas-del-dia-buscada', this.ver)
+                        let response = await axios.post('/api/citas/citas-del-dia-juez-buscada', this.ver)
                         if(response.status === 200) {
                             if(response.data.status === "ok") {
                                 this.$store.commit('setCatalogoCitasDelDia', response.data.citas)

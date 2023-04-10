@@ -2,25 +2,122 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dia;
-use App\Models\Horario;
-use App\Models\Cita;
-use Illuminate\Http\Request;
-use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use PDF;
-use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
+use App\Models\Dia;
+use App\Models\Cita;
+use App\Models\Horario;
+use Carbon\CarbonPeriod;
+use App\Models\CitaJuzgado;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 
 class DiaController extends Controller
 {
+    public function getDiasMes(Request $request)
+    {
+        try
+        {
+            if($request->pmes)
+            {
+                $days = Carbon::createFromDate(2023, $request->mes, 1)->daysInMonth;
+
+                $first = Carbon::createFromDate(2023, $request->mes, 1);
+                $last = Carbon::createFromDate(2023, $request->mes, $days);
+                $period = CarbonPeriod::create($first, $last);
+
+                $arrayDias = array();
+                $id = 1;
+
+                foreach($period as $date)
+                {
+                    $objectDia = new \stdClass();
+                    $objectDia->id = $id;
+                    $objectDia->dia = $this->formatearFecha($date->dayOfWeek,$date->day, $date->month, $date->year);
+                    $objectDia->hora_inicio = $request->hora_inicio;
+                    $objectDia->hora_fin = $request->hora_fin;
+                    $objectDia->duracion = $request->duracion;
+                    $objectDia->date_string = $date->toDateString();
+                    $objectDia->mes = $date->month;
+
+                    if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
+                        $objectDia->inhabil = true;
+                    } else {
+                        $objectDia->inhabil = false;
+                    }
+                    if($date->day < 10)
+                    {
+                        $objectDia->fecha = '0'.$date->day.'/'.$date->month.'/'.$date->year;
+                    }
+                    else
+                    {
+                        $objectDia->fecha = $date->day.'/'.$date->month.'/'.$date->year;
+                    }
+                    array_push($arrayDias,$objectDia);
+                    $id++;
+                }
+            } 
+            else
+            {
+                $period = CarbonPeriod::create($request->fecha_inicio, $request->fecha_fin);
+
+                $arrayDias = array();
+                $id = 1;
+
+                foreach($period as $date)
+                {
+                    $objectDia = new \stdClass();
+                    $objectDia->id = $id;
+                    $objectDia->dia = $this->formatearFecha($date->dayOfWeek,$date->day, $date->month, $date->year);
+                    $objectDia->hora_inicio = $request->hora_inicio;
+                    $objectDia->hora_fin = $request->hora_fin;
+                    $objectDia->duracion = $request->duracion;
+                    $objectDia->date_string = $date->toDateString();
+                    $objectDia->mes = $date->month;
+
+                    if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
+                        $objectDia->inhabil = true;
+                    } else {
+                        $objectDia->inhabil = false;
+                    }
+                    
+                    if($date->day < 10)
+                    {
+                        $objectDia->fecha = '0'.$date->day.'/'.$date->month.'/'.$date->year;
+                    }
+                    else
+                    {
+                        $objectDia->fecha = $date->day.'/'.$date->month.'/'.$date->year;
+                    }
+                    array_push($arrayDias,$objectDia);
+                    $id++;
+                }
+            }
+
+            return response()->json([
+                "status" => "ok",
+                "message" => "Dias obtenidos con éxito",
+                "dias" => $arrayDias
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener dias",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+    }
 
     public function guardarDias(Request $request)
     {
         $exito = false;
+        
         DB::beginTransaction();
-
         try
         {
             foreach($request->dias as $dia)
@@ -38,8 +135,6 @@ class DiaController extends Controller
                     $existe_dia->save();
                 }
                 else {
-
-                    
                     $day = new Dia;
                     $day->fecha = $dia['date_string'];
                     $day->hora_inicio = $dia['hora_inicio'];
@@ -83,7 +178,6 @@ class DiaController extends Controller
 
             DB::commit();
             $exito = true;
-
         } catch (\Throwable $th) {
             return response()->json([
                 "status" => "error",
@@ -93,126 +187,112 @@ class DiaController extends Controller
                 "line" => $th->getLine(),
             ], 200);
         }
+
         if ($exito) {
             return response()->json([
                 "status" => "ok",
                 "message" => "Dias agregados con éxito.",
-                // "tramites" => $arrayTramites
             ], 200);
         }   
     }
 
-    public function getDiasMes(Request $request)
+    public function guardarDiasJuez(Request $request)
     {
-        try
-        {
-            if($request->pmes)
-            {
-                $days = Carbon::createFromDate(2023, $request->mes, 1)->daysInMonth;
+        $exito = false;
+        
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
 
-                $first = Carbon::createFromDate(2023, $request->mes, 1);
-                $last = Carbon::createFromDate(2023, $request->mes, $days);
-                $period = CarbonPeriod::create($first, $last);
+            foreach ($request->dias as $dia) {
+                $exite_dia = Dia::where('fecha', $dia['date_string'])
+                                ->where('juez_id', $user->juez_id)
+                                ->first();
+                if ($exite_dia) {
+                    $existe_dia->fecha = $dia['date_string'];
+                    $existe_dia->hora_inicio = $dia['hora_inicio'];
+                    $existe_dia->hora_fin = $dia['hora_fin'];
+                    $existe_dia->duracion = $dia['duracion'];
+                    $existe_dia->inhabil = $dia['inhabil'];
+                    $existe_dia->save();
+                } 
+                else {
+                    $day = new Dia;
+                    $day->fecha = $dia['date_string'];
+                    $day->hora_inicio = $dia['hora_inicio'];
+                    $day->hora_fin = $dia['hora_fin'];
+                    $day->duracion = $dia['duracion'];
+                    $day->inhabil = $dia['inhabil'];
+                    $day->mes = $dia['mes'];
+                    $day->juez_id = $user->juez_id;
+                    $day->save();
 
-                $arrayDias = array();
-                $id = 1;
+                    $anio = substr($day->fecha, 0, -6);
+                    $dia_fecha = substr($day->fecha, -2, 2);
 
-                foreach($period as $date)
-                {
-                    $objectDia = new \stdClass();
-                    $objectDia->id = $id;
-                    $objectDia->dia = $this->formatearFecha($date->dayOfWeek,$date->day, $date->month, $date->year);
-                    $objectDia->hora_inicio = $request->hora_inicio;
-                    $objectDia->hora_fin = $request->hora_fin;
-                    $objectDia->duracion = $request->duracion;
-                    // $objectDia->inhabil = false;
-                    $objectDia->date_string = $date->toDateString();
-                    $objectDia->mes = $date->month;
+                    $h = substr($day->hora_inicio, 0, -3);
+                    $m = substr($day->hora_inicio, 3, 2);
 
-                    if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
-                        $objectDia->inhabil = true;
-                    } else {
-                        $objectDia->inhabil = false;
-                    }
-                    if($date->day < 10)
+                    $hf = substr($day->hora_fin, 0, -3);
+                    $mf = substr($day->hora_fin, 3, 2);
+
+                    $date = Carbon::create($anio, $day->mes, $dia_fecha, $h,$m);
+                    $datef = Carbon::create($anio, $day->mes, $dia_fecha, $hf,$mf);
+
+                    $horario_final = $datef->toTimeString(); //fin del rango de horarios
+                    $horario_insertar = $date->toTimeString(); //inicio rango de horarios
+
+                    while($horario_insertar < $horario_final)
                     {
-                        $objectDia->fecha = '0'.$date->day.'/'.$date->month.'/'.$date->year;
+                        $horario = new Horario;
+                        $horario->hora_inicio = $horario_insertar;
+                        $horario->citas_disponibles = 1;
+                        $horario->dia_id = $day->id;
+                        $horario->save();
+
+                        $date->addMinutes($day->duracion);
+                        $horario_insertar = $date->toTimeString();
                     }
-                    else
-                    {
-                        $objectDia->fecha = $date->day.'/'.$date->month.'/'.$date->year;
-                    }
-                    array_push($arrayDias,$objectDia);
-                    $id++;
                 }
             }
 
-            else
-            {
-                $period = CarbonPeriod::create($request->fecha_inicio, $request->fecha_fin);
-
-                $arrayDias = array();
-                $id = 1;
-
-                foreach($period as $date)
-                {
-                    $objectDia = new \stdClass();
-                    $objectDia->id = $id;
-                    $objectDia->dia = $this->formatearFecha($date->dayOfWeek,$date->day, $date->month, $date->year);
-                    $objectDia->hora_inicio = $request->hora_inicio;
-                    $objectDia->hora_fin = $request->hora_fin;
-                    $objectDia->duracion = $request->duracion;
-                    $objectDia->inhabil = false;
-                    $objectDia->date_string = $date->toDateString();
-                    $objectDia->mes = $date->month;
-
-                    if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
-                        $objectDia->inhabil = true;
-                    } else {
-                        $objectDia->inhabil = false;
-                    }
-                    
-                    if($date->day < 10)
-                    {
-                        $objectDia->fecha = '0'.$date->day.'/'.$date->month.'/'.$date->year;
-                    }
-                    else
-                    {
-                        $objectDia->fecha = $date->day.'/'.$date->month.'/'.$date->year;
-                    }
-                    array_push($arrayDias,$objectDia);
-                    $id++;
-                }
-            }
-
-            return response()->json([
-                "status" => "ok",
-                "message" => "Dias obtenidos con éxito",
-                "dias" => $arrayDias
-            ], 200);
+            DB::commit();
+            $exito = true;
         } catch (\Throwable $th) {
             return response()->json([
                 "status" => "error",
-                "message" => "Ocurrió un error al obtener dias",
+                "message" => "Ocurrió un error guardar dias",
                 "error" => $th->getMessage(),
                 "location" => $th->getFile(),
                 "line" => $th->getLine(),
             ], 200);
         }
 
+        if ($exito) {
+            return response()->json([
+                "status" => "ok",
+                "message" => "Dias agregados con éxito.",
+            ], 200);
+        }  
     }
 
     public function getDiasEditar(Request $request)
     {
         try {
-            $dias = Dia::where('mes',$request->mes)
-                        ->where('centro_atencion_id', $request->centro_atencion_id)
-                        ->get();
-
-            $arrayDias = array();
+            $user = Auth::user();
+            
+            if ($user->juez) {
+                $dias = Dia::where('mes', $request->mes)
+                            ->where('juez_id', $user->juez_id)
+                            ->get();
+            } else if ($user->centroAtencion) {
+                $dias = Dia::where('mes',$request->mes)
+                            ->where('centro_atencion_id', $request->centro_atencion_id)
+                            ->get();
+            }
 
             $id = 1;
-
+            $arrayDias = array();
             foreach($dias as $dia)
             {
                 $objectDia = new \stdClass();
@@ -221,7 +301,14 @@ class DiaController extends Controller
                 $objectDia->hora_inicio = $dia->hora_inicio;
                 $objectDia->hora_fin = $dia->hora_fin;
                 $objectDia->duracion = $dia->duracion;
-                $objectDia->centro_atencion_id = $dia->centro_atencion_id;
+                
+                if ($user->juez) {
+                    $objectDia->juez_id = $dia->juez_id;
+                    $objectDia->centro_atencion_id = null;
+                } else if ($user->centroAtencion) {
+                    $objectDia->centro_atencion_id = $dia->centro_atencion_id;
+                    $objectDia->juez_id = null;
+                }
 
                 if($dia->inhabil == 0)
                     $objectDia->inhabil = false;
@@ -231,16 +318,16 @@ class DiaController extends Controller
                 $objectDia->date_string = $dia->date_string;
                 $objectDia->mes = $dia->mes;
                 
-                array_push($arrayDias,$objectDia);
                 $id++;
+                array_push($arrayDias,$objectDia);
             }
+
 
             return response()->json([
                 "status" => "ok",
                 "message" => "Dias obtenidos con éxito",
                 "dias" => $arrayDias
             ], 200);
-
         } catch (\Throwable $th) {
             return response()->json([
                 "status" => "error",
@@ -255,9 +342,9 @@ class DiaController extends Controller
     public function actualizarHorario(Request $request) 
     {
         $exito = false;
+
         DB::beginTransaction();
         try {
-
             if($request->inhabil == true)
             {
                 $fecha = $request->dia;
@@ -400,6 +487,7 @@ class DiaController extends Controller
                 "line" => $th->getLine(),
             ], 200);
         }
+
         if($exito) {
             return response()->json([
                 "status" => "ok",
@@ -408,6 +496,167 @@ class DiaController extends Controller
             ], 200);
         }
     }
+
+    public function actualizarHorarioJuez(Request $request)
+    {
+        $exito = false;
+
+        DB::beginTransaction();
+        try {
+            $user = Auth::user();
+
+            if ($request->inhabil == true) {
+                $fecha = $request->dia;
+                $existeCita = CitaJuzgado::where('fecha_cita', $fecha)->where('juez_id', $user->juez_id)->first();
+
+                if ($existeCita) {
+                    return response()->json([
+                        "status" => "existeCita",
+                        "message" => "Existen citas agendadas en el día",
+                    ], 200);
+                } else {
+                    $dia = Dia::find($request->id);
+                    $dia->inhabil = $request->inhabil;
+                    $dia->save();
+
+                    $dias = Dia::where('mes', $request->mes)
+                                ->where('juez_id', $user->juez_id)
+                                ->get();
+
+                    $arrayDias = array();
+                    $id = 1;
+
+                    foreach($dias as $dia)
+                    {
+                        $objectDia = new \stdClass();
+                        $objectDia->id = $dia->id;
+                        $objectDia->dia = $dia->fecha;
+                        $objectDia->hora_inicio = $dia->hora_inicio;
+                        $objectDia->hora_fin = $dia->hora_fin;
+                        $objectDia->duracion = $dia->duracion;
+                        $objectDia->juez_id = $dia->juez_id;
+
+                        if($dia->inhabil == 0)
+                            $objectDia->inhabil = false;
+                        else
+                            $objectDia->inhabil = true;
+
+                        $objectDia->date_string = $dia->date_string;
+                        $objectDia->mes = $dia->mes;
+                        
+                        array_push($arrayDias,$objectDia);
+                        $id++;
+                    }
+
+                    DB::commit();
+                    $exito = true;
+                }
+            } else {
+                $dia = Dia::find($request->id);
+                $dia->fecha = $request->dia;
+                $dia->hora_inicio = $request->hora_inicio;
+                $dia->hora_fin = $request->hora_fin;
+                $dia->duracion = $request->duracion;
+                $dia->inhabil = $request->inhabil;
+                $dia->save();
+
+                foreach ($dia->horarios as $horario) {
+                    $horario->delete();
+                }
+
+                $anio = intval(substr($dia->fecha, 0, -6));
+                $dia_fecha = intval(substr($dia->fecha, -2, 2));
+                $h = intval(substr($dia->hora_inicio, 0, -3));
+                $m = intval(substr($dia->hora_inicio, 3, 2));
+                $hf = intval(substr($dia->hora_fin, 0, -3));
+                $mf = intval(substr($dia->hora_fin, 3, 2));
+                $mes = intval($dia->mes);
+    
+                $date = Carbon::create($anio, $mes, $dia_fecha, $h,$m);
+                $datef = Carbon::create($anio, $mes, $dia_fecha, $hf,$mf);
+    
+                $horario_final = $datef->toTimeString(); //fin del rango de horarios
+                $horario_insertar = $date->toTimeString(); //inicio rango de horarios
+    
+                while($horario_insertar < $horario_final)
+                {
+                    $horario = new Horario;
+                    $horario->hora_inicio = $horario_insertar;
+                    $horario->citas_disponibles = 1;
+                    $horario->dia_id = $dia->id;
+                    $horario->save();
+    
+                    $date->addMinutes($dia->duracion);
+                    $horario_insertar = $date->toTimeString();
+                }
+
+                $dias = Dia::where('mes', $request->mes)
+                                ->where('juez_id', $user->juez_id)
+                                ->get();
+
+                $arrayDias = array();
+                $id = 1;
+
+                foreach($dias as $dia)
+                {
+                    $objectDia = new \stdClass();
+                    $objectDia->id = $dia->id;
+                    $objectDia->dia = $dia->fecha;
+                    $objectDia->hora_inicio = $dia->hora_inicio;
+                    $objectDia->hora_fin = $dia->hora_fin;
+                    $objectDia->duracion = $dia->duracion;
+                    $objectDia->juez_id = $dia->juez_id;
+
+                    if($dia->inhabil == 0)
+                        $objectDia->inhabil = false;
+                    else
+                        $objectDia->inhabil = true;
+
+                    $objectDia->date_string = $dia->date_string;
+                    $objectDia->mes = $dia->mes;
+                    
+                    array_push($arrayDias,$objectDia);
+                    $id++;
+                }
+
+                DB::commit();
+                $exito = true;
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al actualizar dias",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+
+        if($exito) {
+            return response()->json([
+                "status" => "ok",
+                "message" => "Dias obtenidos con exito",
+                "dias" => $arrayDias
+            ], 200);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+   
 
     public function actualizarHorarioCitas(Request $request)
     {
@@ -664,7 +913,11 @@ class DiaController extends Controller
                 // Obtenemos solo parte de la fecha de $date 
                 $fecha = $date->toDateString();
                 // Buscamos el día en la base de datos
-                $dia =  Dia::where('fecha', $fecha)->where('centro_atencion_id', $request->centro_atencion_id)->first();
+                if ($request->centro_atencion_id) {
+                    $dia =  Dia::where('fecha', $fecha)->where('centro_atencion_id', $request->centro_atencion_id)->first();
+                } else if ($request->juez_id) {
+                    $dia =  Dia::where('fecha', $fecha)->where('juez_id', $request->juez_id)->first();
+                }
 
                 if($dia) {
                     // Creamos nuestro objeto para cada día
@@ -676,7 +929,13 @@ class DiaController extends Controller
                     $object->hora_inicio = $dia->hora_inicio;
                     $object->hora_fin = $dia->hora_fin;
                     $object->duracion = $dia->duracion;
-                    $object->centro_atencion_id = $dia->centro_atencion_id;
+                    if ($request->centro_atencion_id) {
+                        $object->centro_atencion_id = $dia->centro_atencion_id;
+                        $object->juez_id = null;
+                    } else if ($request->juez_id) {
+                        $object->juez_id = $dia->juez_id;
+                        $object->centro_atencion_id = null;
+                    }
                 
                     // Obtenemos los horarios relacionados al registro dia en la base de datos
                     $horarios = $dia->horarios;
@@ -719,6 +978,7 @@ class DiaController extends Controller
                     $object->hora_fin = '';
                     $object->duracion = '';
                     $object->centro_atencion_id = null;
+                    $object->juez_id = null;
 
                     if ($date->dayOfWeek == 0 || $date->dayOfWeek == 6) {
                         $object->dia_sin_servicio = true;

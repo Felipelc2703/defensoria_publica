@@ -3,6 +3,7 @@ import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
 import Dashboard from './pages/Dashboard.vue'
 import CrearCita from './pages/CrearCita.vue'
+import CrearCitaJuzgado from './pages/CrearCitaJuzgado.vue'
 import ConfirmacionCitaBuscada from './pages/ConfirmacionCitaBuscada.vue'
 import CentrosAtencion from './pages/CentrosAtencion.vue'
 import confwhats from './pages/confwhats.vue'
@@ -20,6 +21,12 @@ import AgregarHorario from './pages/AgregarHorario.vue'
 import EditarHorario from './pages/EditarHorarios.vue'
 import CitasDelDia from './pages/CitasDelDia.vue'
 import DatosCita from './pages/DatosCita.vue'
+
+import AgregarHorarioJuzgado from './pages/juzgados/AgregarHorarioJuzgado.vue'
+import EditarHorarioJuzgado from './pages/juzgados/EditarHorarioJuzgado.vue'
+import CitasDelDiaJuez from './pages/juzgados/CitasDelDiaJuez.vue'
+import ConfirmacionCitaJuzgado from './pages/juzgados/ConfirmacionCitaJuzgado.vue'
+import ConfirmacionCitaBuscadaJuzgado from './pages/juzgados/ConfirmacionCitaBuscadaJuzgado.vue'
 
 
 const routes = [
@@ -48,6 +55,11 @@ const routes = [
         path: '/crear-cita',
         name: 'CrearCita',
         component: CrearCita,
+    },
+    {
+        path: '/crear-cita-juzgado',
+        name: 'CrearCitaJuzgado',
+        component: CrearCitaJuzgado,
     },
     {
         path: '/confirmacion-cita-buscada',
@@ -153,7 +165,41 @@ const routes = [
         path: '/datos-cita',
         name: 'DatosCita',
         component: DatosCita
-    }
+    },
+    {
+        path: '/agregar-horario-juzgado',
+        name: 'AgregarHorarioJuzgado',
+        component: AgregarHorarioJuzgado,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/editar-horario-juzgado',
+        name: 'EditarHorarioJuzgado',
+        component: EditarHorarioJuzgado,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/citas-del-dia-juez',
+        name: 'CitasDelDiaJuez',
+        component: CitasDelDiaJuez,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/confirmacion-cita-juzgado',
+        name: 'ConfirmacionCitaJuzgado',
+        component: ConfirmacionCitaJuzgado,
+    },
+    {
+        path: '/confirmacion-cita-buscada-juzgado',
+        name: 'ConfirmacionCitaBuscadaJuzgado',
+        component: ConfirmacionCitaBuscadaJuzgado,
+    },
 ]
 
 const router = createRouter({

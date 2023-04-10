@@ -8,13 +8,15 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\NotaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\JuzgadoController;
 use App\Http\Controllers\TramiteController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\RequisitoController;
+use App\Http\Controllers\CitaJuzgadoController;
 use App\Http\Controllers\TipoTramiteController;
 use App\Http\Controllers\CentroAtencionController;
 use App\Http\Controllers\NumeroContactoController;
-use App\Http\Controllers\ReportesController;
 
 
 
@@ -42,22 +44,54 @@ Route::controller(AuthController::class)->group(function() {
  * RUTAS ADMINISTRATIVAS
  */
 Route::group(['middleware' => 'auth:sanctum'], function ($router) {
+    /**
+     * RUTAS UTILIZADAS POR DEFENSORIA Y POR JUZGADOS
+     */
+    // Ruta para obtener las fechas de un mes o en un rango de fechas
+    Route::post('/horarios/llenar-dias', [DiaController::class, 'getDiasMes']);
+    Route::post('/horarios/dias-editar', [DiaController::class, 'getDiasEditar']);
+    Route::post('/horarios/actualizar-horario-citas', [DiaController::class, 'actualizarHorarioCitas']);
+    
+    /**
+     * RUTAS UTILIZADAS POR JUZGADOS
+     */
+    // Ruta para guardar horarios para citas de un juez
+    Route::post('/horarios/guardar-dias-juez', [DiaController::class, 'guardarDiasJuez']);
+    Route::post('/horarios/actualizar-horario-juez', [DiaController::class, 'actualizarHorarioJuez']);
+    Route::get('/catalogos/citas-del-dia-juez', [CitaJuzgadoController::class, 'getCitasDelDiaJuez']);
+    Route::post('/citas/citas-del-dia-juez-buscada', [CitaJuzgadoController::class, 'selectDiaCitaJuez']);
+
+    /**
+     * RUTAS UTILIZADAS POR DEFENSORIA PUBLICA
+     */
+    // Ruta para guardar horarios para citas de un centro de atención
+    Route::post('/horarios/guardar-dias', [DiaController::class, 'guardarDias']);
+    Route::post('/horarios/actualizar-horario', [DiaController::class, 'actualizarHorario']);
     // Ruta para citas del día
     Route::get('/catalogos/citas-del-dia', [CitaController::class, 'getCitasDelDia']);
+    // Actualizar estatus cita y motivo*
+    Route::post('/citas/citas-del-dia', [CitaController::class, 'guardarCambios']);
+    Route::post('/citas/citas-del-dia-buscada', [CitaController::class, 'selectDiaCita']);
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     // Ruta para guardar número de whatsapp
     Route::post('/whatsapp/guardar-numero', [NumeroContactoController::class, 'guardarNumero']);
 
-    // Ruta para guardar/editar horarios para citas
-    Route::post('/horarios/llenar-dias', [DiaController::class, 'getDiasMes']);
-    Route::post('/horarios/guardar-dias', [DiaController::class, 'guardarDias']);
-    Route::post('/horarios/dias-editar', [DiaController::class, 'getDiasEditar']);
-    Route::post('/horarios/actualizar-horario', [DiaController::class, 'actualizarHorario']);
-    Route::post('/horarios/actualizar-horario-citas', [DiaController::class, 'actualizarHorarioCitas']);
 
-    // Actualizar estatus cita y motivo*
-    Route::post('/citas/citas-del-dia', [CitaController::class, 'guardarCambios']);
-    Route::post('/citas/citas-del-dia-buscada', [CitaController::class, 'selectDiaCita']);
+    
+
 
     // Rutas utilizadas para catalogo de tramites
     Route::get('/catalogos/tramites', [TramiteController::class, 'getTramites']);
@@ -106,14 +140,20 @@ Route::get('/catalogos/tipos-de-tramite', [TipoTramiteController::class, 'getTip
 
 Route::get('/tramites-citas', [TramiteController::class, 'getTramitesCitas']);
 Route::post('/calendario-citas', [DiaController::class, 'getCalendarioCitas']);
+// Route::post('/calendario-citas-juez', [DiaController::class, 'getCalendarioCitasJuez']);
 Route::post('/citas/agendar-cita', [CitaController::class, 'agendarCita']);
+Route::post('/citas/agendar-cita-juez', [CitaJuzgadoController::class, 'agendarCitaJuez']);
 
 //Rutas utilizadas para los roles 
 Route::get('/catalogos/roles', [RolController::class, 'getRoles']);
 
 Route::post('/buscar-cita', [CitaController::class, 'buscarCita']);
 Route::get('/cancelar-cita/{id}', [CitaController::class, 'cancelarCita']);
+Route::get('/cancelar-cita-juzgado/{id}', [CitaJuzgadoController::class, 'cancelarCitaJuzgado']);
 Route::get('/imprimir-cita/{id}', [CitaController::class, 'imprimirCita']);
+Route::get('/imprimir-cita-juzgado/{id}', [CitaJuzgadoController::class, 'imprimirCitaJuzgado']);
 
 Route::post('/tramite/requisitos-tipo-tramite', [TramiteController::class, 'getRequisitosTramite']);
 Route::post('/tramite/requisitos-tipo-tramite-editar', [TramiteController::class, 'getRequisitosTramiteEditar']);
+
+Route::get('/juzgados-citas', [JuzgadoController::class, 'getJuzgados']);

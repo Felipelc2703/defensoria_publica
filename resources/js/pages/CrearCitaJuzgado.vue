@@ -3,7 +3,7 @@
         <div class="row contenedor">
             <div class="col-sm-9 col-12 contenedor-uno">
                 <div class="text-center py-2">
-                    <img class="scale-logo-defensoria logo-defensoria" width="150" height="75" src="../../../public/images/defensoria-publica-titulo.png" alt="">
+                    <img class="scale-logo-defensoria logo-defensoria" width="150" height="75" src="../../../public/images/juzgados-titulo.png" alt="">
                 </div>
             </div>
             <div class="col-sm-3 hidden-xs contenedor-dos">
@@ -15,7 +15,7 @@
                     <div class="container">
                         <div class="row justify-content-around">
                             <div class="col-6 text-left">
-                                <p class="titulo_tipo_tramite">{{tramiteSeleccionado.nombre}}</p>
+                                <p class="titulo_tipo_tramite">{{juzgadoSeleccionado.nombre}}</p>
                             </div>
                             <div class="col-6 text-right">
                                 <v-btn class="boton-regresar" variant="text" prepend-icon="mdi-arrow-left" @click="volverInicio()">Regresar</v-btn>
@@ -27,7 +27,7 @@
                                     <v-expansion-panel-title v-slot="{ open }">
                                         <v-row no-gutters>
                                             <v-col cols="8" class="d-flex justify-start">
-                                                <h6><span class="texto-pasos">PASO 1:</span> <span class="texto-nombre-paso">Seleccione el centro de atención</span></h6>
+                                                <h6><span class="texto-pasos">PASO 1:</span> <span class="texto-nombre-paso">Seleccione el juez</span></h6>
                                             </v-col>
                                             <v-col cols="8" class="text--secondary">
                                                 <v-fade-transition leave-absolute>
@@ -41,20 +41,20 @@
                                         <div class="row mt-4">
                                             <div class="col-md-6 col-12">
                                                 <v-select
-                                                    v-model="cita.centro_atencion"
-                                                    :items="tramiteSeleccionado.centrosAtencion"
-                                                    item-title="nombre"
+                                                    v-model="cita.juez"
+                                                    :items="juzgadoSeleccionado.jueces"
+                                                    item-title="nombre_completo"
                                                     item-value="id"
                                                     variant="outlined"
-                                                    label="Centro de Atención:"
+                                                    label="Seleccione el juez:"
                                                 >
                                                 </v-select>
                                             </div>
-                                            <div class="col-md-6 col-12">
+                                            <!-- <div class="col-md-6 col-12">
                                                 <div class="texto-ubicacion-centros">
                                                     <p class="text-left m-0">Si requiere conocer la ubicación de cada uno de los lugares donde puede realizar el trámite, de <span class="texto-click-aqui" @click="mostrarUbicacionCentrosAtencion()">click aquí</span></p>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
@@ -185,40 +185,29 @@
                                                             </div>
                                                             <div class="row justify-content-between">
                                                                 <div class="col-sm-6 col-12">
-                                                                    <v-select
-                                                                        v-model="cita.tiene_discapacidad"
-                                                                        label="¿Presenta alguna discapacidad?"
-                                                                        :items="['Si', 'No']"
-                                                                        :rules="tieneDiscapacidadRules"
-                                                                    ></v-select>
-                                                                </div>
-                                                                <div class="col-sm-6 col-12">
-                                                                    <v-select
-                                                                        v-if="cita.tiene_discapacidad == 'Si'"
-                                                                        v-model="cita.discapacidad"
-                                                                        label="¿Cuál?"
-                                                                        :items="['Motriz', 'Auditiva', 'Visual', 'Intelectual', 'Psicosocial']"
-                                                                    ></v-select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row justify-content-between">
-                                                                <div class="col-sm-6 col-12">
                                                                     <v-text-field
                                                                         v-model="cita.curp"
                                                                         label="Curp"
                                                                         :rules="[rules.curp]"
-                                                                        
                                                                     ></v-text-field>
                                                                     <a class="boton_inicio" @click="irCurp()">CONSULTE SU CURP AQUÍ</a>
                                                                 </div>
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-text-field
+                                                                        v-model="cita.expediente"
+                                                                        label="Expediente"
+                                                                        :rules="expedienteRules"
+                                                                    ></v-text-field>
+                                                                </div>
                                                             </div>
+                                                            <v-textarea rows="3" class="mt-4" label="Indique el asunto de la cita" :rules="asuntoRules" v-model="cita.asunto">{{cita.asunto}}</v-textarea>
                                                         </v-form>
                                                     </v-row>
                                                 </v-container>
                                             </v-card-text>
                                             <v-card-actions class="mb-6">
                                                 <v-spacer></v-spacer>
-                                                <button class="boton-cancelar" @click="cancelarSolicitud()">Cancelar</button>
+                                                <button class="boton-cancelar" @click="volverInicio()">Cancelar</button>
                                                 <button class="boton-aceptar" @click="agendarCita()">Agendar</button>
                                                 <v-spacer></v-spacer>
                                             </v-card-actions>
@@ -234,9 +223,9 @@
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col-md-12 text-left">
-                            <span class="texto-estatico-resumen-cita">Centro de Atención:</span>
+                            <span class="texto-estatico-resumen-cita">Juez:</span>
                             <br>
-                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.centro_atencion}}</span>
+                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.juez}}</span>
                             <br>
                             <br>
                         </div>
@@ -268,9 +257,9 @@
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <span class="texto-estatico-resumen-cita">Centro de Atención:</span>
+                            <span class="texto-estatico-resumen-cita">Juez:</span>
                             <br>
-                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.centro_atencion}}</span>
+                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.juez}}</span>
                             <br>
                             <br>
                         </div>
@@ -296,91 +285,6 @@
                 </div>
             </div>
         </div>
-
-        <v-dialog
-            v-model="dialogRequisitos"
-            max-width="600px"
-            persistent
-        >
-            <v-card>
-                <v-card-title class="text-center">
-                    <span class="titulo-modal-requisitos">Sistema de Citas</span>
-                    <div class="first-line"></div>
-                </v-card-title>
-                <div class="container mb-2">
-                    <p class="texto-saludo"><span class="">Estimado ciudadano:</span></p>
-                    <div class="second-line"></div>
-                    <p class="texto-instrucciones">A continuación se muestran los requisitos que deberá presentar ante el Centro de Atención para realizar el trámite; favor de seleccionar aquéllos con los que cuenta:</p>
-                    <table class="table table-striped table-sm">
-                        <thead>
-                            <tr class="encabezado-tabla-requisitos">
-                                <th scope="col" class="text-center texto-encabezado-tabla-requisitos">Requisitos</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(requisito, index) in tramiteSeleccionado.requisitos" :key="index">
-                                <td><span class="texto-requisito-tabla">{{requisito.nombre}}</span></td>
-                                <td><input type="checkbox" @change="checkRequisito(requisito)"></td>
-                                <td><p class="campo-obligatorio" v-if="requisito.obligatorio">*</p></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="ultimos-textos-modal-requisitos">
-                        <p>Si usted ya cuenta con una cita agendada y desea consultarla, dé <span class="texto-click-aqui">click aquí</span>.</p>
-                        <p>Todos los trámites son personales. Para verificar las especificaciones de los requisitos dé <span class="texto-click-aqui">click aquí</span>.</p>
-                        <p class="texto-requisitos-obligatorios">(*) Requisitos obligatorios</p>
-                        <div class="text-center">
-                            <p v-if="bandera_requisitos_obligatorios" class="texto-faltan-requisitos-obligatorios">Atención: Debe seleccionar al menos una opción para continuar.</p>
-                        </div>
-                    </div>
-                    <div class="third-line"></div>
-                </div>
-                <v-card-actions class="mb-4">
-                    <v-spacer></v-spacer>
-                    <button class="boton-cancelar" @click="cancelarSolicitud()">Cancelar</button>
-                    <button class="boton-aceptar" @click="aceptarRequisitos()">Aceptar</button>
-                    <v-spacer></v-spacer>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
-        <v-dialog
-            v-model="dialogCentrosAtencion"
-            max-width="600px"
-        >
-            <v-card>
-                <v-card-title class="text-center">
-                    <span class="titulo-modal-requisitos">Sistema de Citas</span>
-                    <div class="first-line"></div>
-                </v-card-title>
-                <div class="container mb-2">
-                    <p class="texto-saludo"><span class="">Ubicación de Centros de Atención:</span></p>
-                    <div class="second-line"></div>
-                    <table class="mt-2 table table-striped table-sm">
-                        <thead>
-                            <tr class="encabezado-tabla-centros-atencion">
-                                <th class="text-center texto-encabezado-tabla-centros-atencion">Centro de atención</th>
-                                <th class="text-center texto-encabezado-tabla-centros-atencion">Domicilio</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(centro, index) in tramiteSeleccionado.centrosAtencion" :key="index">
-                                <td><span class="texto-requisito-tabla">{{centro.nombre}}</span></td>
-                                <td><span>{{centro.direccion}}</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="third-line"></div>
-                </div>
-                <v-card-actions class="mb-4">
-                    <v-spacer></v-spacer>
-                    <button class="boton-aceptar" @click="dialogCentrosAtencion = false">Cerrar</button>
-                    <v-spacer></v-spacer>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
     </div>
 </template>
 
@@ -389,13 +293,14 @@
     import { errorSweetAlert, successSweetAlert, warningSweetAlert } from './../helpers/sweetAlertGlobals'
 
     export default defineComponent({
-        name: 'crear-cita',
+        name: 'crear-cita-juzgado',
         data() {
             return {
+                panel: [0],
+                mostrarPaso2: false,
+                mostrarPaso3: false,
                 cita: {
-                    requisitos: [],
-                    centro_atencion: '',
-                    tramite: '',
+                    juez: '',
                     dia_cita: '',
                     fecha_formateada: '',
                     hora_cita: '',
@@ -403,11 +308,11 @@
                     email: '',
                     telefono: '',
                     sexo: '',
-                    tiene_discapacidad: '',
-                    discapacidad: '',
                     dia: '',
                     horario: '',
                     curp:'',
+                    expediente: '',
+                    asunto: '',
                 },
                 nombreRules: [
                     v => !!v || 'El nombre es requerido'
@@ -418,11 +323,11 @@
                 sexoRules: [
                     v => !!v || 'El sexo es requerido',
                 ],
-                tieneDiscapacidadRules: [
-                    v => !!v || 'Seleccione una opción',
+                expedienteRules: [
+                    v => !!v || 'El expediente es requerido',
                 ],
-                discapacidadRules: [
-                    v => !!v || 'Seleccione una opción',
+                asuntoRules: [
+                    v => !!v || 'El asunto es requerido',
                 ],
                 rules:{
                     email: value => {
@@ -440,28 +345,20 @@
                         return pattern.test(value) || 'El campo no contiene una curp valida'
 
                     },
-
                 },
                 resumen_cita: {
-                    centro_atencion: '',
+                    juez: '',
                     dia_cita: '',
                     hora_cita: '',
                 },
-                horarios_disponibles: [],
-                bandera_requisitos_obligatorios: false,
-                panel: [0],
-                mostrarPaso2: false,
-                mostrarPaso3: false,
-                dialogRequisitos: true,
                 semana_uno: [],
                 semana_dos: [],
                 semana_tres: [],
                 semana_cuatro: [],
                 semana_cinco: [],
                 semana_seis: [],
-                dialogCentrosAtencion: false,
                 variables_calendario: {
-                    centro_atencion_id: null,
+                    juez_id: null,
                     mes: null,
                     year: null,
                 },
@@ -470,36 +367,32 @@
                     año: '',
                     numero_mes: ''
                 },
+                horarios_disponibles: [],
                 bandera_mes_actual: false,
                 showPrevious: true,
                 showNext: true,
             }
         },
         created() {
-            // this.cita.requisitos = this.tramiteSeleccionado.requisitos
-            this.cita.requisitos = this.tramiteSeleccionado.requisitos
-            this.cita.requisitos.forEach(element => {
-                element.checked = '0'
-            })
             let date = new Date()
             this.fecha_calendario.numero_mes = date.getMonth() + 1
             this.fecha_calendario.mes = this.formatearMes(date.getMonth() + 1)
             this.fecha_calendario.año = date.getFullYear()
         },
         computed: {
-            tramiteSeleccionado() {
-                return this.$store.getters.getTramiteSeleccionado
-            },
+            juzgadoSeleccionado() {
+                return this.$store.getters.getJuzgadoSeleccionado
+            }
         },
         watch: {
-            'cita.centro_atencion': function () {
-                this.variables_calendario.centro_atencion_id = this.cita.centro_atencion
+            'cita.juez': function () {
+                this.variables_calendario.juez_id = this.cita.juez
                 this.variables_calendario.mes = new Date().getMonth() + 1
                 this.variables_calendario.year = new Date().getFullYear()
                 this.getCalendar()
-                this.tramiteSeleccionado.centrosAtencion.forEach(e => {
-                    if (e.id == this.cita.centro_atencion) {
-                        this.resumen_cita.centro_atencion = e.nombre
+                this.juzgadoSeleccionado.jueces.forEach(e => {
+                    if (e.id == this.cita.juez) {
+                        this.resumen_cita.juez = e.nombre_completo
                     }
                 })
                 this.mostrarPaso2 = true
@@ -526,43 +419,11 @@
             },
         },
         methods: {
-            irCurp() {
-                window.open("https://www.gob.mx/curp/")
-            },
-            cancelarSolicitud() {
-                this.dialogRequisitos = false
-                this.$router.push('/')
-            },
-            aceptarRequisitos() {
-                let faltan_requisitos_obligatorios = false
-                this.cita.requisitos.forEach(element => {
-                    if (element.obligatorio == 1 && element.checked == '0') {
-                        faltan_requisitos_obligatorios = true
-                    }
-                })
-                if (faltan_requisitos_obligatorios) {
-                    this.bandera_requisitos_obligatorios = true
-                } else {
-                    this.dialogRequisitos = false
-                }
-            },
-            checkRequisito(requisito) {
-                this.cita.requisitos.forEach(element => {
-                    if (element.id == requisito.id) {
-                        if (element.checked == '0') {
-                            element.checked = '1'
-                        } else {
-                            element.checked = '0'
-                        }
-                    }
-                })
-            },
             volverInicio() {
                 this.$router.push('/')
-                this.cita.requisitos = []
             },
-            mostrarUbicacionCentrosAtencion() {
-                this.dialogCentrosAtencion = true
+            irCurp() {
+                window.open("https://www.gob.mx/curp/")
             },
             async getCalendar() {
                 try {
@@ -943,8 +804,6 @@
                 }
             },
             async agendarCita() {
-                this.cita.tramite = this.tramiteSeleccionado.id
-                console.log(this.cita)
                 const { valid } = await this.$refs.form.validate()
                 if (valid) {
                     Swal.fire({
@@ -958,7 +817,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/citas/agendar-cita', this.cita)
+                                let response = await axios.post('/api/citas/agendar-cita-juez', this.cita)
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al agendar la cita.')
@@ -970,7 +829,7 @@
                             if (result.value.status === 200) {
                                 if (result.value.data.status === "ok") {
                                     this.$store.commit('setCitaAgendada', result.value.data.cita_agendada)
-                                    this.$router.push('/confirmacion-cita')
+                                    this.$router.push('/confirmacion-cita-juzgado')
                                 }else if(result.value.data.status === "no_data") {
                                         warningSweetAlert(result.value.data.message)
                                 
@@ -983,7 +842,7 @@
                         }
                     })
                 }
-            },
-        },
+            }
+        }
     })
 </script>

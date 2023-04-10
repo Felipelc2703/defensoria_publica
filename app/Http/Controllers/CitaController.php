@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use Carbon\Carbon;
 use App\Models\Cita;
+use App\Models\Juez;
 use App\Models\Horario;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\ConfirmacionCita;
+use App\Mail\ConfirmacionCitaJuez;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
-use PDF;
-use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 
 class CitaController extends Controller
 {
-    public function getCitasDelDia(Request $request){
+    public function getCitasDelDia(){
         try {
             $date = Carbon::now();
             $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
@@ -63,11 +65,10 @@ class CitaController extends Controller
             ], 200);
         }
     }
+
     public function agendarCita(Request $request)
     {
         $exito = false;
-
-        
 
         DB::beginTransaction();
         try {
@@ -293,7 +294,6 @@ class CitaController extends Controller
                 "cita_agendada" => $citaAgendada,
             ], 200);
         }
-    
     }
 
     public function generarArchivoCitaPdf()
@@ -354,11 +354,27 @@ class CitaController extends Controller
                 $citaAgendada->id = $cita->id;
                 $citaAgendada->folio = $cita->folio;
                 $citaAgendada->nombre = $cita->nombre;
-                $citaAgendada->tramite = $cita->tramite->nombre;
                 $citaAgendada->fecha = $cita->fecha_formateada;
                 $citaAgendada->hora = $cita->hora_cita;
-                $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
-                $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
+
+                if ($cita->juez) {
+                    $citaAgendada->juzgado = $cita->juzgado->nombre;
+                    $citaAgendada->juez = $cita->juez->nombre . ' ' . $cita->juez->apellido_paterno . ' ' . $cita->juez->apellido_materno;
+                    $citaAgendada->tramite = '';
+                    $citaAgendada->centro_atencion = '';
+                    $citaAgendada->direccion_centro_atencion = '';
+                    $citaAgendada->cita_defensoria = false;
+                    $citaAgendada->cita_juzgado = true;
+                } else if ($citaAgendada->tramite) {
+                    $citaAgendada->tramite = $cita->tramite->nombre;
+                    $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
+                    $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
+                    $citaAgendada->juzgado = '';
+                    $citaAgendada->juez = '';
+                    $citaAgendada->cita_defensoria = true;
+                    $citaAgendada->cita_juzgado = false;
+                }
+
 
                 return response()->json([
                     "status" => "ok",
@@ -387,36 +403,36 @@ class CitaController extends Controller
 
     public function cancelarCita($id)
     {
+        $exito = false;
+        
+        DB::beginTransaction();
         try {
             $cita = Cita::find($id);
             $cita->status = 3;
             $cita->save();
-
+            
             $horario = $cita->centroAtencion->dias->where('fecha',$cita->fecha_cita)->first()->horarios->where('hora_inicio',$cita->hora_cita)->first();
-
             $horario->citas_disponibles++;
             $horario->save();
 
-
-            // return response()->json([
-            //     "status" => "ok",
-            //     "message" => "Cita cancelada con exito",
-            //     "horario" => $horario
-            // ], 500);
-
-            return response()->json([
-                "status" => "ok",
-                "message" => "Cita cancelada con éxito",
-            ], 200);
+            DB::commit();
+            $exito = true;
         } catch (\Throwable $th) {
             DB::rollback();
             $exito = false;
             return response()->json([
                 "status" => "error",
-                "message" => "Ocurrió un error al buscar cita.",
+                "message" => "Ocurrió un error al cancelar cita.",
                 "error" => $th->getMessage(),
                 "location" => $th->getFile(),
                 "line" => $th->getLine(),
+            ], 200);
+        }
+
+        if ($exito) {
+            return response()->json([
+                "status" => "ok",
+                "message" => "Cita cancelada con éxito",
             ], 200);
         }
     }
@@ -435,7 +451,7 @@ class CitaController extends Controller
         $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
         $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
 
-        $f =  $citaAgendada->folio;
+        $f = $citaAgendada->folio;
 
         // Custom Header
         PDF::setHeaderCallback(function($pdf) {
@@ -738,6 +754,7 @@ class CitaController extends Controller
             ], 200);
         }
     }
+
     public function selectDiaCita(Request $request){
         try {
             $citas = Cita::where('fecha_cita', $request->dia )->get();
@@ -784,5 +801,4 @@ class CitaController extends Controller
             ], 200);
         }
     }
-    
 }

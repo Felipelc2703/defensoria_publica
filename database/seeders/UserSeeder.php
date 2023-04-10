@@ -47,5 +47,15 @@ class UserSeeder extends Seeder
             'centro_atencion_id' => 1,
             'rol_id' => 1,
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'Juzgado Primero Civil',
+            'clave' => 'primerocivil',
+            'email' => '1civil@gmail.com',
+            'password' => 'password',
+            'juzgado_id' => 1,
+            'rol_id' => 3,
+            'juez_id' => 1,
+        ]);
     }
 }

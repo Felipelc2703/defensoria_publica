@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dia extends Model
 {
+    use HasFactory;
 
     public function centroAtencion()
     {
@@ -17,5 +18,4 @@ class Dia extends Model
     {
         return $this->hasMany(Horario::class);
     }
-    use HasFactory;
 }

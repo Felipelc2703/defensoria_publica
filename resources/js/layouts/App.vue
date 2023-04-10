@@ -34,48 +34,113 @@
                             </div>
                         </div>
                         <div v-else>
-                            <nav class="navbar navbar-expand-lg navbar-light">
-                                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                                  <ul class="navbar-nav">
-                                    <li class="nav-item dropdown link-nav" v-if="user.user.rol_id == 1">
-                                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Horarios
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                            <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario')">Cargar Horario</a>
-                                            <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario')">Modificar Horario</a>
-                                        </div>
-                                    </li>
-                                    <li class="nav-item dropdown link-nav" v-if="user.user.rol_id == 1">
-                                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Catálogos
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                            <a class="dropdown-item link-nav" @click="this.$router.push('/centros-atencion')">Centro de Atención</a>
-                                            <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-requisitos')">Requisito</a>
-                                            <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a>
-                                            <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a>
-                                            <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
-                                        </div>
-                                    </li>
-                                    <li class="nav-item link-nav">
-                                        <a class="nav-link" @click="this.$router.push('/citas-del-dia')">Citas del día</a>
-                                    </li>
-                                    <li class="nav-item link-nav" v-if="user.user.rol_id == 1">
-                                        <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
-                                    </li>
-                                    <li class="nav-item dropdown link-nav">
-                                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                          Reportes
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                          <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas')" v-if="user.user.rol_id == 1">Gráficas</a>
-                                          <a class="dropdown-item link-nav" @click="this.$router.push('/reportes')">Reporte de Citas</a>
-                                        </div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </nav>
+                            <template v-if="user.user.rol_id == 1">
+                                <nav class="navbar navbar-expand-lg navbar-light">
+                                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                                      <ul class="navbar-nav">
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Horarios
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario')">Cargar Horario</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario')">Modificar Horario</a>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Catálogos
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/centros-atencion')">Centro de Atención</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-requisitos')">Requisito</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/citas-del-dia')">Citas del día</a>
+                                        </li>
+                                        <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
+                                        </li>
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              Reportes
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas')">Gráficas</a>
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reportes')">Reporte de Citas</a>
+                                            </div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                </nav>
+                            </template>
+                            <template v-else-if="user.user.rol_id == 2">
+                                <nav class="navbar navbar-expand-lg navbar-light">
+                                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                                      <ul class="navbar-nav">
+                                        <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/citas-del-dia')">Citas del día</a>
+                                        </li>
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              Reportes
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reportes')">Reporte de Citas</a>
+                                            </div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                </nav>
+                            </template>
+                            <template v-else-if="user.user.rol_id == 3">
+                                <nav class="navbar navbar-expand-lg navbar-light">
+                                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                                      <ul class="navbar-nav">
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Horarios
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario-juzgado')">Cargar Horario</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-juzgado')">Modificar Horario</a>
+                                            </div>
+                                        </li>
+                                        <!-- <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Catálogos
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/centros-atencion')">Centro de Atención</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-requisitos')">Requisito</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
+                                            </div>
+                                        </li> -->
+                                        <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/citas-del-dia-juez')">Citas del día</a>
+                                        </li>
+                                        <!-- <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
+                                        </li> -->
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              Reportes
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas')">Gráficas</a>
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reportes')">Reporte de Citas</a>
+                                            </div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                </nav>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -189,6 +254,7 @@
         },
         created() {
             this.getTramites()
+            this.getJuzgados()
             const userInfo = localStorage.getItem('user')
             if (userInfo) {
                 const userData = JSON.parse(userInfo)
@@ -233,10 +299,26 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catálogo de tramites para agendar citas.')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites para agendar citas.')
                     }
                 } catch (error) {
                     errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites para agendar citas.')
+                }
+            },
+            async getJuzgados() {
+                try {
+                    let response = await axios.get('/api/juzgados-citas')
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.$store.commit('setCatalogoJuzgados', response.data.juzgados)
+                        } else {
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
+                    }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
                 }
             },
             irInicio() {
@@ -295,7 +377,11 @@
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             this.$store.commit('setCitaAgendada', response.data.cita)
-                            this.$router.push('/confirmacion-cita-buscada')
+                            if (response.data.cita.cita_defensoria) {
+                                this.$router.push('/confirmacion-cita-buscada')
+                            } else if (response.data.cita.cita_juzgado) {
+                                this.$router.push('/confirmacion-cita-buscada-juzgado')
+                            }
                             this.$store.state.buscarCita = ''
                         } else if (response.data.status === "not-found") {
                             this.alert_cita_no_encontrada = true

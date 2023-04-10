@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import catalogos from './../modules/catalogos'
 import agendarCita from './../modules/agendarCita.js'
+import agendarCitaJuzgado from '../modules/agendarCitaJuzgado'
 import { errorSweetAlert } from './../helpers/sweetAlertGlobals'
 import router from '../router'
 
@@ -45,6 +46,8 @@ const store = createStore({
                             router.push({name: 'AgregarHorario'})
                         } else if (response.data.session.user.rol_id == 2) {
                             router.push('/citas-del-dia')
+                        } else if (response.data.session.user.rol_id == 3) {
+                            router.push({name: 'AgregarHorarioJuzgado'})
                         }
 
                         this.state.contRecaptcha = 0
@@ -71,6 +74,7 @@ const store = createStore({
     modules: {
         catalogos,
         agendarCita,
+        agendarCitaJuzgado,
     }
 })
 

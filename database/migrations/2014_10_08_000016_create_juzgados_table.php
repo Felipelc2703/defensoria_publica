@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dias', function (Blueprint $table) {
+        Schema::create('juzgados', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha');
-            $table->time('hora_inicio');
-            $table->time('hora_fin');
-            $table->integer('duracion');
-            $table->boolean('inhabil');
-            $table->integer('mes');
-            $table->integer('centro_atencion_id')->nullable();
-            $table->integer('juez_id')->nullable();
+            $table->string('nombre');
+            $table->foreignId('materia_id')->constrained();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dias');
+        Schema::dropIfExists('juzgados');
     }
 };

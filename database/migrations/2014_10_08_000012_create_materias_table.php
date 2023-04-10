@@ -13,16 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('dias', function (Blueprint $table) {
+        Schema::create('materias', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha');
-            $table->time('hora_inicio');
-            $table->time('hora_fin');
-            $table->integer('duracion');
-            $table->boolean('inhabil');
-            $table->integer('mes');
-            $table->integer('centro_atencion_id')->nullable();
-            $table->integer('juez_id')->nullable();
+            $table->string('nombre', 75);
             $table->timestamps();
         });
     }
@@ -34,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dias');
+        Schema::dropIfExists('materias');
     }
 };

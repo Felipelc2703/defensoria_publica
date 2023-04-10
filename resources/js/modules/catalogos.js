@@ -14,6 +14,8 @@ export default {
         notas:[],
         requsiitosTipoTramite: [],
         citas:[],
+
+        juzgados: [],
     },
     getters: {
         getCatalogoCentrosAtencion(state) {
@@ -59,6 +61,9 @@ export default {
         },
         getCatalogoCitasDelDia(state) {
             return state.citas
+        },
+        getCatalogoJuzgados(state) {
+            return state.juzgados
         }
     },
     mutations: {
@@ -104,6 +109,8 @@ export default {
         setCatalogoCitasDelDia(state, payload){
             state.citas = payload
         },
-        
+        setCatalogoJuzgados(state, payload) {
+            state.juzgados = payload
+        }
     }
 }
