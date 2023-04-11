@@ -8,51 +8,40 @@
             <v-form class="col-12" ref="formGraficas">
                 <div class="row justify-content-between">
                     <div class="col-md-6 col-12">
-                        <div class="row justify-content-between">
-                            <div class="col-md-6 col-12">
-                                <v-text-field
-                                    v-model="data.fecha_inicio"
-                                    variant="solo"
-                                    type="date"
-                                    label="Fecha Inicio"
-                                    :rules="fechaInicioRules"
-                                ></v-text-field>
-                            </div>
-                            <div class="col-md-6 col-12">
-                                <v-text-field
-                                    v-model="data.fecha_fin"
-                                    variant="solo"
-                                    type="date"
-                                    label="Fecha Fin"
-                                    :rules="fechaFinRules"
-                                ></v-text-field>
-                            </div>
-                        </div>
+                        <v-text-field
+                            v-model="data.fecha_inicio"
+                            variant="solo"
+                            type="date"
+                            label="Fecha Inicio"
+                            :rules="fechaInicioRules"
+                        ></v-text-field>
                     </div>
                     <div class="col-md-6 col-12">
-                        <v-select
-                            v-model="data.centro_atencion_id"
-                            :items="centrosAtencion"
-                            item-title="nombre"
-                            item-value="id"
-                            label="Seleccione el centro de atención"
+                        <v-text-field
+                            v-model="data.fecha_fin"
                             variant="solo"
-                            :rules="centroAtencionRules"
-                            >
-                        </v-select>
+                            type="date"
+                            label="Fecha Fin"
+                            :rules="fechaFinRules"
+                        ></v-text-field>
                     </div>
                 </div>
-                <div class="row justify-content-between mt-2">
-                    <div class="col-md-6 col-12">
-                        <v-select
-                            v-model="data.tramite_id"
-                            :items="tramites"
-                            item-title="nombre"
-                            item-value="id"
-                            label="Trámite"
-                            variant="solo"
+
+                <div class="row justify-content-between mt-6">
+                    <div class="text-center col-12">
+                        <v-btn
+                            variant="flat"
+                            color="#6a73a0"
+                            class="boton-nuevo"
+                            @click="generarGrafica()"
                             >
-                        </v-select>
+                            Generar Gráfica
+                        </v-btn>
+                    </div>
+                </div>
+
+                <!-- <div class="row justify-content-between mt-2">
+                    <div class="col-md-6 col-12">
                     </div>
                     <div class="text-center mt-4 col-md-6 col-12">
                         <v-btn
@@ -64,11 +53,10 @@
                             Generar Gráfica
                         </v-btn>
                     </div>
-
-                </div>
+                </div> -->
             </v-form>
 
-            <div class="row justify-content-between mt-6" v-if="showGraph">
+            <div class="row justify-content-between mt-10" v-if="showGraph">
                 <div class="col-md-6 col-12" style="height: 300px; width: 300px;">
                     <Pie :data="chartData" :options="chartOptions" style="margin-left: auto; margin-right: auto;"/>
                 </div>
@@ -120,30 +108,23 @@
     import { defineComponent } from 'vue';
     import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
     import { Pie } from 'vue-chartjs'
-    import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
+    import { errorSweetAlert, successSweetAlert } from "../../helpers/sweetAlertGlobals"
 
     ChartJS.register(ArcElement, Tooltip, Legend)
 
     export default defineComponent({
-        name: 'reporte-graf',
+        name: 'reporte-graficas-juez',
         data() {
             return {
-                centros: [],
-                tramites: [],
                 data: {
                     fecha_inicio: '',
                     fecha_fin: '',
-                    centro_atencion_id: '',
-                    tramite_id: '',
                 },
                 fechaInicioRules: [
                     v => !!v || 'El campo fecha inicio es requerido'
                 ],
                 fechaFinRules: [
                     v => !!v || 'El campo fecha fin es requerido'
-                ],
-                centroAtencionRules: [
-                    v => !!v || 'El campo de centro de atención es requerido'
                 ],
                 porcent_1: 10,
                 porcent_2: 40,
@@ -156,33 +137,12 @@
                     responsive: true
                 },
                 showGraph: false,
-                centro_default: {
-                    id: 9999,
-                    nombre: 'TODOS',
-                    direccion: '',
-                    telefono: '',
-                    numero_cajas: ''
-                },
-                tramite_default: {
-                    id: 9999,
-                    nombre: 'TODOS',
-                },
             }
         },
         components: {
             Pie
         },
-        created() {
-            this.getCentrosAtencion()
-            this.getCatalogoTramites()
-        },
         computed: {
-            centrosAtencion() {
-                return this.$store.getters.getCatalogoCentrosAtencion
-            },
-            tramites(){
-                return this.$store.getters.getCatalogoTramites
-            },
             chartData() {
                 return {
                     datasets: [
@@ -195,52 +155,11 @@
             }
         },
         methods: {
-            async getCentrosAtencion() {
-                this.loading = true
-                try {
-                    let response = await axios.get('/api/catalogos/centros-de-atencion')
-                    if (response.status === 200) {
-                        if (response.data.status === "ok") {
-                            this.centros = response.data.centros_atencion
-                            this.centros.unshift(this.centro_default)
-                            this.$store.commit('setCatalogoCentrosAtencion', this.centros)
-                        } else {
-                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
-                        }
-                    } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
-                    }
-                } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catalogo de centros de atención')
-                }
-                this.loading = false
-            },
-            async getCatalogoTramites() {
-                console.log("jhduidbhdiubduidbdu")
-                this.loading = true
-                try {
-                    let response = await axios.get('/api/catalogos/tramites')
-                    if (response.status === 200) {
-                        if (response.data.status === "ok") {
-                            this.tramites = response.data.tramites
-                            this.tramites.unshift(this.tramite_default)
-                            this.$store.commit('setCatalogoTramites', this.tramites)
-                        } else {
-                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
-                        }
-                    } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites')
-                    }
-                } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catálogo de trámites')
-                }
-                this.loading = false
-            },
             async generarGrafica() {
                 const { valid } = await this.$refs.formGraficas.validate()
                 if (valid) {
                     try {
-                        let response = await axios.post('/api/reporte/grafica', this.data)
+                        let response = await axios.post('/api/reporte-juez/grafica', this.data)
                         if (response.status === 200) {
                             if (response.data.status === "ok") {
                                 this.reservadas = response.data.reporte.reservadas

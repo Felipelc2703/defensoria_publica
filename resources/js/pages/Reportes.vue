@@ -1,203 +1,207 @@
 <template>
-    <v-container>
-        <v-card-title>
-            Reportes
-        </v-card-title>
-            <v-row>
-                <v-col cols="3">
-                    Fecha Inicio:
-                    <v-text-field
-                    v-model="reporte.fecha_inicio"
-                    type="date"
-                    variant="underlined"
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="3">
-                    Fecha Fin:
-                    <v-text-field
-                    v-model="reporte.fecha_final"
-                    type="date"
-                    variant="underlined"
-                    ></v-text-field>
-                </v-col>
-                <v-col>
-                    Oficina:
-                    <v-select
-                        v-model="reporte.oficina_id"
-                        :items="centrosAtencion"
-                        item-title="nombre"
-                        item-value="id"
-                        label="Seleccione el centro de atención"
+    <div class="container">
+        <v-container>
+            <v-card-title>
+                Reportes
+            </v-card-title>
+                <v-row>
+                    <v-col cols="3">
+                        Fecha Inicio:
+                        <v-text-field
+                        v-model="reporte.fecha_inicio"
+                        type="date"
                         variant="underlined"
-                    ></v-select>
-                </v-col>
-            </v-row>
-            <v-row>
-                <v-col>
-                    Trámite:
-                    <v-select
-                        v-model="reporte.tramite_id"
-                        :items="tramites"
-                        item-title="nombre"
-                        item-value="id"
-                        label="Seleccione el tramite"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                        Fecha Fin:
+                        <v-text-field
+                        v-model="reporte.fecha_final"
+                        type="date"
                         variant="underlined"
-                    ></v-select>
-                </v-col>
-                <v-col>
-                    Estatus:
-                    <v-select
-                        v-model="reporte.estatus"
-                        :items="estatus"
-                        item-title="nombre"
-                        item-value="id"
-                        label="Seleccione un estatus"
-                        variant="underlined"
-                    ></v-select>
-                </v-col>
-            </v-row>
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                    variant="flat"
-                    color="#6a73a0"
-                    class="boton-nuevo"
-                    @click="generarReporte()"
-                >
-                    Generar Reporte
-                </v-btn>
-            </v-card-actions>
-
-
-            <!-- inicio tabla -->
-
-            <div v-if="bandCitas">
-                <div class="text-right mt-8">
-                    <div class="buscador-data-table">
-                        <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
-                    </div>
-                </div>
-
-                <div class="my-2 mb-12 py-6">
-                    <div class="container-fluid">
-                        <table class="table">
-                            <thead class="headers-table">
-                                <tr>
-                                    <th class="titulo-columna borde-izquierdo">Folio</th>
-                                    <th class="titulo-columna">Nombre Contribuyente</th>
-                                    <th class="titulo-columna">Tramite</th>
-                                    <th class="titulo-columna">Fecha</th>
-                                    <th class="titulo-columna">Horario</th>
-                                    <th class="titulo-columna borde-derecho">Estatus</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-if="loading">
-                                    <th colspan="4">
-                                        <p class="text-center texto-cargando-datos">Cargando datos...</p>
-                                        <div class="linear-activity">
-                                            <div class="indeterminate"></div>
-                                        </div>
-                                    </th>
-                                </tr>
-                                <tr v-else v-for="cita in datosPaginados" :key="cita.id">
-                                    <td class="texto-campo-table">
-                                        {{cita.folio}}
-                                    </td>
-                                    <td class="texto-campo-table text-center">
-                                        {{cita.nombre_contribuyente}}
-                                    </td>
-                                    <td class="texto-campo-table text-center">
-                                        {{cita.tramite}}
-                                    </td>
-                                    <td class="texto-campo-table text-center">
-                                        {{cita.fecha}}
-                                    </td>
-                                    <td class="texto-campo-table text-center">
-                                        {{cita.horario}}
-                                    </td>
-                                    <td class="texto-campo-table text-center">
-                                        {{cita.estatus}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <template v-if="citas.length > 0">
-                        <div class="row justify-content-between container">
-                            <div>
-                                <p class="text-resultados mt-2">
-                                    Mostrando
-                                    <span>{{from}}</span>
-                                    -
-                                    <span>{{to}}</span>
-                                    de
-                                    <span>{{citas.length}}</span>
-                                    resultados
-                                </p>
-                            </div>
-                            <div>
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination justify-content-center">
-                                        <li class="page-item cursor-paginator" @click="getFirstPage()">
-                                            <a class="page-link" aria-label="Previous">
-                                                <span aria-hidden="true">&lt;&lt;</span>
-                                                <span class="sr-only">First</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item cursor-paginator" @click="getPreviousPage()">
-                                            <a class="page-link" aria-label="Previous">
-                                                <span aria-hidden="true">&lt;</span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                        </li>
-                                        <li v-for="pagina in pages" @click="getDataPagina(pagina), setCurrentPage(pagina)" :key="pagina" class="page-item cursor-paginator" :class="isActive(pagina)">
-                                            <a class="page-link">
-                                                {{pagina}}
-                                            </a>
-                                        </li>
-                                        <li class="page-item cursor-paginator" @click="getNextPage()">
-                                            <a class="page-link" aria-label="Next">
-                                                <span aria-hidden="true">&gt;</span>
-                                                <span class="sr-only">Next</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item cursor-paginator" @click="getLastPage()">
-                                            <a class="page-link" aria-label="Next">
-                                                <span aria-hidden="true">&gt;&gt;</span>
-                                                <span class="sr-only">Last</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-                    </template>
-                    <template v-else-if="!loading">
-                        <div class="text-center">
-                            <p class="texto-no-data">Aún no hay datos disponibles</p>
-                        </div>
-                    </template>
-                </div>
-                <div class="text-center">
+                        ></v-text-field>
+                    </v-col>
+                    <v-col>
+                        Oficina:
+                        <v-select
+                            v-model="reporte.oficina_id"
+                            :items="centrosAtencion"
+                            item-title="nombre"
+                            item-value="id"
+                            label="Seleccione el centro de atención"
+                            variant="underlined"
+                        ></v-select>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col>
+                        Trámite:
+                        <v-select
+                            v-model="reporte.tramite_id"
+                            :items="tramites"
+                            item-title="nombre"
+                            item-value="id"
+                            label="Seleccione el tramite"
+                            variant="underlined"
+                        ></v-select>
+                    </v-col>
+                    <v-col>
+                        Estatus:
+                        <v-select
+                            v-model="reporte.estatus"
+                            :items="estatus"
+                            item-title="nombre"
+                            item-value="id"
+                            label="Seleccione un estatus"
+                            variant="underlined"
+                        ></v-select>
+                    </v-col>
+                </v-row>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
                     <v-btn
                         variant="flat"
-                        color="#A3BC39"
+                        color="#6a73a0"
                         class="boton-nuevo"
-                        @click="exportarReporte()"
+                        @click="generarReporte()"
                     >
-                        Exportar a Excel
+                        Generar Reporte
                     </v-btn>
+                </v-card-actions>
+    
+    
+                <!-- inicio tabla -->
+    
+                <div v-if="bandCitas">
+                    <div class="text-right mt-8">
+                        <div class="buscador-data-table">
+                            <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
+                        </div>
+                    </div>
+    
+                    <div class="my-2 mb-12 py-6">
+                        <div class="container-fluid">
+                            <table class="table">
+                                <thead class="headers-table">
+                                    <tr>
+                                        <th class="titulo-columna borde-izquierdo">Folio</th>
+                                        <th class="titulo-columna">Nombre Contribuyente</th>
+                                        <th class="titulo-columna">Tramite</th>
+                                        <th class="titulo-columna">Fecha</th>
+                                        <th class="titulo-columna">Horario</th>
+                                        <th class="titulo-columna borde-derecho">Estatus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-if="loading">
+                                        <th colspan="4">
+                                            <p class="text-center texto-cargando-datos">Cargando datos...</p>
+                                            <div class="linear-activity">
+                                                <div class="indeterminate"></div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr v-else v-for="cita in datosPaginados" :key="cita.id">
+                                        <td class="texto-campo-table">
+                                            {{cita.folio}}
+                                        </td>
+                                        <td class="texto-campo-table text-center">
+                                            {{cita.nombre_contribuyente}}
+                                        </td>
+                                        <td class="texto-campo-table text-center">
+                                            {{cita.tramite}}
+                                        </td>
+                                        <td class="texto-campo-table text-center">
+                                            {{cita.fecha}}
+                                        </td>
+                                        <td class="texto-campo-table text-center">
+                                            {{cita.horario}}
+                                        </td>
+                                        <td class="texto-campo-table text-center">
+                                            {{cita.estatus}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <template v-if="citas.length > 0">
+                            <div class="row justify-content-between container">
+                                <div>
+                                    <p class="text-resultados mt-2">
+                                        Mostrando
+                                        <span>{{from}}</span>
+                                        -
+                                        <span>{{to}}</span>
+                                        de
+                                        <span>{{citas.length}}</span>
+                                        resultados
+                                    </p>
+                                </div>
+                                <div>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item cursor-paginator" @click="getFirstPage()">
+                                                <a class="page-link" aria-label="Previous">
+                                                    <span aria-hidden="true">&lt;&lt;</span>
+                                                    <span class="sr-only">First</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item cursor-paginator" @click="getPreviousPage()">
+                                                <a class="page-link" aria-label="Previous">
+                                                    <span aria-hidden="true">&lt;</span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                            </li>
+                                            <li v-for="pagina in pages" @click="getDataPagina(pagina), setCurrentPage(pagina)" :key="pagina" class="page-item cursor-paginator" :class="isActive(pagina)">
+                                                <a class="page-link">
+                                                    {{pagina}}
+                                                </a>
+                                            </li>
+                                            <li class="page-item cursor-paginator" @click="getNextPage()">
+                                                <a class="page-link" aria-label="Next">
+                                                    <span aria-hidden="true">&gt;</span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item cursor-paginator" @click="getLastPage()">
+                                                <a class="page-link" aria-label="Next">
+                                                    <span aria-hidden="true">&gt;&gt;</span>
+                                                    <span class="sr-only">Last</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </template>
+                        <template v-else-if="!loading">
+                            <div class="text-center">
+                                <p class="texto-no-data">Aún no hay datos disponibles</p>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="text-center">
+                        <v-btn
+                            variant="flat"
+                            color="#A3BC39"
+                            class="boton-nuevo"
+                            @click="exportarReporte()"
+                        >
+                            Exportar a Excel
+                        </v-btn>
+                    </div>
                 </div>
-            </div>
-            <!-- Fin tabla -->
-    </v-container>
+                <!-- Fin tabla -->
+        </v-container>
+    </div>
 </template>
+
 <script>
     import { defineComponent } from 'vue';
     import { errorSweetAlert, successSweetAlert } from "../helpers/sweetAlertGlobals"
+    
     export default defineComponent({
-        name:'agregar-horario',
+        name:'reportes',
         data() {
             return {
                 loading: false,

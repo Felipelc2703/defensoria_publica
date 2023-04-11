@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use PDF;
 use App\Models\Cita;
 
-use PDF;
+use App\Models\CitaJuzgado;
 
+use Illuminate\Http\Request;
 use App\Exports\ReporteExport;
+use App\Exports\ReporteJuezExport;
 
 class ReportesController extends Controller
 {
@@ -450,5 +452,89 @@ class ReportesController extends Controller
         //     "reporte" => $citas
         // ], 500);
         return (new ReporteExport($citas,$contador))->download('reporte.xlsx');
+    }
+
+    public function generarReporteJuez(Request $request)
+    {
+        try {
+            if ($request->estatus == 4) {
+                $citas = CitaJuzgado::where('fecha_cita', '>=', $request->fecha_inicio)
+                                    ->where('fecha_cita', '<=', $request->fecha_final)
+                                    ->orderBy('fecha_cita', 'asc')
+                                    ->orderBy('hora_cita', 'asc')
+                                    ->get();
+            } else {
+                $citas = CitaJuzgado::where('fecha_cita', '>=', $request->fecha_inicio)
+                                    ->where('fecha_cita', '<=', $request->fecha_final)
+                                    ->where('status', $request->estatus)
+                                    ->orderBy('fecha_cita', 'asc')
+                                    ->orderBy('hora_cita', 'asc')
+                                    ->get();
+            }
+
+            $arrayReporte = array();
+            $contador = 0;
+            foreach($citas as $cita)
+            {
+                $objectCita = new \stdClass();
+                $objectCita->id = $cita->id;
+                $objectCita->folio = $cita->folio;
+                $objectCita->nombre = $cita->nombre . ' ' . $cita->apellido_paterno . ' ' . $cita->apellido_materno;
+                $objectCita->correo = $cita->email;
+                $objectCita->telefono = $cita->telefono;
+                $objectCita->fecha = $cita->fecha_cita;
+                $objectCita->horario = $cita->hora_cita;
+                $objectCita->sexo = $cita->sexo;
+                $objectCita->expediente = $cita->expediente;
+                $objectCita->asunto = $cita->asunto;
+
+                switch($cita->status)
+                {
+                    case 1:
+                        $objectCita->estatus = 'Reservada';
+                        break;
+                    case 2:
+                        $objectCita->estatus = 'Confirmada';
+                        break;
+                    case 3: 
+                        $objectCita->estatus = 'Cancelada';
+                }
+
+                array_push($arrayReporte,$objectCita);
+                $contador++;
+            }
+
+            return response()->json([
+                "status" => "ok",
+                "message" => "Reporte obtenido con exito",
+                "reporte" => $arrayReporte
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener el reporte de citas",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+    }
+
+    public function exportarExcelJuez(Request $request)
+    {
+        $citas = $request->citas;
+
+        $contador = 0;
+        foreach($citas as $cita)
+        {
+            $contador++;
+        }
+
+        // return response()->json([
+        //     "status" => "ok",
+        //     "message" => "Reporte obtenido con exito",
+        //     "reporte" => $citas
+        // ], 500);
+        return (new ReporteJuezExport($citas,$contador))->download('reporte.xlsx');
     }
 }

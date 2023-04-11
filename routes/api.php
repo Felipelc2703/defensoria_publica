@@ -59,7 +59,12 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
     Route::post('/horarios/guardar-dias-juez', [DiaController::class, 'guardarDiasJuez']);
     Route::post('/horarios/actualizar-horario-juez', [DiaController::class, 'actualizarHorarioJuez']);
     Route::get('/catalogos/citas-del-dia-juez', [CitaJuzgadoController::class, 'getCitasDelDiaJuez']);
+    Route::post('/citas/guardar-cambios-cita-juez', [CitaJuzgadoController::class, 'guardarCambios']);
     Route::post('/citas/citas-del-dia-juez-buscada', [CitaJuzgadoController::class, 'selectDiaCitaJuez']);
+    // Rutas para reportes y graficas
+    Route::post('/reporte-juez/grafica', [CitaJuzgadoController::class, 'getReporteGraficas']);
+    Route::post('/reportes/generar-reporte-juez', [ReportesController::class, 'generarReporteJuez']);
+    Route::post('/reportes/exportar-reporte-citas-juez', [ReportesController::class, 'exportarExcelJuez']);
 
     /**
      * RUTAS UTILIZADAS POR DEFENSORIA PUBLICA
@@ -70,9 +75,12 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
     // Ruta para citas del día
     Route::get('/catalogos/citas-del-dia', [CitaController::class, 'getCitasDelDia']);
     // Actualizar estatus cita y motivo*
-    Route::post('/citas/citas-del-dia', [CitaController::class, 'guardarCambios']);
+    Route::post('/citas/guardar-cambios-cita', [CitaController::class, 'guardarCambios']);
     Route::post('/citas/citas-del-dia-buscada', [CitaController::class, 'selectDiaCita']);
-
+    // Rutas para reportes y graficas
+    Route::post('/reporte/grafica', [CitaController::class, 'getReporteGraficas']);
+    Route::post('/reportes/generar-reporte', [ReportesController::class, 'generarReporte']);
+    Route::post('/reportes/exportar-reporte-citas', [ReportesController::class, 'exportarExcel']);
 
 
 
@@ -123,10 +131,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
     Route::post('/usuarios/actualizar-usuario', [UserController::class, 'actualizarUsuario']);
     Route::post('/usuarios/eliminar-usuario', [UserController::class, 'eliminarUsuario']);
     
-    // Rutas para reportes y graficas
-    Route::post('/reporte/grafica', [CitaController::class, 'getReporteGraficas']);
-    Route::post('/reportes/generar-reporte', [ReportesController::class, 'generarReporte']);
-    Route::post('/reportes/exportar-reporte-citas', [ReportesController::class, 'exportarExcel']);
+    
 
 });
 
@@ -157,3 +162,5 @@ Route::post('/tramite/requisitos-tipo-tramite', [TramiteController::class, 'getR
 Route::post('/tramite/requisitos-tipo-tramite-editar', [TramiteController::class, 'getRequisitosTramiteEditar']);
 
 Route::get('/juzgados-citas', [JuzgadoController::class, 'getJuzgados']);
+
+Route::post('/consultar-curp', [CitaJuzgadoController::class, 'consultarCurp']);

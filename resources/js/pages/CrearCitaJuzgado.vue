@@ -155,17 +155,43 @@
                                                 <v-container>
                                                     <v-row>
                                                         <v-form class="col-12 mt-4 mb-4" ref="form">
-                                                            <v-text-field
-                                                                v-model="cita.nombre"
-                                                                label="Nombre"
-                                                                :rules="nombreRules"
-                                                            ></v-text-field>
-                                                            <v-text-field
-                                                                v-model="cita.email"
-                                                                label="Correo Electrónico"
-                                                                :rules="[rules.email]"
-                                                            ></v-text-field>
+                                                            <div class="row justify-content-between mb-4">
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-text-field
+                                                                        v-model="cita.curp"
+                                                                        label="Curp"
+                                                                        :rules="[rules.curp]"
+                                                                    ></v-text-field>
+                                                                    <a class="boton_inicio" @click="irCurp()">CONSULTE SU CURP AQUÍ</a>
+                                                                </div>
+                                                                <div class="col-sm-6 col-12">
+                                                                    <button class="boton-cancelar" @click="consultarCurp()">Consultar Datos</button>
+                                                                </div>
+                                                            </div>
                                                             <div class="row justify-content-between">
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-text-field
+                                                                        v-model="cita.nombre"
+                                                                        label="Nombre"
+                                                                        :rules="nombreRules"
+                                                                    ></v-text-field>
+                                                                </div>
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-text-field
+                                                                        v-model="cita.apellido_paterno"
+                                                                        label="Apellido Paterno"
+                                                                        :rules="apellidoPaternoRules"
+                                                                    ></v-text-field>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row justify-content-between">
+                                                                <div class="col-sm-6 col-12">
+                                                                    <v-text-field
+                                                                        v-model="cita.apellido_materno"
+                                                                        label="Apellido Materno"
+                                                                        :rules="apellidoMaternoRules"
+                                                                    ></v-text-field>
+                                                                </div>
                                                                 <div class="col-sm-6 col-12">
                                                                     <v-text-field
                                                                         v-model="cita.telefono"
@@ -174,6 +200,13 @@
                                                                         maxlength="10"
                                                                     ></v-text-field>
                                                                 </div>
+                                                            </div>
+                                                            <v-text-field
+                                                                v-model="cita.email"
+                                                                label="Correo Electrónico"
+                                                                :rules="[rules.email]"
+                                                            ></v-text-field>
+                                                            <div class="row justify-content-between mt-4">
                                                                 <div class="col-sm-6 col-12">
                                                                     <v-select
                                                                         v-model="cita.sexo"
@@ -181,16 +214,6 @@
                                                                         :items="['Hombre', 'Mujer']"
                                                                         :rules="sexoRules"
                                                                     ></v-select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row justify-content-between">
-                                                                <div class="col-sm-6 col-12">
-                                                                    <v-text-field
-                                                                        v-model="cita.curp"
-                                                                        label="Curp"
-                                                                        :rules="[rules.curp]"
-                                                                    ></v-text-field>
-                                                                    <a class="boton_inicio" @click="irCurp()">CONSULTE SU CURP AQUÍ</a>
                                                                 </div>
                                                                 <div class="col-sm-6 col-12">
                                                                     <v-text-field
@@ -305,6 +328,8 @@
                     fecha_formateada: '',
                     hora_cita: '',
                     nombre: '',
+                    apellido_paterno: '',
+                    apellido_materno: '',
                     email: '',
                     telefono: '',
                     sexo: '',
@@ -316,6 +341,12 @@
                 },
                 nombreRules: [
                     v => !!v || 'El nombre es requerido'
+                ],
+                apellidoPaternoRules: [
+                    v => !!v || 'El apellido paterno es requerido'
+                ],
+                apellidoMaternoRules: [
+                    v => !!v || 'El apellido materno es requerido'
                 ],
                 telefonoRules: [
                     v => !!v || 'El telefono es requerido',
@@ -841,6 +872,29 @@
                             }
                         }
                     })
+                }
+            },
+            async consultarCurp() {
+                try {
+                    let response = await axios.post('/api/consultar-curp', this.cita)
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.cita.nombre = response.data.registro.nombre
+                            this.cita.apellido_paterno = response.data.registro.apellido_paterno
+                            this.cita.apellido_materno = response.data.registro.apellido_materno
+                            this.cita.telefono = response.data.registro.telefono
+                            this.cita.email = response.data.registro.email
+                            this.cita.sexo = response.data.registro.sexo
+                        } else if (response.data.status === "exists") {
+                            warningSweetAlert(response.data.message)
+                        } else {
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        errorSweetAlert('Ocurrió un error al buscar registros con esta curp.')
+                    }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al buscar registros con esta curp.')
                 }
             }
         }

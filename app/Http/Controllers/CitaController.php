@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Cita;
 use App\Models\Juez;
 use App\Models\Horario;
+use App\Models\CitaJuzgado;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\ConfirmacionCita;
@@ -348,6 +349,7 @@ class CitaController extends Controller
     {
         try {
             $cita = Cita::where('folio', $request->folio)->where('status', 1)->first();
+            $cita_juzgado = CitaJuzgado::where('folio', $request->folio)->where('status', 1)->first();
 
             if ($cita) {
                 $citaAgendada = new \stdClass();
@@ -356,25 +358,28 @@ class CitaController extends Controller
                 $citaAgendada->nombre = $cita->nombre;
                 $citaAgendada->fecha = $cita->fecha_formateada;
                 $citaAgendada->hora = $cita->hora_cita;
+                $citaAgendada->tramite = $cita->tramite->nombre;
+                $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
+                $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
+                $citaAgendada->cita_defensoria = true;
+                $citaAgendada->cita_juzgado = false;
 
-                if ($cita->juez) {
-                    $citaAgendada->juzgado = $cita->juzgado->nombre;
-                    $citaAgendada->juez = $cita->juez->nombre . ' ' . $cita->juez->apellido_paterno . ' ' . $cita->juez->apellido_materno;
-                    $citaAgendada->tramite = '';
-                    $citaAgendada->centro_atencion = '';
-                    $citaAgendada->direccion_centro_atencion = '';
-                    $citaAgendada->cita_defensoria = false;
-                    $citaAgendada->cita_juzgado = true;
-                } else if ($citaAgendada->tramite) {
-                    $citaAgendada->tramite = $cita->tramite->nombre;
-                    $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
-                    $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
-                    $citaAgendada->juzgado = '';
-                    $citaAgendada->juez = '';
-                    $citaAgendada->cita_defensoria = true;
-                    $citaAgendada->cita_juzgado = false;
-                }
-
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Cita encontrada con éxito",
+                    "cita" => $citaAgendada
+                ], 200);
+            } else if ($cita_juzgado) {
+                $citaAgendada = new \stdClass();
+                $citaAgendada->id = $cita_juzgado->id;
+                $citaAgendada->folio = $cita_juzgado->folio;
+                $citaAgendada->nombre = $cita_juzgado->nombre;
+                $citaAgendada->fecha = $cita_juzgado->fecha_formateada;
+                $citaAgendada->hora = $cita_juzgado->hora_cita;
+                $citaAgendada->juzgado = $cita_juzgado->juzgado->nombre;
+                $citaAgendada->direccion = $cita_juzgado->juzgado->direccion;
+                $citaAgendada->cita_defensoria = false;
+                $citaAgendada->cita_juzgado = true;
 
                 return response()->json([
                     "status" => "ok",
@@ -692,6 +697,7 @@ class CitaController extends Controller
             ], 200);
         }
     }
+    
     public function guardarCambios(Request $request)
     {
         $exito = false;
@@ -702,12 +708,12 @@ class CitaController extends Controller
             $cita->status = $request->status;
             $cita->motivo = $request->motivo;
             $cita->save();
-            // $citas = Cita::all();
+            
             $date = Carbon::now();
             $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
            
             $array_cita = array();
-                        $cont = 1;
+            $cont = 1;
             foreach ($citas as $cita) {
                 $objectCita = new \stdClass();
                 $objectCita->id = $cita->id;
@@ -719,17 +725,20 @@ class CitaController extends Controller
                 $objectCita->discapacidad = $cita->discapacidad;
 
                 if($cita->status == 1){
-                $objectCita->status = "1";
-                $objectCita->statusnom = "No atendida";}
+                    $objectCita->status = "1";
+                    $objectCita->statusnom = "No atendida";
+                }
                 if($cita->status == 2){
-                $objectCita->status = "2";
-                $objectCita->statusnom = "Atendida";}
+                    $objectCita->status = "2";
+                    $objectCita->statusnom = "Atendida";
+                }
                 if($cita->status == 3){
-                $objectCita->status = "3";
-                $objectCita->statusnom = "Cancelada";}
-                array_push($array_cita, $objectCita);
-                $cont++;
+                    $objectCita->status = "3";
+                    $objectCita->statusnom = "Cancelada";
+                }
 
+                $cont++;
+                array_push($array_cita, $objectCita);
             }
             
             DB::commit();

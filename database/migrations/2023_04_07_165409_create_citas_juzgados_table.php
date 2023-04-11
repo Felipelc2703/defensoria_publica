@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('citas_juzgados', function (Blueprint $table) {
             $table->id();
+            $table->integer('consecutivo');
+            $table->year('anio');
             $table->string('folio');
             $table->date('fecha_cita');
             $table->string('fecha_formateada');
@@ -22,6 +24,8 @@ return new class extends Migration
             $table->string('expediente');
             $table->string('asunto');
             $table->string('nombre');
+            $table->string('apellido_paterno');
+            $table->string('apellido_materno')->nullable();
             $table->string('curp');
             $table->string('email');
             $table->string('telefono');

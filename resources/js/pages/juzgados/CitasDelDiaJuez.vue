@@ -259,7 +259,7 @@
                     motivo: '',
                 },
                 ver: {
-                    dia:'',
+                    dia: new Date().toISOString().slice(0, 10),
                 },
                 fechaB: [
                     v => !!v || 'El campo fecha es requerido'
@@ -403,7 +403,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/citas/citas-del-dia', this.cita)
+                                let response = await axios.post('/api/citas/guardar-cambios-cita-juez', this.cita)
                                 
                                 return response
                             } catch (error) {
@@ -417,8 +417,8 @@
                                 if (result.value.data.status === "ok") {
                                     successSweetAlert(result.value.data.message)
                                     if(this.ver.dia === date){
-                                    this.$store.commit('setCatalogoCitasDelDia', result.value.data.citas)
-                                    this.getDataPagina(1)
+                                        this.$store.commit('setCatalogoCitasDelDia', result.value.data.citas)
+                                        this.getDataPagina(1)
                                     }else{
                                         this.verCitas()
                                     }

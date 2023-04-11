@@ -76,7 +76,7 @@
     <h5 class="titulo-confirmacion">Confirmación de Cita</h5>
     <p><span class="formato-texto">Información Importante</span></p>
     <p class="texto-cita">Estimado(a) <span class="texto-nombre;">{{$citaAgendada->nombre}}</span> su cita con el Juez <span class="texto-tramite">{{$citaAgendada->juez}}</span> ha quedado agendada para el <span class="texto-fecha">{{$citaAgendada->fecha}}</span>, a las <span class="texto-fecha">{{$citaAgendada->hora}}</span> horas.</p>
-    <p class="texto-cita">Por lo que reiteramos debe presentarse en el Juzgado <span class="centro-atencion-cita">{{$citaAgendada->juzgado}}</span> ubicado en <span class="direccion-cita">Ciudad Judicial</span>, en la fecha y hora antes mencionada.</p>
+    <p class="texto-cita">Por lo que reiteramos debe presentarse en el Juzgado <span class="centro-atencion-cita">{{$citaAgendada->juzgado}}</span> ubicado en <span class="direccion-cita">{{$citaAgendada->direccion_juzgado}}</span>, en la fecha y hora antes mencionada.</p>
     <br>
     <div class="first-line"></div>
     <p>Le recordamos que el <span class="texto-folio">folio</span> de su cita es:</p>

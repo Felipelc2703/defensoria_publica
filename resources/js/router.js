@@ -27,7 +27,8 @@ import EditarHorarioJuzgado from './pages/juzgados/EditarHorarioJuzgado.vue'
 import CitasDelDiaJuez from './pages/juzgados/CitasDelDiaJuez.vue'
 import ConfirmacionCitaJuzgado from './pages/juzgados/ConfirmacionCitaJuzgado.vue'
 import ConfirmacionCitaBuscadaJuzgado from './pages/juzgados/ConfirmacionCitaBuscadaJuzgado.vue'
-
+import ReporteGraficasJuez from './pages/juzgados/ReporteGraficasJuez.vue'
+import ReportesJuez from './pages/juzgados/ReportesJuez.vue'
 
 const routes = [
     {
@@ -199,6 +200,22 @@ const routes = [
         path: '/confirmacion-cita-buscada-juzgado',
         name: 'ConfirmacionCitaBuscadaJuzgado',
         component: ConfirmacionCitaBuscadaJuzgado,
+    },
+    {
+        path: '/reporte-graficas-juez',
+        name: 'ReporteGraficasJuez',
+        component: ReporteGraficasJuez,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/reportes-juez',
+        name: 'ReportesJuez',
+        component: ReportesJuez,
+        meta: {
+            requiresAuth: true
+        }
     },
 ]
 

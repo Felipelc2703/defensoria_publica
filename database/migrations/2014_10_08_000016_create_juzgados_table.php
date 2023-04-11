@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('juzgados', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('prefijo_folio');
+            $table->string('direccion');
             $table->foreignId('materia_id')->constrained();
             $table->boolean('status')->default(true);
             $table->timestamps();
