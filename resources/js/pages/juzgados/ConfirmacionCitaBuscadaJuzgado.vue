@@ -93,7 +93,7 @@
             async cancelarCita() {
                 
                 try {
-                    let response = await axios.get(`/api/cancelar-cita/${this.citaAgendada.id}`)
+                    let response = await axios.get(`/api/cancelar-cita-juzgado/${this.citaAgendada.id}`)
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             successSweetAlert(response.data.message)

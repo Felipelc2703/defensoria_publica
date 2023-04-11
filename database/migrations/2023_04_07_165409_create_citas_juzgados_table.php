@@ -23,15 +23,9 @@ return new class extends Migration
             $table->time('hora_cita');
             $table->string('expediente');
             $table->string('asunto');
-            $table->string('nombre');
-            $table->string('apellido_paterno');
-            $table->string('apellido_materno')->nullable();
-            $table->string('curp');
-            $table->string('email');
-            $table->string('telefono');
-            $table->string('sexo');
             $table->integer('status')->default(1);
             $table->string('motivo')->nullable();
+            $table->foreignId('usuario_id')->constrained();
             $table->foreignId('juzgado_id')->nullable()->constrained();
             $table->unsignedBigInteger('juez_id')->nullable();
             $table->timestamps();

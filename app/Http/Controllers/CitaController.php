@@ -373,11 +373,12 @@ class CitaController extends Controller
                 $citaAgendada = new \stdClass();
                 $citaAgendada->id = $cita_juzgado->id;
                 $citaAgendada->folio = $cita_juzgado->folio;
-                $citaAgendada->nombre = $cita_juzgado->nombre;
+                $citaAgendada->nombre = $cita_juzgado->usuario->nombre . ' ' . $cita_juzgado->usuario->apellido_paterno . ' ' . $cita_juzgado->usuario->apellido_materno;
                 $citaAgendada->fecha = $cita_juzgado->fecha_formateada;
                 $citaAgendada->hora = $cita_juzgado->hora_cita;
                 $citaAgendada->juzgado = $cita_juzgado->juzgado->nombre;
                 $citaAgendada->direccion = $cita_juzgado->juzgado->direccion;
+                $citaAgendada->juez = $cita_juzgado->juez->nombre . ' ' . $cita_juzgado->juez->apellido_paterno . ' ' . $cita_juzgado->juez->apellido_materno;
                 $citaAgendada->cita_defensoria = false;
                 $citaAgendada->cita_juzgado = true;
 

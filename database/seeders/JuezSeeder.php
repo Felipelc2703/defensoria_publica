@@ -16,15 +16,15 @@ class JuezSeeder extends Seeder
     public function run()
     {
         DB::table('jueces')->insert([
-            'nombre' => 'José Bernardo Elfego',
+            'nombre' => 'Bernardo Elfego',
             'apellido_paterno' => 'Torres',
             'apellido_materno' => 'Nolasco',
             'juzgado_id' => 1,
         ]);
         DB::table('jueces')->insert([
-            'nombre' => 'Cargo por Asignar',
-            'apellido_paterno' => '.',
-            'apellido_materno' => '',
+            'nombre' => 'Armando',
+            'apellido_paterno' => 'Pérez',
+            'apellido_materno' => 'Acevedo',
             'juzgado_id' => 2,
         ]);
         DB::table('jueces')->insert([
@@ -96,7 +96,7 @@ class JuezSeeder extends Seeder
             'juzgado_id' => 13,
         ]);
         DB::table('jueces')->insert([
-            'nombre' => 'María Belem',
+            'nombre' => 'María Belém',
             'apellido_paterno' => 'Olivares',
             'apellido_materno' => 'Lobato',
             'juzgado_id' => 14,

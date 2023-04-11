@@ -20,4 +20,9 @@ class CitaJuzgado extends Model
     {
         return $this->belongsTo(Juez::class);
     }
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class);
+    }
 }

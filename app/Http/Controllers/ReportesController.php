@@ -479,12 +479,12 @@ class ReportesController extends Controller
                 $objectCita = new \stdClass();
                 $objectCita->id = $cita->id;
                 $objectCita->folio = $cita->folio;
-                $objectCita->nombre = $cita->nombre . ' ' . $cita->apellido_paterno . ' ' . $cita->apellido_materno;
-                $objectCita->correo = $cita->email;
-                $objectCita->telefono = $cita->telefono;
+                $objectCita->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
+                $objectCita->correo = $cita->usuario->email;
+                $objectCita->telefono = $cita->usuario->telefono;
                 $objectCita->fecha = $cita->fecha_cita;
                 $objectCita->horario = $cita->hora_cita;
-                $objectCita->sexo = $cita->sexo;
+                $objectCita->sexo = $cita->usuario->sexo;
                 $objectCita->expediente = $cita->expediente;
                 $objectCita->asunto = $cita->asunto;
 

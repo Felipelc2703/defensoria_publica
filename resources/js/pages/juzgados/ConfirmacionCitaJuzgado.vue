@@ -3,8 +3,8 @@
         <div class="container pt-6 pb-6">
             <h5 class="titulo-confirmacion">Confirmación de Cita</h5>
             <p><span class="formato-texto">Información importante</span></p>
-            <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{citaAgendada.nombre}}</span> su cita con el Juez <span class="texto-tramite">{{citaAgendada.juez}}</span> ha quedado agendada para el <span class="text-fecha">{{citaAgendada.fecha}}</span>, a las <span class="text-fecha">{{citaAgendada.hora}}</span> horas.</p>
-            <p class="texto-cita">Por lo que reiteramos debe presentarse en el Juzgado <span class="centro-atencion-cita">{{citaAgendada.juzgado}}</span> ubicado en <span class="direccion-cita">{{citaAgendada.direccion_juzgado}}</span>, en la fecha y hora antes mencionada.</p>
+            <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{citaAgendada.nombre}}</span> su cita con el Juez <span class="texto-tramite">{{citaAgendada.juez}}</span> ha quedado agendada para el <span class="texto-fecha">{{citaAgendada.fecha}}</span>, a las <span class="texto-fecha">{{citaAgendada.hora}}</span> horas.</p>
+            <p class="texto-cita">Por lo que reiteramos debe presentarse en el <span class="centro-atencion-cita">{{citaAgendada.juzgado}}</span> ubicado en <span class="direccion-cita">{{citaAgendada.direccion_juzgado}}</span>, en la fecha y hora antes mencionada.</p>
             <br>
             <p>Le recordamos que el <span class="texto-folio">folio</span> de su cita es:</p>
             <br>

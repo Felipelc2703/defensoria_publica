@@ -6,6 +6,7 @@ use PDF;
 use Carbon\Carbon;
 use App\Models\Juez;
 use App\Models\Horario;
+use App\Models\Usuario;
 use App\Models\CitaJuzgado;
 use Illuminate\Http\Request;
 use App\Mail\ConfirmacionCitaJuez;
@@ -19,13 +20,13 @@ class CitaJuzgadoController extends Controller
     public function consultarCurp(Request $request)
     {
         try {
-            $registro = CitaJuzgado::where('curp', $request->curp)->get()->last();
+            $usuario = Usuario::where('curp', $request->curp)->first();
 
-            if ($registro) {
+            if ($usuario) {
                 return response()->json([
                     "status" => "ok",
-                    "message" => "Registro obtenido con exito",
-                    "registro" => $registro
+                    "message" => "Usuario obtenido con exito",
+                    "usuario" => $usuario
                 ], 200);
             } else {
                 return response()->json([
@@ -50,46 +51,84 @@ class CitaJuzgadoController extends Controller
 
         DB::beginTransaction();
         try {
+            $usuario = Usuario::where('curp', $request->curp)->first();
+
             $juez = Juez::find($request->juez);
             $juzgado = $juez->juzgado;
             $current_date = Carbon::now();
 
-            $cita = CitaJuzgado::where('curp', $request->curp)->where('status', 1)->where('juzgado_id', $juzgado->id)->exists();
-            
-            if ($cita) {
-                return response()->json([
-                    "status" => "no-data",
-                    "message" => "Usted ya cuenta con una cita agendada en este juzgado",
-                ], 200);
-            }
+            if ($usuario) {
+                $num_jueces = $juzgado->jueces->count();
 
-            $ultimo_registro = CitaJuzgado::where('juzgado_id', $juzgado->id)->get()->last();
-            $consecutivo = 0;
-            if ($ultimo_registro) {
-                $consecutivo = $ultimo_registro->consecutivo + 1;
+                // if ($num_jueces > 1) {
+
+                // } else if ($num_jueces == 1) {
+
+                // }
+
+                $cita = CitaJuzgado::where('usuario_id', $usuario->id)->where('status', 1)->where('juzgado_id', $juzgado->id)->exists();
+                
+                if ($cita) {
+                    return response()->json([
+                        "status" => "no-data",
+                        "message" => "Usted ya cuenta con una cita agendada en este juzgado",
+                    ], 200);
+                }
+
+                $ultimo_registro = CitaJuzgado::where('juzgado_id', $juzgado->id)->get()->last();
+                $consecutivo = 0;
+                if ($ultimo_registro) {
+                    $consecutivo = $ultimo_registro->consecutivo + 1;
+                } else {
+                    $consecutivo = 1;
+                }
+
+                $cita = new CitaJuzgado;
+                $cita->consecutivo = $consecutivo;
+                $cita->anio = $current_date->year;
+                $cita->folio = $juzgado->prefijo_folio . $this->formatearNumero($consecutivo) . substr($current_date->year, -2);
+                $cita->fecha_cita = $request->dia_cita;
+                $cita->fecha_formateada = $request->fecha_formateada;
+                $cita->hora_cita = $request->horario;
+                $cita->expediente = $request->expediente;
+                $cita->asunto = $request->asunto;
+                $cita->usuario_id = $usuario->id;
+                $cita->juzgado_id = $juzgado->id;
+                $cita->juez_id = $juez->id;
+                $cita->save();
             } else {
-                $consecutivo = 1;
+                $usuario = new Usuario;
+                $usuario->nombre = $request->nombre;
+                $usuario->apellido_paterno = $request->apellido_paterno;
+                $usuario->apellido_materno = $request->apellido_materno;
+                $usuario->curp = $request->curp;
+                $usuario->email = $request->email;
+                $usuario->telefono = $request->telefono;
+                $usuario->sexo = $request->sexo;
+                $usuario->save();
+    
+                $ultimo_registro = CitaJuzgado::where('juzgado_id', $juzgado->id)->get()->last();
+                $consecutivo = 0;
+                if ($ultimo_registro) {
+                    $consecutivo = $ultimo_registro->consecutivo + 1;
+                } else {
+                    $consecutivo = 1;
+                }
+
+                $cita = new CitaJuzgado;
+                $cita->consecutivo = $consecutivo;
+                $cita->anio = $current_date->year;
+                $cita->folio = $juzgado->prefijo_folio . $this->formatearNumero($consecutivo) . substr($current_date->year, -2);
+                $cita->fecha_cita = $request->dia_cita;
+                $cita->fecha_formateada = $request->fecha_formateada;
+                $cita->hora_cita = $request->horario;
+                $cita->expediente = $request->expediente;
+                $cita->asunto = $request->asunto;
+                $cita->usuario_id = $usuario->id;
+                $cita->juzgado_id = $juzgado->id;
+                $cita->juez_id = $juez->id;
+                $cita->save();
             }
-            
-            $cita = new CitaJuzgado;
-            $cita->consecutivo = $consecutivo;
-            $cita->anio = $current_date->year;
-            $cita->folio = $juzgado->prefijo_folio . $this->formatearNumero($consecutivo) . substr($current_date->year, -2);
-            $cita->fecha_cita = $request->dia_cita;
-            $cita->fecha_formateada = $request->fecha_formateada;
-            $cita->hora_cita = $request->horario;
-            $cita->expediente = $request->expediente;
-            $cita->asunto = $request->asunto;
-            $cita->nombre = $request->nombre;
-            $cita->apellido_paterno = $request->apellido_paterno;
-            $cita->apellido_materno = $request->apellido_materno;
-            $cita->curp = $request->curp;
-            $cita->email = $request->email;
-            $cita->telefono = $request->telefono;
-            $cita->sexo = $request->sexo;
-            $cita->juzgado_id = $juzgado->id;
-            $cita->juez_id = $juez->id;
-            $cita->save();
 
             $horario = Horario::find($request->hora_cita);
             $horario->citas_disponibles = $horario->citas_disponibles-1;
@@ -98,7 +137,7 @@ class CitaJuzgadoController extends Controller
             $citaAgendada = new \stdClass();
             $citaAgendada->id = $cita->id;
             $citaAgendada->folio = $cita->folio;
-            $citaAgendada->nombre = $cita->nombre . ' ' . $cita->apellido_paterno . ' ' . $cita->apellido_materno;
+            $citaAgendada->nombre = $usuario->nombre . ' ' . $usuario->apellido_paterno . ' ' . $usuario->apellido_materno;
             $citaAgendada->fecha = $cita->fecha_formateada;
             $citaAgendada->hora = $cita->hora_cita;
             $citaAgendada->juzgado = $juzgado->nombre;
@@ -129,7 +168,7 @@ class CitaJuzgadoController extends Controller
                     'module_height' => 1 // height of a single module in points
                 ); 
 
-                $pdf->write2DBarcode('http://citasenlinea.pjpuebla.gob.mx/confirmacion-cita-buscada?folio='.$folio, 'QRCODE,Q', 160, 135, 70, 70, $style, 'N');
+                $pdf->write2DBarcode('http://defensoria_publica.test/confirmacion-cita-buscada-juzgado?folio='.$folio, 'QRCODE,Q', 160, 135, 70, 70, $style, 'N');
 
                 // footer
                 $footer_image_file = public_path() . '/images/footer_pdf.png';
@@ -149,7 +188,7 @@ class CitaJuzgadoController extends Controller
             
             $pdf = PDF::Output('Confirmacion_Cita_Juez.pdf', 'S');
 
-            Mail::to($cita->email)->send(new ConfirmacionCitaJuez($citaAgendada, $pdf));
+            Mail::to($usuario->email)->send(new ConfirmacionCitaJuez($citaAgendada, $pdf));
 
             DB::commit();
             $exito = true;
@@ -181,7 +220,7 @@ class CitaJuzgadoController extends Controller
         $citaAgendada = new \stdClass();
         $citaAgendada->id = $cita->id;
         $citaAgendada->folio = $cita->folio;
-        $citaAgendada->nombre = $cita->nombre . ' ' . $cita->apellido_paterno . ' ' . $cita->apellido_materno;
+        $citaAgendada->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
         $citaAgendada->fecha = $cita->fecha_formateada;
         $citaAgendada->hora = $cita->hora_cita;
         $citaAgendada->juzgado = $cita->juzgado->nombre;
@@ -243,7 +282,7 @@ class CitaJuzgadoController extends Controller
             $cita->status = 3;
             $cita->save();
             
-            $horario = $cita->juez->dias->where('fecha',$cita->fecha_cita)->first()->horarios->where('hora_inicio',$cita->hora_cita)->first();
+            $horario = $cita->juez->dias->where('fecha', $cita->fecha_cita)->first()->horarios->where('hora_inicio',$cita->hora_cita)->first();
             $horario->citas_disponibles++;
             $horario->save();
 
@@ -283,7 +322,7 @@ class CitaJuzgadoController extends Controller
                 $objectCita->folio = $cita->folio;
                 $objectCita->fecha_formateada = $cita->fecha_formateada;
                 $objectCita->hora_cita = $cita->hora_cita;
-                $objectCita->nombre = $cita->nombre . ' ' . $cita->apellido_paterno . ' ' . $cita->apellido_materno;
+                $objectCita->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
                 $objectCita->curp = $cita->curp;
                 $objectCita->status = $cita->status;
                 $objectCita->expediente = $cita->expediente;
@@ -335,7 +374,7 @@ class CitaJuzgadoController extends Controller
                 $objectCita->folio = $cita->folio;
                 $objectCita->fecha_formateada = $cita->fecha_formateada;
                 $objectCita->hora_cita = $cita->hora_cita;
-                $objectCita->nombre = $cita->nombre . ' ' . $cita->apellido_paterno . ' ' . $cita->apellido_materno;
+                $objectCita->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
                 $objectCita->curp = $cita->curp;
                 $objectCita->status = $cita->status;
                 $objectCita->expediente = $cita->expediente;
@@ -396,7 +435,7 @@ class CitaJuzgadoController extends Controller
                 $objectCita->folio = $cita->folio;
                 $objectCita->fecha_formateada = $cita->fecha_formateada;
                 $objectCita->hora_cita = $cita->hora_cita;
-                $objectCita->nombre = $cita->nombre . ' ' . $cita->apellido_paterno . ' ' . $cita->apellido_materno;
+                $objectCita->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
                 $objectCita->curp = $cita->curp;
                 $objectCita->status = $cita->status;
                 $objectCita->expediente = $cita->expediente;

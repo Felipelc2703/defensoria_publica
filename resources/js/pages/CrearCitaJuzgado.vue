@@ -3,7 +3,7 @@
         <div class="row contenedor">
             <div class="col-sm-9 col-12 contenedor-uno">
                 <div class="text-center py-2">
-                    <img class="scale-logo-defensoria logo-defensoria" width="150" height="75" src="../../../public/images/juzgados-titulo.png" alt="">
+                    <img class="scale-logo-defensoria logo-defensoria" width="150" height="75" src="../../../public/images/jueces.png" alt="">
                 </div>
             </div>
             <div class="col-sm-3 hidden-xs contenedor-dos">
@@ -154,81 +154,85 @@
                                             <v-card-text>
                                                 <v-container>
                                                     <v-row>
-                                                        <v-form class="col-12 mt-4 mb-4" ref="form">
+                                                        <v-form class="col-12 mt-4 mb-4" ref="form" @submit.prevent>
                                                             <div class="row justify-content-between mb-4">
                                                                 <div class="col-sm-6 col-12">
                                                                     <v-text-field
                                                                         v-model="cita.curp"
                                                                         label="Curp"
                                                                         :rules="[rules.curp]"
+                                                                        :readonly="deshabilitar_curp"
                                                                     ></v-text-field>
                                                                     <a class="boton_inicio" @click="irCurp()">CONSULTE SU CURP AQUÍ</a>
                                                                 </div>
                                                                 <div class="col-sm-6 col-12">
-                                                                    <button class="boton-cancelar" @click="consultarCurp()">Consultar Datos</button>
+                                                                    <button class="boton-cancelar" @click="consultarCurp()">Buscar Datos</button>
                                                                 </div>
                                                             </div>
-                                                            <div class="row justify-content-between">
-                                                                <div class="col-sm-6 col-12">
-                                                                    <v-text-field
-                                                                        v-model="cita.nombre"
-                                                                        label="Nombre"
-                                                                        :rules="nombreRules"
-                                                                    ></v-text-field>
+                                                            <template v-if="showForm">
+                                                                <p class="texto-llenar-formulario my-8" v-if="sin_registro">No se encontró registro de este usuario, favor de llenar el formulario.</p>
+                                                                <div class="row justify-content-between">
+                                                                    <div class="col-sm-6 col-12">
+                                                                        <v-text-field
+                                                                            v-model="cita.nombre"
+                                                                            label="Nombre"
+                                                                            :rules="nombreRules"
+                                                                        ></v-text-field>
+                                                                    </div>
+                                                                    <div class="col-sm-6 col-12">
+                                                                        <v-text-field
+                                                                            v-model="cita.apellido_paterno"
+                                                                            label="Apellido Paterno"
+                                                                            :rules="apellidoPaternoRules"
+                                                                        ></v-text-field>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-6 col-12">
-                                                                    <v-text-field
-                                                                        v-model="cita.apellido_paterno"
-                                                                        label="Apellido Paterno"
-                                                                        :rules="apellidoPaternoRules"
-                                                                    ></v-text-field>
+                                                                <div class="row justify-content-between">
+                                                                    <div class="col-sm-6 col-12">
+                                                                        <v-text-field
+                                                                            v-model="cita.apellido_materno"
+                                                                            label="Apellido Materno"
+                                                                            :rules="apellidoMaternoRules"
+                                                                        ></v-text-field>
+                                                                    </div>
+                                                                    <div class="col-sm-6 col-12">
+                                                                        <v-text-field
+                                                                            v-model="cita.telefono"
+                                                                            label="Teléfono"
+                                                                            :rules="[rules.tel]"
+                                                                            maxlength="10"
+                                                                        ></v-text-field>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row justify-content-between">
-                                                                <div class="col-sm-6 col-12">
-                                                                    <v-text-field
-                                                                        v-model="cita.apellido_materno"
-                                                                        label="Apellido Materno"
-                                                                        :rules="apellidoMaternoRules"
-                                                                    ></v-text-field>
+                                                                <v-text-field
+                                                                    v-model="cita.email"
+                                                                    label="Correo Electrónico"
+                                                                    :rules="[rules.email]"
+                                                                ></v-text-field>
+                                                                <div class="row justify-content-between mt-4">
+                                                                    <div class="col-sm-6 col-12">
+                                                                        <v-select
+                                                                            v-model="cita.sexo"
+                                                                            label="Seleccione el sexo"
+                                                                            :items="['Hombre', 'Mujer']"
+                                                                            :rules="sexoRules"
+                                                                        ></v-select>
+                                                                    </div>
+                                                                    <div class="col-sm-6 col-12">
+                                                                        <v-text-field
+                                                                            v-model="cita.expediente"
+                                                                            label="Expediente"
+                                                                            :rules="expedienteRules"
+                                                                        ></v-text-field>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-6 col-12">
-                                                                    <v-text-field
-                                                                        v-model="cita.telefono"
-                                                                        label="Teléfono"
-                                                                        :rules="[rules.tel]"
-                                                                        maxlength="10"
-                                                                    ></v-text-field>
-                                                                </div>
-                                                            </div>
-                                                            <v-text-field
-                                                                v-model="cita.email"
-                                                                label="Correo Electrónico"
-                                                                :rules="[rules.email]"
-                                                            ></v-text-field>
-                                                            <div class="row justify-content-between mt-4">
-                                                                <div class="col-sm-6 col-12">
-                                                                    <v-select
-                                                                        v-model="cita.sexo"
-                                                                        label="Seleccione el sexo"
-                                                                        :items="['Hombre', 'Mujer']"
-                                                                        :rules="sexoRules"
-                                                                    ></v-select>
-                                                                </div>
-                                                                <div class="col-sm-6 col-12">
-                                                                    <v-text-field
-                                                                        v-model="cita.expediente"
-                                                                        label="Expediente"
-                                                                        :rules="expedienteRules"
-                                                                    ></v-text-field>
-                                                                </div>
-                                                            </div>
-                                                            <v-textarea rows="3" class="mt-4" label="Indique el asunto de la cita" :rules="asuntoRules" v-model="cita.asunto">{{cita.asunto}}</v-textarea>
+                                                                <v-textarea rows="3" class="mt-4" label="Indique el asunto de la cita" :rules="asuntoRules" v-model="cita.asunto">{{cita.asunto}}</v-textarea>
+                                                            </template>
                                                         </v-form>
                                                     </v-row>
                                                 </v-container>
                                             </v-card-text>
-                                            <v-card-actions class="mb-6">
+                                            <v-card-actions class="mb-6" v-if="showForm">
                                                 <v-spacer></v-spacer>
                                                 <button class="boton-cancelar" @click="volverInicio()">Cancelar</button>
                                                 <button class="boton-aceptar" @click="agendarCita()">Agendar</button>
@@ -322,6 +326,9 @@
                 panel: [0],
                 mostrarPaso2: false,
                 mostrarPaso3: false,
+                showForm: false,
+                sin_registro: false,
+                deshabilitar_curp: false,
                 cita: {
                     juez: '',
                     dia_cita: '',
@@ -861,9 +868,8 @@
                                 if (result.value.data.status === "ok") {
                                     this.$store.commit('setCitaAgendada', result.value.data.cita_agendada)
                                     this.$router.push('/confirmacion-cita-juzgado')
-                                }else if(result.value.data.status === "no_data") {
-                                        warningSweetAlert(result.value.data.message)
-                                
+                                }else if(result.value.data.status === "no-data") {
+                                    warningSweetAlert(result.value.data.message)
                                 } else  {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
@@ -879,14 +885,18 @@
                     let response = await axios.post('/api/consultar-curp', this.cita)
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
-                            this.cita.nombre = response.data.registro.nombre
-                            this.cita.apellido_paterno = response.data.registro.apellido_paterno
-                            this.cita.apellido_materno = response.data.registro.apellido_materno
-                            this.cita.telefono = response.data.registro.telefono
-                            this.cita.email = response.data.registro.email
-                            this.cita.sexo = response.data.registro.sexo
+                            this.cita.nombre = response.data.usuario.nombre
+                            this.cita.apellido_paterno = response.data.usuario.apellido_paterno
+                            this.cita.apellido_materno = response.data.usuario.apellido_materno
+                            this.cita.telefono = response.data.usuario.telefono
+                            this.cita.email = response.data.usuario.email
+                            this.cita.sexo = response.data.usuario.sexo
+                            this.showForm = true
+                            this.deshabilitar_curp = true
                         } else if (response.data.status === "exists") {
-                            warningSweetAlert(response.data.message)
+                            this.showForm = true
+                            this.sin_registro = true
+                            // warningSweetAlert(response.data.message)
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
