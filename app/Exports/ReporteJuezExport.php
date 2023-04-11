@@ -79,14 +79,14 @@ class ReporteJuezExport implements FromView, WithEvents
         // $active_sheet->mergeCells('B2:D2');
 
         // Tittle
-        $active_sheet->mergeCells('A1:AG1');
-        $active_sheet->getStyle('A1:AG1')->applyFromArray($title_font_style);
-        $active_sheet->getStyle('A1:AG1')->getAlignment()->setHorizontal('center');
+        $active_sheet->mergeCells('A1:U1');
+        $active_sheet->getStyle('A1:U1')->applyFromArray($title_font_style);
+        $active_sheet->getStyle('A1:U1')->getAlignment()->setHorizontal('center');
         // Tittle
 
         // Columns title
-        $active_sheet->getStyle('A2:AG2')->applyFromArray($heads_font_style);
-        $active_sheet->getStyle('A2:AG2')->getAlignment()->setHorizontal('center');
+        $active_sheet->getStyle('A2:U2')->applyFromArray($heads_font_style);
+        $active_sheet->getStyle('A2:U2')->getAlignment()->setHorizontal('center');
         // // Columns title
         
         //$active_sheet->getStyle('A3:A'.($num_rows+2))->applyFromArray($body_font_style);
