@@ -59,21 +59,33 @@ class CitaJuzgadoController extends Controller
 
             if ($usuario) {
                 $num_jueces = $juzgado->jueces->count();
-
-                // if ($num_jueces > 1) {
-
-                // } else if ($num_jueces == 1) {
-
-                // }
-
-                $cita = CitaJuzgado::where('usuario_id', $usuario->id)->where('status', 1)->where('juzgado_id', $juzgado->id)->exists();
                 
-                if ($cita) {
-                    return response()->json([
-                        "status" => "no-data",
-                        "message" => "Usted ya cuenta con una cita agendada en este juzgado",
-                    ], 200);
+                if ($num_jueces > 1) {
+                    $cita_juez = CitaJuzgado::where('usuario_id', $usuario->id)->where('status', 1)->where('juzgado_id', $juzgado->id)->where('juez_id', $juez->id)->exists();
+                    if ($cita_juez) {
+                        return response()->json([
+                            "status" => "no-data",
+                            "message" => "Usted ya cuenta con una cita agendada con este mismo juez en este juzgado",
+                        ], 200);
+                    }
+                    $cita_hora = CitaJuzgado::where('usuario_id', $usuario->id)->where('status', 1)->where('juzgado_id', $juzgado->id)->where('hora_cita', $request->horario)->where('juez_id', '!=', $juez->id)->exists();
+                    if ($cita_hora) {
+                        return response()->json([
+                            "status" => "no-data",
+                            "message" => "Usted ya cuenta con una cita agendada con otro juez de este juzgado a la misma hora"
+                        ], 200);
+                    }
+                } else if ($num_jueces == 1) {
+                    $cita = CitaJuzgado::where('usuario_id', $usuario->id)->where('status', 1)->where('juzgado_id', $juzgado->id)->exists();
+                    
+                    if ($cita) {
+                        return response()->json([
+                            "status" => "no-data",
+                            "message" => "Usted ya cuenta con una cita agendada con este juez en este juzgado",
+                        ], 200);
+                    }
                 }
+
 
                 $ultimo_registro = CitaJuzgado::where('juzgado_id', $juzgado->id)->get()->last();
                 $consecutivo = 0;
