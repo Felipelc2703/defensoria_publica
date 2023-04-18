@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use PDF;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use App\Models\Juez;
+use App\Models\Juzgado;
 use App\Models\Horario;
 use App\Models\Usuario;
 use App\Models\CitaJuzgado;
@@ -559,5 +561,172 @@ class CitaJuzgadoController extends Controller
         }
 
         return $numero_formateado;
+    }
+    public function getReporteGraficasJuzgado(Request $request)
+    {
+        $days = Carbon::createFromDate(2023, $request->mes, 1)->daysInMonth;
+        $first = Carbon::createFromDate(2023, $request->mes, 1);
+        $last = Carbon::createFromDate(2023, $request->mes, $days);
+        $period = CarbonPeriod::create($first, $last);
+
+        $datefirst = $first->format('Y-m-d');
+        $datelast = $last->format('Y-m-d');
+
+
+        if($request->juzgado_id == 9999){
+                 $reservadas = CitaJuzgado::where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 1)
+                                ->count();
+
+                $atendidas = CitaJuzgado::where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 2)
+                                ->count();
+
+                $canceladas = CitaJuzgado::where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 3)
+                                ->count();
+
+                $total = CitaJuzgado::where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->count();
+
+                                
+                $jueces = Juez::all();                
+                // $jueces = $juzgado->jueces;
+                // return response()->json([
+                //     "status" => "ok",
+                //     "message" => $jueces,
+                //     // "reporte" => $objectReporte
+                // ], 200);
+                $array_jueces = array();
+                $cont = 1;
+                foreach ($jueces as $juez) 
+                {
+                    $objectJuez = new \stdClass();
+                    $objectJuez->id = $cont;
+                    $objectJuez->nombre = $juez->nombre;
+                    $reservadas1 = CitaJuzgado::where('juzgado_id', $cont)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 1)
+                                    ->count();
+
+                    $atendidas1 = CitaJuzgado::where('juzgado_id', $cont)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 2)
+                                    ->count();
+
+                    $canceladas1 = CitaJuzgado::where('juzgado_id', $cont)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 3)
+                                    ->count();
+
+                    $total1 = CitaJuzgado::where('juzgado_id', $cont)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->count();
+
+                                    $cont++;
+                    $objectJuez->pen = $reservadas1;
+                    $objectJuez->aten = $atendidas1;
+                    $objectJuez->cance = $canceladas1;
+                    $objectJuez->tot = $total1;
+                    array_push($array_jueces, $objectJuez);
+                    }
+        }else{
+                $reservadas = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                ->where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 1)
+                                ->count();
+
+                $atendidas = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                ->where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 2)
+                                ->count();
+
+                $canceladas = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                ->where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 3)
+                                ->count();
+
+                $total = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                ->where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->count();
+
+                $jueces = Juez::where('juzgado_id', $request->juzgado_id)->get();                
+                // $jueces = $juzgado->jueces;
+                // return response()->json([
+                //     "status" => "ok",
+                //     "message" => $jueces,
+                //     // "reporte" => $objectReporte
+                // ], 200);
+                $array_jueces = array();
+                $cont = 1;
+                foreach ($jueces as $juez) 
+                {
+                    $objectJuez = new \stdClass();
+                    $objectJuez->id = $cont;
+                    $objectJuez->nombre = $juez->nombre;
+                    $reservadas1 = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 1)
+                                    ->count();
+
+                    $atendidas1 = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 2)
+                                    ->count();
+
+                    $canceladas1 = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 3)
+                                    ->count();
+
+                    $total1 = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->count();
+
+                                    $cont++;
+                    $objectJuez->pen = $reservadas1;
+                    $objectJuez->aten = $atendidas1;
+                    $objectJuez->cance = $canceladas1;
+                    $objectJuez->tot = $total1;
+                    array_push($array_jueces, $objectJuez);
+                    }
+        }
+
+
+        // $reservadas = 1;
+        // $atendidas = 2;
+        // $canceladas = 2;
+        // $total = 5;
+        $objectReporte = new \stdClass();
+        $objectReporte->reservadas = $reservadas;
+        $objectReporte->atendidas = $atendidas;
+        $objectReporte->canceladas = $canceladas;
+        $objectReporte->total = $total;
+        $objectReporte->porcent_1 = $total > 0 ? ($reservadas * 100) / $total : 0;
+        $objectReporte->porcent_2 = $total > 0 ? ($atendidas * 100) / $total : 0;
+        $objectReporte->porcent_3 = $total > 0 ? ($canceladas * 100) / $total : 0;
+        $objectReporte->tabla = $array_jueces;
+
+        return response()->json([
+            "status" => "ok",
+            "message" => "Estadisticas obtenidos con éxito",
+            "reporte" => $objectReporte
+        ], 200);
     }
 }

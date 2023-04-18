@@ -27,5 +27,9 @@ class RolSeeder extends Seeder
             'nivel' => 3,
             'nombre' => 'Administrador Juzgado',
         ]);
+        DB::table('roles')->insert([
+            'nivel' => 4,
+            'nombre' => 'Presidencia',
+        ]);
     }
 }

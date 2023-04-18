@@ -29,6 +29,7 @@ import ConfirmacionCitaJuzgado from './pages/juzgados/ConfirmacionCitaJuzgado.vu
 import ConfirmacionCitaBuscadaJuzgado from './pages/juzgados/ConfirmacionCitaBuscadaJuzgado.vue'
 import ReporteGraficasJuez from './pages/juzgados/ReporteGraficasJuez.vue'
 import ReportesJuez from './pages/juzgados/ReportesJuez.vue'
+import ReporteJuzgados from './pages/juzgados/ReporteJuzgados.vue'
 
 const routes = [
     {
@@ -213,6 +214,14 @@ const routes = [
         path: '/reportes-juez',
         name: 'ReportesJuez',
         component: ReportesJuez,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/reportes-juzgados',
+        name: 'ReporteJuzgados',
+        component: ReporteJuzgados,
         meta: {
             requiresAuth: true
         }

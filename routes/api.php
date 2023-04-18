@@ -61,10 +61,12 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
     Route::get('/catalogos/citas-del-dia-juez', [CitaJuzgadoController::class, 'getCitasDelDiaJuez']);
     Route::post('/citas/guardar-cambios-cita-juez', [CitaJuzgadoController::class, 'guardarCambios']);
     Route::post('/citas/citas-del-dia-juez-buscada', [CitaJuzgadoController::class, 'selectDiaCitaJuez']);
+    Route::post('/reporte/grafica-juzgado', [CitaJuzgadoController::class, 'getReporteGraficasJuzgado']);
     // Rutas para reportes y graficas
     Route::post('/reporte-juez/grafica', [CitaJuzgadoController::class, 'getReporteGraficas']);
     Route::post('/reportes/generar-reporte-juez', [ReportesController::class, 'generarReporteJuez']);
     Route::post('/reportes/exportar-reporte-citas-juez', [ReportesController::class, 'exportarExcelJuez']);
+    
 
     /**
      * RUTAS UTILIZADAS POR DEFENSORIA PUBLICA
