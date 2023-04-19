@@ -600,30 +600,35 @@ class CitaJuzgadoController extends Controller
                 $cont = 1;
                 foreach ($jueces as $juez) 
                 {
+                    $id = $juez->id;
                     $apellidom = $juez->apellido_materno;
                     $apellidop = $juez->apellido_paterno;
                     $objectJuez = new \stdClass();
                     $objectJuez->id = $cont;
                     $objectJuez->nombre = $juez->nombre.' '.$apellidop.' '.$apellidom;
                     $reservadas1 = CitaJuzgado::where('juzgado_id', $cont)
+                                    ->where('juez_id', $id)
                                     ->where('fecha_cita', '>=', $datefirst)
                                     ->where('fecha_cita', '<=', $datelast)
                                     ->where('status', 1)
                                     ->count();
 
                     $atendidas1 = CitaJuzgado::where('juzgado_id', $cont)
+                                    ->where('juez_id', $id)
                                     ->where('fecha_cita', '>=', $datefirst)
                                     ->where('fecha_cita', '<=', $datelast)
                                     ->where('status', 2)
                                     ->count();
 
                     $canceladas1 = CitaJuzgado::where('juzgado_id', $cont)
+                                    ->where('juez_id', $id)
                                     ->where('fecha_cita', '>=', $datefirst)
                                     ->where('fecha_cita', '<=', $datelast)
                                     ->where('status', 3)
                                     ->count();
 
                     $total1 = CitaJuzgado::where('juzgado_id', $cont)
+                                     ->where('juez_id', $id)
                                     ->where('fecha_cita', '>=', $datefirst)
                                     ->where('fecha_cita', '<=', $datelast)
                                     ->count();
