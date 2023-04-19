@@ -2,31 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function getUsuarios(){
         try {
-            $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
-             
-            $array_usuario = array();
-            $cont = 1;
-            foreach ($usuarios as $usuario) {
-                $objectUsuario = new \stdClass();
-                $objectUsuario->id = $usuario->id;
-                $objectUsuario->numero_registro = $cont;
-                $objectUsuario->nombre = $usuario->name;
-                $objectUsuario->clave = $usuario->clave;
-                $objectUsuario->contrasena = $usuario->password;
-                $objectUsuario->email = $usuario->email;
-                $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
-                $objectUsuario->rol_id = $usuario->rol_id;
+            $user = Auth::user();
 
-                array_push($array_usuario, $objectUsuario);
-                $cont++;
+            if ($user->rol_id == 5) {
+                $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->where('juzgado_id', '!=', null)->get();
+
+                $array_usuario = array();
+                $cont = 1;
+                foreach ($usuarios as $usuario) {
+                    $objectUsuario = new \stdClass();
+                    $objectUsuario->id = $usuario->id;
+                    $objectUsuario->numero_registro = $cont;
+                    $objectUsuario->nombre = $usuario->name;
+                    $objectUsuario->clave = $usuario->clave;
+                    $objectUsuario->contrasena = $usuario->password;
+                    $objectUsuario->email = $usuario->email;
+                    // $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
+                    $objectUsuario->juzgado = $usuario->juez->juzgado->nombre;
+                    $objectUsuario->juez = $usuario->juez->nombre . ' ' . $usuario->juez->apellido_paterno . ' ' . $usuario->juez->apellido_materno;
+                    $objectUsuario->rol_id = $usuario->rol_id;
+                    $objectUsuario->juzgado_id = $usuario->juez->juzgado->id;
+                    $objectUsuario->juez_id = $usuario->juez->id;
+    
+                    array_push($array_usuario, $objectUsuario);
+                    $cont++;
+                }
+            } else {
+                $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
+                 
+                $array_usuario = array();
+                $cont = 1;
+                foreach ($usuarios as $usuario) {
+                    $objectUsuario = new \stdClass();
+                    $objectUsuario->id = $usuario->id;
+                    $objectUsuario->numero_registro = $cont;
+                    $objectUsuario->nombre = $usuario->name;
+                    $objectUsuario->clave = $usuario->clave;
+                    $objectUsuario->contrasena = $usuario->password;
+                    $objectUsuario->email = $usuario->email;
+                    $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
+                    $objectUsuario->rol_id = $usuario->rol_id;
+    
+                    array_push($array_usuario, $objectUsuario);
+                    $cont++;
+                }
             }
 
             return response()->json([
@@ -57,23 +85,59 @@ class UserController extends Controller
             $usuario->email = $request->email;
             $usuario->password = $request->contrasena;
             $usuario->rol_id = $request->rol_id;
-            $usuario->centro_atencion_id = $request->centro_atencion;
+            if ($request->centro_atencion) {
+                $usuario->centro_atencion_id = $request->centro_atencion;
+            } else if ($request->juzgado_id) {
+                $usuario->juzgado_id = $request->juzgado_id;
+                $usuario->juez_id = $request->juez_id;
+            }
             $usuario->save();
 
 
-            $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
-             
-            $array_usuario = array();
-            foreach ($usuarios as $usuario) {
-                $objectUsuario = new \stdClass();
-                $objectUsuario->id = $usuario->id;
-                $objectUsuario->nombre = $usuario->name;
-                $objectUsuario->clave = $usuario->clave;
-                $objectUsuario->contrasena = $usuario->password;
-                $objectUsuario->email = $usuario->email;
-                $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
-                $objectUsuario->rol_id = $usuario->rol_id;
-                array_push($array_usuario, $objectUsuario);
+            $user = Auth::user();
+
+            if ($user->rol_id == 5) {
+                $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->where('juzgado_id', '!=', null)->get();
+
+                $array_usuario = array();
+                $cont = 1;
+                foreach ($usuarios as $usuario) {
+                    $objectUsuario = new \stdClass();
+                    $objectUsuario->id = $usuario->id;
+                    $objectUsuario->numero_registro = $cont;
+                    $objectUsuario->nombre = $usuario->name;
+                    $objectUsuario->clave = $usuario->clave;
+                    $objectUsuario->contrasena = $usuario->password;
+                    $objectUsuario->email = $usuario->email;
+                    // $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
+                    $objectUsuario->juzgado = $usuario->juez->juzgado->nombre;
+                    $objectUsuario->juez = $usuario->juez->nombre . ' ' . $usuario->juez->apellido_paterno . ' ' . $usuario->juez->apellido_materno;
+                    $objectUsuario->rol_id = $usuario->rol_id;
+                    $objectUsuario->juzgado_id = $usuario->juez->juzgado->id;
+                    $objectUsuario->juez_id = $usuario->juez->id;
+    
+                    array_push($array_usuario, $objectUsuario);
+                    $cont++;
+                }
+            } else {
+                $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
+                 
+                $array_usuario = array();
+                $cont = 1;
+                foreach ($usuarios as $usuario) {
+                    $objectUsuario = new \stdClass();
+                    $objectUsuario->id = $usuario->id;
+                    $objectUsuario->numero_registro = $cont;
+                    $objectUsuario->nombre = $usuario->name;
+                    $objectUsuario->clave = $usuario->clave;
+                    $objectUsuario->contrasena = $usuario->password;
+                    $objectUsuario->email = $usuario->email;
+                    $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
+                    $objectUsuario->rol_id = $usuario->rol_id;
+    
+                    array_push($array_usuario, $objectUsuario);
+                    $cont++;
+                }
             }
 
 
@@ -112,24 +176,60 @@ class UserController extends Controller
             $usuario->email = $request->email;
             $usuario->password = $request->contrasena;
             $usuario->rol_id = $request->rol_id;
-            $usuario->centro_atencion_id = $request->centro_atencion;
+            if ($request->centro_atencion) {
+                $usuario->centro_atencion_id = $request->centro_atencion;
+            } else if ($request->juzgado_id) {
+                $usuario->juzgado_id = $request->juzgado_id;
+                $usuario->juez_id = $request->juez_id;
+            }
             $usuario->save();
 
             
-            $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
+            $user = Auth::user();
 
-            $array_usuario = array();
-            foreach ($usuarios as $usuario) {
-                $objectUsuario = new \stdClass();
-                $objectUsuario->id = $usuario->id;
-                $objectUsuario->nombre = $usuario->name;
-                $objectUsuario->clave = $usuario->clave;
-                $objectUsuario->contrasena = $usuario->password;
-                $objectUsuario->email = $usuario->email;
-                $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
-                $objectUsuario->rol_id = $usuario->rol_id;
-                array_push($array_usuario, $objectUsuario);
+            if ($user->rol_id == 5) {
+                $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->where('juzgado_id', '!=', null)->get();
+
+                $array_usuario = array();
+                $cont = 1;
+                foreach ($usuarios as $usuario) {
+                    $objectUsuario = new \stdClass();
+                    $objectUsuario->id = $usuario->id;
+                    $objectUsuario->numero_registro = $cont;
+                    $objectUsuario->nombre = $usuario->name;
+                    $objectUsuario->clave = $usuario->clave;
+                    $objectUsuario->contrasena = $usuario->password;
+                    $objectUsuario->email = $usuario->email;
+                    // $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
+                    $objectUsuario->juzgado = $usuario->juez->juzgado->nombre;
+                    $objectUsuario->juez = $usuario->juez->nombre . ' ' . $usuario->juez->apellido_paterno . ' ' . $usuario->juez->apellido_materno;
+                    $objectUsuario->rol_id = $usuario->rol_id;
+                    $objectUsuario->juzgado_id = $usuario->juez->juzgado->id;
+                    $objectUsuario->juez_id = $usuario->juez->id;
+    
+                    array_push($array_usuario, $objectUsuario);
+                    $cont++;
                 }
+            } else {
+                $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
+                 
+                $array_usuario = array();
+                $cont = 1;
+                foreach ($usuarios as $usuario) {
+                    $objectUsuario = new \stdClass();
+                    $objectUsuario->id = $usuario->id;
+                    $objectUsuario->numero_registro = $cont;
+                    $objectUsuario->nombre = $usuario->name;
+                    $objectUsuario->clave = $usuario->clave;
+                    $objectUsuario->contrasena = $usuario->password;
+                    $objectUsuario->email = $usuario->email;
+                    $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
+                    $objectUsuario->rol_id = $usuario->rol_id;
+    
+                    array_push($array_usuario, $objectUsuario);
+                    $cont++;
+                }
+            }
             
             DB::commit();
             $exito = true;
@@ -164,20 +264,51 @@ class UserController extends Controller
             $Usuario->status = false;
             $Usuario->save();
 
-            $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
+            $user = Auth::user();
 
-            $array_usuario = array();
-            foreach ($usuarios as $usuario) {
-                $objectUsuario = new \stdClass();
-                $objectUsuario->id = $usuario->id;
-                $objectUsuario->nombre = $usuario->name;
-                $objectUsuario->clave = $usuario->clave;
-                $objectUsuario->contrasena = $usuario->password;
-                $objectUsuario->email = $usuario->email;
-                $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
-                $objectUsuario->rol_id = $usuario->rol_id;
-                array_push($array_usuario, $objectUsuario);
+            if ($user->rol_id == 5) {
+                $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->where('juzgado_id', '!=', null)->get();
+
+                $array_usuario = array();
+                $cont = 1;
+                foreach ($usuarios as $usuario) {
+                    $objectUsuario = new \stdClass();
+                    $objectUsuario->id = $usuario->id;
+                    $objectUsuario->numero_registro = $cont;
+                    $objectUsuario->nombre = $usuario->name;
+                    $objectUsuario->clave = $usuario->clave;
+                    $objectUsuario->contrasena = $usuario->password;
+                    $objectUsuario->email = $usuario->email;
+                    // $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
+                    $objectUsuario->juzgado = $usuario->juez->juzgado->nombre;
+                    $objectUsuario->juez = $usuario->juez->nombre . ' ' . $usuario->juez->apellido_paterno . ' ' . $usuario->juez->apellido_materno;
+                    $objectUsuario->rol_id = $usuario->rol_id;
+                    $objectUsuario->juzgado_id = $usuario->juez->juzgado->id;
+                    $objectUsuario->juez_id = $usuario->juez->id;
+    
+                    array_push($array_usuario, $objectUsuario);
+                    $cont++;
                 }
+            } else {
+                $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->get();
+                 
+                $array_usuario = array();
+                $cont = 1;
+                foreach ($usuarios as $usuario) {
+                    $objectUsuario = new \stdClass();
+                    $objectUsuario->id = $usuario->id;
+                    $objectUsuario->numero_registro = $cont;
+                    $objectUsuario->nombre = $usuario->name;
+                    $objectUsuario->clave = $usuario->clave;
+                    $objectUsuario->contrasena = $usuario->password;
+                    $objectUsuario->email = $usuario->email;
+                    $objectUsuario->centro_atencion = $usuario->centroAtencion->nombre;
+                    $objectUsuario->rol_id = $usuario->rol_id;
+    
+                    array_push($array_usuario, $objectUsuario);
+                    $cont++;
+                }
+            }
 
             DB::commit();
             $exito = true;

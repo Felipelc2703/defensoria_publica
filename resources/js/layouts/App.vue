@@ -214,7 +214,7 @@
                                             <a class="nav-link" @click="this.$router.push('/citas-del-dia-juez')">Citas del día</a>
                                         </li> -->
                                         <li class="nav-item link-nav">
-                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
+                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios-juez')">Usuario</a>
                                         </li>
                                         <!-- <li class="nav-item dropdown link-nav">
                                             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
