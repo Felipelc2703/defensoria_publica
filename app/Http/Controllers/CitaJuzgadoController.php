@@ -595,19 +595,16 @@ class CitaJuzgadoController extends Controller
 
                                 
                 $jueces = Juez::all();                
-                // $jueces = $juzgado->jueces;
-                // return response()->json([
-                //     "status" => "ok",
-                //     "message" => $jueces,
-                //     // "reporte" => $objectReporte
-                // ], 200);
+               
                 $array_jueces = array();
                 $cont = 1;
                 foreach ($jueces as $juez) 
                 {
+                    $apellidom = $juez->apellido_materno;
+                    $apellidop = $juez->apellido_paterno;
                     $objectJuez = new \stdClass();
                     $objectJuez->id = $cont;
-                    $objectJuez->nombre = $juez->nombre;
+                    $objectJuez->nombre = $juez->nombre.' '.$apellidop.' '.$apellidom;
                     $reservadas1 = CitaJuzgado::where('juzgado_id', $cont)
                                     ->where('fecha_cita', '>=', $datefirst)
                                     ->where('fecha_cita', '<=', $datelast)
@@ -662,44 +659,49 @@ class CitaJuzgadoController extends Controller
                                 ->where('fecha_cita', '<=', $datelast)
                                 ->count();
 
-                $jueces = Juez::where('juzgado_id', $request->juzgado_id)->get();                
-                // $jueces = $juzgado->jueces;
-                // return response()->json([
-                //     "status" => "ok",
-                //     "message" => $jueces,
-                //     // "reporte" => $objectReporte
-                // ], 200);
+                
+                                $jueces = Juez::where('juzgado_id', $request->juzgado_id)->get();                
+                
+
+                $id = $request->juzgado_id;
                 $array_jueces = array();
                 $cont = 1;
                 foreach ($jueces as $juez) 
                 {
+                    $apellidom = $juez->apellido_materno;
+                    $apellidop = $juez->apellido_paterno;
                     $objectJuez = new \stdClass();
                     $objectJuez->id = $cont;
-                    $objectJuez->nombre = $juez->nombre;
+                    $objectJuez->nombre = $juez->nombre.' '.$apellidop.' '.$apellidom;
                     $reservadas1 = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                    ->where('id', $id)
                                     ->where('fecha_cita', '>=', $datefirst)
                                     ->where('fecha_cita', '<=', $datelast)
                                     ->where('status', 1)
                                     ->count();
 
                     $atendidas1 = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                    ->where('id', $id)
                                     ->where('fecha_cita', '>=', $datefirst)
                                     ->where('fecha_cita', '<=', $datelast)
                                     ->where('status', 2)
                                     ->count();
 
                     $canceladas1 = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                    ->where('id', $id)
                                     ->where('fecha_cita', '>=', $datefirst)
                                     ->where('fecha_cita', '<=', $datelast)
                                     ->where('status', 3)
                                     ->count();
 
                     $total1 = CitaJuzgado::where('juzgado_id', $request->juzgado_id)
+                                    ->where('id', $id)
                                     ->where('fecha_cita', '>=', $datefirst)
                                     ->where('fecha_cita', '<=', $datelast)
                                     ->count();
 
                                     $cont++;
+                                    $id++;
                     $objectJuez->pen = $reservadas1;
                     $objectJuez->aten = $atendidas1;
                     $objectJuez->cance = $canceladas1;
@@ -709,10 +711,7 @@ class CitaJuzgadoController extends Controller
         }
 
 
-        // $reservadas = 1;
-        // $atendidas = 2;
-        // $canceladas = 2;
-        // $total = 5;
+        
         $objectReporte = new \stdClass();
         $objectReporte->reservadas = $reservadas;
         $objectReporte->atendidas = $atendidas;
@@ -725,7 +724,7 @@ class CitaJuzgadoController extends Controller
 
         return response()->json([
             "status" => "ok",
-            "message" => "Estadisticas obtenidos con éxito",
+            "message" => "Reporte obtenido con éxito",
             "reporte" => $objectReporte
         ], 200);
     }

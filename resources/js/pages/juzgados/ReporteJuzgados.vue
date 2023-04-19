@@ -127,16 +127,16 @@
                                         <td class="texto-campo-table text-center">
                                             {{cita.nombre}}
                                         </td>
-                                        <td class="texto-campo-table text-center">
+                                        <td class="texto-campo-table text-center texto-reservadas">
                                             {{cita.pen}}
                                         </td>
-                                        <td class="texto-campo-table text-center">
+                                        <td class="texto-campo-table text-center texto-atendidas">
                                             {{cita.aten}}
                                         </td>
-                                        <td class="texto-campo-table text-center">
+                                        <td class="texto-campo-table text-center texto-canceladas">
                                             {{cita.cance}}
                                         </td>
-                                        <td class="texto-campo-table text-center">
+                                        <td class="texto-campo-table text-center texto-total">
                                             {{cita.tot}}
                                         </td>
                                     </tr>
@@ -216,23 +216,14 @@
         name: 'reporte-juzgado',
         data() {
             return {
-                // centros: [],
-                // tramites: [],
+               
                 data: {
                     mes: '',
                     juzgado_id: '',
                    
-                    // centro_atencion_id: '',
-                    // tramite_id: '',
+                   
                 },
-                // tabla:{
-                //         id: '',
-                //         nombre: '',
-                //         pen: '',
-                //         aten: '',
-                //         can: '',
-                //         tot: ''
-                //     },
+                
                 meses: [
                     {
                         id: '1',
@@ -358,12 +349,7 @@
                 if (!this.buscar.length == 0) {
                     this.datosPaginados = this.tabla.filter(item => {
                         return item.nombre.toLowerCase().includes(this.buscar)
-                        // ||item.pen.toLowerCase().includes(this.buscar.toLowerCase())
-                        // || item.aten.toLowerCase().includes(this.buscar.toLowerCase())
-                        // || item.cance.toLowerCase().includes(this.buscar.toLowerCase())
-                        // || item.tot.toLowerCase().includes(this.buscar.toLowerCase())
-                       
-                        // || item.fecha_recepcion.includes(this.buscar)
+                      
                     })
                 } else {
                     this.getDataPagina(1)
@@ -389,10 +375,10 @@
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados.')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados.')
                 }
             },
             async generarGrafica() {
@@ -422,10 +408,10 @@
                                 errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                             }
                         } else {
-                            errorSweetAlert('Ocurrió un error al obtener las estadísticas')
+                            errorSweetAlert('Ocurrió un error al obtener el reporte')
                         }
                     } catch (error) {
-                        errorSweetAlert('Ocurrió un error al obtener las estadísticas')
+                        errorSweetAlert('Ocurrió un error al obtener el reporte')
                     }
                     this.loading = false
             },
@@ -508,5 +494,22 @@
 
     .cuadro-total {
         background-color: #828282;
+    }
+    .texto-reservadas{
+        color: #6a73a0;
+        font-weight: bold;
+        
+    }
+    .texto-canceladas{
+        color: #E78900;
+        font-weight: bold;
+    }
+    .texto-atendidas{
+        color: #A3BC39;
+        font-weight: bold;
+    }
+    .texto-total{
+        color: #828282;
+        font-weight: bold;
     }
 </style>
