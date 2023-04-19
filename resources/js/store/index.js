@@ -52,6 +52,9 @@ const store = createStore({
                         else if (response.data.session.user.rol_id == 4) {
                             router.push({name: 'ReporteJuzgados'})
                         }
+                        else if (response.data.session.user.rol_id == 5) {
+                            router.push({name: 'CatalogoUsuarios'})
+                        }
 
                         this.state.contRecaptcha = 0
                         this.state.showRecaptcha = true

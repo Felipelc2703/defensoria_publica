@@ -230,5 +230,14 @@ class UserSeeder extends Seeder
             'rol_id' => 4,
             // 'juez_id' => 19,
         ]);
+        DB::table('users')->insert([
+            'name' => 'Administrador Juzgados',
+            'clave' => 'admin_juzgados',
+            'email' => 'admin_juzgados@gmail.com',
+            'password' => 'password',
+            // 'juzgado_id' => 18,
+            'rol_id' => 5,
+            // 'juez_id' => 19,
+        ]);
     }
 }

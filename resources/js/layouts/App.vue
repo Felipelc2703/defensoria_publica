@@ -141,6 +141,94 @@
                                     </div>
                                 </nav>
                             </template>
+                            <template v-else-if="user.user.rol_id == 4">
+                                <nav class="navbar navbar-expand-lg navbar-light">
+                                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                                      <ul class="navbar-nav">
+                                        <!-- <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Horarios
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario-juzgado')">Cargar Horario</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-juzgado')">Modificar Horario</a>
+                                            </div>
+                                        </li> -->
+                                        <!-- <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Catálogos
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/centros-atencion')">Centro de Atención</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-requisitos')">Requisito</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
+                                            </div>
+                                        </li> -->
+                                        <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/reportes-juzgados')">Reportes</a>
+                                        </li>
+                                        <!-- <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
+                                        </li> -->
+                                        <!-- <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              Reportes
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas-juez')">Gráficas</a>
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reportes-juez')">Reporte de Citas</a>
+                                            </div>
+                                        </li> -->
+                                      </ul>
+                                    </div>
+                                </nav>
+                            </template>
+                            <template v-else-if="user.user.rol_id == 5">
+                                <nav class="navbar navbar-expand-lg navbar-light">
+                                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                                      <ul class="navbar-nav">
+                                        <!-- <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Horarios
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario-juzgado')">Cargar Horario</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-juzgado')">Modificar Horario</a>
+                                            </div>
+                                        </li> -->
+                                        <!-- <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Catálogos
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/centros-atencion')">Centro de Atención</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-requisitos')">Requisito</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
+                                            </div>
+                                        </li> -->
+                                        <!-- <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/citas-del-dia-juez')">Citas del día</a>
+                                        </li> -->
+                                        <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
+                                        </li>
+                                        <!-- <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              Reportes
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas-juez')">Gráficas</a>
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reportes-juez')">Reporte de Citas</a>
+                                            </div>
+                                        </li> -->
+                                      </ul>
+                                    </div>
+                                </nav>
+                            </template>
                         </div>
                     </div>
                 </div>
