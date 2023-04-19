@@ -597,10 +597,11 @@ class CitaJuzgadoController extends Controller
                 $jueces = Juez::all();                
                
                 $array_jueces = array();
-                $cont = 1;
+                // $cont = 1;
                 foreach ($jueces as $juez) 
                 {
                     $id = $juez->id;
+                    $cont = $juez->juzgado_id;
                     $apellidom = $juez->apellido_materno;
                     $apellidop = $juez->apellido_paterno;
                     $objectJuez = new \stdClass();
@@ -633,7 +634,7 @@ class CitaJuzgadoController extends Controller
                                     ->where('fecha_cita', '<=', $datelast)
                                     ->count();
 
-                                    $cont++;
+                                    // $cont++;
                     $objectJuez->pen = $reservadas1;
                     $objectJuez->aten = $atendidas1;
                     $objectJuez->cance = $canceladas1;
