@@ -14,7 +14,7 @@ export default {
         notas:[],
         requsiitosTipoTramite: [],
         citas:[],
-
+        materias:[],
         juzgados: [],
     },
     getters: {
@@ -64,6 +64,10 @@ export default {
         },
         getCatalogoJuzgados(state) {
             return state.juzgados
+        },
+        getMaterias(state) {
+            
+            return state.materias
         }
     },
     mutations: {
@@ -111,6 +115,9 @@ export default {
         },
         setCatalogoJuzgados(state, payload) {
             state.juzgados = payload
-        }
+        },
+        setMaterias(state, payload) {
+            state.materias = payload
+        },
     }
 }

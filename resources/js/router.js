@@ -31,6 +31,8 @@ import ReporteGraficasJuez from './pages/juzgados/ReporteGraficasJuez.vue'
 import ReportesJuez from './pages/juzgados/ReportesJuez.vue'
 import ReporteJuzgados from './pages/juzgados/ReporteJuzgados.vue'
 import CatalogoUsuariosJuez from './pages/juzgados/CatalogoUsuariosJuez.vue'
+import CatalogoJueces from './pages/juzgados/CatalogoJueces.vue'
+import CatalogoJuzgados from './pages/juzgados/CatalogoJuzgados.vue'
 
 const routes = [
     {
@@ -231,6 +233,22 @@ const routes = [
         path: '/catalogo-usuarios-juez',
         name: 'CatalogoUsuariosJuez',
         component: CatalogoUsuariosJuez,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/catalogo-jueces',
+        name: 'CatalogoJueces',
+        component: CatalogoJueces,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/catalogo-juzgados',
+        name: 'CatalogoJuzgados',
+        component: CatalogoJuzgados,
         meta: {
             requiresAuth: true
         }

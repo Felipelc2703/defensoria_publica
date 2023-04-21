@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiaController;
 // use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\NotaController;
@@ -164,5 +165,9 @@ Route::post('/tramite/requisitos-tipo-tramite', [TramiteController::class, 'getR
 Route::post('/tramite/requisitos-tipo-tramite-editar', [TramiteController::class, 'getRequisitosTramiteEditar']);
 
 Route::get('/juzgados-citas', [JuzgadoController::class, 'getJuzgados']);
+Route::post('/guardar-juzgado', [JuzgadoController::class, 'guardarJuzgado']);
+Route::post('/actualizar-juzgado', [JuzgadoController::class, 'actualizarJuzgado']);
+Route::post('/eliminar-juzgado', [JuzgadoController::class, 'eliminarJuzgado']);
+Route::get('/juzgados-materias', [MateriaController::class, 'getMaterias']);
 
 Route::post('/consultar-curp', [CitaJuzgadoController::class, 'consultarCurp']);

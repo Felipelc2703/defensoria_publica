@@ -198,23 +198,24 @@
                                                 <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-juzgado')">Modificar Horario</a>
                                             </div>
                                         </li> -->
-                                        <!-- <li class="nav-item dropdown link-nav">
-                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Catálogos
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                                <a class="dropdown-item link-nav" @click="this.$router.push('/centros-atencion')">Centro de Atención</a>
-                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-requisitos')">Requisito</a>
-                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a>
-                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a>
-                                                <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
-                                            </div>
-                                        </li> -->
+                                       
                                         <!-- <li class="nav-item link-nav">
                                             <a class="nav-link" @click="this.$router.push('/citas-del-dia-juez')">Citas del día</a>
                                         </li> -->
                                         <li class="nav-item link-nav">
                                             <a class="nav-link" @click="this.$router.push('/catalogo-usuarios-juez')">Usuario</a>
+                                        </li>
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Catálogos
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-jueces')">Jueces</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-juzgados')">Juzgados</a>
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a> -->
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a> -->
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a> -->
+                                            </div>
                                         </li>
                                         <!-- <li class="nav-item dropdown link-nav">
                                             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
