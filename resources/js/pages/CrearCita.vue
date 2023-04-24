@@ -453,7 +453,7 @@
                 horarios_disponibles: [],
                 bandera_requisitos_obligatorios: false,
                 panel: [0],
-                mostrarPaso2: true,
+                mostrarPaso2: false,
                 mostrarPaso3: false,
                 dialogRequisitos: true,
                 semana_uno: [],
