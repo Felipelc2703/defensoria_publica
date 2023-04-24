@@ -20,6 +20,8 @@ use App\Http\Controllers\TipoTramiteController;
 use App\Http\Controllers\CentroAtencionController;
 use App\Http\Controllers\NumeroContactoController;
 
+use App\Http\Controllers\ConsejeroController;
+
 
 
 /*
@@ -178,5 +180,6 @@ Route::post('/tramite/requisitos-tipo-tramite-editar', [TramiteController::class
 
 
 Route::get('/juzgados-materias', [MateriaController::class, 'getMaterias']);
+Route::get('/consejeros', [ConsejeroController::class, 'getConsejeros']);
 
 Route::post('/consultar-curp', [CitaJuzgadoController::class, 'consultarCurp']);

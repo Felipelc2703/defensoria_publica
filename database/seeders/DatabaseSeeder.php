@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             RequisitoTramiteSeeder::class,
             UserSeeder::class,
             NotaSeeder::class,
+            ConsejeroSeeder::class,
         ]);
     }
 }

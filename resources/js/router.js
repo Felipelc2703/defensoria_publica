@@ -4,6 +4,7 @@ import Login from './pages/Login.vue'
 import Dashboard from './pages/Dashboard.vue'
 import CrearCita from './pages/CrearCita.vue'
 import CrearCitaJuzgado from './pages/CrearCitaJuzgado.vue'
+import CrearCitaConsejero from './pages/CrearCitaConsejero.vue'
 import ConfirmacionCitaBuscada from './pages/ConfirmacionCitaBuscada.vue'
 import CentrosAtencion from './pages/CentrosAtencion.vue'
 import confwhats from './pages/confwhats.vue'
@@ -65,6 +66,11 @@ const routes = [
         path: '/crear-cita-juzgado',
         name: 'CrearCitaJuzgado',
         component: CrearCitaJuzgado,
+    },
+    {
+        path: '/crear-cita-consejero',
+        name: 'CrearCitaConsejero',
+        component: CrearCitaConsejero,
     },
     {
         path: '/confirmacion-cita-buscada',
