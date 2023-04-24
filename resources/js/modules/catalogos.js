@@ -16,6 +16,7 @@ export default {
         citas:[],
         materias:[],
         juzgados: [],
+        jueces:[],
     },
     getters: {
         getCatalogoCentrosAtencion(state) {
@@ -66,9 +67,11 @@ export default {
             return state.juzgados
         },
         getMaterias(state) {
-            
             return state.materias
-        }
+        },
+        getJueces(state){
+            return state.jueces
+        },
     },
     mutations: {
         setCatalogoCentrosAtencion(state, payload) {
@@ -118,6 +121,9 @@ export default {
         },
         setMaterias(state, payload) {
             state.materias = payload
+        },
+        setJueces(state, payload){
+            state.jueces = payload
         },
     }
 }

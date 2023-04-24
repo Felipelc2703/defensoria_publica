@@ -7,11 +7,11 @@
                     color="#6a73a0"
                     class="mt-4 mb-2 boton-nuevo"
                     large
-                    title="Nuevo Usuario"
-                    @click="Agregarusuario"
+                    title="Nuevo Juez"
+                    @click="AgregarJuez"
                     append-icon="mdi-plus"
                     >
-                    Nuevo Usuario
+                    Nuevo Juez
                 </v-btn>
             </div>
         </div>
@@ -28,9 +28,9 @@
                     <thead class="headers-table">
                         <tr>
                             <th class="titulo-columna borde-izquierdo">#</th>
-                            <th class="titulo-columna">Usuario</th>
-                            <th class="titulo-columna">Juez</th>
+                            <th class="titulo-columna">Nombre</th>
                             <th class="titulo-columna">Juzgado</th>
+                            <!-- <th class="titulo-columna">Juzgado</th> -->
                             <th class="titulo-columna borde-derecho">Acciones</th>
                         </tr>
                     </thead>
@@ -43,25 +43,25 @@
                                 </div>
                             </th>
                         </tr>
-                        <tr v-else v-for="usuario in datosPaginados" :key="usuario.id">
+                        <tr v-else v-for="juez in datosPaginados" :key="juez.id">
                             <td class="texto-campo-table">
-                                {{usuario.numero_registro}}
+                                {{juez.num_registro}}
                             </td>
                             <td class="texto-campo-table">
-                                {{usuario.nombre}}
+                                {{juez.nombrecompleto}}
                             </td>
+                            <!-- <td class="texto-campo-table">
+                                {{juez.juez}}
+                            </td> -->
                             <td class="texto-campo-table">
-                                {{usuario.juez}}
-                            </td>
-                            <td class="texto-campo-table">
-                                {{usuario.juzgado}}
+                                {{juez.juzgado}}
                             </td>
                             <td>
                                 <div class="text-center row justify-content-center">
                                     <div>
                                         <v-icon 
-                                        title="Editar Usuario"
-                                        @click="EditarUsuario(usuario)"
+                                        title="Editar Juez"
+                                        @click="EditarJuez(juez)"
                                         class="mr-1"
                                         >
                                             mdi-text-box-edit-outline
@@ -71,14 +71,14 @@
                                             activator="parent"
                                             location="bottom"
                                             >
-                                            <span style="font-size: 15px;">Editar Usuario</span>
+                                            <span style="font-size: 15px;">Editar Juez</span>
                                         </v-tooltip>
                                     </div>
                                     
                                     <div>
                                         <v-icon 
-                                            title="Eliminar Usuario"
-                                            @click="eliminarUsuario(usuario)"
+                                            title="Eliminar Juez"
+                                            @click="eliminarJuez(juez)"
                                             class="ml-1"
                                         >
                                             mdi-trash-can
@@ -87,7 +87,7 @@
                                             activator="parent"
                                             location="bottom"
                                             >
-                                            <span style="font-size: 15px;">Eliminar Usuario</span>
+                                            <span style="font-size: 15px;">Eliminar Juez</span>
                                         </v-tooltip>
                                     </div>
                                 </div>
@@ -96,7 +96,7 @@
                     </tbody>
                 </table>
             </div>
-            <template v-if="usuarios.length > 0">
+            <template v-if="jueces.length > 0">
                 <div class="row justify-content-between container">
                     <div>
                         <p class="text-resultados mt-2">
@@ -105,7 +105,7 @@
                             -
                             <span>{{to}}</span>
                             de
-                            <span>{{usuarios.length}}</span>
+                            <span>{{jueces.length}}</span>
                             resultados
                         </p>
                     </div>
@@ -153,91 +153,53 @@
             </template>
         </div>
 
-        <!-- modal para agregar usuario -->
+        <!-- modal para agregar juez -->
         <v-dialog
-            v-model="dialogAgregarUsuarios"
+            v-model="dialogAgregarJueces"
             max-width="700px"
             persistent
             >
             <v-card>
                 <v-card-title>
-                    <h3>Agregar Usuario</h3>
+                    <h3>Agregar Juez</h3>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
                     <v-container>
                         <v-row>
-                            <v-form class="col-12" ref="formAgregarUsuario">
+                            <v-form class="col-12" ref="formAgregarJuez">
                                 
                                     <v-text-field
                                         variant="solo"
-                                        v-model="usuario.nombre"
-                                        label="Nombre Usuario"
+                                        v-model="juez.nombre"
+                                        label="Nombre"
+                                        :rules="nombreRules"
                                     ></v-text-field>
                                     <v-text-field
                                         variant="solo"
-                                        v-model="usuario.clave"
-                                        label="Clave Usuario"
+                                        v-model="juez.apellido_paterno"
+                                        label="Apellido Paterno"
+                                        :rules="apellidoRules"
                                     ></v-text-field>
                                     <v-text-field
                                         variant="solo"
-                                        v-model="usuario.email"
-                                        :rules="[rules.email]"
-                                        label="Correo Electrónico"
+                                        v-model="juez.apellido_materno"
+                                        label="Apellido Materno"
+                                        
                                     ></v-text-field>
-                                    <v-text-field
-                                        variant="solo"
-                                        v-model="usuario.contrasena"
-                                        label="Contraseña"
-                                    ></v-text-field>
-                                    <v-text-field
-                                        variant="solo"
-                                        v-model="usuario.conf_contra"
-                                        label="Confirmar Contraseña"
-                                    ></v-text-field>
+                                   
                                     <v-select
-                                    v-model="usuario.rol_id"
-                                            label="Roles*"
-                                            :items="roles"
-                                            item-title="nombre"
-                                            item-value="rol_id"
-                                            key="roles"
-                                            persistent-hint
-                                            variant="solo"
-                                    ></v-select>
-                                    <!-- <v-select
-                                            v-model="usuario.centro_atencion"
-                                            label="Centro de atención*"
-                                            :items="centrosAtencion"
+                                    v-model="juez.juzgado_id"
+                                            label="Juzgados"
+                                            :items="juzgados"
                                             item-title="nombre"
                                             item-value="id"
-                                            key="centrosAtencion"
+                                            key="juzgados"
                                             persistent-hint
                                             variant="solo"
-                                        ></v-select> -->
-                                    <v-select
-                                        v-model="usuario.juzgado_id"
-                                        label="Juzgado*"
-                                        :items="juzgados"
-                                        item-title="nombre"
-                                        item-value="id"
-                                        key="juzgados"
-                                        persistent-hint
-                                        variant="solo"
-                                        :rules="juzgadoRules"
+                                            :rules="juzgadoRules"
                                     ></v-select>
-                                    <v-select
-                                        v-if="usuario.juzgado_id != null"
-                                        v-model="usuario.juez_id"
-                                        label="Juez*"
-                                        :items="jueces"
-                                        item-title="nombre_completo"
-                                        item-value="id"
-                                        key="jueces"
-                                        persistent-hint
-                                        variant="solo"
-                                        :rules="juezRules"
-                                    ></v-select>
+                                   
                                     <v-divider></v-divider>
                             </v-form>
                         </v-row>
@@ -249,14 +211,14 @@
                     <v-btn
                         variant="flat"
                         color="error"
-                        @click="cancelarAgregarNuevoUsuario()"
+                        @click="cancelarAgregarNuevoJuez()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
                         color="#A3BC39"
-                        @click="guardarNuevoUsuario()"
+                        @click="guardarNuevoJuez()"
                     >
                         Guardar
                     </v-btn>
@@ -265,87 +227,51 @@
         </v-dialog>
         
         <v-dialog
-            v-model="dialogEditarUsuario"
+            v-model="dialogEditarJuez"
             max-width="800px"
             persistent
         >
             <v-card>
                 <v-card-title>
-                    <h3>Editar Usuario</h3>
+                    <h3>Editar Juez</h3>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
                     <v-container>
                         <v-row>
-                            <v-form class="col-12" ref="formEditarUsuario">
+                            <v-form class="col-12" ref="formEditarJuez">
                                 <v-text-field
-                                    v-model="usuario.nombre"
-                                    label="Nombre Usuario"
+                                variant="solo"
+                                    v-model="juez.nombre"
+                                    label="Nombre"
+                                    :rules="nombreRules"
+                                    
                                 ></v-text-field>
                                 <v-text-field
-                                    v-model="usuario.clave"
-                                    label="Clave Usuario"
+                                variant="solo"
+                                    v-model="juez.apellido_paterno"
+                                    label="Apellido Paterno"
+                                    :rules="apellidoRules"
                                 ></v-text-field>
                                 <v-text-field
-                                    v-model="usuario.email"
-                                    label="Correo Electrónico"
-                                ></v-text-field>
-                                
-                                <v-text-field
-                                    variant="underlined"
-                                    v-model="usuario.contrasena"
-                                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                    :type="show1 ? 'text': 'Password'"
-                                    name="input-10-1"
-                                    label="Mostrar contraseña"
-                                    @click:append="show1 = !show1"
-                                ></v-text-field>
-
+                                        variant="solo"
+                                        v-model="juez.apellido_materno"
+                                        label="Apellido Materno"
+                                       
+                                    ></v-text-field>
+                                                             
                                 <v-select
-                                    v-model="usuario.rol_id"
-                                            label="Roles*"
-                                            :items="roles"
+                                    v-model="juez.juzgado_id"
+                                            label="Juzgado"
+                                            :items="juzgados"
                                             item-title="nombre"
-                                            item-value="rol_id"
-                                            key="roles"
+                                            item-value="id"
+                                            key="juzgados"
                                             persistent-hint
                                             variant="solo"
+                                            :rules="juzgadoRules"
                                 ></v-select>
 
-                                <!-- <v-select
-                                    v-model="usuario.centro_atencion"
-                                    label="Centro de atención*"
-                                    :items="centrosAtencion"
-                                    item-title="nombre"
-                                    item-value="id"
-                                    key="centrosAtencion"
-                                    persistent-hint
-                                    variant="solo"
-                                ></v-select>  -->
-                                
-                                <v-select
-                                    v-model="usuario.juzgado_id"
-                                    label="Juzgado*"
-                                    :items="juzgados"
-                                    item-title="nombre"
-                                    item-value="id"
-                                    key="juzgados"
-                                    persistent-hint
-                                    variant="solo"
-                                    :rules="juzgadoRules"
-                                ></v-select>
-                                <v-select
-                                    v-if="usuario.juzgado_id != null"
-                                    v-model="usuario.juez_id"
-                                    label="Juez*"
-                                    :items="jueces"
-                                    item-title="nombre_completo"
-                                    item-value="id"
-                                    key="jueces"
-                                    persistent-hint
-                                    variant="solo"
-                                    :rules="juezRules"
-                                ></v-select>
                             </v-form>
                         </v-row>
                     </v-container>
@@ -356,14 +282,14 @@
                     <v-btn
                         variant="flat"
                         color="error"
-                        @click="CancelarEditarUsuario()"
+                        @click="CancelarEditarJuez()"
                     >
                         Cancelar
                     </v-btn>
                     <v-btn
                         variant="flat"
                         color="#A3BC39"
-                        @click="guardarCambiosEditarUsuario()"
+                        @click="guardarCambiosEditarJuez()"
                     >
                         Guardar
                     </v-btn>
@@ -380,35 +306,38 @@
     export default defineComponent({
         data() {
             return {
-                dialogAgregarUsuarios: false,
-                dialogEditarUsuario: false,
-                usuario: {
+                dialogAgregarJueces: false,
+                dialogEditarJuez: false,
+                juez: {
                     id: null,
                     nombre: '',
-                    clave: '',
-                    email: '',
-                    contrasena: '',
-                    conf_contra: '',
-                    rol_id: '',
+                    apellido_paterno: '',
+                    apellido_materno: '',
                     juzgado_id: null,
-                    juez_id: null,
+                   
                 },
                 loading: false,
                 dialogAgregarCentro: false,
-                rules:{
-                    email: value => {
-                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                    return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
-                    },
-                },
+                // rules:{
+                //     email: value => {
+                //     const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                //     return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
+                //     },
+                // },
                 juzgadoRules: [
                     v => !!v || 'El juzgado es requerido',
                 ],
-                juezRules: [
-                    v => !!v || 'El juez es requerido',
+                nombreRules: [
+                    v => !!v || 'El nombre es requerido',
                 ],
+                apellidoRules: [
+                    v => !!v || 'La apellido es requerido',
+                ],
+                // materiaRules: [
+                //     v => !!v || 'La materia es requerida',
+                // ],
                 show1: false,
-                password: 'Password',
+                // password: 'Password',
                 elementosPorPagina: 10,
                 paginaActual: 1,
                 datosPaginados: [],
@@ -418,32 +347,21 @@
                 numShown: 5,
                 current: 1,
                 buscar: '',
-                jueces: [],
+                // jueces: [],
             }
         },
         created(){
-            this.getCatalogoUsuarios()
-            this.getCentrosAtencion()
-            this.getRoles()
+            this.getJuzgados()
+            this.getJueces()
         },
         computed:{
-            usuarios(){
-                return this.$store.getters.getCatalogoUsuarios
+            juzgados(){
+                return this.$store.getters.getCatalogoJuzgados
             },
-            centrosAtencion() {
-                if (this.loading) {
-                    return []
-                } else {
-                    return this.$store.getters.getCatalogoCentrosAtencion
-                }
+            jueces(){
+                return this.$store.getters.getJueces
             },
-            roles() {
-                if (this.loading) {
-                    return []
-                } else {
-                    return this.$store.getters.getCatalogoRoles
-                }
-            },
+           
             pages() {
                 const numShown = Math.min(this.numShown, this.totalPaginas())
                 let first = this.current - Math.floor(numShown / 2)
@@ -451,22 +369,13 @@
                 first = Math.min(first, this.totalPaginas() - numShown + 1)
                 return [...Array(numShown)].map((k, i) => i + first)
             },
-            juzgados() {
-                return this.$store.getters.getCatalogoJuzgados
-            }
+         
         },
         watch: {
-            'usuario.juzgado_id': function () {
-                this.jueces = []
-                this.juzgados.forEach(e => {
-                    if (this.usuario.juzgado_id == e.id) {
-                        this.jueces = e.jueces
-                    }
-                })
-            },
+         
             buscar: function () {
                 if (!this.buscar.length == 0) {
-                    this.datosPaginados = this.usuarios.filter(item => {
+                    this.datosPaginados = this.jueces.filter(item => {
                         return item.nombre.toLowerCase().includes(this.buscar.toLowerCase())
                         || item.centro_atencion.toLowerCase().includes(this.buscar.toLowerCase())
                     })
@@ -487,39 +396,55 @@
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             this.$store.commit('setCatalogoJuzgados', response.data.juzgados)
+                            this.mostrar = true
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
                     } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados.')
                     }
                 } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados.')
                 }
             },
-            // Abrir modal nuevo usuario
-            Agregarusuario() {
-                this.dialogAgregarUsuarios = true
+            async getJueces() {
+                try {
+                    this.loading = true
+                    let response = await axios.get('/api/juzgados-jueces')
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.$store.commit('setJueces', response.data.jueces)
+                            this.mostrar = true
+                        } else {
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        errorSweetAlert('Ocurrió un error al obtener los jueces.')
+                    }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al obtener los jueces.')
+                }
+                this.loading = false
             },
-            //Cerrar modal nuevo usuario
-            cancelarAgregarNuevoUsuario() {
-                this.dialogAgregarUsuarios = false
-                this.usuario.nombre = ''
-                this.usuario.clave = ''
-                this.usuario.email = ''
-                this.usuario.contrasena = ''
-                this.usuario.conf_contra = ''
-                this.usuario.rol = ''
-                this.usuario.juzgado_id = null
-                this.usuario.juez_id = null
+            // Abrir modal nuevo juez
+            AgregarJuez() {
+                this.dialogAgregarJueces = true
+            },
+            //Cerrar modal nuevo juez
+            cancelarAgregarNuevoJuez() {
+                this.dialogAgregarJueces = false
+                this.juez.nombre = ''
+                this.juez.apellido_paterno = ''
+                this.juez.apellido_materno = ''
+                this.juez.juzgado_id = null
 
             },
-            // Guardar nuevo usuario 
-            async guardarNuevoUsuario() {
-                const { valid } = await this.$refs.formAgregarUsuario.validate()
+            // Guardar nuevo juez 
+            async guardarNuevoJuez() {
+                const { valid } = await this.$refs.formAgregarJuez.validate()
                 if (valid) {
                     Swal.fire({
-                        title: '¿Guardar nuevo usuario?',
+                        title: '¿Guardar nuevo juez?',
                         icon: 'question',
                         showCancelButton: true,
                         confirmButtonColor: '#3085D6',
@@ -529,10 +454,10 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/usuarios/agregar-usuario', this.usuario)
+                                let response = await axios.post('/api/guardar-juez', this.juez)
                                 return response
                             } catch (error) {
-                                errorSweetAlert('Ocurrió un error al guardar al nuevo usuario.')
+                                errorSweetAlert('Ocurrió un error al guardar al nuevo juez.')
                             }
                         },
                         allowOutsideClick: () => !Swal.isLoading()
@@ -541,47 +466,40 @@
                             if (result.value.status === 200) {
                                 if (result.value.data.status === "ok") {
                                     successSweetAlert(result.value.data.message)
-                                    this.$store.commit('setCatalogoUsuarios', result.value.data.usuarios)
-                                    this.cancelarAgregarNuevoUsuario()
+                                    this.$store.commit('setJueces', result.value.data.jueces)
+                                    this.cancelarAgregarNuevoJuez()
                                     this.getDataPagina(1)
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
                             } else {
-                                errorSweetAlert('Ocurrió un error al guardar al nuevo usuario.')
+                                errorSweetAlert('Ocurrió un error al guardar al nuevo juez.')
                             }
                         }
                     })
                 }
             },
-            // Abrir modal de editar usuario ya con los datos cargados
-            EditarUsuario(usuario) {
-                this.dialogEditarUsuario = true
-                this.usuario.id = usuario.id
-                this.usuario.nombre = usuario.nombre
-                this.usuario.clave = usuario.clave
-                this.usuario.email = usuario.email
-                this.usuario.contrasena = usuario.contrasena
-                this.usuario.rol_id = usuario.rol_id
-                this.usuario.juzgado_id = usuario.juzgado_id
-                this.usuario.juez_id = usuario.juez_id
+            // Abrir modal de editar juez ya con los datos cargados
+            EditarJuez(juez) {
+                this.dialogEditarJuez = true
+                this.juez.id = juez.id
+                this.juez.nombre = juez.nombre
+                this.juez.apellido_paterno = juez.apellidop
+                this.juez.apellido_materno = juez.apellidom
+                this.juez.juzgado_id = juez.juzgado
             },
             // boton para cerrar el modal
-            CancelarEditarUsuario() {
-                this.dialogEditarUsuario = false
-                this.usuario.id = null,
-                this.usuario.nombre = ''
-                this.usuario.clave = ''
-                this.usuario.email = ''
-                this.usuario.contrasena = ''
-                this.usuario.rol_id = ''
-                this.usuario.centro_atencion = ''
-                this.usuario.juez_id = null
-                this.usuario.juzgado_id = null
+            CancelarEditarJuez() {
+                this.dialogEditarJuez = false
+                this.juez.id = null,
+                this.juez.nombre = ''
+                this.juez.apellido_paterno = ''
+                this.juez.apellido_materno = ''
+                this.juez.juzgado_id = null
             },
-            // Guardar Cambios de usuario 
-            async guardarCambiosEditarUsuario() {
-                const { valid } = await this.$refs.formEditarUsuario.validate()
+            // Guardar Cambios de juez 
+            async guardarCambiosEditarJuez() {
+                const { valid } = await this.$refs.formEditarJuez.validate()
                 if (valid) {
                     Swal.fire({
                         title: '¿Guardar cambios?',
@@ -594,10 +512,10 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/usuarios/actualizar-usuario', this.usuario)
+                                let response = await axios.post('/api/actualizar-juez', this.juez)
                                 return response
                             } catch (error) {
-                                errorSweetAlert('Ocurrió un error al actualizar los datos del usuario.')
+                                errorSweetAlert('Ocurrió un error al actualizar los datos del juez.')
                             }
                         },
                         allowOutsideClick: () => !Swal.isLoading()
@@ -606,23 +524,23 @@
                             if (result.value.status === 200) {
                                 if (result.value.data.status === "ok") {
                                     successSweetAlert(result.value.data.message)
-                                    this.$store.commit('setCatalogoUsuarios', result.value.data.usuarios)
-                                    this.CancelarEditarUsuario()
+                                    this.$store.commit('setJueces', result.value.data.jueces)
+                                    this.CancelarEditarJuez()
                                     this.getDataPagina(1)
                                 } else {
                                     errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                                 }
                             } else {
-                                errorSweetAlert('Ocurrió un error al actualizar los datos del usuario.')
+                                errorSweetAlert('Ocurrió un error al actualizar los datos del juez.')
                             }
                         }
                     })
                 }
             },
-            // "elimina" cambia estatus del usuario 
-            eliminarUsuario(usuario) {
+            // "elimina" cambia estatus del juez 
+            eliminarJuez(juez) {
                 Swal.fire({
-                  title: '¿Eliminar Usuario?',
+                  title: '¿Eliminar Juez?',
                   icon: 'question',
                   showCancelButton: true,
                   confirmButtonColor: '#3085D6',
@@ -632,10 +550,10 @@
                   showLoaderOnConfirm: true,
                   preConfirm: async () => {
                       try {
-                          let response = await axios.post('/api/usuarios/eliminar-usuario', usuario)
+                          let response = await axios.post('/api/eliminar-juez', juez)
                           return response
                       } catch (error) {
-                          errorSweetAlert('Ocurrió un error al eliminar este usuario.')
+                          errorSweetAlert('Ocurrió un error al eliminar este juez.')
                       }
                   },
                   allowOutsideClick: () => !Swal.isLoading()
@@ -644,80 +562,22 @@
                       if (result.value.status === 200) {
                           if (result.value.data.status === "ok") {
                               successSweetAlert(result.value.data.message)
-                              this.$store.commit('setCatalogoUsuarios', result.value.data.usuarios)
-                              this.CancelarEditarUsuario()
+                              this.$store.commit('setJueces', result.value.data.jueces)
+                              this.CancelarEditarJuez()
                               this.getDataPagina(1)
                           } else {
                               errorSweetAlert(`${result.value.data.message}<br>Error: ${result.value.data.error}<br>Location: ${result.value.data.location}<br>Line: ${result.value.data.line}`)
                           }
                       } else {
-                          errorSweetAlert('Ocurrió un error al eliminar este usuario.')
+                          errorSweetAlert('Ocurrió un error al eliminar este juez.')
                       }
                   }
               })
 
             },
-            // para mostrar los datos en la tabla principal
-            async getCatalogoUsuarios() {
-                this.loading = true
-                try {
-                    let response = await axios.get('/api/catalogos/usuarios')
-                    if (response.status === 200) {
-                        if (response.data.status === "ok") {
-                            this.$store.commit('setCatalogoUsuarios', response.data.usuarios)
-                            this.mostrar = true
-                        } else {
-                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
-                        }
-                    } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catálogo de usuarios')
-                    }
-                } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catálogo de usuarios')
-                }
-                this.loading = false
-          },
-
-          // catalogo de centros de atención para el select
-          async getCentrosAtencion() {
-                this.loading = true
-                try {
-                    let response = await axios.get('/api/catalogos/centros-de-atencion')
-                    if (response.status === 200) {
-                        if (response.data.status === "ok") {
-                            this.$store.commit('setCatalogoCentrosAtencion', response.data.centros_atencion)
-                        } else {
-                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
-                        }
-                    } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catálogo de centros de atención')
-                    }
-                } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catálogo de centros de atención')
-                }
-                this.loading = false
-            },
-            // catalogo de roles para el select 
-            async getRoles() {
-                this.loading = true
-                try {
-                    let response = await axios.get('/api/catalogos/roles')
-                    if (response.status === 200) {
-                        if (response.data.status === "ok") {
-                            this.$store.commit('setCatalogoRoles', response.data.roles)
-                        } else {
-                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
-                        }
-                    } else {
-                        errorSweetAlert('Ocurrió un error al obtener el catálogo de roles')
-                    }
-                } catch (error) {
-                    errorSweetAlert('Ocurrió un error al obtener el catálogo de roles')
-                }
-                this.loading = false
-            },
+         
             totalPaginas() {
-                return Math.ceil(this.usuarios.length / this.elementosPorPagina)
+                return Math.ceil(this.jueces.length / this.elementosPorPagina)
             },
             getDataPagina(noPagina) {
                 this.paginaActual = noPagina
@@ -727,8 +587,8 @@
                 let fin = (noPagina * this.elementosPorPagina)
 
                 for (let index = ini; index < fin; index++) {
-                    if (this.usuarios[index]) {
-                        this.datosPaginados.push(this.usuarios[index])
+                    if (this.jueces[index]) {
+                        this.datosPaginados.push(this.jueces[index])
                     }
                 }
 
@@ -737,7 +597,7 @@
                 if (noPagina < this.totalPaginas()) {
                     this.to = fin
                 } else {
-                    this.to = this.usuarios.length
+                    this.to = this.jueces.length
                 }
             },
             getFirstPage() {

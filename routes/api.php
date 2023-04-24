@@ -9,6 +9,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\NotaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\JuezController;
 use App\Http\Controllers\JuzgadoController;
 use App\Http\Controllers\TramiteController;
 use App\Http\Controllers\API\AuthController;
@@ -134,6 +135,17 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
     Route::post('/usuarios/actualizar-usuario', [UserController::class, 'actualizarUsuario']);
     Route::post('/usuarios/eliminar-usuario', [UserController::class, 'eliminarUsuario']);
     
+    //Rutas catalogo de juzgados
+   
+    Route::post('/guardar-juzgado', [JuzgadoController::class, 'guardarJuzgado']);
+    Route::post('/actualizar-juzgado', [JuzgadoController::class, 'actualizarJuzgado']);
+    Route::post('/eliminar-juzgado', [JuzgadoController::class, 'eliminarJuzgado']);
+
+    //Rutas catalogo jueces
+    Route::get('/juzgados-jueces', [JuezController::class, 'getJueces']);
+    Route::post('/guardar-juez', [JuezController::class, 'guardarJuez']);
+    Route::post('/actualizar-juez', [JuezController::class, 'actualizarJuez']);
+    Route::post('/eliminar-juez', [JuezController::class, 'eliminarJuez']);
     
 
 });
@@ -141,7 +153,7 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
 /**
  * RUTAS PUBLICAS
  */
-
+Route::get('/juzgados-citas', [JuzgadoController::class, 'getJuzgados']);
 Route::get('/whatsapp/get-numero', [NumeroContactoController::class, 'getNumero']);
 
 Route::get('/catalogos/tipos-de-tramite', [TipoTramiteController::class, 'getTipoTramite']);
@@ -164,10 +176,7 @@ Route::get('/imprimir-cita-juzgado/{id}', [CitaJuzgadoController::class, 'imprim
 Route::post('/tramite/requisitos-tipo-tramite', [TramiteController::class, 'getRequisitosTramite']);
 Route::post('/tramite/requisitos-tipo-tramite-editar', [TramiteController::class, 'getRequisitosTramiteEditar']);
 
-Route::get('/juzgados-citas', [JuzgadoController::class, 'getJuzgados']);
-Route::post('/guardar-juzgado', [JuzgadoController::class, 'guardarJuzgado']);
-Route::post('/actualizar-juzgado', [JuzgadoController::class, 'actualizarJuzgado']);
-Route::post('/eliminar-juzgado', [JuzgadoController::class, 'eliminarJuzgado']);
+
 Route::get('/juzgados-materias', [MateriaController::class, 'getMaterias']);
 
 Route::post('/consultar-curp', [CitaJuzgadoController::class, 'consultarCurp']);
