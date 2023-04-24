@@ -396,7 +396,7 @@
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             this.$store.commit('setCatalogoJuzgados', response.data.juzgados)
-                            this.mostrar = true
+                            // this.mostrar = true
                         } else {
                             errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
                         }
@@ -408,8 +408,9 @@
                 }
             },
             async getJueces() {
+                this.loading = true
                 try {
-                    this.loading = true
+                    
                     let response = await axios.get('/api/juzgados-jueces')
                     if (response.status === 200) {
                         if (response.data.status === "ok") {

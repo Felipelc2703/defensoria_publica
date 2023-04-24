@@ -391,6 +391,7 @@
         },
         methods: {
             async getJuzgados() {
+                this.loading = true
                 try {
                     let response = await axios.get('/api/juzgados-citas')
                     if (response.status === 200) {
@@ -406,6 +407,7 @@
                 } catch (error) {
                     errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
                 }
+                this.loading = false
             },
             async getMaterias() {
                 try {
