@@ -255,7 +255,7 @@
                 this.bandMenuJuzgados = true
                 this.bandMenuInicial = false
                 this.bandMenuDefensoria = false
-                this.menu_seleccionado = 'Juzgados'
+                this.menu_seleccionado = 'Jueces'
                 this.bandVerOpcionesJuzgados = true
                 this.bandVerOpcionesDefensoria = false
             },
