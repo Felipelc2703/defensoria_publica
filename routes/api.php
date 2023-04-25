@@ -150,6 +150,10 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
     Route::post('/eliminar-juez', [JuezController::class, 'eliminarJuez']);
     
 
+     //Rutas catalogo consejeros
+     Route::post('/guardar-consejero', [ConsejeroController::class, 'guardarConsejero']);
+     Route::post('/actualizar-consejero', [ConsejeroController::class, 'actualizarConsejero']);
+     Route::post('/eliminar-consejero', [ConsejeroController::class, 'eliminarConsejero']);
 });
 
 /**

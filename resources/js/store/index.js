@@ -57,10 +57,10 @@ const store = createStore({
                             router.push({name: 'CatalogoUsuariosJuez'})
                         }
                         else if (response.data.session.user.rol_id == 6) {
-                            router.push({name: 'CatalogoUsuariosJuez'})
+                            router.push({name: 'AgregarHorarioConsejo'})
                         }
                         else if (response.data.session.user.rol_id == 7) {
-                            router.push({name: 'CatalogoUsuariosJuez'})
+                            router.push({name: 'CatalogoUsuariosConsejo'})
                         }
 
                         this.state.contRecaptcha = 0

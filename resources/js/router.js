@@ -35,6 +35,11 @@ import CatalogoUsuariosJuez from './pages/juzgados/CatalogoUsuariosJuez.vue'
 import CatalogoJueces from './pages/juzgados/CatalogoJueces.vue'
 import CatalogoJuzgados from './pages/juzgados/CatalogoJuzgados.vue'
 
+import AgregarHorarioConsejo from './pages/consejeros/AgregarHorarioConsejo.vue'
+import CatalogoUsuariosConsejo from './pages/consejeros/CatalogoUsuariosConsejo.vue'
+import CatalogoConsejeros from './pages/consejeros/CatalogoConsejeros.vue'
+
+
 const routes = [
     {
         path: '/',
@@ -255,6 +260,30 @@ const routes = [
         path: '/catalogo-juzgados',
         name: 'CatalogoJuzgados',
         component: CatalogoJuzgados,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/agregar-horario-consejo',
+        name: 'AgregarHorarioConsejo',
+        component: AgregarHorarioConsejo,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/catalogo-usuarios-consejo',
+        name: 'CatalogoUsuariosConsejo',
+        component: CatalogoUsuariosConsejo,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/catalogo-consejeros',
+        name: 'CatalogoConsejeros',
+        component: CatalogoConsejeros,
         meta: {
             requiresAuth: true
         }
