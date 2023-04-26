@@ -240,7 +240,7 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                                 <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario-consejo')">Cargar Horario</a>
-                                                <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-juzgado')">Modificar Horario</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-consejero')">Modificar Horario</a>
                                             </div>
                                         </li>
                                         <!-- <li class="nav-item dropdown link-nav">
@@ -256,7 +256,7 @@
                                             </div>
                                         </li> -->
                                         <li class="nav-item link-nav">
-                                            <a class="nav-link" @click="this.$router.push('/citas-del-dia-juez')">Citas del día</a>
+                                            <a class="nav-link" @click="this.$router.push('/citas-del-dia-consejero')">Citas del día</a>
                                         </li>
                                         <!-- <li class="nav-item link-nav">
                                             <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
@@ -559,6 +559,8 @@
                                 this.$router.push('/confirmacion-cita-buscada')
                             } else if (response.data.cita.cita_juzgado) {
                                 this.$router.push('/confirmacion-cita-buscada-juzgado')
+                            } else if (response.data.cita.cita_consejero) {
+                                this.$router.push('/confirmacion-cita-buscada-consejero')
                             }
                             this.$store.state.buscarCita = ''
                         } else if (response.data.status === "not-found") {

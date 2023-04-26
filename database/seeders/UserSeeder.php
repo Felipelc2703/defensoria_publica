@@ -244,7 +244,7 @@ class UserSeeder extends Seeder
             'clave' => 'consejero',
             'email' => 'admin_consejero@gmail.com',
             'password' => 'password',
-            // 'juzgado_id' => 18,
+            'consejero_id' => 2,
             'rol_id' => 6,
             // 'juez_id' => 19,
         ]);
@@ -253,7 +253,7 @@ class UserSeeder extends Seeder
             'clave' => 'admin_consejeros',
             'email' => 'admin_consejeros@gmail.com',
             'password' => 'password',
-            // 'juzgado_id' => 18,
+            'consejero_id' => 1,
             'rol_id' => 7,
             // 'juez_id' => 19,
         ]);

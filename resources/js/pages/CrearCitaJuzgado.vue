@@ -465,6 +465,7 @@
             },
             async getCalendar() {
                 try {
+                    // console.log(this.variables_calendario)
                     let response = await axios.post('/api/calendario-citas', this.variables_calendario)
                     if (response.status === 200) {
                         if (response.data.status === "ok") {

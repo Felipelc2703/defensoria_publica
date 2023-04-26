@@ -16,9 +16,9 @@
                             <div class="defensoria-button mt-4 ml-8 mr-4" @click="crearCitaConsejero()">
                                 <img class="p-3" src="./../../../public/images/consejeros.png" alt="">
                             </div>
-                            <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarMenuJuzgados()">
+                            <!-- <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarMenuJuzgados()">
                                 <img class="p-3" src="./../../../public/images/jueces.png" alt="">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </template>

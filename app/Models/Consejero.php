@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Consejero extends Model
 {
     use HasFactory;
+
+    public function dias()
+    {
+        return $this->hasMany(Dia::Class, 'consejero_id');
+    }
 }

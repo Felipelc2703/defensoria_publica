@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('mes');
             $table->integer('centro_atencion_id')->nullable();
             $table->integer('juez_id')->nullable();
+            $table->integer('consejero_id')->nullable();
             $table->timestamps();
         });
     }

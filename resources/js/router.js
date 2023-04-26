@@ -38,7 +38,10 @@ import CatalogoJuzgados from './pages/juzgados/CatalogoJuzgados.vue'
 import AgregarHorarioConsejo from './pages/consejeros/AgregarHorarioConsejo.vue'
 import CatalogoUsuariosConsejo from './pages/consejeros/CatalogoUsuariosConsejo.vue'
 import CatalogoConsejeros from './pages/consejeros/CatalogoConsejeros.vue'
-
+import EditarHorarioConsejero from './pages/consejeros/EditarHorarioConsejero.vue'
+import CitasDelDiaConsejero from './pages/consejeros/CitasDelDiaConsejero.vue'
+import ConfirmacionCitaConsejero from './pages/consejeros/ConfirmacionCitaConsejero.vue'
+import ConfirmacionCitaBuscadaConsejero from './pages/consejeros/ConfirmacionCitaBuscadaConsejero.vue'
 
 const routes = [
     {
@@ -212,6 +215,11 @@ const routes = [
         component: ConfirmacionCitaJuzgado,
     },
     {
+        path: '/confirmacion-cita-consejero',
+        name: 'ConfirmacionCitaConsejero',
+        component: ConfirmacionCitaConsejero,
+    },
+    {
         path: '/confirmacion-cita-buscada-juzgado',
         name: 'ConfirmacionCitaBuscadaJuzgado',
         component: ConfirmacionCitaBuscadaJuzgado,
@@ -287,6 +295,27 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: '/editar-horario-consejero',
+        name: 'EditarHorarioConsejero',
+        component: EditarHorarioConsejero,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/citas-del-dia-consejero',
+        name: 'CitasDelDiaConsejero',
+        component: CitasDelDiaConsejero,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/confirmacion-cita-buscada-consejero',
+        name: 'ConfirmacionCitaBuscadaConsejero',
+        component: ConfirmacionCitaBuscadaConsejero,
     },
 ]
 

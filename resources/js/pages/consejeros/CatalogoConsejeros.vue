@@ -358,13 +358,7 @@
             consejeros() {
                 return this.$store.getters.getConsejeros
             },
-            // juzgados(){
-            //     return this.$store.getters.getCatalogoJuzgados
-            // },
-            // jueces(){
-            //     return this.$store.getters.getJueces
-            // },
-           
+            
             pages() {
                 const numShown = Math.min(this.numShown, this.totalPaginas())
                 let first = this.current - Math.floor(numShown / 2)
@@ -412,27 +406,7 @@
                 }
                 this.loading = false
             },
-            // async getJueces() {
-            //     this.loading = true
-            //     try {
-                    
-            //         let response = await axios.get('/api/juzgados-jueces')
-            //         if (response.status === 200) {
-            //             if (response.data.status === "ok") {
-            //                 this.$store.commit('setJueces', response.data.jueces)
-            //                 this.mostrar = true
-            //             } else {
-            //                 errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
-            //             }
-            //         } else {
-            //             errorSweetAlert('Ocurrió un error al obtener los jueces.')
-            //         }
-            //     } catch (error) {
-            //         errorSweetAlert('Ocurrió un error al obtener los jueces.')
-            //     }
-            //     this.loading = false
-            // },
-            // Abrir modal nuevo consejero
+            
             AgregarConsejero() {
                 this.dialogAgregarConsejero = true
             },
