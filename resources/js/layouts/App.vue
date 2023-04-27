@@ -266,8 +266,8 @@
                                               Reportes
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas-juez')">Gráficas</a>
-                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reportes-juez')">Reporte de Citas</a>
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas-consejero')">Gráficas</a>
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reportes-consejero')">Reporte de Citas</a>
                                             </div>
                                         </li>
                                       </ul>
