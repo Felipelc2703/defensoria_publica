@@ -4,6 +4,7 @@ import Login from './pages/Login.vue'
 import Dashboard from './pages/Dashboard.vue'
 import CrearCita from './pages/CrearCita.vue'
 import CrearCitaJuzgado from './pages/CrearCitaJuzgado.vue'
+import CrearCitaConsejero from './pages/CrearCitaConsejero.vue'
 import ConfirmacionCitaBuscada from './pages/ConfirmacionCitaBuscada.vue'
 import CentrosAtencion from './pages/CentrosAtencion.vue'
 import confwhats from './pages/confwhats.vue'
@@ -31,6 +32,16 @@ import ReporteGraficasJuez from './pages/juzgados/ReporteGraficasJuez.vue'
 import ReportesJuez from './pages/juzgados/ReportesJuez.vue'
 import ReporteJuzgados from './pages/juzgados/ReporteJuzgados.vue'
 import CatalogoUsuariosJuez from './pages/juzgados/CatalogoUsuariosJuez.vue'
+import CatalogoJueces from './pages/juzgados/CatalogoJueces.vue'
+import CatalogoJuzgados from './pages/juzgados/CatalogoJuzgados.vue'
+
+import AgregarHorarioConsejo from './pages/consejeros/AgregarHorarioConsejo.vue'
+import CatalogoUsuariosConsejo from './pages/consejeros/CatalogoUsuariosConsejo.vue'
+import CatalogoConsejeros from './pages/consejeros/CatalogoConsejeros.vue'
+import EditarHorarioConsejero from './pages/consejeros/EditarHorarioConsejero.vue'
+import CitasDelDiaConsejero from './pages/consejeros/CitasDelDiaConsejero.vue'
+import ConfirmacionCitaConsejero from './pages/consejeros/ConfirmacionCitaConsejero.vue'
+import ConfirmacionCitaBuscadaConsejero from './pages/consejeros/ConfirmacionCitaBuscadaConsejero.vue'
 
 const routes = [
     {
@@ -63,6 +74,11 @@ const routes = [
         path: '/crear-cita-juzgado',
         name: 'CrearCitaJuzgado',
         component: CrearCitaJuzgado,
+    },
+    {
+        path: '/crear-cita-consejero',
+        name: 'CrearCitaConsejero',
+        component: CrearCitaConsejero,
     },
     {
         path: '/confirmacion-cita-buscada',
@@ -199,6 +215,11 @@ const routes = [
         component: ConfirmacionCitaJuzgado,
     },
     {
+        path: '/confirmacion-cita-consejero',
+        name: 'ConfirmacionCitaConsejero',
+        component: ConfirmacionCitaConsejero,
+    },
+    {
         path: '/confirmacion-cita-buscada-juzgado',
         name: 'ConfirmacionCitaBuscadaJuzgado',
         component: ConfirmacionCitaBuscadaJuzgado,
@@ -234,6 +255,67 @@ const routes = [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: '/catalogo-jueces',
+        name: 'CatalogoJueces',
+        component: CatalogoJueces,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/catalogo-juzgados',
+        name: 'CatalogoJuzgados',
+        component: CatalogoJuzgados,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/agregar-horario-consejo',
+        name: 'AgregarHorarioConsejo',
+        component: AgregarHorarioConsejo,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/catalogo-usuarios-consejo',
+        name: 'CatalogoUsuariosConsejo',
+        component: CatalogoUsuariosConsejo,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/catalogo-consejeros',
+        name: 'CatalogoConsejeros',
+        component: CatalogoConsejeros,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/editar-horario-consejero',
+        name: 'EditarHorarioConsejero',
+        component: EditarHorarioConsejero,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/citas-del-dia-consejero',
+        name: 'CitasDelDiaConsejero',
+        component: CitasDelDiaConsejero,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/confirmacion-cita-buscada-consejero',
+        name: 'ConfirmacionCitaBuscadaConsejero',
+        component: ConfirmacionCitaBuscadaConsejero,
     },
 ]
 

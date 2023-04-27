@@ -3,7 +3,7 @@
         <div class="row contenedor">
             <div class="col-sm-9 col-12 contenedor-uno">
                 <div class="text-center py-2">
-                    <img class="scale-logo-defensoria logo-defensoria" width="150" height="75" src="../../../public/images/jueces-titulo.svg" alt="">
+                    <img class="scale-logo-defensoria logo-defensoria" width="150" height="75" src="../../../public/images/consejeros.svg" alt="">
                 </div>
             </div>
             <div class="col-sm-3 hidden-xs contenedor-dos">
@@ -15,7 +15,7 @@
                     <div class="container">
                         <div class="row justify-content-around">
                             <div class="col-6 text-left">
-                                <p class="titulo_tipo_tramite">{{juzgadoSeleccionado.nombre}}</p>
+                                <!-- <p class="titulo_tipo_tramite">{{juzgadoSeleccionado.nombre}}</p> -->
                             </div>
                             <div class="col-6 text-right">
                                 <v-btn class="boton-regresar" variant="text" prepend-icon="mdi-arrow-left" @click="volverInicio()">Regresar</v-btn>
@@ -27,7 +27,7 @@
                                     <v-expansion-panel-title v-slot="{ open }">
                                         <v-row no-gutters>
                                             <v-col cols="8" class="d-flex justify-start">
-                                                <h6><span class="texto-pasos">PASO 1:</span> <span class="texto-nombre-paso">Seleccione el juez</span></h6>
+                                                <h6><span class="texto-pasos">PASO 1:</span> <span class="texto-nombre-paso">Seleccione el consejero</span></h6>
                                             </v-col>
                                             <v-col cols="8" class="text--secondary">
                                                 <v-fade-transition leave-absolute>
@@ -41,12 +41,12 @@
                                         <div class="row mt-4">
                                             <div class="col-md-6 col-12">
                                                 <v-select
-                                                    v-model="cita.juez"
-                                                    :items="juzgadoSeleccionado.jueces"
-                                                    item-title="nombre_completo"
+                                                    v-model="cita.consejero"
+                                                    :items="consejeros"
+                                                    item-title="nombrecompleto"
                                                     item-value="id"
                                                     variant="outlined"
-                                                    label="Seleccione el juez:"
+                                                    label="Seleccione el consejero:"
                                                 >
                                                 </v-select>
                                             </div>
@@ -218,13 +218,13 @@
                                                                             :rules="sexoRules"
                                                                         ></v-select>
                                                                     </div>
-                                                                    <div class="col-sm-6 col-12">
+                                                                    <!-- <div class="col-sm-6 col-12">
                                                                         <v-text-field
                                                                             v-model="cita.expediente"
                                                                             label="Expediente"
                                                                             :rules="expedienteRules"
                                                                         ></v-text-field>
-                                                                    </div>
+                                                                    </div> -->
                                                                 </div>
                                                                 <v-textarea rows="3" class="mt-4" label="Indique el asunto de la cita" :rules="asuntoRules" v-model="cita.asunto">{{cita.asunto}}</v-textarea>
                                                             </template>
@@ -250,9 +250,9 @@
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col-md-12 text-left">
-                            <span class="texto-estatico-resumen-cita">Juez:</span>
+                            <span class="texto-estatico-resumen-cita">Consejero:</span>
                             <br>
-                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.juez}}</span>
+                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.consejero}}</span>
                             <br>
                             <br>
                         </div>
@@ -284,9 +284,9 @@
                 <div class="container mt-4">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <span class="texto-estatico-resumen-cita">Juez:</span>
+                            <span class="texto-estatico-resumen-cita">Consejero:</span>
                             <br>
-                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.juez}}</span>
+                            <span class="texto-dinamico-resumen-cita">{{resumen_cita.consejero}}</span>
                             <br>
                             <br>
                         </div>
@@ -320,7 +320,7 @@
     import { errorSweetAlert, successSweetAlert, warningSweetAlert } from './../helpers/sweetAlertGlobals'
 
     export default defineComponent({
-        name: 'crear-cita-juzgado',
+        name: 'crear-cita-consejero',
         data() {
             return {
                 panel: [0],
@@ -330,7 +330,7 @@
                 sin_registro: false,
                 deshabilitar_curp: false,
                 cita: {
-                    juez: '',
+                    consejero: '',
                     dia_cita: '',
                     fecha_formateada: '',
                     hora_cita: '',
@@ -343,7 +343,7 @@
                     dia: '',
                     horario: '',
                     curp:'',
-                    expediente: '',
+                    // expediente: '',
                     asunto: '',
                 },
                 nombreRules: [
@@ -361,9 +361,9 @@
                 sexoRules: [
                     v => !!v || 'El sexo es requerido',
                 ],
-                expedienteRules: [
-                    v => !!v || 'El expediente es requerido',
-                ],
+                // expedienteRules: [
+                //     v => !!v || 'El expediente es requerido',
+                // ],
                 asuntoRules: [
                     v => !!v || 'El asunto es requerido',
                 ],
@@ -385,7 +385,7 @@
                     },
                 },
                 resumen_cita: {
-                    juez: '',
+                    consejero: '',
                     dia_cita: '',
                     hora_cita: '',
                 },
@@ -396,7 +396,7 @@
                 semana_cinco: [],
                 semana_seis: [],
                 variables_calendario: {
-                    juez_id: null,
+                    consejero_id: null,
                     mes: null,
                     year: null,
                 },
@@ -412,25 +412,26 @@
             }
         },
         created() {
+            this.getConsejeros()
             let date = new Date()
             this.fecha_calendario.numero_mes = date.getMonth() + 1
             this.fecha_calendario.mes = this.formatearMes(date.getMonth() + 1)
             this.fecha_calendario.año = date.getFullYear()
         },
         computed: {
-            juzgadoSeleccionado() {
-                return this.$store.getters.getJuzgadoSeleccionado
+            consejeros() {
+                return this.$store.getters.getConsejeros
             }
         },
         watch: {
-            'cita.juez': function () {
-                this.variables_calendario.juez_id = this.cita.juez
+            'cita.consejero': function () {
+                this.variables_calendario.consejero_id = this.cita.consejero
                 this.variables_calendario.mes = new Date().getMonth() + 1
                 this.variables_calendario.year = new Date().getFullYear()
                 this.getCalendar()
-                this.juzgadoSeleccionado.jueces.forEach(e => {
-                    if (e.id == this.cita.juez) {
-                        this.resumen_cita.juez = e.nombre_completo
+                this.consejeros.forEach(e => {
+                    if (e.id == this.cita.consejero) {
+                        this.resumen_cita.consejero = e.nombrecompleto
                     }
                 })
                 this.mostrarPaso2 = true
@@ -457,6 +458,25 @@
             },
         },
         methods: {
+            async getConsejeros() {
+                // this.loading = true
+                try {
+                    let response = await axios.get('/api/consejeros')
+                    if (response.status === 200) {
+                        if (response.data.status === "ok") {
+                            this.$store.commit('setConsejeros', response.data.consejeros)
+                            // this.mostrar = true
+                        } else {
+                            errorSweetAlert(`${response.data.message}<br>Error: ${response.data.error}<br>Location: ${response.data.location}<br>Line: ${response.data.line}`)
+                        }
+                    } else {
+                        errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
+                    }
+                } catch (error) {
+                    errorSweetAlert('Ocurrió un error al obtener el catálogo de juzgados para agendar citas.')
+                }
+                // this.loading = false
+            },
             volverInicio() {
                 this.$router.push('/')
             },
@@ -856,7 +876,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/citas/agendar-cita-juez', this.cita)
+                                let response = await axios.post('/api/citas/agendar-cita-consejero', this.cita)
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al agendar la cita.')
@@ -868,7 +888,7 @@
                             if (result.value.status === 200) {
                                 if (result.value.data.status === "ok") {
                                     this.$store.commit('setCitaAgendada', result.value.data.cita_agendada)
-                                    this.$router.push('/confirmacion-cita-juzgado')
+                                    this.$router.push('/confirmacion-cita-consejero')
                                 }else if(result.value.data.status === "no-data") {
                                     warningSweetAlert(result.value.data.message)
                                 } else  {
@@ -883,7 +903,7 @@
             },
             async consultarCurp() {
                 try {
-                    let response = await axios.post('/api/consultar-curp', this.cita)
+                    let response = await axios.post('/api/consulta-curp', this.cita)
                     if (response.status === 200) {
                         if (response.data.status === "ok") {
                             this.cita.nombre = response.data.usuario.nombre

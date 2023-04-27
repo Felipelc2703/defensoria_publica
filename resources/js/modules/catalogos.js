@@ -14,8 +14,9 @@ export default {
         notas:[],
         requsiitosTipoTramite: [],
         citas:[],
-
+        materias:[],
         juzgados: [],
+        jueces:[],
     },
     getters: {
         getCatalogoCentrosAtencion(state) {
@@ -64,7 +65,13 @@ export default {
         },
         getCatalogoJuzgados(state) {
             return state.juzgados
-        }
+        },
+        getMaterias(state) {
+            return state.materias
+        },
+        getJueces(state){
+            return state.jueces
+        },
     },
     mutations: {
         setCatalogoCentrosAtencion(state, payload) {
@@ -111,6 +118,12 @@ export default {
         },
         setCatalogoJuzgados(state, payload) {
             state.juzgados = payload
-        }
+        },
+        setMaterias(state, payload) {
+            state.materias = payload
+        },
+        setJueces(state, payload){
+            state.jueces = payload
+        },
     }
 }

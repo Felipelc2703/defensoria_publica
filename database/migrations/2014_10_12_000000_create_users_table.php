@@ -25,6 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('rol_id');
             $table->unsignedBigInteger('juez_id')->nullable();
             $table->foreignId('juzgado_id')->nullable()->constrained();
+            $table->foreignId('consejero_id')->nullable()->constrained();
             $table->boolean('status')->default(true);
             $table->timestamps();
 

@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import catalogos from './../modules/catalogos'
 import agendarCita from './../modules/agendarCita.js'
 import agendarCitaJuzgado from '../modules/agendarCitaJuzgado'
+import agendarCitaConsejero from '../modules/agendarCitaConsejero'
 import { errorSweetAlert } from './../helpers/sweetAlertGlobals'
 import router from '../router'
 
@@ -55,6 +56,12 @@ const store = createStore({
                         else if (response.data.session.user.rol_id == 5) {
                             router.push({name: 'CatalogoUsuariosJuez'})
                         }
+                        else if (response.data.session.user.rol_id == 6) {
+                            router.push({name: 'AgregarHorarioConsejo'})
+                        }
+                        else if (response.data.session.user.rol_id == 7) {
+                            router.push({name: 'CatalogoUsuariosConsejo'})
+                        }
 
                         this.state.contRecaptcha = 0
                         this.state.showRecaptcha = true
@@ -81,6 +88,7 @@ const store = createStore({
         catalogos,
         agendarCita,
         agendarCitaJuzgado,
+        agendarCitaConsejero,
     }
 })
 

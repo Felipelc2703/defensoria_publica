@@ -8,6 +8,7 @@ use App\Models\Cita;
 use App\Models\Juez;
 use App\Models\Horario;
 use App\Models\CitaJuzgado;
+use App\Models\CitaConsejero;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\ConfirmacionCita;
@@ -350,6 +351,8 @@ class CitaController extends Controller
         try {
             $cita = Cita::where('folio', $request->folio)->where('status', 1)->first();
             $cita_juzgado = CitaJuzgado::where('folio', $request->folio)->where('status', 1)->first();
+            $cita_consejero = CitaConsejero::where('folio', $request->folio)->where('status', 1)->first();
+
 
             if ($cita) {
                 $citaAgendada = new \stdClass();
@@ -363,6 +366,7 @@ class CitaController extends Controller
                 $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
                 $citaAgendada->cita_defensoria = true;
                 $citaAgendada->cita_juzgado = false;
+                $citaAgendada->cita_consejero = false;
 
                 return response()->json([
                     "status" => "ok",
@@ -381,6 +385,26 @@ class CitaController extends Controller
                 $citaAgendada->juez = $cita_juzgado->juez->nombre . ' ' . $cita_juzgado->juez->apellido_paterno . ' ' . $cita_juzgado->juez->apellido_materno;
                 $citaAgendada->cita_defensoria = false;
                 $citaAgendada->cita_juzgado = true;
+                $citaAgendada->cita_consejero = false;
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Cita encontrada con éxito",
+                    "cita" => $citaAgendada
+                ], 200);
+            }else if ($cita_consejero) {
+                $citaAgendada = new \stdClass();
+                $citaAgendada->id = $cita_consejero->id;
+                $citaAgendada->folio = $cita_consejero->folio;
+                $citaAgendada->nombre = $cita_consejero->usuario->nombre . ' ' . $cita_consejero->usuario->apellido_paterno . ' ' . $cita_consejero->usuario->apellido_materno;
+                $citaAgendada->fecha = $cita_consejero->fecha_formateada;
+                $citaAgendada->hora = $cita_consejero->hora_cita;
+                // $citaAgendada->juzgado = $cita_juzgado->juzgado->nombre;
+                // $citaAgendada->direccion = $cita_juzgado->juzgado->direccion;
+                $citaAgendada->consejero = $cita_consejero->consejero->nombre . ' ' . $cita_consejero->consejero->apellido_paterno . ' ' . $cita_consejero->consejero->apellido_materno;
+                $citaAgendada->cita_defensoria = false;
+                $citaAgendada->cita_juzgado = false;
+                $citaAgendada->cita_consejero = true;
 
                 return response()->json([
                     "status" => "ok",

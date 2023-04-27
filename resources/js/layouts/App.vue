@@ -198,6 +198,51 @@
                                                 <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-juzgado')">Modificar Horario</a>
                                             </div>
                                         </li> -->
+                                       
+                                        <!-- <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/citas-del-dia-juez')">Citas del día</a>
+                                        </li> -->
+                                        <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios-juez')">Usuario</a>
+                                        </li>
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Catálogos
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-jueces')">Jueces</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-juzgados')">Juzgados</a>
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a> -->
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a> -->
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a> -->
+                                            </div>
+                                        </li>
+                                        <!-- <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              Reportes
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas-juez')">Gráficas</a>
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reportes-juez')">Reporte de Citas</a>
+                                            </div>
+                                        </li> -->
+                                      </ul>
+                                    </div>
+                                </nav>
+                            </template>
+                            <template v-else-if="user.user.rol_id == 6">
+                                <nav class="navbar navbar-expand-lg navbar-light">
+                                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                                      <ul class="navbar-nav">
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Horarios
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario-consejo')">Cargar Horario</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-consejero')">Modificar Horario</a>
+                                            </div>
+                                        </li>
                                         <!-- <li class="nav-item dropdown link-nav">
                                             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Catálogos
@@ -210,11 +255,56 @@
                                                 <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a>
                                             </div>
                                         </li> -->
+                                        <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/citas-del-dia-consejero')">Citas del día</a>
+                                        </li>
+                                        <!-- <li class="nav-item link-nav">
+                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios')">Usuario</a>
+                                        </li> -->
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                              Reportes
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reporte-graficas-juez')">Gráficas</a>
+                                              <a class="dropdown-item link-nav" @click="this.$router.push('/reportes-juez')">Reporte de Citas</a>
+                                            </div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                </nav>
+                            </template>
+                            <template v-else-if="user.user.rol_id == 7">
+                                <nav class="navbar navbar-expand-lg navbar-light">
+                                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                                      <ul class="navbar-nav">
+                                        <!-- <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Horarios
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario-juzgado')">Cargar Horario</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-juzgado')">Modificar Horario</a>
+                                            </div>
+                                        </li> -->
+                                       
                                         <!-- <li class="nav-item link-nav">
                                             <a class="nav-link" @click="this.$router.push('/citas-del-dia-juez')">Citas del día</a>
                                         </li> -->
                                         <li class="nav-item link-nav">
-                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios-juez')">Usuario</a>
+                                            <a class="nav-link" @click="this.$router.push('/catalogo-usuarios-consejo')">Usuario</a>
+                                        </li>
+                                        <li class="nav-item dropdown link-nav">
+                                            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Catálogos
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-consejeros')">Consejeros</a>
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-juzgados')">Juzgados</a> -->
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-tramites')">Trámite</a> -->
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/catalogo-notas')">Notas</a> -->
+                                                <!-- <a class="dropdown-item link-nav" @click="this.$router.push('/conf-whats')">Configuración WhatsApp</a> -->
+                                            </div>
                                         </li>
                                         <!-- <li class="nav-item dropdown link-nav">
                                             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -469,6 +559,8 @@
                                 this.$router.push('/confirmacion-cita-buscada')
                             } else if (response.data.cita.cita_juzgado) {
                                 this.$router.push('/confirmacion-cita-buscada-juzgado')
+                            } else if (response.data.cita.cita_consejero) {
+                                this.$router.push('/confirmacion-cita-buscada-consejero')
                             }
                             this.$store.state.buscarCita = ''
                         } else if (response.data.status === "not-found") {

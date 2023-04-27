@@ -4,10 +4,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiaController;
 // use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\MateriaController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\NotaController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\JuezController;
 use App\Http\Controllers\JuzgadoController;
 use App\Http\Controllers\TramiteController;
 use App\Http\Controllers\API\AuthController;
@@ -18,6 +20,8 @@ use App\Http\Controllers\TipoTramiteController;
 use App\Http\Controllers\CentroAtencionController;
 use App\Http\Controllers\NumeroContactoController;
 
+use App\Http\Controllers\ConsejeroController;
+use App\Http\Controllers\CitaConsejeroController;
 
 
 /*
@@ -129,18 +133,41 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
 
     // Rutas utilizadas para catalogo de Usuarios
     Route::get('/catalogos/usuarios', [UserController::class, 'getUsuarios']);
+    Route::get('/catalogos/usuarios-consejeros', [UserController::class, 'getUsuariosConsejeros']);
     Route::post('/usuarios/agregar-usuario', [UserController::class, 'guardarNuevoUsuario']);
     Route::post('/usuarios/actualizar-usuario', [UserController::class, 'actualizarUsuario']);
     Route::post('/usuarios/eliminar-usuario', [UserController::class, 'eliminarUsuario']);
     
+    //Rutas catalogo de juzgados
+   
+    Route::post('/guardar-juzgado', [JuzgadoController::class, 'guardarJuzgado']);
+    Route::post('/actualizar-juzgado', [JuzgadoController::class, 'actualizarJuzgado']);
+    Route::post('/eliminar-juzgado', [JuzgadoController::class, 'eliminarJuzgado']);
+
+    //Rutas catalogo jueces
+    Route::get('/juzgados-jueces', [JuezController::class, 'getJueces']);
+    Route::post('/guardar-juez', [JuezController::class, 'guardarJuez']);
+    Route::post('/actualizar-juez', [JuezController::class, 'actualizarJuez']);
+    Route::post('/eliminar-juez', [JuezController::class, 'eliminarJuez']);
     
 
-});
+     //Rutas catalogo consejeros
+     Route::post('/horarios/guardar-dias-consejero', [DiaController::class, 'guardarDiasConsejero']);
+     Route::post('/horarios/dias-editar-consejero', [DiaController::class, 'getDiasEditarConsejero']);
+     Route::post('/horarios/actualizar-horario-consejero', [DiaController::class, 'actualizarHorarioConsejero']);
+     Route::post('/guardar-consejero', [ConsejeroController::class, 'guardarConsejero']);
+     Route::post('/actualizar-consejero', [ConsejeroController::class, 'actualizarConsejero']);
+     Route::post('/eliminar-consejero', [ConsejeroController::class, 'eliminarConsejero']);
+     Route::get('/catalogos/citas-del-dia-consejero', [CitaConsejeroController::class, 'getCitasDelDiaConsejero']);
+     Route::post('/citas/citas-del-dia-consejero-buscada', [CitaConsejeroController::class, 'selectDiaCitaConsejero']);
+     Route::post('/citas/guardar-cambios-cita-consejero', [CitaConsejeroController::class, 'guardarCambios']);
+
+}); 
 
 /**
  * RUTAS PUBLICAS
  */
-
+Route::get('/juzgados-citas', [JuzgadoController::class, 'getJuzgados']);
 Route::get('/whatsapp/get-numero', [NumeroContactoController::class, 'getNumero']);
 
 Route::get('/catalogos/tipos-de-tramite', [TipoTramiteController::class, 'getTipoTramite']);
@@ -159,10 +186,16 @@ Route::get('/cancelar-cita/{id}', [CitaController::class, 'cancelarCita']);
 Route::get('/cancelar-cita-juzgado/{id}', [CitaJuzgadoController::class, 'cancelarCitaJuzgado']);
 Route::get('/imprimir-cita/{id}', [CitaController::class, 'imprimirCita']);
 Route::get('/imprimir-cita-juzgado/{id}', [CitaJuzgadoController::class, 'imprimirCitaJuzgado']);
+Route::get('/imprimir-cita-consejero/{id}', [CitaConsejeroController::class, 'imprimirCitaConsejero']);
+Route::get('/cancelar-cita-consejero/{id}', [CitaConsejeroController::class, 'cancelarCitaConsejero']);
 
 Route::post('/tramite/requisitos-tipo-tramite', [TramiteController::class, 'getRequisitosTramite']);
 Route::post('/tramite/requisitos-tipo-tramite-editar', [TramiteController::class, 'getRequisitosTramiteEditar']);
 
-Route::get('/juzgados-citas', [JuzgadoController::class, 'getJuzgados']);
+
+Route::get('/juzgados-materias', [MateriaController::class, 'getMaterias']);
+Route::get('/consejeros', [ConsejeroController::class, 'getConsejeros']);
+Route::post('/citas/agendar-cita-consejero', [CitaConsejeroController::class, 'agendarCitaConsejero']);
 
 Route::post('/consultar-curp', [CitaJuzgadoController::class, 'consultarCurp']);
+Route::post('/consulta-curp', [CitaConsejeroController::class, 'consultaCurp']);

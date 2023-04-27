@@ -13,9 +13,12 @@
                             </div>
                         </div>
                         <div class="col-sm-10 col-md-6 text-center">
-                            <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarMenuJuzgados()">
-                                <img class="p-3" src="./../../../public/images/jueces.png" alt="">
+                            <div class="defensoria-button mt-4 ml-8 mr-4" @click="crearCitaConsejero()">
+                                <img class="p-3" src="./../../../public/images/consejeros.png" alt="">
                             </div>
+                            <!-- <div class="defensoria-button mt-4 ml-8 mr-4" @click="mostrarMenuJuzgados()">
+                                <img class="p-3" src="./../../../public/images/jueces.png" alt="">
+                            </div> -->
                         </div>
                     </div>
                 </template>
@@ -243,6 +246,10 @@
             }
         },
         methods: {
+            crearCitaConsejero(){
+                // this.$store.commit('setConsejeros', consejeros)
+                this.$router.push('/crear-cita-consejero')
+            },
             mostrarMenuDefensoria() {
                 this.bandMenuDefensoria = true
                 this.bandMenuInicial = false,

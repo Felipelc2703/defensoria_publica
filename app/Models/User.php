@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Juez::class);
     }
+
+    public function consejero()
+    {
+        return $this->belongsTo(Consejero::class);
+    }
 }

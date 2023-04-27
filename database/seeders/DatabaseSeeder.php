@@ -25,8 +25,10 @@ class DatabaseSeeder extends Seeder
             TramiteCentroSeeder::class,
             RequisitoSeeder::class,
             RequisitoTramiteSeeder::class,
+            ConsejeroSeeder::class,
             UserSeeder::class,
             NotaSeeder::class,
+            
         ]);
     }
 }
