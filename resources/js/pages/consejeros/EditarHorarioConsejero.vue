@@ -447,7 +447,7 @@
                         showLoaderOnConfirm: true,
                         preConfirm: async () => {
                             try {
-                                let response = await axios.post('/api/horarios/actualizar-horario-juez', this.editar)
+                                let response = await axios.post('/api/horarios/actualizar-horario-consejero', this.editar)
                                 return response
                             } catch (error) {
                                 errorSweetAlert('Ocurrió un error al editar el días.')

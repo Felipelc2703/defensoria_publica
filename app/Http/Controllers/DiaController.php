@@ -9,6 +9,7 @@ use App\Models\Cita;
 use App\Models\Horario;
 use Carbon\CarbonPeriod;
 use App\Models\CitaJuzgado;
+use App\Models\CitaConsejero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -794,7 +795,7 @@ class DiaController extends Controller
 
             if ($request->inhabil == true) {
                 $fecha = $request->dia;
-                $existeCita = CitaJuzgado::where('fecha_cita', $fecha)->where('consejero_id', $user->consejero_id)->first();
+                $existeCita = CitaConsejero::where('fecha_cita', $fecha)->where('consejero_id', $user->consejero_id)->first();
 
                 if ($existeCita) {
                     return response()->json([

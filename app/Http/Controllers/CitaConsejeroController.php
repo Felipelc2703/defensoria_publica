@@ -11,6 +11,7 @@ use App\Models\Usuario;
 use App\Models\CitaConsejero;
 use Illuminate\Http\Request;
 use App\Mail\ConfirmacionCitaConsejero;
+use App\Mail\CancelarCitaConsejero;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -323,6 +324,20 @@ class CitaConsejeroController extends Controller
             $cita->motivo = $request->motivo;
             $cita->save();
             
+            $status = $request->status;
+            if($status == 3){
+                $cita = CitaConsejero::find($request->id);
+                $citaAgendada = new \stdClass();
+                $citaAgendada->id = $cita->id;
+                $citaAgendada->folio = $cita->folio;
+                $citaAgendada->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
+                $citaAgendada->fecha = $cita->fecha_formateada;
+                $citaAgendada->hora = $cita->hora_cita;
+                $citaAgendada->motivo = $cita->motivo;
+                $email = $cita->usuario->email;
+
+                Mail::to($email)->send(new CancelarCitaConsejero($citaAgendada));
+            }
             $date = Carbon::now();
             $citas = CitaConsejero::where('fecha_cita', $date->toDateString() )->get();
            
