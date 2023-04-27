@@ -636,7 +636,7 @@
                 this.horario.duracion = ''
                 this.horario.inhabil = ''
                 this.horario.dias =  []
-                this.cargaDias = false
+                this.cargarDias = false
                 this.mes = false
                 this.fecha = false
                 this.showRango = false

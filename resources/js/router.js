@@ -275,7 +275,7 @@ const routes = [
         }
     },
     {
-        path: '/agregar-horario-consejo',
+        path: '/agregar-horario-consejero',
         name: 'AgregarHorarioConsejo',
         component: AgregarHorarioConsejo,
         meta: {

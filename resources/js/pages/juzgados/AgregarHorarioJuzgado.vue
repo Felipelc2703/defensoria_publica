@@ -362,7 +362,7 @@
                 fecha: false,
                 cargarDias: false,
                 dialogEditarDia: false,
-                showRango: false,
+                // showRango: false,
                 horario: {
                     juzgado_id: '',
                     mes: '',
@@ -594,10 +594,10 @@
                 this.horario.duracion = ''
                 this.horario.inhabil = ''
                 this.horario.dias =  []
-                this.cargaDias = false
+                this.cargarDias = false
                 this.mes = false
                 this.fecha = false
-                this.showRango = false
+                // this.showRango = false
             },
             async guardarHorarios() {
                 const { valid } = await this.$refs.formAgregarHorario.validate()

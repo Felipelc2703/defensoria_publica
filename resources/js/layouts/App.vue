@@ -239,7 +239,7 @@
                                                 Horarios
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                                <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario-consejo')">Cargar Horario</a>
+                                                <a class="dropdown-item link-nav" @click="this.$router.push('/agregar-horario-consejero')">Cargar Horario</a>
                                                 <a class="dropdown-item link-nav" @click="this.$router.push('/editar-horario-consejero')">Modificar Horario</a>
                                             </div>
                                         </li>

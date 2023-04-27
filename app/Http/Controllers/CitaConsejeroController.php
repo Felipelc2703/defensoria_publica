@@ -511,4 +511,50 @@ class CitaConsejeroController extends Controller
             ], 200);
         }
     }
+    public function getReporteGraficas(Request $request)
+    {
+        try {
+            $reservadas = CitaConsejero::where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 1)
+                                ->count();
+
+                $atendidas = CitaConsejero::where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 2)
+                                ->count();
+
+                $canceladas = CitaConsejero::where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->where('status', 3)
+                                ->count();
+
+                $total = CitaConsejero::where('fecha_cita', '>=', $request->fecha_inicio)
+                                ->where('fecha_cita', '<=', $request->fecha_fin)
+                                ->count();
+                
+                $objectReporte = new \stdClass();
+                $objectReporte->reservadas = $reservadas;
+                $objectReporte->atendidas = $atendidas;
+                $objectReporte->canceladas = $canceladas;
+                $objectReporte->total = $total;
+                $objectReporte->porcent_1 = $total > 0 ? ($reservadas * 100) / $total : 0;
+                $objectReporte->porcent_2 = $total > 0 ? ($atendidas * 100) / $total : 0;
+                $objectReporte->porcent_3 = $total > 0 ? ($canceladas * 100) / $total : 0;
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Estadisticas obtenidos con éxito",
+                    "reporte" => $objectReporte
+                ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener las estadísticas",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+    }
 }

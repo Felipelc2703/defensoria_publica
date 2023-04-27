@@ -66,9 +66,14 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
     Route::post('/citas/guardar-cambios-cita-juez', [CitaJuzgadoController::class, 'guardarCambios']);
     Route::post('/citas/citas-del-dia-juez-buscada', [CitaJuzgadoController::class, 'selectDiaCitaJuez']);
     Route::post('/reporte/grafica-juzgado', [CitaJuzgadoController::class, 'getReporteGraficasJuzgado']);
+    // Route::post('/reporte/grafica-consejero', [CitaConsejeroController::class, 'getReporteGraficasConsejero']);
+
     // Rutas para reportes y graficas
     Route::post('/reporte-juez/grafica', [CitaJuzgadoController::class, 'getReporteGraficas']);
+    Route::post('/reporte-consejero/grafica', [CitaConsejeroController::class, 'getReporteGraficas']);
     Route::post('/reportes/generar-reporte-juez', [ReportesController::class, 'generarReporteJuez']);
+    Route::post('/reportes/generar-reporte-consejero', [ReportesController::class, 'generarReporteConsejero']);
+
     Route::post('/reportes/exportar-reporte-citas-juez', [ReportesController::class, 'exportarExcelJuez']);
     
 
