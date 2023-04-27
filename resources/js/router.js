@@ -42,6 +42,8 @@ import EditarHorarioConsejero from './pages/consejeros/EditarHorarioConsejero.vu
 import CitasDelDiaConsejero from './pages/consejeros/CitasDelDiaConsejero.vue'
 import ConfirmacionCitaConsejero from './pages/consejeros/ConfirmacionCitaConsejero.vue'
 import ConfirmacionCitaBuscadaConsejero from './pages/consejeros/ConfirmacionCitaBuscadaConsejero.vue'
+import ReporteGraficasConsejero from './pages/consejeros/ReporteGraficasConsejero.vue'
+import ReportesConsejero from './pages/consejeros/ReportesConsejero.vue'
 
 const routes = [
     {
@@ -273,7 +275,7 @@ const routes = [
         }
     },
     {
-        path: '/agregar-horario-consejo',
+        path: '/agregar-horario-consejero',
         name: 'AgregarHorarioConsejo',
         component: AgregarHorarioConsejo,
         meta: {
@@ -316,6 +318,22 @@ const routes = [
         path: '/confirmacion-cita-buscada-consejero',
         name: 'ConfirmacionCitaBuscadaConsejero',
         component: ConfirmacionCitaBuscadaConsejero,
+    },
+    {
+        path: '/reporte-graficas-consejero',
+        name: 'ReporteGraficasConsejero',
+        component: ReporteGraficasConsejero,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/reportes-consejero',
+        name: 'ReportesConsejero',
+        component: ReportesConsejero,
+        meta: {
+            requiresAuth: true
+        }
     },
 ]
 

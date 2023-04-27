@@ -6,6 +6,7 @@ use PDF;
 use App\Models\Cita;
 
 use App\Models\CitaJuzgado;
+use App\Models\CitaConsejero;
 
 use Illuminate\Http\Request;
 use App\Exports\ReporteExport;
@@ -486,6 +487,72 @@ class ReportesController extends Controller
                 $objectCita->horario = $cita->hora_cita;
                 $objectCita->sexo = $cita->usuario->sexo;
                 $objectCita->expediente = $cita->expediente;
+                $objectCita->asunto = $cita->asunto;
+
+                switch($cita->status)
+                {
+                    case 1:
+                        $objectCita->estatus = 'Reservada';
+                        break;
+                    case 2:
+                        $objectCita->estatus = 'Confirmada';
+                        break;
+                    case 3: 
+                        $objectCita->estatus = 'Cancelada';
+                }
+
+                array_push($arrayReporte,$objectCita);
+                $contador++;
+            }
+
+            return response()->json([
+                "status" => "ok",
+                "message" => "Reporte obtenido con exito",
+                "reporte" => $arrayReporte
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener el reporte de citas",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+    }
+
+    public function generarReporteConsejero(Request $request)
+    {
+        try {
+            if ($request->estatus == 4) {
+                $citas = CitaConsejero::where('fecha_cita', '>=', $request->fecha_inicio)
+                                    ->where('fecha_cita', '<=', $request->fecha_final)
+                                    ->orderBy('fecha_cita', 'asc')
+                                    ->orderBy('hora_cita', 'asc')
+                                    ->get();
+            } else {
+                $citas = CitaConsejero::where('fecha_cita', '>=', $request->fecha_inicio)
+                                    ->where('fecha_cita', '<=', $request->fecha_final)
+                                    ->where('status', $request->estatus)
+                                    ->orderBy('fecha_cita', 'asc')
+                                    ->orderBy('hora_cita', 'asc')
+                                    ->get();
+            }
+
+            $arrayReporte = array();
+            $contador = 0;
+            foreach($citas as $cita)
+            {
+                $objectCita = new \stdClass();
+                $objectCita->id = $cita->id;
+                $objectCita->folio = $cita->folio;
+                $objectCita->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
+                $objectCita->correo = $cita->usuario->email;
+                $objectCita->telefono = $cita->usuario->telefono;
+                $objectCita->fecha = $cita->fecha_cita;
+                $objectCita->horario = $cita->hora_cita;
+                $objectCita->sexo = $cita->usuario->sexo;
+                // $objectCita->expediente = $cita->expediente;
                 $objectCita->asunto = $cita->asunto;
 
                 switch($cita->status)
