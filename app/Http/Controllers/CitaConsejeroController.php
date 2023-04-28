@@ -86,7 +86,7 @@ class CitaConsejeroController extends Controller
                 $cita->fecha_cita = $request->dia_cita;
                 $cita->fecha_formateada = $request->fecha_formateada;
                 $cita->hora_cita = $request->horario;
-                // $cita->expediente = $request->expediente;
+                $cita->expediente = $request->expediente;
                 $cita->asunto = $request->asunto;
                 $cita->usuario_id = $usuario->id;
                 $cita->consejero_id = $consejero->id;
@@ -118,7 +118,7 @@ class CitaConsejeroController extends Controller
                 $cita->fecha_cita = $request->dia_cita;
                 $cita->fecha_formateada = $request->fecha_formateada;
                 $cita->hora_cita = $request->horario;
-                // $cita->expediente = $request->expediente;
+                $cita->expediente = $request->expediente;
                 $cita->asunto = $request->asunto;
                 $cita->usuario_id = $usuario->id;
                 $cita->consejero_id = $consejero->id;
@@ -223,9 +223,9 @@ class CitaConsejeroController extends Controller
                 $objectCita->fecha_formateada = $cita->fecha_formateada;
                 $objectCita->hora_cita = $cita->hora_cita;
                 $objectCita->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
-                $objectCita->curp = $cita->curp;
+                $objectCita->curp = $cita->usuario->curp;
                 $objectCita->status = $cita->status;
-                // $objectCita->expediente = $cita->expediente;
+                $objectCita->expediente = $cita->expediente;
                 $objectCita->asunto = $cita->asunto;
 
                 if($cita->status == 1){
@@ -277,7 +277,7 @@ class CitaConsejeroController extends Controller
                 $objectCita->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
                 $objectCita->curp = $cita->curp;
                 $objectCita->status = $cita->status;
-                // $objectCita->expediente = $cita->expediente;
+                $objectCita->expediente = $cita->expediente;
                 $objectCita->asunto = $cita->asunto;
 
                 if($cita->status == 1){
@@ -350,9 +350,9 @@ class CitaConsejeroController extends Controller
                 $objectCita->fecha_formateada = $cita->fecha_formateada;
                 $objectCita->hora_cita = $cita->hora_cita;
                 $objectCita->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
-                $objectCita->curp = $cita->curp;
+                $objectCita->curp = $cita->usuario->curp;
                 $objectCita->status = $cita->status;
-                // $objectCita->expediente = $cita->expediente;
+                $objectCita->expediente = $cita->expediente;
                 $objectCita->asunto = $cita->asunto;
 
                 if($cita->status == 1){
@@ -556,5 +556,170 @@ class CitaConsejeroController extends Controller
                 "line" => $th->getLine(),
             ], 200);
         }
+    }
+    public function getReporteGraficasConsejero(Request $request)
+    {
+        $days = Carbon::createFromDate(2023, $request->mes, 1)->daysInMonth;
+        $first = Carbon::createFromDate(2023, $request->mes, 1);
+        $last = Carbon::createFromDate(2023, $request->mes, $days);
+        $period = CarbonPeriod::create($first, $last);
+
+        $datefirst = $first->format('Y-m-d');
+        $datelast = $last->format('Y-m-d');
+
+
+        if($request->consejero_id == 9999){
+                 $reservadas = CitaConsejero::where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 1)
+                                ->count();
+
+                $atendidas = CitaConsejero::where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 2)
+                                ->count();
+
+                $canceladas = CitaConsejero::where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 3)
+                                ->count();
+
+                $total = CitaConsejero::where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->count();
+
+                                
+                $consejeros = Consejero::all();                
+               
+                $array_consejeros = array();
+                // $cont = 1;
+                foreach ($consejeros as $consejero) 
+                {
+                    $id = $consejero->id;
+                    // $cont = $consejero->juzgado_id;
+                    $apellidom = $consejero->apellido_materno;
+                    $apellidop = $consejero->apellido_paterno;
+                    $object = new \stdClass();
+                    $object->id = $consejero->id;
+                    $object->nombre = $consejero->nombre.' '.$apellidop.' '.$apellidom;
+                    $reservadas1 = CitaConsejero::where('consejero_id', $id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 1)
+                                    ->count();
+
+                    $atendidas1 = CitaConsejero::where('consejero_id', $id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 2)
+                                    ->count();
+
+                    $canceladas1 = CitaConsejero::where('consejero_id', $id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 3)
+                                    ->count();
+
+                    $total1 = CitaConsejero::where('consejero_id', $id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->count();
+
+                                    // $cont++;
+                    $object->pen = $reservadas1;
+                    $object->aten = $atendidas1;
+                    $object->cance = $canceladas1;
+                    $object->tot = $total1;
+                    array_push($array_consejeros, $object);
+                    }
+        }else{
+                $reservadas = CitaConsejero::where('consejero_id', $request->consejero_id)
+                                ->where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 1)
+                                ->count();
+
+                $atendidas = CitaConsejero::where('consejero_id', $request->consejero_id)
+                                ->where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 2)
+                                ->count();
+
+                $canceladas = CitaConsejero::where('consejero_id', $request->consejero_id)
+                                ->where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->where('status', 3)
+                                ->count();
+
+                $total = CitaConsejero::where('consejero_id', $request->consejero_id)
+                                ->where('fecha_cita', '>=', $datefirst)
+                                ->where('fecha_cita', '<=', $datelast)
+                                ->count();
+
+                
+                $consejeros = Consejero::where('id', $request->consejero_id)->get();                
+                
+
+                // $id = $request->juzgado_id;
+                $array_consejeros = array();
+                $cont = 1;
+                foreach ($consejeros as $consejero) 
+                {
+                    $id = $consejero->id;
+                    $apellidom = $consejero->apellido_materno;
+                    $apellidop = $consejero->apellido_paterno;
+                    $object = new \stdClass();
+                    $object->id = $cont;
+                    $object->nombre = $consejero->nombre.' '.$apellidop.' '.$apellidom;
+                    $reservadas1 = CitaConsejero::where('consejero_id', $request->consejero_id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 1)
+                                    ->count();
+
+                    $atendidas1 = CitaConsejero::where('consejero_id', $request->consejero_id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 2)
+                                    ->count();
+
+                    $canceladas1 = CitaConsejero::where('consejero_id', $request->consejero_id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->where('status', 3)
+                                    ->count();
+
+                    $total1 = CitaConsejero::where('consejero_id', $request->consejero_id)
+                                    ->where('fecha_cita', '>=', $datefirst)
+                                    ->where('fecha_cita', '<=', $datelast)
+                                    ->count();
+
+                                    $cont++;
+                                    // $id++;
+                    $object->pen = $reservadas1;
+                    $object->aten = $atendidas1;
+                    $object->cance = $canceladas1;
+                    $object->tot = $total1;
+                    array_push($array_consejeros, $object);
+                    }
+        }
+
+
+        
+        $objectReporte = new \stdClass();
+        $objectReporte->reservadas = $reservadas;
+        $objectReporte->atendidas = $atendidas;
+        $objectReporte->canceladas = $canceladas;
+        $objectReporte->total = $total;
+        $objectReporte->porcent_1 = $total > 0 ? ($reservadas * 100) / $total : 0;
+        $objectReporte->porcent_2 = $total > 0 ? ($atendidas * 100) / $total : 0;
+        $objectReporte->porcent_3 = $total > 0 ? ($canceladas * 100) / $total : 0;
+        $objectReporte->tabla = $array_consejeros;
+
+        return response()->json([
+            "status" => "ok",
+            "message" => "Reporte obtenido con éxito",
+            "reporte" => $objectReporte
+        ], 200);
     }
 }

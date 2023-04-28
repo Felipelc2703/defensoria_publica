@@ -75,7 +75,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
     Route::post('/reportes/generar-reporte-consejero', [ReportesController::class, 'generarReporteConsejero']);
 
     Route::post('/reportes/exportar-reporte-citas-juez', [ReportesController::class, 'exportarExcelJuez']);
-    
+    Route::post('/reportes/exportar-reporte-citas-consejero', [ReportesController::class, 'exportarExcelConsejero']);
+
 
     /**
      * RUTAS UTILIZADAS POR DEFENSORIA PUBLICA
@@ -166,6 +167,8 @@ Route::group(['middleware' => 'auth:sanctum'], function ($router) {
      Route::get('/catalogos/citas-del-dia-consejero', [CitaConsejeroController::class, 'getCitasDelDiaConsejero']);
      Route::post('/citas/citas-del-dia-consejero-buscada', [CitaConsejeroController::class, 'selectDiaCitaConsejero']);
      Route::post('/citas/guardar-cambios-cita-consejero', [CitaConsejeroController::class, 'guardarCambios']);
+     Route::post('/reporte/grafica-consejero', [CitaConsejeroController::class, 'getReporteGraficasConsejero']);
+
 
 }); 
 

@@ -218,13 +218,13 @@
                                                                             :rules="sexoRules"
                                                                         ></v-select>
                                                                     </div>
-                                                                    <!-- <div class="col-sm-6 col-12">
+                                                                    <div class="col-sm-6 col-12">
                                                                         <v-text-field
                                                                             v-model="cita.expediente"
                                                                             label="Expediente"
-                                                                            :rules="expedienteRules"
+                                                                            
                                                                         ></v-text-field>
-                                                                    </div> -->
+                                                                    </div>
                                                                 </div>
                                                                 <v-textarea rows="3" class="mt-4" label="Indique el asunto de la cita" :rules="asuntoRules" v-model="cita.asunto">{{cita.asunto}}</v-textarea>
                                                             </template>
@@ -343,7 +343,7 @@
                     dia: '',
                     horario: '',
                     curp:'',
-                    // expediente: '',
+                    expediente: '',
                     asunto: '',
                 },
                 nombreRules: [

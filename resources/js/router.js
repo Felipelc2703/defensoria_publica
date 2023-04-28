@@ -44,6 +44,7 @@ import ConfirmacionCitaConsejero from './pages/consejeros/ConfirmacionCitaConsej
 import ConfirmacionCitaBuscadaConsejero from './pages/consejeros/ConfirmacionCitaBuscadaConsejero.vue'
 import ReporteGraficasConsejero from './pages/consejeros/ReporteGraficasConsejero.vue'
 import ReportesConsejero from './pages/consejeros/ReportesConsejero.vue'
+import ReportesConsejeros from './pages/consejeros/ReportesConsejeros.vue'
 
 const routes = [
     {
@@ -331,6 +332,14 @@ const routes = [
         path: '/reportes-consejero',
         name: 'ReportesConsejero',
         component: ReportesConsejero,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/reportes-consejeros',
+        name: 'ReportesConsejeros',
+        component: ReportesConsejeros,
         meta: {
             requiresAuth: true
         }

@@ -184,7 +184,7 @@
     import { errorSweetAlert, successSweetAlert } from "../../helpers/sweetAlertGlobals"
 
     export default defineComponent({
-        name:'reportes-juez',
+        name:'reportes-consejero',
         data() {
             return {
                 loading: false,
@@ -271,7 +271,7 @@
             async exportarReporte()
             {
 
-                let response = await axios.post('/api/reportes/exportar-reporte-citas-juez',this.export,{
+                let response = await axios.post('/api/reportes/exportar-reporte-citas-consejero',this.export,{
                     responseType: "blob",
                 }).then((response)=>{    
                     
