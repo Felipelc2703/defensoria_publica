@@ -604,4 +604,27 @@ class ReportesController extends Controller
         // ], 500);
         return (new ReporteJuezExport($citas,$contador))->download('reporte.xlsx');
     }
+
+    public function exportarExcelConsejero(Request $request)
+    {
+        return response()->json([
+            "status" => "ok",
+            "message" => $request->citas,
+            // "reporte" => $citas
+        ], 500);
+        $citas = $request->citas;
+
+        $contador = 0;
+        foreach($citas as $cita)
+        {
+            $contador++;
+        }
+
+        // return response()->json([
+        //     "status" => "ok",
+        //     "message" => "Reporte obtenido con exito",
+        //     "reporte" => $citas
+        // ], 500);
+        return (new ReporteJuezExport($citas,$contador))->download('reporte.xlsx');
+    }
 }

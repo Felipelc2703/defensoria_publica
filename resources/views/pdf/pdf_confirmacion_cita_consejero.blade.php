@@ -78,6 +78,8 @@
     <p class="texto-cita">Estimado(a) <span class="texto-nombre">{{$citaAgendada->nombre}}</span> su cita con el Consejero <span class="texto-tramite">{{$citaAgendada->consejero}}</span> ha quedado agendada para el <span class="texto-fecha">{{$citaAgendada->fecha}}</span>, a las <span class="texto-fecha">{{$citaAgendada->hora}}</span> horas.</p>
     <p class="texto-cita">Por lo que reiteramos debe presentarse en <span class="centro-atencion-cita">Ciudad Judicial</span> ubicado en <span class="direccion-cita">Periférico Ecológico Arco Sur No. 4000 San Andrés Cholula, Puebla. Reserva Territorial Atlixcáyotl</span>, en la fecha y hora antes mencionada.</p>
     <br>
+    {{--  <p>En caso de no asistir, favor de cancelar su cita.</p>  --}}
+    {{--  <br>  --}}
     <div class="first-line"></div>
     <p>Le recordamos que el <span class="texto-folio">folio</span> de su cita es:</p>
     <br>

@@ -5,9 +5,9 @@
         </div>
 
         <div class="row justify-content-between m-auto">
-            <div class="col-md-4 col-12">
+            <div class="col-md-10 mt-6 col-12">
                 <v-form ref="formBuscarDia" class="row justify-content-between">
-                    <div class="col-12">
+                    <div class="col-md-4 col-12">
                         <v-text-field
                             v-model="ver.dia"
                             variant="solo" 
@@ -16,7 +16,7 @@
                             :rules="fechaB"
                         ></v-text-field>   
                     </div>
-                    <div class="col-12 text-center">
+                    <div class="col-md-6 col-12 text-center">
                         <v-btn
                             variant="flat"
                             color="#6a73a0"
@@ -28,7 +28,7 @@
                     </div>
                 </v-form>           
             </div>
-            <div class="col-md-8 col-12 mt-10 text-right">
+            <div class="col-md-12 col-12 mt-10 text-right">
                 <div class="buscador-data-table mt-8">
                     <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
                 </div>
@@ -46,7 +46,7 @@
                             <th class="titulo-columna">Fecha</th>
                             <th class="titulo-columna">Hora</th>
                             <th class="titulo-columna">Curp</th>
-                            <!-- <th class="titulo-columna">Expediente</th> -->
+                            <th class="titulo-columna">Expediente</th>
                             <th class="titulo-columna">Estatus</th>
                             <th class="titulo-columna">Editar</th>                            
                         </tr>
@@ -79,9 +79,9 @@
                             <td class="texto-campo-table">
                                 {{citas.curp}}
                             </td>
-                            <!-- <td class="texto-campo-table">
+                            <td class="texto-campo-table">
                                 {{citas.expediente}}
-                            </td> -->
+                            </td>
                             <td class="texto-campo-table">
                                 {{citas.statusnom}}
                             </td>
@@ -165,7 +165,7 @@
 
     <v-dialog
         v-model="dialogEditar"
-        max-width="800px"
+        max-width="650px"
         persistent
         >
         <v-card>
@@ -178,35 +178,42 @@
                     <v-row>
                         <v-form class="col-12" ref="formCambioEstatus" >
                             
-                            <div class="col-md-6 col-12">
-                                    <label class="label">Estatus</label>
-                                    <v-radio-group inline v-model="cita.status">
-                                        <v-radio value='1'>
-                                            <template v-slot:label>
-                                                <div><strong class="texto-custom-radio">No atendida</strong></div>
-                                            </template>
-                                        </v-radio>
-                                        <v-radio value='2'>
-                                            <template v-slot:label>
-                                                <div><strong class="texto-custom-radio">Atendida</strong></div>
-                                            </template>
-                                        </v-radio>
-                                        <v-radio  value='3'>
-                                            <template v-slot:label>
-                                                <div><strong class="texto-custom-radio">Cancelada</strong></div>
-                                            </template>
-                                        </v-radio>
-                                    </v-radio-group>
-                                
+                            <div class="col-md-12 col-12">
+                                    <div class="col-md-12 col-12 text-center">
+                                        <label class="label">Estatus</label>
+                                    </div>
+                                    <div class="col-md-12 col-12">
+                                        <v-radio-group inline v-model="cita.status">
+                                            
+                                            <v-radio value='1'>
+                                                <template v-slot:label>
+                                                    <div class="col-sm"><strong class="texto-custom-radio">No atendida</strong></div>
+                                                </template>
+                                            </v-radio>
+                                                                                
+                                            <v-radio value='2'>
+                                                <template v-slot:label>
+                                                    <div class="col-sm"><strong class="texto-custom-radio">Atendida</strong></div>
+                                                </template>
+                                            </v-radio>
+                                            <v-radio  value='3'>
+                                                <template v-slot:label>
+                                                    <div class="col-sm"><strong class="texto-custom-radio">Cancelada</strong></div>
+                                                </template>
+                                            </v-radio>
+                                        </v-radio-group>
+                                    </div> 
+                                                                    
                             </div>
-                        <div class="col-md-6 col-12" v-if="cita.status == '3'">
-                            <label class="black-label">¿Por que cancelas la cita?</label>
-                            <v-text-field
-                                v-model="cita.motivo"
-                                
-                            >
-                        </v-text-field>
-                        </div>
+                            <div class="col-md-12 col-12" v-if="cita.status == '3'">
+                                <label class="black-label">¿Por que cancelas la cita?</label>
+                                <v-textarea
+                                    v-model="cita.motivo"
+                                    rows="2"
+                                    
+                                >
+                                </v-textarea>
+                            </div>
                                 
                         </v-form>
                     </v-row>

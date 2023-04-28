@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('fecha_cita');
             $table->string('fecha_formateada');
             $table->time('hora_cita');
-            // $table->string('expediente');
+            $table->string('expediente')->nullable();
             $table->string('asunto');
             $table->integer('status')->default(1);
             $table->string('motivo')->nullable();
