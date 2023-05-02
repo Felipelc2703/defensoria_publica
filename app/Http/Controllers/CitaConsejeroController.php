@@ -275,7 +275,7 @@ class CitaConsejeroController extends Controller
                 $objectCita->fecha_formateada = $cita->fecha_formateada;
                 $objectCita->hora_cita = $cita->hora_cita;
                 $objectCita->nombre = $cita->usuario->nombre . ' ' . $cita->usuario->apellido_paterno . ' ' . $cita->usuario->apellido_materno;
-                $objectCita->curp = $cita->curp;
+                $objectCita->curp = $cita->usuario->curp;
                 $objectCita->status = $cita->status;
                 $objectCita->expediente = $cita->expediente;
                 $objectCita->asunto = $cita->asunto;
