@@ -206,7 +206,7 @@
                                                                     
                             </div>
                             <div class="col-md-12 col-12" v-if="cita.status == '3'">
-                                <label class="black-label">¿Por que cancelas la cita?</label>
+                                <label class="black-label">¿Por qué cancelas la cita?</label>
                                 <v-textarea
                                     v-model="cita.motivo"
                                     rows="2"

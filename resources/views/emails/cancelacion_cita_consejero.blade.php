@@ -61,7 +61,7 @@
 <body>
     <h5 class="titulo-confirmacion">Cancelación de Cita</h5>
     <p><span class="formato-texto">Información Importante</span></p>
-    < class="texto-cita">Estimado(a) <span class="texto-nombre">{{$cita->nombre}}</span> su cita con fecha {{$cita->fecha}}, a las {{$cita->hora}} horas, ha sido cancelada  por el motivo: <span class="centro-atencion-cita">{{$cita->motivo}}</span>, en la fecha y hora antes mencionada.</p>
+    <p>< class="texto-cita">Estimado(a) <span class="texto-nombre">{{$cita->nombre}}</span> su cita con fecha {{$cita->fecha}}, a las {{$cita->hora}} horas, ha sido cancelada  por el motivo: <span class="centro-atencion-cita">{{$cita->motivo}}</span>, en la fecha y hora antes mencionada.</p>
     <br>
     <p>Favor de reagendar la cita.</p>
     <br>
