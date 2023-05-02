@@ -11,6 +11,7 @@ use App\Models\CitaConsejero;
 use Illuminate\Http\Request;
 use App\Exports\ReporteExport;
 use App\Exports\ReporteJuezExport;
+use App\Exports\ReporteConsejeroExport;
 
 class ReportesController extends Controller
 {
@@ -552,7 +553,7 @@ class ReportesController extends Controller
                 $objectCita->fecha = $cita->fecha_cita;
                 $objectCita->horario = $cita->hora_cita;
                 $objectCita->sexo = $cita->usuario->sexo;
-                // $objectCita->expediente = $cita->expediente;
+                $objectCita->expediente = $cita->expediente;
                 $objectCita->asunto = $cita->asunto;
 
                 switch($cita->status)
@@ -607,11 +608,11 @@ class ReportesController extends Controller
 
     public function exportarExcelConsejero(Request $request)
     {
-        return response()->json([
-            "status" => "ok",
-            "message" => $request->citas,
-            // "reporte" => $citas
-        ], 500);
+        // return response()->json([
+        //     "status" => "ok",
+        //     "message" => $request->citas,
+        //     // "reporte" => $citas
+        // ], 500);
         $citas = $request->citas;
 
         $contador = 0;
@@ -625,6 +626,6 @@ class ReportesController extends Controller
         //     "message" => "Reporte obtenido con exito",
         //     "reporte" => $citas
         // ], 500);
-        return (new ReporteJuezExport($citas,$contador))->download('reporte.xlsx');
+        return (new ReporteConsejeroExport($citas,$contador))->download('reporte.xlsx');
     }
 }
