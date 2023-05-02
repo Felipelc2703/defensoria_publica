@@ -370,17 +370,17 @@
                 rules:{
                     email: value => {
                         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                        return pattern.test(value) || 'El campo no contiene un correo electrónico valido'
+                        return pattern.test(value) || 'El campo no contiene un correo electrónico válido'
                     },
 
                     tel: value =>{
                         const pattern = (/^[0-9]{10}$/)
-                        return pattern.test(value) || 'El campo no contiene un número valido'
+                        return pattern.test(value) || 'El campo no contiene un número válido'
 
                     },
                     curp: value =>{
                         const pattern = /^([A-Z&]|[a-z&]{1})([AEIOU]|[aeiou]{1})([A-Z&]|[a-z&]{1})([A-Z&]|[a-z&]{1})([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])([HM]|[hm]{1})([AS|as|BC|bc|BS|bs|CC|cc|CS|cs|CH|ch|CL|cl|CM|cm|DF|df|DG|dg|GT|gt|GR|gr|HG|hg|JC|jc|MC|mc|MN|mn|MS|ms|NT|nt|NL|nl|OC|oc|PL|pl|QT|qt|QR|qr|SP|sp|SL|sl|SR|sr|TC|tc|TS|ts|TL|tl|VZ|vz|YN|yn|ZS|zs|NE|ne]{2})([^A|a|E|e|I|i|O|o|U|u]{1})([^A|a|E|e|I|i|O|o|U|u]{1})([^A|a|E|e|I|i|O|o|U|u]{1})([A-Z&]|[a-z&]|[0-9]{1})([0-9]{1})$/
-                        return pattern.test(value) || 'El campo no contiene una curp valida'
+                        return pattern.test(value) || 'El campo no contiene una curp válida'
 
                     },
                 },
