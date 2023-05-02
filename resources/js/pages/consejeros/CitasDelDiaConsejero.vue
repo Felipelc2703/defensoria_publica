@@ -16,7 +16,7 @@
                             :rules="fechaB"
                         ></v-text-field>   
                     </div>
-                    <div class="col-md-6 col-12 text-center">
+                    <div class="col-md-8 col-12 mt-3">
                         <v-btn
                             variant="flat"
                             color="#6a73a0"
@@ -28,8 +28,8 @@
                     </div>
                 </v-form>           
             </div>
-            <div class="col-md-12 col-12 mt-10 text-right">
-                <div class="buscador-data-table mt-8">
+            <div class="col-md-12 col-12 mt-2 text-right">
+                <div class="buscador-data-table mt-4">
                     <input type="search" v-model="buscar" placeholder="Buscar..." autocomplete="off">
                 </div>
             </div>

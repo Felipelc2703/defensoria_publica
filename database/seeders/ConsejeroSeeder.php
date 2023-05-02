@@ -16,21 +16,27 @@ class ConsejeroSeeder extends Seeder
     public function run()
     {
         DB::table('consejeros')->insert([
-            'nombre' => 'Jose',
-            'apellido_paterno' => 'Ruiz',
-            'apellido_materno' => 'Diaz',
+            'nombre' => 'Rosalva Elena',
+            'apellido_paterno' => 'Zárate',
+            'apellido_materno' => 'Herrera',
         ]);
 
         DB::table('consejeros')->insert([
-            'nombre' => 'Martha',
-            'apellido_paterno' => 'Nacaspaca',
-            'apellido_materno' => 'Ortiz',
+            'nombre' => 'Vania Giovanna',
+            'apellido_paterno' => 'Peñasco',
+            'apellido_materno' => 'Sosa',
         ]);
 
         DB::table('consejeros')->insert([
-            'nombre' => 'Marco',
-            'apellido_paterno' => 'Jimenez',
-            'apellido_materno' => 'Luna',
+            'nombre' => 'Joel',
+            'apellido_paterno' => 'Sánchez',
+            'apellido_materno' => 'Roldán',
+        ]);
+
+        DB::table('consejeros')->insert([
+            'nombre' => 'María Teresa',
+            'apellido_paterno' => 'Osorio',
+            'apellido_materno' => 'Cuellar',
         ]);
     }
 }
