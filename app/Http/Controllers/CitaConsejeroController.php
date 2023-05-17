@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use PDF;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
-use App\Models\Consejero;
+use App\Models\User;
 use App\Models\Horario;
 use App\Models\Usuario;
-use App\Models\CitaConsejero;
+use Carbon\CarbonPeriod;
+use App\Models\Consejero;
 use Illuminate\Http\Request;
-use App\Mail\ConfirmacionCitaConsejero;
-use App\Mail\CancelarCitaConsejero;
+use App\Models\CitaConsejero;
 use Illuminate\Support\Facades\DB;
+use App\Mail\CancelarCitaConsejero;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
+use App\Mail\ConfirmacionCitaConsejero;
 
 
 class CitaConsejeroController extends Controller
@@ -721,5 +723,65 @@ class CitaConsejeroController extends Controller
             "message" => "Reporte obtenido con éxito",
             "reporte" => $objectReporte
         ], 200);
+    }
+
+    public function getAgenda(Request $request)
+    {
+        try {
+            // $user = User::find($request->consejero_id);
+            $current_date = Carbon::now();
+
+            $citas = CitaConsejero::where('consejero_id', $request->consejero_id)->get();
+
+            $array_citas = array();
+            foreach ($citas as $cita) {
+                // $fecha_hora_cita = new Carbon($cita->fecha_cita . ' ' . $cita->hora_cita);
+                // $hora_fin_cita = $fecha_hora_cita->addMinutes($horario->dia->duracion);
+
+                $objectEvento = new \stdClass();
+                $objectEvento->cita_id = $cita->id;
+
+                // Variables para fullcalendar
+                $objectEvento->title = 'Cita ' . $cita->folio;
+                $objectEvento->start = $cita->fecha_cita . ' ' . $cita->hora_cita;
+                $objectEvento->display = 'block';
+                $objectEvento->allDay = 0;
+                $objectEvento->backgroundColor = '#c4f45d';
+                $objectEvento->textColor = '#000000';
+                $objectEvento->borderColor = "#c4f45d";
+
+                // Variables para modal editar
+                $objectEvento->fecha = $cita->fecha_cita;
+                $objectEvento->all_day = 0;
+                $objectEvento->hora_inicio = $cita->hora_cita;
+                $objectEvento->hora_fin = '';
+                $objectEvento->descripcion = $cita->asunto;
+                $objectEvento->evento_externo = 1;
+                $objectEvento->tipo_externo = 1;
+
+                array_push($array_citas, $objectEvento);
+            }
+
+            if ($request->fecha) {
+                $citas_dia = CitaConsejero::where('fecha_cita', $request->fecha)->where('consejero_id', $request->consejero_id)->get();
+            } else {
+                $citas_dia = CitaConsejero::where('fecha_cita', $current_date->toDateString())->where('consejero_id', $request->consejero_id)->get();
+            }
+
+            return response()->json([
+                "status" => "ok",
+                "message" => "Eventos del calendario obtenidos con éxito.",
+                "citas" => $array_citas,
+                "citas_dia" => $citas_dia,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener los eventos del calendario.",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
     }
 }

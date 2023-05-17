@@ -9,4 +9,8 @@ class Horario extends Model
 {
     use HasFactory;
 
+    public function dia()
+    {
+        return $this->belongsTo(Dia::class);
+    }
 }

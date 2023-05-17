@@ -1,18 +1,147 @@
 @use '../base/variables' as v;
 @use '../base/mixins' as m;
 
+// .conteiner-seg {
+//     @include m.tablet {
+//         @include m.grid(2, 0rem);
+//         min-height: 100vh;
+//     }
+//     .imagen {
+//         background-image: url(../../public/images/background.png);
+//         background-size: cover;
+//         background-position: center center;
+//         height: 18rem;
+//         @include m.tablet {
+//             height: auto;
+//         }
+//     }
+//     .app {
+//         width: 100%;
+//         margin: 0 auto;
+//         display: flex;
+//         flex-direction: column;
+//         justify-content:center;
+//         align-items:center;
+//         .form-login{
+//             text-align: center;
+//             min-width: 25rem;  
+//             max-width: 40rem;   
+//             & h1 {
+//                 font-weight: 700;
+//             }
+//             & p{
+//                 font-size: 2.1rem;
+//             }   
+//             & span {
+//                 font-weight: 700;
+//             }
+//             & .text-alert {
+//                 font-size: 1.8rem;
+//                 color: #ffff00;
+                
+//             }
+//         }
+//         input {
+//             padding:.8rem;
+//             display:block;
+//             width: 100%;
+//             background-color: v.$blanco;
+//             border: 1px solid v.$gris_g3;
+//             border-radius: .4rem;
+//             margin-bottom: 1.2rem;
+//             outline: none;
+//             text-align: center;
+//         }
+//         ::placeholder {
+//             color: v.$gris_g3;
+//         }
+//     }
+// }
+// /*texbox 
+// ---------------------------------------------------*/
+// .inner-addon {
+//     position: relative;
+// }
+// .inner-addon .fa {
+//     position: absolute;
+//     padding: 10px;
+//     pointer-events: none;
+//     color: v.$gris_g1;  
+// }
+// .left-addon .fa  { 
+//     left:  0px; 
+// }
+// .left-addon input  { 
+//     padding-left:  30px; 
+// }
+
+// .btn {
+//     background-color: v.$verde_v2;
+//     margin-top: 2rem;
+//     display: block;
+//     width: 100%;
+//     text-align: center;
+//     padding: 1rem 5rem;
+//     color: v.$gris_g1;
+//     text-transform: uppercase;
+//     border: none;
+//     font-size: 0.7rem;
+//     font-weight:500;
+//     margin: 0 auto;
+//     @include m.telefono {
+//         width: auto;
+//     }
+//     &:hover {
+//         cursor: pointer;
+//         color: v.$morado_m1;
+//     }
+// }
+
+// .titulo-bienvenido {
+//     color: white;
+// }
+// .form-control-lg{
+//     font-size: 0.8rem;
+// }
+
 .conteiner-seg {
     @include m.tablet {
         @include m.grid(2, 0rem);
-        min-height: 100vh;
+    }
+    .imagen::before {
+        display: none;
+        @include m.tablet {
+            display: block;
+            content: "";
+            background-color: v.$verde_v2;
+            width: .55rem;
+            height: 7.5rem;
+            position: absolute;
+            right: 0rem;
+        }
+    }
+    .imagen::after {
+        display: none;
+        @include m.tablet {
+            display: block;
+            content: "";
+            background-color: v.$morado_m2;
+            width: .55rem;
+            height: 7.5rem;
+            position: absolute;
+            right: -.57rem;
+        }
     }
     .imagen {
-        background-image: url(../../public/images/background.png);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url(../../public/images/image-login.jpg);
         background-size: cover;
         background-position: center center;
-        height: 18rem;
+        height: 9rem;
         @include m.tablet {
-            height: auto;
+            height: 100vh;
         }
     }
     .app {
@@ -20,14 +149,15 @@
         margin: 0 auto;
         display: flex;
         flex-direction: column;
-        justify-content:center;
         align-items:center;
         .form-login{
+            margin-top: 4.5rem;
             text-align: center;
-            min-width: 25rem;  
-            max-width: 40rem;   
+            min-width: 10rem;
+            max-width: 15rem;
             & h1 {
                 font-weight: 700;
+                font-size: 1.5rem;
             }
             & p{
                 font-size: 2.1rem;
@@ -38,7 +168,6 @@
             & .text-alert {
                 font-size: 1.8rem;
                 color: #ffff00;
-                
             }
         }
         input {
@@ -56,50 +185,92 @@
             color: v.$gris_g3;
         }
     }
+
+    .btn {
+        background-color: v.$verde_v2;
+        margin-top: 2rem;
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 1rem 5rem;
+        color: v.$gris_g1;
+        text-transform: uppercase;
+        border: none;
+        font-size: 1.7rem;
+        font-weight:500;
+        margin: 0 auto;
+        @include m.telefono {
+            width: auto;
+        }
+        &:hover {
+            cursor: pointer;
+            color: v.$morado_m1;
+        }
+    }
+    
+    .titulo-bienvenido {
+        color: black;
+    }
+    
+    .custom-border-login-1 {
+        border-style: none none solid none;
+        border-color: v.$morado_m2;
+        border-width: .5rem;
+        display: block;
+        @include m.tablet {
+            display: none;
+        }
+    }
+    
+    .custom-border-login-2 {
+        border-style: none none solid none;
+        border-color: v.$verde_v2;
+        border-width: .5rem;
+        display: block;
+        @include m.tablet {
+            display: none;
+        }
+    }
 }
-/*texbox 
----------------------------------------------------*/
-.inner-addon {
+
+.principal-class {
+    display: flex;
+    // width: 100%;
+}
+
+.div-custom-input-login {
     position: relative;
+    background-color: v.$morado_m2;
+    height: 2rem;
+    width: 2.2rem;
+    // width: 25%;
 }
-.inner-addon .fa {
+
+.div-custom-input-login img {
     position: absolute;
-    padding: 10px;
-    pointer-events: none;
-    color: v.$gris_g1;  
-}
-.left-addon .fa  { 
-    left:  0px; 
-}
-.left-addon input  { 
-    padding-left:  30px; 
+    height: 1.4rem;
+    width: 1.4rem;
+    top: 15%;
+    left: 20%;
 }
 
-.btn {
-    background-color: v.$verde_v2;
-    margin-top: 2rem;
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 1rem 5rem;
-    color: v.$gris_g1;
+.custom-input-login {
+    height: 2rem!important;
+    width: 100%!important;
+    font-size: .8rem!important;
+    background-color: v.$gris_g5!important;
+    border-radius: .15rem!important;
+}
+
+.btn-login {
     text-transform: uppercase;
-    border: none;
-    font-size: 0.7rem;
-    font-weight:500;
-    margin: 0 auto;
-    @include m.telefono {
-        width: auto;
-    }
-    &:hover {
-        cursor: pointer;
-        color: v.$morado_m1;
-    }
+    width: 8rem;
+    height: 2.5rem;
+    font-size: 1rem;
+    background-color: v.$verde_v2;
 }
 
-.titulo-bienvenido {
-    color: white;
-}
-.form-control-lg{
-    font-size: 0.8rem;
+.btn-login:hover {
+    cursor: pointer;
+    color: #6a73a0;
 }

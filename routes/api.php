@@ -207,3 +207,5 @@ Route::post('/citas/agendar-cita-consejero', [CitaConsejeroController::class, 'a
 
 Route::post('/consultar-curp', [CitaJuzgadoController::class, 'consultarCurp']);
 Route::post('/consulta-curp', [CitaConsejeroController::class, 'consultaCurp']);
+
+Route::post('/agenda-calendario-citas', [CitaConsejeroController::class, 'getAgenda']);
