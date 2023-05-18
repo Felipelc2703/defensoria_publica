@@ -728,10 +728,10 @@ class CitaConsejeroController extends Controller
     public function getAgenda(Request $request)
     {
         try {
-            // $user = User::find($request->consejero_id);
             $current_date = Carbon::now();
-
-            $citas = CitaConsejero::where('consejero_id', $request->consejero_id)->get();
+            $user = User::find($request->user_id);
+            
+            $citas = CitaConsejero::where('consejero_id', $user->consejero->id)->get();
 
             $array_citas = array();
             foreach ($citas as $cita) {
@@ -763,9 +763,9 @@ class CitaConsejeroController extends Controller
             }
 
             if ($request->fecha) {
-                $citas_dia = CitaConsejero::where('fecha_cita', $request->fecha)->where('consejero_id', $request->consejero_id)->get();
+                $citas_dia = CitaConsejero::where('fecha_cita', $request->fecha)->where('consejero_id', $user->consejero->id)->get();
             } else {
-                $citas_dia = CitaConsejero::where('fecha_cita', $current_date->toDateString())->where('consejero_id', $request->consejero_id)->get();
+                $citas_dia = CitaConsejero::where('fecha_cita', $current_date->toDateString())->where('consejero_id', $user->consejero->id)->get();
             }
 
             return response()->json([

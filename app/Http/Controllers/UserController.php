@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
@@ -179,8 +180,20 @@ class UserController extends Controller
 
 
             // $user = Auth::user();
+            $response = '';
             if($user->rol_id == 7)
             {
+                $consejero = $usuario->consejero;
+                $response = Http::withOptions(['verify' => false])->post('http://127.0.0.1:8000/api/crear-usuario-agenda', [
+                    'nombre' => $consejero->nombre,
+                    'apellido_paterno' => $consejero->apellido_paterno,
+                    'apellido_materno' => $consejero->apellido_materno,
+                    'email' => $usuario->email,
+                    'username' => $usuario->clave,
+                    'password' => $usuario->password,
+                    'user_citas_id' => $usuario->id,
+                ]);
+
                 $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->where('id', '!=', 4)->where('id', '!=', 27)->where('consejero_id', '!=', null)->get();
 
                 $array_usuario = array();
@@ -255,10 +268,6 @@ class UserController extends Controller
     
             }
 
-
-
-           
-
             DB::commit();
             $exito = true;
         } catch (\Throwable $th) {
@@ -277,7 +286,8 @@ class UserController extends Controller
             return response()->json([
                 "status" => "ok",
                 "message" => "Nuevo Usuario guardado con éxito.",
-                "usuarios" => $array_usuario
+                "usuarios" => $array_usuario,
+                "response_api" => $response->json()
             ], 200);
         }
     }
@@ -312,7 +322,19 @@ class UserController extends Controller
 
             
             // $user = Auth::user();
+            $response = '';
             if($user->rol_id == 7){
+                $consejero = $usuario->consejero;
+                $response = Http::withOptions(['verify' => false])->post('http://127.0.0.1:8000/api/editar-usuario-agenda', [
+                    'nombre' => $consejero->nombre,
+                    'apellido_paterno' => $consejero->apellido_paterno,
+                    'apellido_materno' => $consejero->apellido_materno,
+                    'email' => $usuario->email,
+                    'username' => $usuario->clave,
+                    'password' => $usuario->password,
+                    'user_citas_id' => $usuario->id,
+                ]);
+
                 $usuarios = User::where('status', 1)->where('id', '!=', 1)->where('id', '!=', 2)->where('id', '!=', 3)->where('id', '!=', 4)->where('id', '!=', 27)->where('consejero_id', '!=', null)->get();
 
                 $array_usuario = array();
@@ -404,7 +426,8 @@ class UserController extends Controller
             return response()->json([
                 "status" => "ok",
                 "message" => "Usuario actualizado con éxito.",
-                "usuarios" => $array_usuario
+                "usuarios" => $array_usuario,
+                "response_api" => $response->json()
             ], 200);
         }
     }

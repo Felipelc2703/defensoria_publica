@@ -5,9 +5,9 @@
         </div>
 
         <div class="row justify-content-between m-auto">
-            <div class="col-md-10 mt-6 col-12">
+            <div class="col-md-8 mt-6 col-12">
                 <v-form ref="formBuscarDia" class="row justify-content-between">
-                    <div class="col-md-4 col-12">
+                    <div class="col-md-5 col-12">
                         <v-text-field
                             v-model="ver.dia"
                             variant="solo" 
@@ -16,7 +16,7 @@
                             :rules="fechaB"
                         ></v-text-field>   
                     </div>
-                    <div class="col-md-8 col-12 mt-3">
+                    <div class="col-md-6 col-12 mt-3">
                         <v-btn
                             variant="flat"
                             color="#6a73a0"
@@ -27,6 +27,18 @@
                         </v-btn>
                     </div>
                 </v-form>           
+            </div>
+            <div class="col-md-4 col-12">
+                <div class="text-center py-1 mt-8">
+                    <!-- <v-btn
+                        variant="flat"
+                        color="#c4f45d"
+                        @click="irAgenda()"
+                        >
+                        Ver agenda
+                    </v-btn> -->
+                    <a class="col-4 mt-2 text-center button-logout" @click="irAgenda()">Ver Agenda</a>
+                </div>
             </div>
             <div class="col-md-12 col-12 mt-2 text-right">
                 <div class="buscador-data-table mt-4">
@@ -286,6 +298,9 @@
                 first = Math.max(first, 1)
                 first = Math.min(first, this.totalPaginas() - numShown + 1)
                 return [...Array(numShown)].map((k, i) => i + first)
+            },
+            user() {
+                return this.$store.getters.user
             }
         },
         watch: {
@@ -463,6 +478,19 @@
                 }
                 this.loading = false
             },
+            irAgenda() {
+                var data = {
+                    user: this.user.user.clave,
+                    password: this.user.key
+                }
+
+                var dataString = JSON.stringify(data)
+                var dataStringBase64 = window.btoa(dataString)
+                var dataStringBase64Safe = encodeURIComponent(dataStringBase64)
+
+                var url = 'http://agenda.test/login?data=' + dataStringBase64Safe
+                window.open(url, '_blank')
+            }
         },
     })
 </script>
