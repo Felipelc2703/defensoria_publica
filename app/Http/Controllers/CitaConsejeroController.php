@@ -731,7 +731,7 @@ class CitaConsejeroController extends Controller
             $current_date = Carbon::now();
             $user = User::find($request->user_id);
             
-            $citas = CitaConsejero::where('consejero_id', $user->consejero->id)->get();
+            $citas = CitaConsejero::where('consejero_id', $user->consejero->id)->where('status', 1)->get();
 
             $array_citas = array();
             foreach ($citas as $cita) {

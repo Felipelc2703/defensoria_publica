@@ -30,14 +30,19 @@
             </div>
             <div class="col-md-4 col-12">
                 <div class="text-center py-1 mt-8">
-                    <!-- <v-btn
-                        variant="flat"
-                        color="#c4f45d"
-                        @click="irAgenda()"
-                        >
-                        Ver agenda
-                    </v-btn> -->
-                    <a class="col-4 mt-2 text-center button-logout" @click="irAgenda()">Ver Agenda</a>
+                    <div class="custom-card-step-action ml-2">
+                        <div class="custom-card-step-action-icon"  @click="irAgenda()" >
+                            <img src="../../../../public/icons/ver-agenda.png" alt="">
+                        </div>
+                        <div class="custom-card-step-action-button">
+                            <button
+                                class="custom-card-button" 
+                                @click="irAgenda()"                               
+                                >
+                                Ver Agenda
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-12 col-12 mt-2 text-right">
