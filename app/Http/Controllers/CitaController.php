@@ -19,7 +19,9 @@ class CitaController extends Controller
     public function getCitasDelDia(Request $request){
         try {
             $date = Carbon::now();
-            $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
+            $citas = Cita::where('fecha_cita', $date->toDateString())
+            ->orderBy('hora_cita', 'asc')
+            ->get();
             $array_cita = array();
             $cont = 1;
             foreach ($citas as $cita) {
@@ -740,7 +742,9 @@ class CitaController extends Controller
     }
     public function selectDiaCita(Request $request){
         try {
-            $citas = Cita::where('fecha_cita', $request->dia )->get();
+            $citas = Cita::where('fecha_cita', $request->dia )
+            ->orderBy('hora_cita', 'asc')
+            ->get();
             $array_cita = array();
             $cont = 1;
             foreach ($citas as $cita) {

@@ -54,7 +54,7 @@
                     </thead>
                     <tbody>
                         <tr v-if="loading">
-                            <th colspan="4">
+                            <th colspan="9">
                                 <p class="text-center texto-cargando-datos">Cargando datos...</p>
                                 <div class="linear-activity">
                                     <div class="indeterminate"></div>
@@ -292,7 +292,11 @@
                 if (!this.buscar.length == 0) {
                     this.datosPaginados = this.citas.filter(item => {
                         return item.nombre.toLowerCase().includes(this.buscar.toLowerCase())
-                        || item.citas.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.curp.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.folio.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.hora_cita.toLowerCase().includes(this.buscar.toLowerCase())
+                        // || item.id.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.statusnom.toLowerCase().includes(this.buscar.toLowerCase())
                     })
                 } else {
                     this.getDataPagina(1)
