@@ -730,6 +730,13 @@ class CitaConsejeroController extends Controller
         try {
             $current_date = Carbon::now();
             $user = User::find($request->user_id);
+
+            if (!$user) {
+                return response()->json([
+                    "citas" => array(),
+                    "citas_dia" => array(),
+                ], 200);
+            }
             
             $citas = CitaConsejero::where('consejero_id', $user->consejero->id)->get();
 
