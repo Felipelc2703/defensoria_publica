@@ -741,7 +741,7 @@ class CitaConsejeroController extends Controller
                 $objectEvento = new \stdClass();
                 $objectEvento->cita_id = $cita->id;
 
-                // Variables para fullcalendar
+                // Variables para fullcalendar-l
                 $objectEvento->title = 'Cita ' . $cita->folio;
                 $objectEvento->start = $cita->fecha_cita . ' ' . $cita->hora_cita;
                 $objectEvento->display = 'block';

@@ -209,3 +209,6 @@ Route::post('/consultar-curp', [CitaJuzgadoController::class, 'consultarCurp']);
 Route::post('/consulta-curp', [CitaConsejeroController::class, 'consultaCurp']);
 
 Route::post('/agenda-calendario-citas', [CitaConsejeroController::class, 'getAgenda']);
+
+//Ruta para obtener informacion de cita para el sistema de control de acceso
+Route::post('/control-acceso/get-info-cita', [CitaController::class, 'getInfoCitaAcceso']);
