@@ -78,13 +78,13 @@ class CitaController extends Controller
             $cita = Cita::where('curp', $request->curp)->where('status', 1)->where('tramite_id', $request->tramite)->exists();
 
             if($cita)
-                {
-                    return response()->json([
-                        "status" => "no_data",
-                        "message" => "Usted ya cuenta con una cita agendada en ese trámite",
-                        
-                    ], 200);  
-                }  
+            {
+                return response()->json([
+                    "status" => "no_data",
+                    "message" => "Usted ya cuenta con una cita agendada en ese trámite",
+                    
+                ], 200);  
+            }  
 
 
             $cita = new Cita;
@@ -834,5 +834,57 @@ class CitaController extends Controller
                 "line" => $th->getLine(),
             ], 200);
         }
+    }
+
+    public function getInfoCitaAcceso(Request $request)
+    {
+        try 
+        {
+            $cita = Cita::where('curp', $request->curp)->where('status', 1)->where('tramite_id', $request->tramite)->exists();
+            
+            $existe = Cita::where('folio',$request->folio)->exists();
+
+            if($existe)
+            {
+                $cita = Cita::where('folio',$request->folio)->first();
+                $objectCita = new \stdClass();
+
+                $objectCita->nombre = $cita->nombre;
+                $objectCita->fecha_cita = $cita->fecha_cita;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->curp = $cita->curp;
+                $objectCita->email = $cita->email;
+                $objectCita->tramite = $cita->tramite->nombre;
+                $objectCita->folio = $cita->folio;
+                $objectCita->telefono = $cita->telefono;
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Datos de la cita obtenidos con exito.",
+                    "cita" => $objectCita,
+                ], 200);
+            } else {
+                return response()->json([
+                    "status" => "no_data",
+                    "message" => "No existe registro de la cita",
+                    "cita" => [],
+                ], 200);
+
+            }
+
+            
+
+            
+        
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener los datos de la cita.",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+
     }
 }
