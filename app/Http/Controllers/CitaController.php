@@ -839,10 +839,10 @@ class CitaController extends Controller
     public function getInfoCitaAcceso(Request $request)
     {
         try 
-        {
-            // $cita = Cita::where('curp', $request->curp)->where('status', 1)->where('tramite_id', $request->tramite)->exists();
-            
+        {   
             $existe = Cita::where('folio',$request->folio)->exists();
+            $existe1 = CitaConsejero::where('folio',$request->folio)->exists();
+            $existe2 = CitaJuzgado::where('folio',$request->folio)->exists();
 
             if($existe)
             {
@@ -857,13 +857,59 @@ class CitaController extends Controller
                 $objectCita->tramite = $cita->tramite->nombre;
                 $objectCita->folio = $cita->folio;
                 $objectCita->telefono = $cita->telefono;
+                $objectCita->area = '#7F7F7F';
 
                 return response()->json([
                     "status" => "ok",
                     "message" => "Datos de la cita obtenidos con exito.",
                     "cita" => $objectCita,
                 ], 200);
-            } else {
+
+            }elseif($existe1)
+            {
+                $cita = CitaConsejero::where('folio',$request->folio)->first();
+
+                $objectCita = new \stdClass();
+
+                $objectCita->nombre = $cita->usuario->nombre.' '.$cita->usuario->apellido_paterno.' '.$cita->usuario->apellido_materno;
+                $objectCita->fecha_cita = $cita->fecha_cita;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->curp = $cita->usuario->curp;
+                $objectCita->email = $cita->usuario->email;
+                $objectCita->tramite = 'Visita Consejero';
+                $objectCita->folio = $cita->folio;
+                $objectCita->telefono = $cita->usuario->telefono;
+                $objectCita->area = '#ED7D31';
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Datos de la cita obtenidos con exito.",
+                    "cita" => $objectCita,
+                ], 200);
+
+
+            }elseif($existe2)
+            {
+                $cita = CitaJuzgado::where('folio',$request->folio)->first();
+                $objectCita = new \stdClass();
+
+                $objectCita->nombre = $cita->usuario->nombre.' '.$cita->usuario->apellido_paterno.' '.$cita->usuario->apellido_materno;
+                $objectCita->fecha_cita = $cita->fecha_cita;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->curp = $cita->usuario->curp;
+                $objectCita->email = $cita->usuario->email;
+                $objectCita->tramite = 'Visita Juzgados';
+                $objectCita->folio = $cita->folio;
+                $objectCita->telefono = $cita->usuario->telefono;
+                $objectCita->area = '#92D150';
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Datos de la cita obtenidos con exito.",
+                    "cita" => $objectCita,
+                ], 200);
+
+            }else {
                 return response()->json([
                     "status" => "no_data",
                     "message" => "No existe registro de la cita",
@@ -871,11 +917,6 @@ class CitaController extends Controller
                 ], 200);
 
             }
-
-            
-
-            
-        
         } catch (\Throwable $th) {
             return response()->json([
                 "status" => "error",
