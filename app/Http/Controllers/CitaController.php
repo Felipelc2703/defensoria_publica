@@ -840,9 +840,15 @@ class CitaController extends Controller
     {
         try 
         {
-            $cita = Cita::where('curp', $request->curp)->where('status', 1)->where('tramite_id', $request->tramite)->exists();
+            //$cita = Cita::where('curp', $request->curp)->where('status', 1)->where('tramite_id', $request->tramite)->exists();
             
             $existe = Cita::where('folio',$request->folio)->exists();
+
+            return response()->json([
+                "status" => "ok",
+                "message" => "Datos de la cita obtenidos con exito.",
+                "cita" => $request->folio,
+            ], 200);
 
             if($existe)
             {
