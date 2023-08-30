@@ -131,6 +131,9 @@
                                                     item-value="id"
                                                     variant="outlined"
                                                 ></v-select>
+                                                <div class="texto-ubicacion-centros">
+                                                    <p class="text-left m-0">Estimado usuario: Se informa que las citas se habilitan una semana antes de que inicie el siguiente mes.</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </v-expansion-panel-text>

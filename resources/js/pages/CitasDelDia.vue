@@ -286,7 +286,15 @@
                 if (!this.buscar.length == 0) {
                     this.datosPaginados = this.citas.filter(item => {
                         return item.nombre.toLowerCase().includes(this.buscar.toLowerCase())
+<<<<<<< HEAD
                         || item.folio.toLowerCase().includes(this.buscar.toLowerCase())
+=======
+                        || item.curp.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.folio.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.hora_cita.toLowerCase().includes(this.buscar.toLowerCase())
+                        // || item.id.toLowerCase().includes(this.buscar.toLowerCase())
+                        || item.statusnom.toLowerCase().includes(this.buscar.toLowerCase())
+>>>>>>> main
                     })
                 } else {
                     this.getDataPagina(1)

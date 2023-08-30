@@ -500,8 +500,9 @@
                 }
             },
             irInicio() {
-                this.$store.commit('setAsuntoStore', null)
-                this.$router.push('/')
+                // this.$store.commit('setAsuntoStore', null)
+                // this.$router.push('/')
+                window.location.href = "https://citasenlinea.pjpuebla.gob.mx/"
             },
             irPj() {
                 window.open("https://www.pjpuebla.gob.mx/")
