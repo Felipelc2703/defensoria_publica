@@ -3,7 +3,7 @@
         <div class="row contenedor">
             <div class="col-sm-9 col-12 contenedor-uno">
                 <div class="text-center py-2">
-                    <img class="scale-logo-defensoria logo-defensoria" width="150" height="75" src="../../../public/images/Logo_Instituto_de_la_Defensoria.svg" alt="">
+                    <img class="scale-logo-defensoria logo-defensoria" width="150" height="75" src="../../../public/images/defensoria-publica-titulo.svg" alt="">
                 </div>
             </div>
             <div class="col-sm-3 hidden-xs contenedor-dos">
@@ -73,8 +73,9 @@
                                         </v-row>
                                     </v-expansion-panel-title>
                                     <v-expansion-panel-text>
-                                        <div class="row mt-4">
-                                            <div class="col-md-6 col-12 text-center">
+                                        <div class="row  justify-content-between mt-4">
+                                            <div class="col-md-1 col-12 text-center"></div>
+                                            <div class="col-md-8 col-12 text-center">
                                                 <table class="m-0 w-100" id="calendar">
                                                     <tbody>
                                                         <tr>
@@ -122,7 +123,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 col-12 select-horario">
+                                            <div class="col-md-1 col-12 text-center"></div>
+                                        </div>
+                                        <div class="row justify-content-between mt-5">
+                                            <div class="col-md-1 col-12"></div>
+                                            <div class="col-md-8 col-12 select-horario">
                                                 <v-select
                                                     v-model="cita.hora_cita"
                                                     label="Seleccione el horario"
@@ -131,7 +136,11 @@
                                                     item-value="id"
                                                     variant="outlined"
                                                 ></v-select>
+                                                <div class="texto-ubicacion-centros">
+                                                    <p class="text-left m-0">Estimado usuario: Se informa que las citas se habilitan una semana antes de que inicie el siguiente mes.</p>
+                                                </div>
                                             </div>
+                                            <div class="col-md-1 col-12"></div>
                                         </div>
                                     </v-expansion-panel-text>
                                 </v-expansion-panel>
@@ -178,7 +187,7 @@
                                                                     <v-select
                                                                         v-model="cita.sexo"
                                                                         label="Seleccione el sexo"
-                                                                        :items="['Masculino', 'Femenino']"
+                                                                        :items="['Hombre', 'Mujer']"
                                                                         :rules="sexoRules"
                                                                     ></v-select>
                                                                 </div>
@@ -489,7 +498,6 @@
         computed: {
             tramiteSeleccionado() {
                 return this.$store.getters.getTramiteSeleccionado
-               
             },
         },
         watch: {

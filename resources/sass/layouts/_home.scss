@@ -95,3 +95,40 @@
     font-size: 0.8rem;
 }
 
+.button-logout {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: .8rem;
+    color: #615f5f;
+    cursor: pointer;
+    text-decoration: none!important;
+}
+
+.custom-card-step-action {
+    display: flex;
+}
+
+.custom-card-step-action-icon {
+    position: relative;
+    height: 2rem;
+    width: 2rem;
+    background-color: v.$morado_m2;
+    cursor: pointer;
+}
+
+.custom-card-step-action-icon img {
+    position: absolute;
+    height: 1.2rem;
+    width: 1.2rem;
+    top: 20%;
+    left: 23%;
+}
+
+.custom-card-button {
+    background-color: v.$verde_v2;
+    height: 2rem;
+    width: 150%;
+    text-transform: uppercase;
+    font-size: .8rem;
+    font-weight: 600;
+}

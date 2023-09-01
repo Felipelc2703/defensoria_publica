@@ -2,24 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use Carbon\Carbon;
 use App\Models\Cita;
+use App\Models\Juez;
 use App\Models\Horario;
+use App\Models\CitaJuzgado;
+use App\Models\CitaConsejero;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\ConfirmacionCita;
+use App\Mail\ConfirmacionCitaJuez;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
-use PDF;
-use Illuminate\Support\Str;
-use Carbon\Carbon;
 
 
 class CitaController extends Controller
 {
-    public function getCitasDelDia(Request $request){
+    public function getCitasDelDia(){
         try {
             $date = Carbon::now();
-            $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
+            $citas = Cita::where('fecha_cita', $date->toDateString())
+            ->orderBy('hora_cita', 'asc')
+            ->get();
             $array_cita = array();
             $cont = 1;
             foreach ($citas as $cita) {
@@ -63,11 +69,10 @@ class CitaController extends Controller
             ], 200);
         }
     }
+
     public function agendarCita(Request $request)
     {
         $exito = false;
-
-        
 
         DB::beginTransaction();
         try {
@@ -75,13 +80,13 @@ class CitaController extends Controller
             $cita = Cita::where('curp', $request->curp)->where('status', 1)->where('tramite_id', $request->tramite)->exists();
 
             if($cita)
-                {
-                    return response()->json([
-                        "status" => "no_data",
-                        "message" => "Usted ya cuenta con una cita agendada en ese trámite",
-                        
-                    ], 200);  
-                }  
+            {
+                return response()->json([
+                    "status" => "no_data",
+                    "message" => "Usted ya cuenta con una cita agendada en ese trámite",
+                    
+                ], 200);  
+            }  
 
 
             $cita = new Cita;
@@ -293,7 +298,6 @@ class CitaController extends Controller
                 "cita_agendada" => $citaAgendada,
             ], 200);
         }
-    
     }
 
     public function generarArchivoCitaPdf()
@@ -348,17 +352,61 @@ class CitaController extends Controller
     {
         try {
             $cita = Cita::where('folio', $request->folio)->where('status', 1)->first();
+            $cita_juzgado = CitaJuzgado::where('folio', $request->folio)->where('status', 1)->first();
+            $cita_consejero = CitaConsejero::where('folio', $request->folio)->where('status', 1)->first();
+
 
             if ($cita) {
                 $citaAgendada = new \stdClass();
                 $citaAgendada->id = $cita->id;
                 $citaAgendada->folio = $cita->folio;
                 $citaAgendada->nombre = $cita->nombre;
-                $citaAgendada->tramite = $cita->tramite->nombre;
                 $citaAgendada->fecha = $cita->fecha_formateada;
                 $citaAgendada->hora = $cita->hora_cita;
+                $citaAgendada->tramite = $cita->tramite->nombre;
                 $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
                 $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
+                $citaAgendada->cita_defensoria = true;
+                $citaAgendada->cita_juzgado = false;
+                $citaAgendada->cita_consejero = false;
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Cita encontrada con éxito",
+                    "cita" => $citaAgendada
+                ], 200);
+            } else if ($cita_juzgado) {
+                $citaAgendada = new \stdClass();
+                $citaAgendada->id = $cita_juzgado->id;
+                $citaAgendada->folio = $cita_juzgado->folio;
+                $citaAgendada->nombre = $cita_juzgado->usuario->nombre . ' ' . $cita_juzgado->usuario->apellido_paterno . ' ' . $cita_juzgado->usuario->apellido_materno;
+                $citaAgendada->fecha = $cita_juzgado->fecha_formateada;
+                $citaAgendada->hora = $cita_juzgado->hora_cita;
+                $citaAgendada->juzgado = $cita_juzgado->juzgado->nombre;
+                $citaAgendada->direccion = $cita_juzgado->juzgado->direccion;
+                $citaAgendada->juez = $cita_juzgado->juez->nombre . ' ' . $cita_juzgado->juez->apellido_paterno . ' ' . $cita_juzgado->juez->apellido_materno;
+                $citaAgendada->cita_defensoria = false;
+                $citaAgendada->cita_juzgado = true;
+                $citaAgendada->cita_consejero = false;
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Cita encontrada con éxito",
+                    "cita" => $citaAgendada
+                ], 200);
+            }else if ($cita_consejero) {
+                $citaAgendada = new \stdClass();
+                $citaAgendada->id = $cita_consejero->id;
+                $citaAgendada->folio = $cita_consejero->folio;
+                $citaAgendada->nombre = $cita_consejero->usuario->nombre . ' ' . $cita_consejero->usuario->apellido_paterno . ' ' . $cita_consejero->usuario->apellido_materno;
+                $citaAgendada->fecha = $cita_consejero->fecha_formateada;
+                $citaAgendada->hora = $cita_consejero->hora_cita;
+                // $citaAgendada->juzgado = $cita_juzgado->juzgado->nombre;
+                // $citaAgendada->direccion = $cita_juzgado->juzgado->direccion;
+                $citaAgendada->consejero = $cita_consejero->consejero->nombre . ' ' . $cita_consejero->consejero->apellido_paterno . ' ' . $cita_consejero->consejero->apellido_materno;
+                $citaAgendada->cita_defensoria = false;
+                $citaAgendada->cita_juzgado = false;
+                $citaAgendada->cita_consejero = true;
 
                 return response()->json([
                     "status" => "ok",
@@ -387,36 +435,36 @@ class CitaController extends Controller
 
     public function cancelarCita($id)
     {
+        $exito = false;
+        
+        DB::beginTransaction();
         try {
             $cita = Cita::find($id);
             $cita->status = 3;
             $cita->save();
-
+            
             $horario = $cita->centroAtencion->dias->where('fecha',$cita->fecha_cita)->first()->horarios->where('hora_inicio',$cita->hora_cita)->first();
-
             $horario->citas_disponibles++;
             $horario->save();
 
-
-            // return response()->json([
-            //     "status" => "ok",
-            //     "message" => "Cita cancelada con exito",
-            //     "horario" => $horario
-            // ], 500);
-
-            return response()->json([
-                "status" => "ok",
-                "message" => "Cita cancelada con éxito",
-            ], 200);
+            DB::commit();
+            $exito = true;
         } catch (\Throwable $th) {
             DB::rollback();
             $exito = false;
             return response()->json([
                 "status" => "error",
-                "message" => "Ocurrió un error al buscar cita.",
+                "message" => "Ocurrió un error al cancelar cita.",
                 "error" => $th->getMessage(),
                 "location" => $th->getFile(),
                 "line" => $th->getLine(),
+            ], 200);
+        }
+
+        if ($exito) {
+            return response()->json([
+                "status" => "ok",
+                "message" => "Cita cancelada con éxito",
             ], 200);
         }
     }
@@ -435,7 +483,7 @@ class CitaController extends Controller
         $citaAgendada->centro_atencion = $cita->centroAtencion->nombre;
         $citaAgendada->direccion_centro_atencion = $cita->centroAtencion->direccion;
 
-        $f =  $citaAgendada->folio;
+        $f = $citaAgendada->folio;
 
         // Custom Header
         PDF::setHeaderCallback(function($pdf) {
@@ -676,6 +724,7 @@ class CitaController extends Controller
             ], 200);
         }
     }
+    
     public function guardarCambios(Request $request)
     {
         $exito = false;
@@ -686,12 +735,12 @@ class CitaController extends Controller
             $cita->status = $request->status;
             $cita->motivo = $request->motivo;
             $cita->save();
-            // $citas = Cita::all();
+            
             $date = Carbon::now();
             $citas = Cita::where('fecha_cita', $date->toDateString() )->get();
            
             $array_cita = array();
-                        $cont = 1;
+            $cont = 1;
             foreach ($citas as $cita) {
                 $objectCita = new \stdClass();
                 $objectCita->id = $cita->id;
@@ -703,17 +752,20 @@ class CitaController extends Controller
                 $objectCita->discapacidad = $cita->discapacidad;
 
                 if($cita->status == 1){
-                $objectCita->status = "1";
-                $objectCita->statusnom = "No atendida";}
+                    $objectCita->status = "1";
+                    $objectCita->statusnom = "No atendida";
+                }
                 if($cita->status == 2){
-                $objectCita->status = "2";
-                $objectCita->statusnom = "Atendida";}
+                    $objectCita->status = "2";
+                    $objectCita->statusnom = "Atendida";
+                }
                 if($cita->status == 3){
-                $objectCita->status = "3";
-                $objectCita->statusnom = "Cancelada";}
-                array_push($array_cita, $objectCita);
-                $cont++;
+                    $objectCita->status = "3";
+                    $objectCita->statusnom = "Cancelada";
+                }
 
+                $cont++;
+                array_push($array_cita, $objectCita);
             }
             
             DB::commit();
@@ -738,9 +790,12 @@ class CitaController extends Controller
             ], 200);
         }
     }
+
     public function selectDiaCita(Request $request){
         try {
-            $citas = Cita::where('fecha_cita', $request->dia )->get();
+            $citas = Cita::where('fecha_cita', $request->dia )
+            ->orderBy('hora_cita', 'asc')
+            ->get();
             $array_cita = array();
             $cont = 1;
             foreach ($citas as $cita) {
@@ -784,5 +839,97 @@ class CitaController extends Controller
             ], 200);
         }
     }
-    
+
+    public function getInfoCitaAcceso(Request $request)
+    {
+        try 
+        {   
+            $existe = Cita::where('folio',$request->folio)->exists();
+            $existe1 = CitaConsejero::where('folio',$request->folio)->exists();
+            $existe2 = CitaJuzgado::where('folio',$request->folio)->exists();
+
+            if($existe)
+            {
+                $cita = Cita::where('folio',$request->folio)->first();
+                $objectCita = new \stdClass();
+
+                $objectCita->nombre = $cita->nombre;
+                $objectCita->fecha_cita = $cita->fecha_cita;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->curp = $cita->curp;
+                $objectCita->email = $cita->email;
+                $objectCita->tramite = $cita->tramite->nombre;
+                $objectCita->folio = $cita->folio;
+                $objectCita->telefono = $cita->telefono;
+                $objectCita->area = '#7F7F7F';
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Datos de la cita obtenidos con exito.",
+                    "cita" => $objectCita,
+                ], 200);
+
+            }elseif($existe1)
+            {
+                $cita = CitaConsejero::where('folio',$request->folio)->first();
+
+                $objectCita = new \stdClass();
+
+                $objectCita->nombre = $cita->usuario->nombre.' '.$cita->usuario->apellido_paterno.' '.$cita->usuario->apellido_materno;
+                $objectCita->fecha_cita = $cita->fecha_cita;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->curp = $cita->usuario->curp;
+                $objectCita->email = $cita->usuario->email;
+                $objectCita->tramite = 'Visita Consejero';
+                $objectCita->folio = $cita->folio;
+                $objectCita->telefono = $cita->usuario->telefono;
+                $objectCita->area = '#ED7D31';
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Datos de la cita obtenidos con exito.",
+                    "cita" => $objectCita,
+                ], 200);
+
+
+            }elseif($existe2)
+            {
+                $cita = CitaJuzgado::where('folio',$request->folio)->first();
+                $objectCita = new \stdClass();
+
+                $objectCita->nombre = $cita->usuario->nombre.' '.$cita->usuario->apellido_paterno.' '.$cita->usuario->apellido_materno;
+                $objectCita->fecha_cita = $cita->fecha_cita;
+                $objectCita->hora_cita = $cita->hora_cita;
+                $objectCita->curp = $cita->usuario->curp;
+                $objectCita->email = $cita->usuario->email;
+                $objectCita->tramite = 'Visita Juzgados';
+                $objectCita->folio = $cita->folio;
+                $objectCita->telefono = $cita->usuario->telefono;
+                $objectCita->area = '#92D150';
+
+                return response()->json([
+                    "status" => "ok",
+                    "message" => "Datos de la cita obtenidos con exito.",
+                    "cita" => $objectCita,
+                ], 200);
+
+            }else {
+                return response()->json([
+                    "status" => "no_data",
+                    "message" => "No existe registro de la cita",
+                    "cita" => [],
+                ], 200);
+
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "message" => "Ocurrió un error al obtener los datos de la cita.",
+                "error" => $th->getMessage(),
+                "location" => $th->getFile(),
+                "line" => $th->getLine(),
+            ], 200);
+        }
+
+    }
 }

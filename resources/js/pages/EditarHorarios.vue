@@ -274,7 +274,7 @@
                     centro_atencion_id: ''
                 },
                 acciones: [
-                    'HABILITAR/DESHABILITRA DIA', 'AMPLIAR HORARIO','REDUCIR HORARIO', 'CAMBIAR DURACIÓN DE CITA'
+                    'HABILITAR/DESHABILITAR DÍA', 'AMPLIAR HORARIO','REDUCIR HORARIO', 'CAMBIAR DURACIÓN DE CITA'
                 ],
                 meses: [
                     {

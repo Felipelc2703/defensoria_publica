@@ -18,12 +18,17 @@ class DatabaseSeeder extends Seeder
             RolSeeder::class,
             TipoTramiteSeeder::class,
             TramiteSeeder::class,
+            MateriaSeeder::class,
+            JuzgadoSeeder::class,
+            JuezSeeder::Class,
             CentroAtencionSeeder::class,
             TramiteCentroSeeder::class,
             RequisitoSeeder::class,
             RequisitoTramiteSeeder::class,
+            ConsejeroSeeder::class,
             UserSeeder::class,
             NotaSeeder::class,
+            
         ]);
     }
 }

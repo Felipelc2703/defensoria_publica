@@ -21,7 +21,9 @@ return new class extends Migration
             $table->integer('duracion');
             $table->boolean('inhabil');
             $table->integer('mes');
-            $table->integer('centro_atencion_id');
+            $table->integer('centro_atencion_id')->nullable();
+            $table->integer('juez_id')->nullable();
+            $table->integer('consejero_id')->nullable();
             $table->timestamps();
         });
     }

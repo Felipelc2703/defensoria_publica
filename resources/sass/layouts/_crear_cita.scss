@@ -239,7 +239,9 @@
 .select-horario {
     margin-top: 2rem;
     @include m.tablet {
-        margin-top: 0;
+        margin-top: 0; 
+        align-content: center;
+        position: relative;
     }
 }
 
@@ -286,11 +288,16 @@
     padding: 0.9rem;
     width: 150px;
     @include m.telefono {
-        width: 200px;
+        width: 250px;
     }
 }
 @include m.telefono{
     .calendar-day-name{
         font-size: 1.3rem;
     }
+}
+
+.texto-llenar-formulario {
+    font-weight: bold;
+    font-size: 1rem;
 }
