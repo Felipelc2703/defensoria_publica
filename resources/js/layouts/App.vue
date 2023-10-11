@@ -336,9 +336,9 @@
             <div class="footer-info container-fluid">
                 <div class="row justify-content-around margenes">
                     <div class="col-sm-12 col-md-4 text-center">
-                        <img width="200" height="170" src="./../../../public/images/logo_pf_footer.svg" alt="">
+                        <img width="200" height="170" src="./../../../public/images/logo_pf_footer.svg" alt="" @click="irPj()">
                         <div class="col-sm-12 col-md-12 text-center separador">
-                                <img class="trans-logo" src="./../../../public/images/transparencia.png" alt="">
+                                <img class="trans-logo" src="./../../../public/images/transparencia.png" alt="" @click="irTransparencia()">
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-4 text-center div-texto-superior-footer">
@@ -508,16 +508,19 @@
                 window.open("https://www.pjpuebla.gob.mx/")
             },
             irInst() {
-                window.open("https://instagram.com/podjudpuebla?igshid=YmMyMTA2M2Y=")
+                window.open("https://www.instagram.com/podjudpuebla/")
+            },
+            irTransparencia(){
+                window.open("https://www.plataformadetransparencia.org.mx/")
             },
             irTwi() {
-                window.open("https://twitter.com/PodJudPuebla?t=5IcEy9NNl88eRs4ea4p9Bw&s=09")
+                window.open("https://twitter.com/PodJudPue")
             },
             irFb() {
-                window.open("https://www.facebook.com/PoderJudicialdelEstadodePuebla?mibextid=ZbWKwL")
+                window.open("https://www.facebook.com/PoderJudicialPue")
             },
             irYt() {
-                window.open("https://youtube.com/@PoderJudicialdelEstadodePuebla")
+                window.open("https://www.youtube.com/channel/UCJZ7QOPJxbb8OFKKBP1A-TA")
             },
             irUbiCiudadJudicial() {
                 window.open("https://www.google.com.mx/maps/search/Perif%C3%A9rico+Ecol%C3%B3gico+Arco+Sur+No.+4000+San+Andr%C3%A9s+Cholula,+Puebla.+Reserva+Territorial+Atlixc%C3%A1yotl,/@19.014682,-98.2685127,17z/data=!3m1!4b1")
